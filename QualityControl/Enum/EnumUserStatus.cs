@@ -7,8 +7,9 @@ namespace QualityControl.Enum
 {
     public enum EnumUserStatus
     {
-        Failed = -3,
-        DataRequired = -2,
+        Failed = -4,
+        EmailUnauthorized,
+        DataRequired,
         Unreviewed,
         Normal
     }

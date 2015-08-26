@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using QualityControl.Enum;
+using System;
 
 namespace QualityControl.Models
 {
@@ -121,5 +122,50 @@ namespace QualityControl.Models
         [EmailAddress]
         [Display(Name = "电子邮件")]
         public string Email { get; set; }
+    }
+
+    public class CompanyViewModel
+    {
+        [Required]
+        [Display(Name = "企业名称")]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "注册地址")]
+        public string Address { get; set; }
+
+        [Required]
+        [Display(Name = "成立时间")]
+        public DateTime EstablishedTime { get; set; }
+
+        [Required]
+        [Display(Name = "营业执照号")]
+        public string License { get; set; }
+
+        [Required]
+        [Display(Name = "法人")]
+        public string Corporation { get; set; }
+
+        [Required]
+        [Display(Name = "法人")]
+        public string CorporationName { get; set; }
+
+
+        [Required]
+        [Display(Name = "法人身份证")]
+        public string CorporationIdentity { get; set; }
+
+        [Required]
+        [Display(Name = "邮编")]
+        public string Postcode { get; set; }
+
+        [Required]
+        [Display(Name = "组织机构代码")]
+        public string OrganizationCode { get; set; }
+
+        [Required]
+        [Display(Name = "营业执照经营范围")]
+        public string LicenseScope { get; set; }
+
     }
 }

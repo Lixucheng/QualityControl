@@ -8,19 +8,18 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace QualityControl.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
-            var a = User.Identity.GetUserId();
+            System.Web.Caching.Cache cache = HttpRuntime.Cache;
+            cache.Insert("test", "hello", null, DateTime.Now.AddSeconds(60), TimeSpan.Zero, System.Web.Caching.CacheItemPriority.Normal, null);
             return View();
         }
 
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
             return View();
         }
 

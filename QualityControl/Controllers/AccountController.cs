@@ -10,11 +10,12 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using QualityControl.Models;
 using QualityControl.Enum;
+using Newtonsoft.Json;
 
 namespace QualityControl.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -76,9 +77,11 @@ namespace QualityControl.Controllers
             // 这不会计入到为执行帐户锁定而统计的登录失败次数中
             // 若要在多次输入错误密码的情况下触发帐户锁定，请更改为 shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            
             switch (result)
             {
                 case SignInStatus.Success:
+                    TempData["_CurrentUserId"] = User.Identity.GetUserId();
                     return RedirectToLocal("/Home/Redirect");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -149,31 +152,29 @@ namespace QualityControl.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new ApplicationUser {
-                    UserName = model.Name,
-                    Email = model.Email,
-                    Type = (int)model.Type,
-                    Statue = (int)EnumUserStatus.DataRequired
-                };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-
-                    // 有关如何启用帐户确认和密码重置的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=320771
-                    // 发送包含此链接的电子邮件
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "确认你的帐户", "请通过单击 <a href=\"" + callbackUrl + "\">這裏</a>来确认你的帐户");
-                    return RedirectToAction("GotoEmail", new { email = model.Email } );
-                }
-                AddErrors(result);
+                // 如果我们进行到这一步时某个地方出错，则重新显示表单
+                return View(model);          
             }
 
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
-            return View(model);
+            var user = new ApplicationUser
+            {
+                UserName = model.Name,
+                Email = model.Email,
+                Type = (int)model.Type,
+                Statue = (int)EnumUserStatus.EmailUnauthorized,
+                ExtraJson = ""
+            };
+            AddCache("Register_" + model.Email, user, DateTime.Now.AddHours(1));
+            //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+            // 有关如何启用帐户确认和密码重置的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=320771
+            // 发送包含此链接的电子邮件
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Email);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userEmail = user.Email, code = code }, protocol: Request.Url.Scheme);
+            await UserManager.SendEmailAsync(user.Id, "确认你的帐户", "请通过单击 <a href=\"" + callbackUrl + "\">這裏</a>来确认你的帐户");
+            return RedirectToAction("GotoEmail", new { email = model.Email });
         }
 
         [HttpGet]
@@ -186,24 +187,60 @@ namespace QualityControl.Controllers
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        public async Task<ActionResult> ConfirmEmail(string userEmail, string code)
         {
-            if (userId == null || code == null)
+            if (userEmail == null || code == null)
             {
                 return View("Error");
             }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
-            if (result.Succeeded)
+            var result = await UserManager.ConfirmEmailAsync(userEmail, code);
+            if (!result.Succeeded)
             {
-                var user = UserManager.FindById(userId);
-                user.Statue = (int)EnumUserStatus.Unreviewed;
-                SignInManager.SignIn(user, false, false);
-                return RedirectToAction("Redirect", "Home");
+                return View("Error"); 
+            }
+            var user = CacheManager["Register_" + userEmail] as ApplicationUser;
+            user.Statue = (int)EnumUserStatus.DataRequired;
+            AddCache("Register_" + userEmail, user, DateTime.Now.AddHours(1));
+            TempData["_CurrentUserEmail"] = userEmail;
+            return RedirectToAction("Redirect", "Home");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult DataFilling()
+        {
+            CompanyViewModel model = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                model = JsonConvert.DeserializeObject<CompanyViewModel>(UserManager.FindById(User.Identity.GetUserId()).ExtraJson);
+            }
+            TempData["_CurrentUserEmail"] = TempData["_CurrentUserEmail"];
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> DataFilling(CompanyViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                user.ExtraJson = JsonConvert.SerializeObject(model);
+                await UserManager.UpdateAsync(user);
+                return View();
             }
             else
             {
-                return View("Error");
-            }
+                var userEmail = (string)TempData["_CurrentUserEmail"];
+                var user = CacheManager["Register_" + userEmail] as ApplicationUser;
+                user.Statue = (int)EnumUserStatus.Unreviewed;
+                await UserManager.CreateAsync(user);
+                return View("RegisterCompleted");
+            }    
         }
 
         //
@@ -291,6 +328,8 @@ namespace QualityControl.Controllers
         {
             return View();
         }
+
+        
 
         //
         // POST: /Account/ExternalLogin

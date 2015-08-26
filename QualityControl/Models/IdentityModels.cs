@@ -20,6 +20,7 @@ namespace QualityControl.Models
 
         public int Type { get; set; }
         public int Statue { get; set; }
+        public string ExtraJson { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
