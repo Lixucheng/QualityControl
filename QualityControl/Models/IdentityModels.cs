@@ -17,12 +17,15 @@ namespace QualityControl.Models
             // 在此处添加自定义用户声明
             return userIdentity;
         }
+
+        public int Type { get; set; }
+        public int Statue { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("TheContext", throwIfV1Schema: false)
         {
         }
 
@@ -31,14 +34,6 @@ namespace QualityControl.Models
             return new ApplicationDbContext();
         }
     }
-
-    public class ApplicationRole : IdentityRole
-    {
-        public ApplicationRole() : base() { }
-        public ApplicationRole(string name) : base(name) { }
-        public string Description { get; set; }
-    }
-
 
 
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using QualityControl.Enum;
 
 namespace QualityControl.Models
 {
@@ -60,6 +61,10 @@ namespace QualityControl.Models
 
         [Display(Name = "记住我?")]
         public bool RememberMe { get; set; }
+
+        [Required]
+        [Display(Name = "类型")]
+        public EnumUserType Type { get; set; }
     }
 
     public class RegisterViewModel
@@ -68,6 +73,10 @@ namespace QualityControl.Models
         [EmailAddress]
         [Display(Name = "电子邮件")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "姓名")]
+        public string Name { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
@@ -79,6 +88,10 @@ namespace QualityControl.Models
         [Display(Name = "确认密码")]
         [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "类型")]
+        public EnumUserType Type { get; set; }
     }
 
     public class ResetPasswordViewModel
