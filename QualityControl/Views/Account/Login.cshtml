@@ -1,63 +1,132 @@
-﻿@using QualityControl.Models
-@model LoginViewModel
-@{
+﻿@{
     ViewBag.Title = "登录";
+    Layout = null;
 }
 
-<h2>@ViewBag.Title。</h2>
-<div class="row">
-    <div class="col-md-8">
-        <section id="loginForm">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                <h4>使用本地帐户登录。</h4>
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                    </div>
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+
+    <script src="~/Scripts/bower_components/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Scripts/bower_components/semantic/dist/semantic.min.css">
+    <script src="~/Scripts/bower_components/semantic/dist/semantic.min.js"></script>
+
+    <style type="text/css">
+        body {
+            background: url("/Image/photo0.jpg");
+            background-size: 100% 100%;
+        }
+
+            body > .grid {
+                height: 100%;
+            }
+
+        .image {
+            margin-top: -100px;
+        }
+
+        .column {
+            max-width: 450px;
+        }
+        .dl{
+            font-family: 'Trebuchet MS', Helvetica, sans-serif;
+            font-size:40px;
+            color:white;
+            position:relative;
+            top:-30px;
+        }
+    </style>
+    <script>
+        $(document)
+                .ready(function() {
+                    $('.ui.form')
+                            .form({
+                                fields: {
+                                    email: {
+                                        identifier  : 'email',
+                                        rules: [
+                                            {
+                                                type   : 'empty',
+                                                prompt : 'Please enter your e-mail'
+                                            },
+                                            {
+                                                type   : 'email',
+                                                prompt : 'Please enter a valid e-mail'
+                                            }
+                                        ]
+                                    },
+                                    password: {
+                                        identifier  : 'password',
+                                        rules: [
+                                            {
+                                                type   : 'empty',
+                                                prompt : 'Please enter your password'
+                                            },
+                                            {
+                                                type   : 'length[6]',
+                                                prompt : 'Your password must be at least 6 characters'
+                                            }
+                                        ]
+                                    }
+                                }
+                            })
+                    ;
+                })
+        ;
+    </script>
+    <style id="style-1-cropbar-clipper">
+        /* Copyright 2014 Evernote Corporation. All rights reserved. */
+        .en-markup-crop-options {
+            top: 18px !important;
+            left: 50% !important;
+            margin-left: -100px !important;
+            width: 200px !important;
+            border: 2px rgba(255,255,255,.38) solid !important;
+            border-radius: 4px !important;
+        }
+
+            .en-markup-crop-options div div:first-of-type {
+                margin-left: 0px !important;
+            }
+    </style>
+</head>
+<body>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui teal image header">
+
+                <div class="content dl">
+                    用户登录
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
+            </h2>
+            <form class="ui large form">
+                <div class="ui stacked segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="email" placeholder="E-mail">
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="登录" class="btn btn-default" />
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="密码">
+                        </div>
                     </div>
+                    <div class="ui fluid large teal submit button">登录</div>
                 </div>
-                <p>
-                    @Html.ActionLink("注册为新用户", "Register")
-                </p>
-                @* 在为密码重置功能启用帐户确认后启用此项
-                    <p>
-                        @Html.ActionLink("忘记了密码?", "ForgotPassword")
-                    </p>*@
-            }
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-        </section>
-    </div>
-</div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+                <div class="ui error message"></div>
+
+            </form>
+
+            <div class="ui message">
+                还没有账号? <a href="#">注册</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
