@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QualityControl", "QualityControl\QualityControl.csproj", "{78F3C499-8BAC-4426-90B5-5922BD3F4A96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QualityControl.Tests", "QualityControl.Tests\QualityControl.Tests.csproj", "{C698C7FC-3FBA-4A07-A7BE-AF5150E38254}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78F3C499-8BAC-4426-90B5-5922BD3F4A96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78F3C499-8BAC-4426-90B5-5922BD3F4A96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78F3C499-8BAC-4426-90B5-5922BD3F4A96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78F3C499-8BAC-4426-90B5-5922BD3F4A96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C698C7FC-3FBA-4A07-A7BE-AF5150E38254}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C698C7FC-3FBA-4A07-A7BE-AF5150E38254}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C698C7FC-3FBA-4A07-A7BE-AF5150E38254}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C698C7FC-3FBA-4A07-A7BE-AF5150E38254}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
