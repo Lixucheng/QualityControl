@@ -1,0 +1,47 @@
+.main-view {
+  margin-top: -55px; padding-top: 55px;
+  background-color: #444;
+}
+/*header reset*/
+.ui.borderless.main.menu.placeholder { margin: 0;}
+/*menu-aside*/
+.menu-aside{
+  height: 100%;
+  background: none;
+  width: 250px;
+}
+.menu-aside .accordion{
+  margin: 20px 0;
+}
+.menu-aside .accordion > .item{
+  padding: 0.8em 1.1em !important;
+  transition: 0.3s all ease !important;
+  border-bottom: 1px solid #666 !important;
+  border-radius: 0 !important;
+}
+.menu-aside .accordion .item:after{
+
+}
+.menu-aside .accordion .item .title,
+.menu-aside .content.menu .item{
+  color: #aaa !important;
+  transition: 0.3s color ease !important;
+}
+.menu-aside .accordion .item .title:hover,
+.menu-aside .content.menu .item:hover{
+  color: #fff !important;
+}
+.menu-aside .content.menu .item{
+  padding-left: 4em !important;
+}
+/*main-section*/
+.main-section {
+  overflow: hidden;
+  background-color: #fff;
+  min-height: 560px;
+}
+/*footer*/
+body > .footer{
+  padding: 40px 0 !important;
+  background-color: #333 !important;
+}

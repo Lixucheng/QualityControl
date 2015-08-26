@@ -1,0 +1,46 @@
+﻿@{ 
+    Layout = "Layout";
+}
+@section head{
+    
+    <link href="~/Content/common.css" rel="stylesheet" />
+    <link href="~/Content/layout.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/semantic/dist/semantic.min.css" rel="stylesheet" />
+    @RenderSection("head", required: false)
+}
+
+
+@Html.Partial("_Header")
+
+<!-- container -->
+<div class="main-view">
+    <div class="am-cf">
+        @Html.Partial("_Menu")
+        <div class="main-section">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+<!-- container end -->
+
+
+<script src="~/Scripts/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="~/Scripts/bower_components/semantic/dist/semantic.min.js"></script>
+<script>
+    $(document)
+      .ready(function() {
+
+        // fix main menu to page on passing
+        $('.main.menu').visibility({
+          type: 'fixed'
+        });
+
+        // show dropdown on hover
+        $('.main.menu  .ui.dropdown').dropdown({
+          on: 'hover'
+        });
+
+        $('.menu-aside .accordion').accordion();
+      });
+</script>
+@RenderSection("scripts", required: false)
