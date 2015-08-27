@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
+using QualityControl.Db;
+using System.Collections.Generic;
 
 namespace QualityControl.Models
 {
@@ -19,8 +19,10 @@ namespace QualityControl.Models
         }
 
         public int Type { get; set; }
-        public int Statue { get; set; }
+        public int Status { get; set; }
         public string ExtraJson { get; set; }
+        
+        public virtual List<Message> Messages { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

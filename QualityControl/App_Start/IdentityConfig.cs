@@ -11,15 +11,47 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using QualityControl.Models;
+using System.Configuration;
+using System.Net.Mail;
+using System.Text;
 
 namespace QualityControl
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
-            // 在此处插入电子邮件服务可发送电子邮件。
-            return Task.FromResult(0);
+            // Credentials:
+            var credentialUserName = "ly618@outlook.com";
+            var sentFrom = "ly618t@outlook.com";
+            var pwd = "Mima4321";
+
+            // Configure the client:
+            SmtpClient client =
+                new SmtpClient("smtp-mail.outlook.com");
+
+            client.Port = 587;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+
+            // Create the credentials:
+            System.Net.NetworkCredential credentials =
+                new System.Net.NetworkCredential(credentialUserName, pwd);
+
+            client.EnableSsl = true;
+            client.Credentials = credentials;
+
+            // Create the message:
+            var mail =
+                new MailMessage(sentFrom, message.Destination);
+
+            mail.Subject = message.Subject;
+            mail.Body = message.Body;
+            mail.IsBodyHtml = true;
+
+            // Send:
+            await client.SendMailAsync(mail);
+            //await Task.FromResult(0);
         }
     }
 
@@ -54,9 +86,6 @@ namespace QualityControl
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true
             };
 
             // 配置用户锁定默认值
@@ -103,6 +132,23 @@ namespace QualityControl
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+        }
+
+        public async Task<SignInStatus> PasswordSignByEmailInAsync(string userEmail,string password, bool isPersistent, bool shouldLockout)
+        {
+            if (UserManager == null)
+            {
+                return SignInStatus.Failure;
+            }
+
+            var user = await UserManager.FindByEmailAsync(userEmail);
+            if (user == null || !user.EmailConfirmed)
+            {
+                return SignInStatus.Failure;
+            }
+
+            var result = await PasswordSignInAsync(user.UserName, password, isPersistent, shouldLockout);
+            return result;
         }
     }
 

@@ -1,14 +1,16 @@
 ﻿@{ 
-    Layout = "Layout";
+    Layout = "_Layout.cshtml";
 }
 @section head{
     
     <link href="~/Content/common.css" rel="stylesheet" />
     <link href="~/Content/layout.css" rel="stylesheet" />
-    <link href="~/Scripts/bower_components/semantic/dist/semantic.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/semantic/dist/semantic.css" rel="stylesheet" />
+    <style>
+        body { background-color: #eee;}
+    </style>
     @RenderSection("head", required: false)
 }
-
 
 @Html.Partial("_Header")
 

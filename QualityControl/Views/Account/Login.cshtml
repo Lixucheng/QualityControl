@@ -1,5 +1,4 @@
 ﻿@{
-    ViewBag.Title = "登录";
     Layout = null;
 }
 
@@ -7,7 +6,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>登录</title>
 
 
     <script src="~/Scripts/bower_components/jquery/dist/jquery.js"></script>
@@ -102,7 +101,8 @@
                     用户登录
                 </div>
             </h2>
-            <form class="ui large form">
+            <form class="ui large form" method="post">
+                @Html.AntiForgeryToken()
                 <div class="ui stacked segment">
                     <div class="field">
                         <div class="ui left icon input">
@@ -124,7 +124,7 @@
             </form>
 
             <div class="ui message">
-                还没有账号? <a href="#">注册</a>
+                还没有账号? <a href="~/Account/Register">注册</a>
             </div>
         </div>
     </div>

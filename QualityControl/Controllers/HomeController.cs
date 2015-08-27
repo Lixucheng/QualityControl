@@ -12,8 +12,7 @@ namespace QualityControl.Controllers
     {
         public ActionResult Index()
         {
-            System.Web.Caching.Cache cache = HttpRuntime.Cache;
-            cache.Insert("test", "hello", null, DateTime.Now.AddSeconds(60), TimeSpan.Zero, System.Web.Caching.CacheItemPriority.Normal, null);
+            
             return View();
         }
 

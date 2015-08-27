@@ -1,0 +1,137 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWithHeader.cshtml";
+}
+
+
+@section head{
+    <title>企业信息</title>
+}
+
+<div class="am-margin-lg am-padding-lg ui center aligned container">
+    <div class="am-padding-horizontal-lg">
+        <div class="am-padding-horizontal-lg">
+            <form class="ui form segment" method="post">
+                <h2>企业信息</h2>
+                <div class="two fields">
+                    <div class="field">
+                        <label>企业名称</label>
+                        <input placeholder="企业名称" name="Name" type="text" value="@(Model != null ? Model.Name : "")">
+                    </div>
+                    <div class="field">
+                        <label>注册时间</label>
+                        <input placeholder="注册时间" name="EstablishedTime" type="date" value="@(Model != null ? Model.EstablishedTime.ToShortDateString() : "")">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>注册地址</label>
+                    <input placeholder="注册地址" name="Address" type="text" value="@(Model != null ? Model.Address : "")">
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label>法人姓名</label>
+                        <input placeholder="法人姓名" name="CorporationName" type="text" value="@(Model != null ? Model.CorporationName : "")">
+                    </div>
+                    <div class="field">
+                        <label>法人身份证号</label>
+                        <input placeholder="法人身份证号" type="text" name="CorporationIdentity" value="@(Model != null ? Model.CorporationIdentity : "")">
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label>营业执照号</label>
+                        <input placeholder="营业执照号" name="License" type="text" value="@(Model != null ? Model.License : "")">
+                    </div>
+                    <div class="field">
+                        <label>组织机构代码</label>
+                        <input placeholder="组织机构代码" type="text" name="OrganizationCode" value="@(Model != null ? Model.OrganizationCode : "")">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>营业执照经营范围</label>
+                    <textarea rows="2" name="LicenseScope" placeholder="营业执照经营范围">value="@(Model != null ? Model.LicenseScope : "")"</textarea>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui red cancel button">取消</div>
+                <div class="ui blue submit button">保存</div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(function () {
+        $('.ui.form').form({
+            fields: {
+                Name: {
+                    identifier: 'Name',
+                    rules: [
+                      {
+                          type: '请输入企业名称'
+                      }
+                    ]
+                },
+                Address: {
+                    identifier: 'Address',
+                    rules: [
+                      {
+                          type: '请输入企业地址'
+                      }
+                    ]
+                },
+                EstablishedTime: {
+                    identifier: 'EstablishedTime',
+                    rules: [
+                      {
+                          type: '请输入企业成立时间'
+                      }
+                    ]
+                },
+                License: {
+                    identifier: 'License',
+                    rules: [
+                      {
+                          type: '请输入营业执照号'
+                      }
+                    ]
+                },
+                CorporationName: {
+                    identifier: 'CorporationName',
+                    rules: [
+                      {
+                          type: '请输入法人姓名'
+                      }
+                    ]
+                },
+                CorporationIdentity: {
+                    identifier: 'CorporationIdentity',
+                    rules: [
+                      {
+                          type: '请输入法人身份证'
+                      }
+                    ]
+                },
+                OrganizationCode: {
+                    identifier: 'OrganizationCode',
+                    rules: [
+                      {
+                          type: '请输入组织机构代码'
+                      }
+                    ]
+                },
+                LicenseScope: {
+                    identifier: 'LicenseScope',
+                    rules: [
+                      {
+                          type: '请输入营业执照经营范围'
+                      }
+                    ]
+                },
+
+            }
+        })
+        ;
+    });
+</script>
+
