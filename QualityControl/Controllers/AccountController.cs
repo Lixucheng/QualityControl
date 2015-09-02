@@ -248,16 +248,10 @@ namespace QualityControl.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public async Task<ActionResult> ForgotPassword(string email)
         {
             if (ModelState.IsValid)
-            {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                {
-                    // 请不要显示该用户不存在或者未经确认
-                    return View("ForgotPasswordConfirmation");
-                }
+           
 
                 // 有关如何启用帐户确认和密码重置的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=320771
                 // 发送包含此链接的电子邮件
@@ -265,10 +259,8 @@ namespace QualityControl.Controllers
                 // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
                 // await UserManager.SendEmailAsync(user.Id, "重置密码", "请通过单击 <a href=\"" + callbackUrl + "\">此处</a>来重置你的密码");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
-            }
 
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
-            return View(model);
+            return View("ForgotPasswordConfirmation");
         }
 
         //
