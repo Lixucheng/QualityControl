@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,8 +22,6 @@ namespace QualityControl.Db
         public DateTime EstablishedTime { get; set; }
 
         public string License { get; set; }
-
-        public string Corporation { get; set; }
 
         public string CorporationName { get; set; }
 
@@ -67,10 +62,6 @@ namespace QualityControl.Db
         [Required]
         [Display(Name = "营业执照号")]
         public string License { get; set; }
-
-        [Required]
-        [Display(Name = "法人")]
-        public string Corporation { get; set; }
 
         [Required]
         [Display(Name = "法人")]
