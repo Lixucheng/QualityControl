@@ -22,13 +22,13 @@ namespace QualityControl
         public async Task SendAsync(IdentityMessage message)
         {
             // Credentials:
-            var credentialUserName = "ly618@outlook.com";
-            var sentFrom = "ly618t@outlook.com";
-            var pwd = "Mima4321";
+            var credentialUserName = "572362732@qq.com";
+            var sentFrom = "572362732@qq.com";
+            var pwd = "cxm123";
 
-            // Configure the client:
+            // Configure the client:smtp-mail.outlook.com
             SmtpClient client =
-                new SmtpClient("smtp-mail.outlook.com");
+                new SmtpClient("smtp.qq.com");
 
             client.Port = 587;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;

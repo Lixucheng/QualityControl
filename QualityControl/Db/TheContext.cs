@@ -20,5 +20,9 @@ namespace QualityControl.Db
         public DbSet<Company> Companies { get; set; }
 
         public DbSet<CompanyProduct> CompanyProducts { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
+
+        public DbSet<ProductClassification> ProductClassifications { get; set; }
     }
 }

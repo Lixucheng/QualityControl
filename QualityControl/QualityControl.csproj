@@ -175,6 +175,7 @@
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Attributes\AllowUnrecognized.cs" />
+    <Compile Include="Controllers\AccountAdminController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Db\Dict.cs" />
     <Compile Include="Db\Message.cs" />
     <Compile Include="Db\Product.cs" />
+    <Compile Include="Db\ProductClassification.cs" />
     <Compile Include="Db\RegisterApply.cs" />
     <Compile Include="Db\TheContext.cs" />
     <Compile Include="Enum\EnumStatus.cs" />
@@ -265,6 +267,8 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_LayoutWithHeader.cshtml" />
     <Content Include="Views\Account\CompanyInfo.cshtml" />
+    <Content Include="Views\AccountAdmin\Index.cshtml" />
+    <Content Include="Views\AccountAdmin\ApplyList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
