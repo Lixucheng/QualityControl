@@ -22,7 +22,7 @@ namespace QualityControl.Models
         public int Status { get; set; }
         public string ExtraJson { get; set; }
         
-        public virtual List<Message> Messages { get; set; }
+
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

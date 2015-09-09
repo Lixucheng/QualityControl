@@ -46,6 +46,7 @@ namespace QualityControl.Controllers
                 UserId = user.Id,
                 Status=0
             });
+            Db.SaveChanges();
             return Redirect("../ApplyList");
         }
 
