@@ -250,7 +250,7 @@ namespace QualityControl.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(string email)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
            
 
                 // 有关如何启用帐户确认和密码重置的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=320771

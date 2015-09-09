@@ -11,7 +11,7 @@ namespace QualityControl.Db
         public TheContext()
             :base("name=TheContext"){}
 
-        public DbSet<RegisterApply> RegisterApplies { get; set; }
+        //public DbSet<RegisterApply> RegisterApplies { get; set; }
         
         public DbSet<ProductType> ProductTypes { get; set; }
 
