@@ -32,14 +32,20 @@ namespace QualityControl.Controllers
         {
             var list=UserManager.Users.Where(e => e.Status == (int)EnumUserStatus.UnRecognized).ToList();
             ViewBag.list = list;
-            ViewBag.count = list.Count;
+            ViewBag.count = list.Count;      
             return View();
         }
         public async System.Threading.Tasks.Task<ActionResult> Pass(string id)
         {
             var user = UserManager.Users.FirstOrDefault(e => e.Id == id);
             user.Status = (int)EnumUserStatus.Normal;
-            await UserManager.UpdateAsync(user);               
+            await UserManager.UpdateAsync(user);
+            Db.Messages.Add(new QualityControl.Db.Message
+            {
+                Content = "恭喜您，您的注册申请已经通过审核！",
+                UserId = user.Id,
+                Status=0
+            });
             return Redirect("../ApplyList");
         }
 
