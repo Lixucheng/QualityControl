@@ -47,8 +47,8 @@
                         <td>
                             <div class="2  fluid ui">
                                 <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
-                                <button class="ui  button">修改</button>
-                                <button class="ui  button" >删除</button>
+                                <button class="ui  button" onclick="Edit(@Tempx.Id)">修改</button>
+                                <a class="ui  button"  href="/Product/Del/@Tempx.Id" >删除</a>
                             </div>
                         </td>
                     </tr>
@@ -76,7 +76,7 @@
         </tfoot>
     </table>
 </div>
-<div class="ui modal">
+<div class="ui  modal" id="seedesc">
     <i class="close icon"></i>
     <div class="header" id="typetitle">
         标题
@@ -85,7 +85,7 @@
        
         <div class="description">
             <div class="ui header">详细信息</div>
-            <p id="description">aaaaaaaaaaaaaaa</p>
+            <p id="description"></p>
            
         </div>
     </div>
@@ -100,22 +100,81 @@
     </div>*@
 </div>
 
+
+
+<div class="ui  modal" id="edit">
+    <i class="close icon"></i>
+    <div class="header" id="typetitle">
+        产品种类信息修改
+    </div>
+    <div class=" content">
+
+        <form class="ui form" action="/Product/Edit">
+            <input name="Id" style="display:none" id="editid">
+            <div class="field">
+                <label>名称</label>
+                <input type="text" name="Title" placeholder="名称" id="edittitle">
+            </div>
+            <div class="field">
+                <label>详细描述</label>
+                <textarea name="Description" id="editdesc"></textarea>
+            </div>
+         
+        </form>
+       
+    </div>
+    <div class="actions">
+        <button class="ui green button" onclick="sub()">确定修改</button>
+    </div>
+</div>
+
+
+
+
 @section scripts{
     <script>
+
+     
+
         function See(x)
         {
             $.ajax({
                 type: 'Get',
-                url: '/Product/GetDescription',
+                url: '/Product/GetTypeInfo',
                 data: {id:x},
                 success:function(data){
-                    $("#description").html(data);
-                    $('.ui.modal').modal('show');             
+                    $("#typetitle").html(data.Title);
+                    $("#description").html(data.Description);
+                    $('#seedesc').modal('show');             
                 },
                 dataType:"json"
             });
 
+        };
+
+
+        function Edit(id)
+        {
+
+            $.ajax({
+                type: 'Get',
+                url: '/Product/GetTypeInfo',
+                data: {id:id},
+                success:function(data){
+                    //$("#editdesc").html(data.Decription);
+                    $("#editdesc").html(data.Description);
+                    $("#edittitle").val(data.Title);
+                    $("#editid").val(data.Id);
+                    $('#edit').modal('show');           
+                },
+                dataType:"json"
+            });
+          
+        };
+
+        function sub()
+        {
+            $("form").submit();
         }
-       
     </script>
     }

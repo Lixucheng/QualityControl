@@ -25,9 +25,40 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        public JsonResult GetDescription(long id)
-        {                
-            return Json(Db.ProductTypes.Find(id).Description,JsonRequestBehavior.AllowGet); 
+        /// <summary>
+        /// 根据id返回整体
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult GetTypeInfo(long id)
+        {
+            var r = Db.ProductTypes.Find(id);
+            var ret = new { Title = r.Title, Id = r.Id, Description = r.Description };
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult Edit(Db.ProductType newone)
+        {
+            var x = Db.ProductTypes.Find(newone.Id);
+            if(x!=null)
+            {
+                x.Title = newone.Title;
+                x.Description = newone.Description;
+                Db.SaveChanges();
+            }
+            return Redirect("./TypeIndex");
+        }
+
+        public ActionResult Del(long id)
+        {
+            var x = Db.ProductTypes.Find(id);
+            if (x != null)
+            {
+                Db.ProductTypes.Remove(x);
+                Db.SaveChanges();
+            }
+            return Redirect("../TypeIndex");
         }
     }
 }
