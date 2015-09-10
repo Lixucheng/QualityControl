@@ -60,5 +60,13 @@ namespace QualityControl.Controllers
             }
             return Redirect("../TypeIndex");
         }
+
+        public ActionResult _Options()
+        {
+            var list=Db.ProductTypes.ToList();
+            ViewBag.list = list;
+            ViewBag.count = list.Count;
+            return View();
+        }
     }
 }
