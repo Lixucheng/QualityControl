@@ -271,6 +271,7 @@
     <Content Include="Views\AccountAdmin\ApplyList.cshtml" />
     <Content Include="Views\Product\TypeIndex.cshtml" />
     <Content Include="Views\Product\_Options.cshtml" />
+    <Content Include="Views\AccountAdmin\CompanyApplyList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "ApplyList";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section head{
+    <style>
+        .main-container {
+            background-color: #FFFFFF;
+            margin: 0em auto;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            padding: 2em 2em 7em;
+            z-index: 1;
+        }
+    </style>
+}
+
+<div class="main-container">
+    <h2 class="ui dividing header">
+        注册申请列表
+        <a class="anchor" id="types"></a>
+    </h2>
+    <table class="ui compact celled definition table">
+        <thead class="full-width">
+            <tr>
+                <th></th>
+                <th>姓名</th>
+                <th>邮箱地址</th>
+                <th>电话</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (ViewBag.count == 0)
+            {
+                <p>无信息！</p>
+            }
+            else
+            {
+                foreach (var Tempx in ViewBag.list)
+                {
+                    <tr>
+                        <td class="collapsing">
+                            <div class="ui fitted slider checkbox">
+                                <input type="checkbox"> <label></label>
+                            </div>
+                        </td>
+                        <td>@Tempx.UserName</td>
+                        <td>@Tempx.Email</td>
+                        <td>@Tempx.PhoneNumber</td>
+
+                        <td>
+                            <div class="2  fluid ui">
+                                <a class="ui  button" href="~/accountadmin/pass/@Tempx.Id">通过</a>
+                                <a class="ui  button" href="~/accountadmin/refuse/@Tempx.Id">拒绝</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+        <tfoot class="full-width">
+            <tr>
+                <th></th>
+                <th colspan="4">
+
+                    <div class="ui small  button">
+                        批量审核
+                    </div>
+                    <div class="ui small  disabled button">
+                        审核全部
+                    </div>
+                    <div class="ui small  disabled button">
+                        拒绝全部
+                    </div>
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div style="lon"></div>

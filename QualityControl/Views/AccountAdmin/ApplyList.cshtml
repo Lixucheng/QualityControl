@@ -46,7 +46,7 @@
                 <tr>
                     <td class="collapsing">
                         <div class="ui fitted slider checkbox">
-                            <input type="checkbox"> <label></label>
+                            <input type="checkbox" class="CheckList" value="@Tempx.Id"> <label></label>
                         </div>
                     </td>
                     <td>@Tempx.UserName</td>
@@ -69,13 +69,16 @@
                 <th></th>
                 <th colspan="4">
                    
-                    <div class="ui small  button">
+                    <div class="ui small   button" id="ppass">
                         批量审核
                     </div>
-                    <div class="ui small  disabled button">
+                    <div class="ui small   button" id="prefuse">
+                        批量拒绝
+                    </div>
+                    <div class="ui small   button" id="passall">
                         审核全部
                     </div>
-                    <div class="ui small  disabled button">
+                    <div class="ui small   button" id="refuseall">
                         拒绝全部
                     </div>
                 </th>
@@ -83,4 +86,80 @@
         </tfoot>
     </table>
 </div>
-<div style="lon"></div>
+
+@section scripts{
+    <script>
+        $(function () {
+            var list = [];
+            $("#ppass").click(function () {
+                $("input:checkbox:checked").each(function () {
+                    list.push($(this).val());
+                });
+
+                $.ajax({
+                    type: 'Post',
+                    url: '/AccountAdmin/PassList',
+                    data: { ids: list },
+                    traditional: true,
+                    success: function (data) {
+                        location.reload();
+                    },
+                    dataType: "json"
+                });
+            })
+
+            $("#prefuse").click(function () {
+                $("input:checkbox:checked").each(function () {
+                    list.push($(this).val());
+                });
+
+                $.ajax({
+                    type: 'Post',
+                    url: '/AccountAdmin/RefuseList',
+                    data: { ids: list },
+                    traditional: true,
+                    success: function (data) {
+                        location.reload();
+                    },
+                    dataType: "json"
+                });
+            })
+
+            $("#passall").click(function () {
+                $("input:checkbox").each(function () {
+                    list.push($(this).val());
+                });
+
+                $.ajax({
+                    type: 'Post',
+                    url: '/AccountAdmin/PassList',
+                    data: { ids: list },
+                    traditional: true,
+                    success: function (data) {
+                        location.reload();
+                    },
+                    dataType: "json"
+                });
+            })
+
+            $("#refuseall").click(function () {
+                $("input:checkbox").each(function () {
+                    list.push($(this).val());
+                });
+
+                $.ajax({
+                    type: 'Post',
+                    url: '/AccountAdmin/RefuseList',
+                    data: { ids: list },
+                    traditional: true,
+                    success: function (data) {
+                        location.reload();
+                    },
+                    dataType: "json"
+                });
+            })
+
+
+        })
+    </script>
+    }
