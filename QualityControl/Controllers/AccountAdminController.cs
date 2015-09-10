@@ -24,6 +24,7 @@ namespace QualityControl.Controllers
             }
         }
         // GET: AccountAdmin
+        #region  普通账户审核部分
         public ActionResult Index()
         {
             return View();
@@ -64,14 +65,32 @@ namespace QualityControl.Controllers
         public async Task<ActionResult> Pass(string id)
         {
             await  PassOne(id);
-            return Redirect("../ApplyList");
+            var type = UserManager.Users.FirstOrDefault(e => e.Id == id).Type;
+            if(type==(int)EnumUserType.User)
+                return Redirect("../ApplyList");
+            else if(type == (int)EnumUserType.Producer)
+                return Redirect("../CompanyApplyList");
+            else 
+                return Redirect("../ApplyList");
+            //todo: 这块肯定要改
         }
 
         public async Task<ActionResult> Refuse(string id)
         {
-
+            var type = UserManager.Users.FirstOrDefault(e => e.Id == id).Type;
             await RefuseOne(id);
-            return Redirect("../ApplyList");
+          
+            if (type == (int)EnumUserType.User)
+                return Redirect("../ApplyList");
+            else if (type == (int)EnumUserType.Producer)
+            {
+                var comp=Db.Companies.FirstOrDefault(e => e.UserId == id);
+                Db.Companies.Remove(comp);
+                Db.SaveChanges();
+                return Redirect("../CompanyApplyList");
+            }
+            else
+                return Redirect("../ApplyList");
         }
 
         public async Task<int> PassList(string [] ids)
@@ -93,8 +112,11 @@ namespace QualityControl.Controllers
 
             return 1;
         }
+        #endregion
 
 
+        #region  公司账户审核部分
+     
         public ActionResult CompanyApplyList()
         {
             var list = UserManager.Users.Where(e => e.Status == (int)EnumUserStatus.UnRecognized && e.Type == (int)EnumUserType.Producer).ToList();
@@ -102,6 +124,15 @@ namespace QualityControl.Controllers
             ViewBag.count = list.Count;
             return View();
         }
+        
+        public JsonResult GetCompanyInfo(string  userid)
+        {
+            var c = Db.Companies.FirstOrDefault(e => e.UserId == userid);
 
+                      
+            return Json(new {c=c,time=c.EstablishedTime.ToString() }, JsonRequestBehavior.AllowGet);
+        }
+       
+        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "ApplyList";
+    ViewBag.Title = "CompanyApplyList";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @section head{
@@ -12,12 +12,17 @@
             padding: 2em 2em 7em;
             z-index: 1;
         }
+        p3{
+            display:block;
+            text-align:justify;
+            width:100px;
+        }
     </style>
 }
 
 <div class="main-container">
     <h2 class="ui dividing header">
-        注册申请列表
+        生产商注册申请列表
         <a class="anchor" id="types"></a>
     </h2>
     <table class="ui compact celled definition table">
@@ -43,7 +48,7 @@
                     <tr>
                         <td class="collapsing">
                             <div class="ui fitted slider checkbox">
-                                <input type="checkbox"> <label></label>
+                                <input type="checkbox" class="CheckList" value="@Tempx.Id"> <label></label>
                             </div>
                         </td>
                         <td>@Tempx.UserName</td>
@@ -52,6 +57,7 @@
 
                         <td>
                             <div class="2  fluid ui">
+                                <button class="ui  button" onclick="See('@Tempx.Id')">查看公司信息</button>
                                 <a class="ui  button" href="~/accountadmin/pass/@Tempx.Id">通过</a>
                                 <a class="ui  button" href="~/accountadmin/refuse/@Tempx.Id">拒绝</a>
                             </div>
@@ -66,13 +72,16 @@
                 <th></th>
                 <th colspan="4">
 
-                    <div class="ui small  button">
+                    <div class="ui small   button" id="ppass">
                         批量审核
                     </div>
-                    <div class="ui small  disabled button">
+                    <div class="ui small   button" id="prefuse">
+                        批量拒绝
+                    </div>
+                    <div class="ui small   button" id="passall">
                         审核全部
                     </div>
-                    <div class="ui small  disabled button">
+                    <div class="ui small   button" id="refuseall">
                         拒绝全部
                     </div>
                 </th>
@@ -80,4 +89,136 @@
         </tfoot>
     </table>
 </div>
-<div style="lon"></div>
+
+<div class="ui  modal" id="seedesc">
+    <i class="close icon"></i>
+    <div class="header" id="c0">
+        标题
+    </div>
+    <div class=" content">
+
+        <div class="description">
+            <p3 id="" >地址   ：</p3><p4  id="c1" >aaaa</p4>
+            <hr />
+            <p3 id="">成立时间：</p3><p4 id="c2">aaaa</p4>
+            <hr />
+            <p3 id="">营业执照号：</p3><p4 id="c3">aaaa</p4>
+            <hr />
+            <p3 id="">法人：</p3><p4 id="c4">aaaa</p4>
+            <hr />
+            <p3 id="">法人身份证：</p3><p4 id="c5">aaaa</p4>
+            <hr />
+            <p3 id="">邮编：</p3><p4 id="c6">aaaa</p4>
+            <hr />
+            <p3 id="">组织机构代码：</p3><p4 id="c7">aaaa</p4>
+            <hr />
+            <p3 id="">营业执照经营范围：</p3><p4 id="c8">aaaa</p4>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+@section scripts{
+    <script>
+        $(function () {
+            var list = [];
+            $("#ppass").click(function () {
+                $("input:checkbox:checked").each(function () {
+                    list.push($(this).val());
+                });
+
+                $.ajax({
+                    type: 'Post',
+                    url: '/AccountAdmin/PassList',
+                    data: { ids: list },
+                    traditional: true,
+                    success: function (data) {
+                        location.reload();
+                    },
+                    dataType: "json"
+                });
+            })
+
+            $("#prefuse").click(function () {
+                $("input:checkbox:checked").each(function () {
+                    list.push($(this).val());
+                });
+
+                $.ajax({
+                    type: 'Post',
+                    url: '/AccountAdmin/RefuseList',
+                    data: { ids: list },
+                    traditional: true,
+                    success: function (data) {
+                        location.reload();
+                    },
+                    dataType: "json"
+                });
+            })
+
+            $("#passall").click(function () {
+                $("input:checkbox").each(function () {
+                    list.push($(this).val());
+                });
+
+                $.ajax({
+                    type: 'Post',
+                    url: '/AccountAdmin/PassList',
+                    data: { ids: list },
+                    traditional: true,
+                    success: function (data) {
+                        location.reload();
+                    },
+                    dataType: "json"
+                });
+            })
+
+            $("#refuseall").click(function () {
+                $("input:checkbox").each(function () {
+                    list.push($(this).val());
+                });
+
+                $.ajax({
+                    type: 'Post',
+                    url: '/AccountAdmin/RefuseList',
+                    data: { ids: list },
+                    traditional: true,
+                    success: function (data) {
+                        location.reload();
+                    },
+                    dataType: "json"
+                });
+            })
+
+
+
+        })
+
+        function See(id)
+        {
+            $.ajax({
+                type: 'Get',
+                url: '/AccountAdmin/GetCompanyInfo',
+                data: {userid:id},
+                success: function (data) {
+                    $("#c0").html(data.c.Name);
+                    $("#c1").html(data.c.Address);
+                    $("#c2").html(data.time);
+                    $("#c3").html(data.c.License);
+                    $("#c4").html(data.c.CorporationName);
+                    $("#c5").html(data.c.CorporationIdentity);
+                    $("#c6").html(data.c.Postcode);
+                    $("#c7").html(data.c.OrganizationCode);
+                    $("#c8").html(data.c.LicenseScope);
+                    $('#seedesc').modal('show');             
+                },
+                dataType:"json"
+            });
+        }
+
+      
+    </script>
+}
