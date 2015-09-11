@@ -41,6 +41,10 @@ namespace QualityControl.Controllers
 
         public ActionResult Edit(Db.ProductType newone)
         {
+            if (!CheckNewProduct(newone))
+            {
+               throw new Exception("存在重复或有字段为空，请检查后再输入");
+            }
             var x = Db.ProductTypes.Find(newone.Id);
             if(x!=null)
             {
@@ -48,6 +52,18 @@ namespace QualityControl.Controllers
                 x.Description = newone.Description;
                 Db.SaveChanges();
             }
+            else { throw new Exception("不存在此产品");}
+            return Redirect("./TypeIndex");
+        }
+
+        public ActionResult Add(Db.ProductType newone)
+        {
+            if (!CheckNewProduct(newone))
+            {
+                throw new Exception("存在重复或有字段为空，请检查后再输入");
+            }
+            Db.ProductTypes.Add(newone);
+            Db.SaveChanges();
             return Redirect("./TypeIndex");
         }
 
@@ -69,6 +85,23 @@ namespace QualityControl.Controllers
             ViewBag.count = list.Count;
             return View();
         }
+        #endregion
+
+
+        #region product 逻辑函数
+
+        public bool CheckNewProduct(Db.ProductType newone)
+        {
+            if (string.IsNullOrEmpty(newone.Title) || string.IsNullOrEmpty(newone.Description))
+            {
+                return false;
+            }
+            var x = Db.ProductTypes.Count(e => e.Title == newone.Title);
+            return x <= 0;
+        }
+
+       
+
         #endregion
     }
 }

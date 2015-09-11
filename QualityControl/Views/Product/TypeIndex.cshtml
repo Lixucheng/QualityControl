@@ -21,6 +21,10 @@
         产品类别管理
         <a class="anchor" id="types"></a>
     </h2>
+    <div >
+        <button class="ui button blue icon" onclick="Add()"><i class="add circle icon"></i>添加种类</button>
+    </div>
+
     <table class="ui  celled  table">
         <thead class="">
             <tr>
@@ -109,8 +113,8 @@
     </div>
     <div class=" content">
 
-        <form class="ui form" action="/Product/Edit">
-            <input name="Id" style="display:none" id="editid">
+        <form class="ui form" action="/Product/Edit" id="editform">
+            <input name="Id" style="display: none" id="editid">
             <div class="field">
                 <label>名称</label>
                 <input type="text" name="Title" placeholder="名称" id="edittitle">
@@ -119,9 +123,9 @@
                 <label>详细描述</label>
                 <textarea name="Description" id="editdesc"></textarea>
             </div>
-         
+            <div class="ui error message"></div>
         </form>
-       
+
     </div>
     <div class="actions">
         <button class="ui green button" onclick="sub()">确定修改</button>
@@ -129,52 +133,111 @@
 </div>
 
 
+<div class="ui  modal" id="AddModel">
+    <i class="close icon"></i>
+    <div class="header" id="addtypetitle">
+        产品种类添加
+    </div>
+    <div class=" content">
+
+        <form class="ui form" action="/Product/Add" id="addform">
+            <input name="Id" style="display:none" >
+            <div class="field">
+                <label>名称</label>
+                <input type="text" name="Title" placeholder="名称" >
+            </div>
+            <div class="field">
+                <label>详细描述</label>
+                <textarea name="Description" ></textarea>
+            </div>
+            <div class="ui error message"></div>
+        </form>
+
+    </div>
+    <div class="actions">
+        <button class="ui green button" onclick="Addsub()">提交</button>
+    </div>
+  
+</div>
+
+
+
 
 
 @section scripts{
     <script>
 
-     
 
-        function See(x)
-        {
+        function See(x) {
             $.ajax({
                 type: 'Get',
                 url: '/Product/GetTypeInfo',
-                data: {id:x},
-                success:function(data){
+                data: { id: x },
+                success: function(data) {
                     $("#typetitle").html(data.Title);
                     $("#description").html(data.Description);
-                    $('#seedesc').modal('show');             
+                    $('#seedesc').modal('show');
                 },
-                dataType:"json"
+                dataType: "json"
             });
 
         };
 
 
-        function Edit(id)
-        {
+        function Edit(id) {
 
             $.ajax({
                 type: 'Get',
                 url: '/Product/GetTypeInfo',
-                data: {id:id},
-                success:function(data){
+                data: { id: id },
+                success: function(data) {
                     //$("#editdesc").html(data.Decription);
                     $("#editdesc").html(data.Description);
                     $("#edittitle").val(data.Title);
                     $("#editid").val(data.Id);
-                    $('#edit').modal('show');           
+                    $('#edit').modal('show');
                 },
-                dataType:"json"
+                dataType: "json"
             });
-          
+
         };
 
-        function sub()
-        {
-            $("form").submit();
+        function Add() {
+            $('#AddModel').modal('show');
         }
+
+        function sub() {
+            $("#editform").submit();
+        }
+
+        function Addsub() {
+            $("#addform").submit();
+        }
+
+        //表单验证
+        $('.ui.form')
+            .form({
+                fields: {
+                    name: {
+                        identifier: 'Title',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入名称！'
+                            }
+                        ]
+                    },
+                    Description: {
+                        identifier: 'Description',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入描述！'
+                            }
+                        ]
+                    }
+
+                }
+            });
     </script>
-    }
+}
