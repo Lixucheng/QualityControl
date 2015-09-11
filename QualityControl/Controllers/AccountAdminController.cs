@@ -11,6 +11,9 @@ namespace QualityControl.Controllers
 {
     public class AccountAdminController : BaseController
     {
+        /// <summary>
+        /// 账户审核部分
+        /// </summary>
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
         {

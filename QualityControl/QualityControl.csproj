@@ -272,6 +272,7 @@
     <Content Include="Views\Product\TypeIndex.cshtml" />
     <Content Include="Views\Product\_Options.cshtml" />
     <Content Include="Views\AccountAdmin\CompanyApplyList.cshtml" />
+    <Content Include="Views\Product\CompanyProductIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
