@@ -80,9 +80,9 @@ namespace QualityControl.Controllers
 
         public ActionResult _Options()
         {
-            var list=Db.ProductTypes.ToList();
-            ViewBag.list = list;
-            ViewBag.count = list.Count;
+            var thislist=Db.ProductTypes.ToList();
+            ViewBag.thislist = thislist;
+            ViewBag.thiscount = thislist.Count;
             return View();
         }
 
@@ -108,21 +108,28 @@ namespace QualityControl.Controllers
 
         public ActionResult CompanyProductIndex(long cid)
         {
+            var c = Db.Companies.Find(cid);
+            if (c == null)
+            {
+                throw new Exception("生产商不存在");
+            }
             var list = Db.CompanyProducts.Where(e=>e.CompanyId==cid).ToList();
             ViewBag.list = list;
             ViewBag.count = list.Count;
+            ViewBag.cid = cid;
             return View();
         }
 
         public ActionResult CpDel(long id)
         {
             var x = Db.CompanyProducts.Find(id);
+            var cid = x.CompanyId;
             if (x != null)
             {
                 Db.CompanyProducts.Remove(x);
                 Db.SaveChanges();
             }
-            return Redirect("../CompanyProductIndex");
+            return Redirect("./CompanyProductIndex?cid="+cid);
         }
 
         public JsonResult GetCpInfo(long id)
@@ -152,7 +159,7 @@ namespace QualityControl.Controllers
                 Db.SaveChanges();
             }
             else { throw new Exception("不存在此产品"); }
-            return Redirect("./CompanyProductIndex");
+            return Redirect("./CompanyProductIndex?cid=" + x.CompanyId);
         }
 
         public ActionResult CpAdd(Db.CompanyProduct newone)
@@ -163,7 +170,7 @@ namespace QualityControl.Controllers
             }
             Db.CompanyProducts.Add(newone);
             Db.SaveChanges();
-            return Redirect("./CompanyProductIndex");
+            return Redirect("./CompanyProductIndex?cid=" + newone.CompanyId);
         }
 
         public bool CheckCp(Db.CompanyProduct cp)

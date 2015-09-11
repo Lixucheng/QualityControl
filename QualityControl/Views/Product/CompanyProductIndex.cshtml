@@ -122,14 +122,36 @@
     <div class=" content">
 
         <form class="ui form" action="/Product/CpEdit" id="editform">
-            <input name="Id" style="display: none" id="editid">
+            <input name="CompanyId" style="display: none" value="@ViewBag.cid">
+            <input name="Id" style="display:none" id="cpid">
             <div class="field">
                 <label>名称</label>
-                <input type="text" name="Title" placeholder="名称" id="edittitle">
+                <input type="text" name="Name" placeholder="名称" id="cpname">
             </div>
             <div class="field">
-                <label>详细描述</label>
-                <textarea name="Description" id="editdesc"></textarea>
+                <label>生产许可证号</label>
+                <input type="text" name="ProductionCertificateNo" placeholder="生产许可证号" id="cpProductionCertificateNo">
+            </div>
+            <div class="field">
+                <label>颁发日期</label>
+                <input type="date" name="GetDate" placeholder="颁发日期" id="cpgetdate">
+            </div>
+            <div class="field">
+                <label>生产标准</label>
+                <input type="text" name="Standard" placeholder="生产标准" id="cpstandard">
+            </div>
+            <div class="field">
+                <label>产品类别</label>
+                <select name="ProductTypeId" id="cpProductTypeId">
+                    @{ Html.RenderAction("_Options", "Product"); }
+                </select>
+            </div>
+            <div class="field">
+                <label>产品状态</label>
+                <select name="CompanyProductStatus" id="cpCompanyProductStatus">
+                    <option value="1">正在生产</option>
+                    <option value="0">停产</option>
+                </select>
             </div>
             <div class="ui error message"></div>
         </form>
@@ -148,8 +170,8 @@
     </div>
     <div class=" content">
 
-        <form class="ui form" action="/Product/CpAdd" id="addform">
-            <input name="Id" style="display:none">
+        <form class="ui form" method="post" action="/Product/CpAdd" id="addform">
+            <input name="CompanyId" style="display:none" value="@ViewBag.cid">
             <div class="field">
                 <label>名称</label>
                 <input type="text" name="Name" placeholder="名称">
@@ -164,7 +186,20 @@
             </div>
             <div class="field">
                 <label>生产标准</label>
-                <input type="date" name="Standard" placeholder="生产标准">
+                <input type="text" name="Standard" placeholder="生产标准">
+            </div>
+            <div class="field">
+                <label>产品类别</label>
+                <select name="ProductTypeId">
+                    @{ Html.RenderAction("_Options", "Product"); }
+                </select>
+            </div>
+            <div class="field">
+                <label>产品状态</label>
+                <select name="CompanyProductStatus">
+                    <option value="1">正在生产</option>
+                    <option value="0">停产</option>
+                </select>
             </div>
             <div class="ui error message"></div>
         </form>
@@ -206,9 +241,15 @@
                 type: 'Get',
                 url: '/Product/GetCpInfo',
                 data: { id: id },
-                success: function(data) {
-                                  
-                    $("#editid").val(data.Id);
+                success: function(data) {                         
+                    $("#cpname").val(data.cp.Name);
+                    $("#cpid").val(data.cp.Id);
+                    $("#cpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
+                    $("#cpgetdate").val(data.cp.GetDate);
+                    $("#cpstandard").val(data.cp.Standard);
+                    $("#cpProductTypeId").val(data.cp.Standard);
+                    $("#cpProductTypeId option[value='"+data.cp.ProductTypeId+"']").attr("selected","selected");
+                    $("#cpCompanyProductStatus option[value='"+data.cp.CompanyProductStatus+"']").attr("selected","selected");
                     $('#edit').modal('show');
                 },
                 dataType: "json"
