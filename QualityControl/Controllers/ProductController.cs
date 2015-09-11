@@ -8,6 +8,7 @@ namespace QualityControl.Controllers
 {
     public class ProductController : BaseController
     {
+        #region  生产商产品部分
         // GET: Product
         /// <summary>
         /// 产品类别界面
@@ -68,5 +69,6 @@ namespace QualityControl.Controllers
             ViewBag.count = list.Count;
             return View();
         }
+        #endregion
     }
 }
