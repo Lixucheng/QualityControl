@@ -118,7 +118,7 @@ namespace QualityControl.Controllers
         #endregion
 
 
-        #region  公司账户审核部分
+        #region  生产商账户审核部分
      
         public ActionResult CompanyApplyList()
         {

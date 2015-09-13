@@ -23,6 +23,12 @@ namespace QualityControl.Db
 
         public DbSet<Message> Messages { get; set; }
 
-    
+        public DbSet<DetectionScheme> DetectionSchemes { get; set; }
+
+        public DbSet<Contract> Contracts { get; set; }
+
+        public DbSet<ContractModification> ContractModifications { get; set; }
+
+
     }
 }
