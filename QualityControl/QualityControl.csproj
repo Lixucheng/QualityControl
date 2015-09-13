@@ -277,6 +277,8 @@
     <Content Include="Views\AccountAdmin\CompanyApplyList.cshtml" />
     <Content Include="Views\Product\CompanyProductIndex.cshtml" />
     <Content Include="Views\Manufacturer\AddProduct.cshtml" />
+    <Content Include="Views\DetectionScheme\BuildDetectionScheme.cshtml" />
+    <Content Include="Views\DetectionScheme\SignContract.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -286,7 +288,6 @@
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\DetectionScheme\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -14,5 +14,10 @@ namespace QualityControl.Controllers
         {
             return View();
         }
+
+        public ActionResult SignContract()
+        {
+            return View();
+        }
     }
 }

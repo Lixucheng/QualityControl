@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewBag.Title = "BuildDetectionScheme";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section head{
+    <style>
+        .bigestdiv {
+            margin-left:5%;
+            margin-right:5%;
+            margin-top:50px;
+            margin-bottom:50px;
+        }
+        .title {            
+            float: left;
+        }
+    </style>
+}
+<div class="bigestdiv">
+    <div class="ui segments">
+        <div class="ui segment">
+            <p style="text-align: center; font-size: 30px">检测方案</p>
+        </div>
+
+        <div class="ui segment">
+            <p class="title">检测产品：</p>
+            <p>百事可乐</p>
+        </div>
+        <div class="ui segment">
+            <p class="title">生产商：</p>
+            <p>百事公司</p>
+        </div>
+
+        <div class="ui segment">
+            <p class="">批次数量信息：</p>
+        </div>
+
+        <div class="ui segments">
+            <div class="ui segment">
+                <p class="title">2015-4-5：</p>
+                <p>1000</p>
+            </div>
+            <div class="ui segment">
+                <p class="title">2015-4-5：</p>
+                <p>2000</p>
+            </div>
+
+        </div>
+
+
+        <div class="ui segment">
+            <p>检查级别：</p>
+
+        </div>
+        <div class="ui segments">
+            <div class="ui horizontal segments">
+                <div class="ui segment">
+                    <p>特殊检测水平</p>
+                </div>
+                <div class="ui segment">
+                    <p>s-1</p>
+                </div>
+                <div class="ui segment">
+                    <p>A</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui segment form">
+
+            <div class="field">
+                <div class="3 fields">
+                    <div class="field" style="">
+                        <p style="margin: 0 auto">检查需要时间：</p>
+                    </div>
+                    <div class="field">
+                        <input style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="3天">
+                    </div>
+                    ~
+                    <div class="field">
+                        <input style="height: 25px" type="text" name="shipping[last-name]" placeholder="" value="5天">
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="ui segment form">
+
+            <div class="field">
+                <div class="3 fields">
+                    <div class="field" style="">
+                        <p style="margin: 0 auto">用户检测报价：</p>
+                    </div>
+                    <div class="field">
+                        <input style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="3000">
+                    </div>
+                    ~
+                    <div class="field">
+                        <input style="height: 25px" type="text" name="shipping[last-name]" placeholder="" value="5000">
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="ui segment form">
+
+            <div class="field">
+                <div class="3 fields">
+                    <div class="field" style="">
+                        <p style="margin: 0 auto">检测机构报价：</p>
+                    </div>
+                    <div class="field">
+                        <input style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="3000">
+                    </div>
+                    ~
+                    <div class="field">
+                        <input style="height: 25px" type="text" name="shipping[last-name]" placeholder="" value="5000">
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="ui segment" align="center">
+            <button class="ui button green" style="margin: 0 auto;width:30%">发送</button>
+        </div>
+    </div>
+</div>
+
+
