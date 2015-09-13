@@ -8,6 +8,7 @@ namespace QualityControl.Controllers
 {
     public class ProductController : BaseController
     {
+
         #region  产品种类部分
         // GET: Product
         /// <summary>

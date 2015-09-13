@@ -68,7 +68,7 @@
             }
 
         </tbody>
-        <tfoot>
+        @*<tfoot>
             <tr>
                 <th colspan="7">
                     <div class="ui right floated pagination menu">
@@ -85,21 +85,47 @@
                     </div>
                 </th>
             </tr>
-        </tfoot>
+        </tfoot>*@
     </table>
 </div>
-<div class="ui  modal" id="seedesc">
+<div class="ui  modal" id="seecp">
     <i class="close icon"></i>
-    <div class="header" id="typetitle">
+    <div class="header" id="scpname">
         标题
     </div>
     <div class=" content">
 
-        <div class="description">
-            <div class="ui header">详细信息</div>
-            <p id="description"></p>
+        <div class="field">
+                <label>名称</label>
+                <input type="text" name="Name" placeholder="名称" id="cpname">
+            </div>
+            <div class="field">
+                <label>生产许可证号</label>
+                <input type="text" name="ProductionCertificateNo" placeholder="生产许可证号" id="cpProductionCertificateNo">
+            </div>
+            <div class="field">
+                <label>颁发日期</label>
+                <input type="date" name="GetDate" placeholder="颁发日期" id="cpgetdate">
+            </div>
+            <div class="field">
+                <label>生产标准</label>
+                <input type="text" name="Standard" placeholder="生产标准" id="cpstandard">
+            </div>
+            <div class="field">
+                <label>产品类别</label>
+                <select name="ProductTypeId" id="cpProductTypeId">
+                    @{ Html.RenderAction("_Options", "Product"); }
+                </select>
+            </div>
+            <div class="field">
+                <label>产品状态</label>
+                <select name="CompanyProductStatus" id="cpCompanyProductStatus">
+                    <option value="1">正在生产</option>
+                    <option value="0">停产</option>
+                </select>
+            </div>
+            <div class="ui error message"></div>
 
-        </div>
     </div>
     @*<div class="actions">
             <div class="ui black deny button">
