@@ -93,6 +93,12 @@
                         </div>
                     </div>
                     <div class="field">
+                        <div class="ui left icon input">
+                            <i class="tel icon"></i>
+                            <input type="text" name="phone" placeholder="手机号">
+                        </div>
+                    </div>
+                    <div class="field">
                         <select class="ui search dropdown" name="type">
                             <option value="">请选择类型</option>
                             <option value="0">普通用户</option>
@@ -175,6 +181,15 @@
                                               type: 'empty',
                                               prompt: '请选择类型'
                                           }
+                                        ]
+                                    },
+                                    phone: {
+                                        identifier: 'phone',
+                                        rules: [
+                                            {
+                                                type: 'regExp[/^[0-9]{11}$/]',
+                                                prompt: '请填写正确手机号'
+                                            }
                                         ]
                                     }
                                 }

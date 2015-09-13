@@ -183,6 +183,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ManufacturerController.cs" />
     <Compile Include="Db\Company.cs" />
     <Compile Include="Db\DetectionScheme.cs" />
     <Compile Include="Db\Dict.cs" />
@@ -275,6 +276,7 @@
     <Content Include="Views\Product\_Options.cshtml" />
     <Content Include="Views\AccountAdmin\CompanyApplyList.cshtml" />
     <Content Include="Views\Product\CompanyProductIndex.cshtml" />
+    <Content Include="Views\Manufacturer\AddProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
