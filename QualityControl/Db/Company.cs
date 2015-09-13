@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QualityControl.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,23 +18,35 @@ namespace QualityControl.Db
 
         public string UserId { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Address { get; set; }
 
+        [Required]
         public DateTime EstablishedTime { get; set; }
 
+        [Required]
         public string License { get; set; }
 
+        [Required]
         public string CorporationName { get; set; }
 
+        [Required]
         public string CorporationIdentity { get; set; }
 
         public string Postcode { get; set; }
 
+        [Required]
         public string OrganizationCode { get; set; }
 
+        [Required]
         public string LicenseScope { get; set; }
+
+        public EnumStatus Status { get; set; }
+
+        public string UpdateJson { get; set; }
 
         public virtual List<Product> Products { get; set; }
     }

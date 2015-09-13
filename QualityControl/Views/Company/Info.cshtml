@@ -1,5 +1,4 @@
-﻿@{
-    Layout = "~/Views/Shared/_LayoutWithHeader.cshtml";
+﻿@{    Layout = "~/Views/Shared/_LayoutWithHeader.cshtml";
 }
 
 
@@ -12,6 +11,7 @@
         <div class="am-padding-horizontal-lg">
             <form class="ui form segment" method="post">
                 <h2>企业信息</h2>
+
                 <div class="two fields">
                     <div class="field">
                         <label>企业名称</label>
@@ -53,22 +53,24 @@
                 <div class="ui error message"></div>
                 <div class="ui red cancel button">取消</div>
                 <div class="ui blue submit button">保存</div>
-
             </form>
         </div>
     </div>
 
 </div>
 
+@section Scripts{
 <script>
     $(function () {
         $('.ui.form').form({
+            on: 'blur',
             fields: {
                 Name: {
                     identifier: 'Name',
                     rules: [
                       {
-                          type: '请输入企业名称'
+                          type: 'empty',
+                          prompt: '请输入企业名称'
                       }
                     ]
                 },
@@ -76,7 +78,8 @@
                     identifier: 'Address',
                     rules: [
                       {
-                          type: '请输入企业地址'
+                          type: 'empty',
+                          prompt: '请输入企业地址'
                       }
                     ]
                 },
@@ -84,7 +87,8 @@
                     identifier: 'EstablishedTime',
                     rules: [
                       {
-                          type: '请输入企业成立时间'
+                          type: 'empty',
+                          prompt: '请输入企业成立时间'
                       }
                     ]
                 },
@@ -92,7 +96,8 @@
                     identifier: 'License',
                     rules: [
                       {
-                          type: '请输入营业执照号'
+                          type: 'empty',
+                          prompt: '请输入营业执照号'
                       }
                     ]
                 },
@@ -100,7 +105,8 @@
                     identifier: 'CorporationName',
                     rules: [
                       {
-                          type: '请输入法人姓名'
+                          type: 'empty',
+                          prompt: '请输入法人姓名'
                       }
                     ]
                 },
@@ -108,7 +114,8 @@
                     identifier: 'CorporationIdentity',
                     rules: [
                       {
-                          type: '请输入法人身份证'
+                          type: 'regExp[/^[1-9][0-9]{5}[1-9][0-9]{3}((0[0-9])|(1[0-2]))(([0|1|2][0-9])|3[0-1])[0-9]{4}$/]',
+                          prompt: '请输入正确的身份证号'
                       }
                     ]
                 },
@@ -116,7 +123,8 @@
                     identifier: 'OrganizationCode',
                     rules: [
                       {
-                          type: '请输入组织机构代码'
+                          type: 'empty',
+                          prompt: '请输入组织机构代码'
                       }
                     ]
                 },
@@ -124,7 +132,8 @@
                     identifier: 'LicenseScope',
                     rules: [
                       {
-                          type: '请输入营业执照经营范围'
+                          type: 'empty',
+                          prompt: '请输入营业执照经营范围'
                       }
                     ]
                 },
@@ -134,4 +143,6 @@
         ;
     });
 </script>
+}
+
 

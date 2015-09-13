@@ -215,16 +215,7 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CompanyInfo(CompanyViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            // todo: 
-            return View();  
-        }
+
 
         //
         // GET: /Account/ForgotPassword
