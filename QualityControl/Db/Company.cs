@@ -46,9 +46,27 @@ namespace QualityControl.Db
 
         public long CompanyId { get; set; }
 
-        //其他参数
+        public string Name { get; set; }
+
+        public long ProductTypeId { get; set; }//所属类别id
+
+        public string ProductionCertificateNo { get; set; }//生产许可证编号
+
+        public string GetDate { get; set; }//颁发日期
+
+        public string Standard { get; set; }//执行标准
+
+        public EnumCompanyProductStatus CompanyProductStatus { get; set; }
+
+
     }
 
+
+    public enum EnumCompanyProductStatus
+    {
+        正在生产=1,
+        停产=0
+    }
     public class CompanyViewModel
     {
         [Required]

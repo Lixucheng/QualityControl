@@ -23,6 +23,6 @@ namespace QualityControl.Db
 
         public DbSet<Message> Messages { get; set; }
 
-        public DbSet<ProductClassification> ProductClassifications { get; set; }
+    
     }
 }

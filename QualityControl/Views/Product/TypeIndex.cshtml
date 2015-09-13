@@ -1,0 +1,243 @@
+﻿
+@{
+    ViewBag.Title = "TypeIndex";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section head{
+    <style>
+        .main-container {
+            background-color: #FFFFFF;
+            margin: 0em auto;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            padding: 2em 2em 7em;
+            z-index: 1;
+        }
+    </style>
+}
+
+<div class="main-container">
+    <h2 class="ui dividing header">
+        产品类别管理
+        <a class="anchor" id="types"></a>
+    </h2>
+    <div >
+        <button class="ui button blue icon" onclick="Add()"><i class="add circle icon"></i>添加种类</button>
+    </div>
+
+    <table class="ui  celled  table">
+        <thead class="">
+            <tr>
+                <th>姓名</th>
+                <th>描述</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (ViewBag.count == 0)
+            {
+                <p>无信息！</p>
+            }
+            else
+            {
+                foreach (var Tempx in ViewBag.list)
+                {
+                    <tr>
+                  
+                        <td>@Tempx.Title</td>
+                        <td>@Tempx.Description</td>
+                       
+                        <td>
+                            <div class="2  fluid ui">
+                                <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
+                                <button class="ui  button" onclick="Edit(@Tempx.Id)">修改</button>
+                                <a class="ui  button"  href="/Product/Del/@Tempx.Id" >删除</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="3">
+                    <div class="ui right floated pagination menu">
+                        <a class="icon item">
+                            <i class="left chevron icon"></i>
+                        </a>
+                        <a class="item">1</a>
+                        <a class="item">2</a>
+                        <a class="item">3</a>
+                        <a class="item">4</a>
+                        <a class="icon item">
+                            <i class="right chevron icon"></i>
+                        </a>
+                    </div>
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="ui  modal" id="seedesc">
+    <i class="close icon"></i>
+    <div class="header" id="typetitle">
+        标题
+    </div>
+    <div class=" content">
+       
+        <div class="description">
+            <div class="ui header">详细信息</div>
+            <p id="description"></p>
+           
+        </div>
+    </div>
+    @*<div class="actions">
+        <div class="ui black deny button">
+            Nope
+        </div>
+        <div class="ui positive right labeled icon button">
+            Yep, that's me
+            <i class="checkmark icon"></i>
+        </div>
+    </div>*@
+</div>
+
+
+
+<div class="ui  modal" id="edit">
+    <i class="close icon"></i>
+    <div class="header" id="typetitle">
+        产品种类信息修改
+    </div>
+    <div class=" content">
+
+        <form class="ui form" action="/Product/Edit" id="editform">
+            <input name="Id" style="display: none" id="editid">
+            <div class="field">
+                <label>名称</label>
+                <input type="text" name="Title" placeholder="名称" id="edittitle">
+            </div>
+            <div class="field">
+                <label>详细描述</label>
+                <textarea name="Description" id="editdesc"></textarea>
+            </div>
+            <div class="ui error message"></div>
+        </form>
+
+    </div>
+    <div class="actions">
+        <button class="ui green button" onclick="sub()">确定修改</button>
+    </div>
+</div>
+
+
+<div class="ui  modal" id="AddModel">
+    <i class="close icon"></i>
+    <div class="header" id="addtypetitle">
+        产品种类添加
+    </div>
+    <div class=" content">
+
+        <form class="ui form" action="/Product/Add" id="addform">
+            <input name="Id" style="display:none" >
+            <div class="field">
+                <label>名称</label>
+                <input type="text" name="Title" placeholder="名称" >
+            </div>
+            <div class="field">
+                <label>详细描述</label>
+                <textarea name="Description" ></textarea>
+            </div>
+            <div class="ui error message"></div>
+        </form>
+
+    </div>
+    <div class="actions">
+        <button class="ui green button" onclick="Addsub()">提交</button>
+    </div>
+  
+</div>
+
+
+
+
+
+@section scripts{
+    <script>
+
+
+        function See(x) {
+            $.ajax({
+                type: 'Get',
+                url: '/Product/GetTypeInfo',
+                data: { id: x },
+                success: function(data) {
+                    $("#typetitle").html(data.Title);
+                    $("#description").html(data.Description);
+                    $('#seedesc').modal('show');
+                },
+                dataType: "json"
+            });
+
+        };
+
+
+        function Edit(id) {
+
+            $.ajax({
+                type: 'Get',
+                url: '/Product/GetTypeInfo',
+                data: { id: id },
+                success: function(data) {
+                    //$("#editdesc").html(data.Decription);
+                    $("#editdesc").html(data.Description);
+                    $("#edittitle").val(data.Title);
+                    $("#editid").val(data.Id);
+                    $('#edit').modal('show');
+                },
+                dataType: "json"
+            });
+
+        };
+
+        function Add() {
+            $('#AddModel').modal('show');
+        }
+
+        function sub() {
+            $("#editform").submit();
+        }
+
+        function Addsub() {
+            $("#addform").submit();
+        }
+
+        //表单验证
+        $('.ui.form')
+            .form({
+                fields: {
+                    name: {
+                        identifier: 'Title',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入名称！'
+                            }
+                        ]
+                    },
+                    Description: {
+                        identifier: 'Description',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入描述！'
+                            }
+                        ]
+                    }
+
+                }
+            });
+    </script>
+}

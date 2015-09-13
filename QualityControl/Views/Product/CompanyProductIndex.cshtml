@@ -1,0 +1,302 @@
+﻿
+@{
+    ViewBag.Title = "CompanyProductIndex";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section head{
+    <style>
+        .main-container {
+            background-color: #FFFFFF;
+            margin: 0em auto;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            padding: 2em 2em 7em;
+            z-index: 1;
+        }
+    </style>
+}
+
+<div class="main-container">
+    <h2 class="ui dividing header">
+        产品管理
+        <a class="anchor" id="types"></a>
+    </h2>
+    <div>
+        <button class="ui button blue icon" onclick="Add()"><i class="add circle icon"></i>添加种类</button>
+    </div>
+
+    <table class="ui  celled  table">
+        <thead class="">
+            <tr>
+                <th>名称</th>
+                <th>产品种类</th>
+                <th>许可证号</th>
+                <th>发证日期</th>
+                <th>生产标准</th>
+                <th>产品状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (ViewBag.count == 0)
+            {
+                <p>无信息！</p>
+            }
+            else
+            {
+                foreach (var Tempx in ViewBag.list)
+                {
+                    <tr>
+
+                        <td>@Tempx.Name</td>
+                        <td>@Tempx.ProductTypeId</td>
+                        <td>@Tempx.ProductionCertificateNo</td>
+                        <td>@Tempx.GetDate</td>
+                        <td>@Tempx.Standard</td>
+                        <td>@Tempx.CompanyProductStatus</td>
+
+                        <td>
+                            <div class="2  fluid ui">
+                                <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
+                                <button class="ui  button" onclick="Edit(@Tempx.Id)">修改</button>
+                                <a class="ui  button" href="/Product/CpDel/@Tempx.Id">删除</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="7">
+                    <div class="ui right floated pagination menu">
+                        <a class="icon item">
+                            <i class="left chevron icon"></i>
+                        </a>
+                        <a class="item">1</a>
+                        <a class="item">2</a>
+                        <a class="item">3</a>
+                        <a class="item">4</a>
+                        <a class="icon item">
+                            <i class="right chevron icon"></i>
+                        </a>
+                    </div>
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="ui  modal" id="seedesc">
+    <i class="close icon"></i>
+    <div class="header" id="typetitle">
+        标题
+    </div>
+    <div class=" content">
+
+        <div class="description">
+            <div class="ui header">详细信息</div>
+            <p id="description"></p>
+
+        </div>
+    </div>
+    @*<div class="actions">
+            <div class="ui black deny button">
+                Nope
+            </div>
+            <div class="ui positive right labeled icon button">
+                Yep, that's me
+                <i class="checkmark icon"></i>
+            </div>
+        </div>*@
+</div>
+
+
+
+<div class="ui  modal" id="edit">
+    <i class="close icon"></i>
+    <div class="header" id="typetitle">
+        产品信息修改
+    </div>
+    <div class=" content">
+
+        <form class="ui form" action="/Product/CpEdit" id="editform">
+            <input name="CompanyId" style="display: none" value="@ViewBag.cid">
+            <input name="Id" style="display:none" id="cpid">
+            <div class="field">
+                <label>名称</label>
+                <input type="text" name="Name" placeholder="名称" id="cpname">
+            </div>
+            <div class="field">
+                <label>生产许可证号</label>
+                <input type="text" name="ProductionCertificateNo" placeholder="生产许可证号" id="cpProductionCertificateNo">
+            </div>
+            <div class="field">
+                <label>颁发日期</label>
+                <input type="date" name="GetDate" placeholder="颁发日期" id="cpgetdate">
+            </div>
+            <div class="field">
+                <label>生产标准</label>
+                <input type="text" name="Standard" placeholder="生产标准" id="cpstandard">
+            </div>
+            <div class="field">
+                <label>产品类别</label>
+                <select name="ProductTypeId" id="cpProductTypeId">
+                    @{ Html.RenderAction("_Options", "Product"); }
+                </select>
+            </div>
+            <div class="field">
+                <label>产品状态</label>
+                <select name="CompanyProductStatus" id="cpCompanyProductStatus">
+                    <option value="1">正在生产</option>
+                    <option value="0">停产</option>
+                </select>
+            </div>
+            <div class="ui error message"></div>
+        </form>
+
+    </div>
+    <div class="actions">
+        <button class="ui green button" onclick="sub()">确定修改</button>
+    </div>
+</div>
+
+
+<div class="ui  modal" id="AddModel">
+    <i class="close icon"></i>
+    <div class="header" id="addtypetitle">
+        产品添加
+    </div>
+    <div class=" content">
+
+        <form class="ui form" method="post" action="/Product/CpAdd" id="addform">
+            <input name="CompanyId" style="display:none" value="@ViewBag.cid">
+            <div class="field">
+                <label>名称</label>
+                <input type="text" name="Name" placeholder="名称">
+            </div>
+            <div class="field">
+                <label>生产许可证号</label>
+                <input type="text" name="ProductionCertificateNo" placeholder="生产许可证号">
+            </div>
+            <div class="field">
+                <label>颁发日期</label>
+                <input type="date" name="GetDate" placeholder="颁发日期">
+            </div>
+            <div class="field">
+                <label>生产标准</label>
+                <input type="text" name="Standard" placeholder="生产标准">
+            </div>
+            <div class="field">
+                <label>产品类别</label>
+                <select name="ProductTypeId">
+                    @{ Html.RenderAction("_Options", "Product"); }
+                </select>
+            </div>
+            <div class="field">
+                <label>产品状态</label>
+                <select name="CompanyProductStatus">
+                    <option value="1">正在生产</option>
+                    <option value="0">停产</option>
+                </select>
+            </div>
+            <div class="ui error message"></div>
+        </form>
+
+    </div>
+    <div class="actions">
+        <button class="ui green button" onclick="Addsub()">提交</button>
+    </div>
+
+</div>
+
+
+
+
+
+@section scripts{
+    <script>
+
+
+        function See(x) {
+            $.ajax({
+                type: 'Get',
+                url: '/Product/GetTypeInfo',
+                data: { id: x },
+                success: function(data) {
+                    $("#typetitle").html(data.Title);
+                    $("#description").html(data.Description);
+                    $('#seedesc').modal('show');
+                },
+                dataType: "json"
+            });
+
+        };
+
+
+        function Edit(id) {
+
+            $.ajax({
+                type: 'Get',
+                url: '/Product/GetCpInfo',
+                data: { id: id },
+                success: function(data) {                         
+                    $("#cpname").val(data.cp.Name);
+                    $("#cpid").val(data.cp.Id);
+                    $("#cpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
+                    $("#cpgetdate").val(data.cp.GetDate);
+                    $("#cpstandard").val(data.cp.Standard);
+                    $("#cpProductTypeId").val(data.cp.Standard);
+                    $("#cpProductTypeId option[value='"+data.cp.ProductTypeId+"']").attr("selected","selected");
+                    $("#cpCompanyProductStatus option[value='"+data.cp.CompanyProductStatus+"']").attr("selected","selected");
+                    $('#edit').modal('show');
+                },
+                dataType: "json"
+            });
+
+        };
+
+        function Add() {
+            $('#AddModel').modal('show');
+        }
+
+        function sub() {
+            $("#editform").submit();
+        }
+
+        function Addsub() {
+            $("#addform").submit();
+        }
+
+        //表单验证
+        $('.ui.form')
+            .form({
+                fields: {
+                    name: {
+                        identifier: 'Title',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入名称！'
+                            }
+                        ]
+                    },
+                    Description: {
+                        identifier: 'Description',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入描述！'
+                            }
+                        ]
+                    }
+
+                }
+            });
+    </script>
+}
+
+
+
+

@@ -181,12 +181,12 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ManufacturerController.cs" />
     <Compile Include="Db\Company.cs" />
     <Compile Include="Db\Dict.cs" />
     <Compile Include="Db\Message.cs" />
     <Compile Include="Db\Product.cs" />
-    <Compile Include="Db\ProductClassification.cs" />
     <Compile Include="Db\RegisterApply.cs" />
     <Compile Include="Db\TheContext.cs" />
     <Compile Include="Enum\EnumStatus.cs" />
@@ -270,6 +270,10 @@
     <Content Include="Views\Account\CompanyInfo.cshtml" />
     <Content Include="Views\AccountAdmin\Index.cshtml" />
     <Content Include="Views\AccountAdmin\ApplyList.cshtml" />
+    <Content Include="Views\Product\TypeIndex.cshtml" />
+    <Content Include="Views\Product\_Options.cshtml" />
+    <Content Include="Views\AccountAdmin\CompanyApplyList.cshtml" />
+    <Content Include="Views\Product\CompanyProductIndex.cshtml" />
     <Content Include="Views\Manufacturer\AddProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
