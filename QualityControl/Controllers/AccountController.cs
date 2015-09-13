@@ -22,15 +22,15 @@ namespace QualityControl.Controllers
     public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        
 
         public AccountController()
         {
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+            :base(userManager)
         {
-            UserManager = userManager;
             SignInManager = signInManager;
         }
 
@@ -43,18 +43,6 @@ namespace QualityControl.Controllers
             private set 
             { 
                 _signInManager = value; 
-            }
-        }
-
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
             }
         }
 
@@ -175,7 +163,7 @@ namespace QualityControl.Controllers
                 Email = model.Email,
                 Type = (int)model.Type,
                 Status = (int)EnumUserStatus.UnRecognized,
-                ExtraJson = ""
+                PhoneNumber = model.Phone
             };
             var result = await UserManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
@@ -222,9 +210,9 @@ namespace QualityControl.Controllers
         [AllowAnonymous]
         public ActionResult CompanyInfo()
         {
-            var userId = User.Identity.GetUserId();
-            var model =  Db.Companies.Where(a => a.UserId == userId);
-            return View(model);
+            //var userId = User.Identity.GetUserId();
+            //var model =  Db.Companies.Where(a => a.UserId == userId);
+            return View();
         }
 
         [HttpPost]
@@ -463,12 +451,6 @@ namespace QualityControl.Controllers
         {
             if (disposing)
             {
-                if (_userManager != null)
-                {
-                    _userManager.Dispose();
-                    _userManager = null;
-                }
-
                 if (_signInManager != null)
                 {
                     _signInManager.Dispose();

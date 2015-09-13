@@ -21,6 +21,8 @@ namespace QualityControl.Db
 
         public string UserId { get; set; }
 
+        //public Company Company { get; set; }
+
     }
 
     public class ProductType

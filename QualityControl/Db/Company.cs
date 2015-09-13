@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,6 +12,7 @@ namespace QualityControl.Db
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [ForeignKey("Products")]
         public long Id { get; set; }
 
         public string UserId { get; set; }
@@ -32,6 +34,8 @@ namespace QualityControl.Db
         public string OrganizationCode { get; set; }
 
         public string LicenseScope { get; set; }
+
+        public virtual List<Product> Products { get; set; }
     }
 
     public class CompanyProduct
