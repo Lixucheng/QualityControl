@@ -17,9 +17,9 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public string Project { get; set; } //检查项目
+        public long ProductId { get; set; } //检查产品
 
-        public string Level { get; set; }   //级别
+        public string Level { get; set; }   //检查级别
 
         public int MaxTime { get; set; }       //检测时间 几天
 
@@ -51,9 +51,9 @@ namespace QualityControl.Db
 
         public int MinQuote { get; set; }      //报价
 
-        public string UserId { get; set; }
+        public string UserId { get; set; }     //用户
 
-        public EnumContractStatus Status { get; set; }
+        public EnumContractStatus Status { get; set; } //状态
 
 
     }
