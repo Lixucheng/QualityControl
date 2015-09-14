@@ -79,50 +79,60 @@
 
         <div class="ui segment">
             <p class="title">检测报价范围：</p>
-            <p class="title">@ViewBag.MinQuote</p>
+            <p class="title">@ViewBag.model.MinQuote</p>
             <p class="title">~</p>
-            <p>@ViewBag.MaxQuote</p>
+            <p>@ViewBag.model.MaxQuote</p>
 
         </div>
 
-        <div class="ui segment form">
 
-            <div class="field">
-                <div class="3 fields">
-                    <div class="field" style="">
-                        <p style="margin: 0 auto">用户检测报价：</p>
+            <div class="ui segment form">
+
+                <div class="field">
+                    <div class="3 fields">
+                        <div class="field" style="">
+                            <p style="margin: 0 auto">用户检测报价：</p>
+                        </div>
+                        <div class="field">
+                            <input id="q1" style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="3000">
+                        </div>
+
                     </div>
-                    <div class="field">
-                        <input style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="3000">
-                    </div>
-                 
                 </div>
+
+
             </div>
 
+            <div class="ui segment form">
 
-        </div>
+                <div class="field">
+                    <div class="3 fields">
+                        <div class="field" style="">
+                            <p style="margin: 0 auto">检测机构报价：</p>
+                        </div>
+                        <div class="field">
+                            <input id="q2" style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="3000">
+                        </div>
 
-        <div class="ui segment form">
-
-            <div class="field">
-                <div class="3 fields">
-                    <div class="field" style="">
-                        <p style="margin: 0 auto">检测机构报价：</p>
                     </div>
-                    <div class="field">
-                        <input style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="3000">
-                    </div>
-                  
                 </div>
+
+
             </div>
 
-
-        </div>
 
         <div class="ui segment" align="center">
-            <button class="ui button green" style="margin: 0 auto;width:30%">发送</button>
+            <button class="ui button green" id="btn" style="margin: 0 auto;width:30%">发送</button>
         </div>
     </div>
 </div>
 
-
+@section scripts{
+    <script>
+        $("#btn").click(function() {
+            var q1 = $("#q1").val();
+            var q2 = $("#q2").val();
+            
+        });
+    </script>
+}
