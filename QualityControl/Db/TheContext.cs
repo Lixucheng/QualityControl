@@ -29,6 +29,6 @@ namespace QualityControl.Db
 
         public DbSet<ContractModification> ContractModifications { get; set; }
 
-
+        public DbSet<ProductBatch> ProductBatchs { get; set; }
     }
 }

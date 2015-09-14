@@ -21,6 +21,8 @@ namespace QualityControl.Db
 
         public string UserId { get; set; }
 
+
+
         //public Company Company { get; set; }
 
     }
@@ -47,6 +49,21 @@ namespace QualityControl.Db
     public class ProductViewModel
     {
 
+    }
+
+    public class ProductBatch
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long   Id { get; set; }
+
+        public long   ProductId { get; set; }
+
+        public string BatchName { get; set; }
+
+        public long   Count { get; set; }
+
+        public string CheckNum { get; set; }
     }
 
 }

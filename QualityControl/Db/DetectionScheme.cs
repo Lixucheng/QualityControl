@@ -17,9 +17,11 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public long ProductId { get; set; } //检查产品
+        public string CheckNum { get; set; }  //检测号
 
-        public string Level { get; set; }   //检查级别
+        public long ProductId { get; set; }  //检查产品
+
+        public string Level { get; set; }    //检查级别
 
         public int MaxTime { get; set; }       //检测时间 几天
 
@@ -28,6 +30,12 @@ namespace QualityControl.Db
         public int MinTime { get; set; }       //检测时间 几天
 
         public int MinQuote { get; set; }      //报价
+
+        public int UserQuote { get; set; }     //给用户的报价
+
+        public int OrganQuote { get; set; }    //给检测机构的报价
+
+        public EnumDetectionSchemeStatus Status { get; set; }
     }
 
     /// <summary>
@@ -64,6 +72,14 @@ namespace QualityControl.Db
         已签定=1,
         已修改=2,
         修改后未审核=3
+    }
+
+    public enum EnumDetectionSchemeStatus
+    {
+        未发送=0,
+        已发送待确定=1,
+        返回修改=2,
+        修改完成留档保存=3
     }
 
     /// <summary>

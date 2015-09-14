@@ -24,11 +24,11 @@
 
         <div class="ui segment">
             <p class="title">检测产品：</p>
-            <p>百事可乐</p>
+            <p>@ViewBag.productname</p>
         </div>
         <div class="ui segment">
             <p class="title">生产商：</p>
-            <p>百事公司</p>
+            <p>@ViewBag.company</p>
         </div>
 
         <div class="ui segment">
@@ -36,14 +36,15 @@
         </div>
 
         <div class="ui segments">
-            <div class="ui segment">
-                <p class="title">2015-4-5：</p>
-                <p>1000</p>
-            </div>
-            <div class="ui segment">
-                <p class="title">2015-4-5：</p>
-                <p>2000</p>
-            </div>
+            @foreach (var temp in ViewBag.list)
+            {
+                <div class="ui segment">
+                    <p class="title">@temp.BatchName：</p>
+                    <p>@temp.Count</p>
+                </div>
+            }
+           
+            
 
         </div>
 
@@ -70,17 +71,17 @@
 
         <div class="ui segment">
             <p class="title">检测时间范围：</p>
-            <p class="title">3天</p>
+            <p class="title">@ViewBag.MinTime 天</p>
             <p class="title">~</p>
-            <p>5天</p>
+            <p>@ViewBag.MaxTime 天</p>
 
         </div>
 
         <div class="ui segment">
             <p class="title">检测报价范围：</p>
-            <p class="title">3000</p>
+            <p class="title">@ViewBag.MinQuote</p>
             <p class="title">~</p>
-            <p>5000</p>
+            <p>@ViewBag.MaxQuote</p>
 
         </div>
 
