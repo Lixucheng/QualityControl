@@ -19,154 +19,169 @@
     </style>
 }
 <div class="bigestdiv">
-    <div class="ui segments">
-        <div class="ui segment">
-            <p style="text-align: center; font-size: 30px">检测方案</p>
-        </div>
-
-        <div class="ui segment">
-            <p class="title">检测产品：</p>
-            <p>@ViewBag.productname</p>
-        </div>
-        <div class="ui segment">
-            <p class="title">生产商：</p>
-            <p>@ViewBag.company</p>
-        </div>
-
-        <div class="ui segment">
-            <p class="">批次数量信息：</p>
-        </div>
-
-        <div class="ui segments">
-            @foreach (var temp in ViewBag.list)
-            {
-                <div class="ui segment">
-                    <p class="title">@temp.BatchName：</p>
-                    <p>@temp.Count</p>
-                </div>
-            }
-
-
-
-        </div>
-
-
-        <div class="ui segment">
-            <p>检查级别：</p>
-
-        </div>
-        <div class="ui segments">
-            <div class="ui horizontal segments">
-                <div class="ui segment">
-                    <p>特殊检测水平</p>
-                </div>
-                <div class="ui segment">
-                    <p>s-1</p>
-                </div>
-                <div class="ui segment">
-                    <p>A</p>
-                </div>
+    @{
+        if (ViewBag.ok == 0)
+        {
+            <div class="ui orange inverted segment" align="center">
+                <h1 class="ui  header ">此方案暂时没有更改信息！</h1>
             </div>
-        </div>
+
+
+        }
+        else
+        {
+            <div class="ui segments">
+                <div class="ui segment">
+                    <p style="text-align: center; font-size: 30px">检测方案</p>
+                </div>
+
+                <div class="ui segment">
+                    <p class="title">检测产品：</p>
+                    <p>@ViewBag.productname</p>
+                </div>
+                <div class="ui segment">
+                    <p class="title">生产商：</p>
+                    <p>@ViewBag.company</p>
+                </div>
+
+                <div class="ui segment">
+                    <p class="">批次数量信息：</p>
+                </div>
+
+                <div class="ui segments">
+                    @foreach (var temp in ViewBag.list)
+                    {
+                        <div class="ui segment">
+                            <p class="title">@temp.BatchName：</p>
+                            <p>@temp.Count</p>
+                        </div>
+                    }
 
 
 
-        <div class="ui segment">
-            <p class="title">检测时间范围：</p>
-            <p class="title">@ViewBag.model.MinTime 天</p>
-            <p class="title">~</p>
-            <p>@ViewBag.model.MaxTime 天</p>
+                </div>
 
-        </div>
 
-        <div class="ui segment form">
+                <div class="ui segment">
+                    <p>检查级别：</p>
 
-            <div class="field">
-                <div class="3 fields">
-                    <div class="field" style="">
-                        <p style="margin: 0 auto">确定检测时间：</p>
+                </div>
+                <div class="ui segments">
+                    <div class="ui horizontal segments">
+                        <div class="ui segment">
+                            <p>特殊检测水平</p>
+                        </div>
+                        <div class="ui segment">
+                            <p>s-1</p>
+                        </div>
+                        <div class="ui segment">
+                            <p>A</p>
+                        </div>
                     </div>
+                </div>
+
+
+
+                <div class="ui segment">
+                    <p class="title">检测时间范围：</p>
+                    <p class="title">@ViewBag.model.MinTime 天</p>
+                    <p class="title">~</p>
+                    <p>@ViewBag.model.MaxTime 天</p>
+
+                </div>
+
+                <div class="ui segment form">
+
                     <div class="field">
-                        <input id="time" style="height: 25px" type="text" placeholder="" value="@ViewBag.model.Time">
+                        <div class="3 fields">
+                            <div class="field" style="">
+                                <p style="margin: 0 auto">确定检测时间：</p>
+                            </div>
+                            <div class="field">
+                                <input id="time" style="height: 25px" type="text" placeholder="" value="@ViewBag.model.Time">
+                            </div>
+
+                        </div>
                     </div>
+
 
                 </div>
-            </div>
+
+                <div class="ui segment">
+                    <p class="title">检测报价范围：</p>
+                    <p class="title">@ViewBag.model.MinQuote</p>
+                    <p class="title">~</p>
+                    <p>@ViewBag.model.MaxQuote</p>
+
+                </div>
 
 
-        </div>
+                <div class="ui segment form">
 
-        <div class="ui segment">
-            <p class="title">检测报价范围：</p>
-            <p class="title">@ViewBag.model.MinQuote</p>
-            <p class="title">~</p>
-            <p>@ViewBag.model.MaxQuote</p>
-
-        </div>
-
-
-        <div class="ui segment form">
-
-            <div class="field">
-                <div class="3 fields">
-                    <div class="field" style="">
-                        <p style="margin: 0 auto">用户检测报价：</p>
-                    </div>
                     <div class="field">
-                        <input id="q1" style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="@ViewBag.model.UserQuote">
+                        <div class="3 fields">
+                            <div class="field" style="">
+                                <p style="margin: 0 auto">用户检测报价：</p>
+                            </div>
+                            <div class="field">
+                                <input id="q1" style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="@ViewBag.model.UserQuote">
+                            </div>
+
+                        </div>
                     </div>
+
 
                 </div>
-            </div>
 
+                <div class="ui segment form">
 
-        </div>
-
-        <div class="ui segment form">
-
-            <div class="field">
-                <div class="3 fields">
-                    <div class="field" style="">
-                        <p style="margin: 0 auto">检测机构报价：</p>
-                    </div>
                     <div class="field">
-                        <input id="q2" style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="@ViewBag.model.OrganQuote">
+                        <div class="3 fields">
+                            <div class="field" style="">
+                                <p style="margin: 0 auto">检测机构报价：</p>
+                            </div>
+                            <div class="field">
+                                <input id="q2" style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="@ViewBag.model.OrganQuote">
+                            </div>
+
+                        </div>
                     </div>
 
+
+                </div>
+
+                <div class="ui segment">
+                    <p class="">用户修改意见：</p>
+                </div>
+
+                <div class="ui segments">
+                    @foreach (var temp in ViewBag.mlist)
+                    {
+                        <div class="ui warning  message">
+                            <div class="header">用户： </div>
+                            <ul class="list">
+                                <li>@temp.Modify</li>
+
+                            </ul>
+                        </div>
+
+                    }
+
+
+
+                </div>
+
+
+                <div class="ui segment" align="center">
+                    <button class="ui button green" id="btn" style="margin: 0 auto; width: 30%">确定修改</button>
                 </div>
             </div>
+            <input id="checknum" style="display:none" value="@ViewBag.model.Id" />
 
-
-        </div>
-
-        <div class="ui segment">
-            <p class="">用户修改意见：</p>
-        </div>
-
-        <div class="ui segments">
-            @foreach (var temp in ViewBag.mlist)
-            {
-                <div class="ui warning  message">
-                    <div class="header">用户： </div>
-                    <ul class="list">
-                        <li>@temp.Modify</li>
-                       
-                    </ul>
-                </div>
-             
-            }
-
-
-
-        </div>
-      
-
-        <div class="ui segment" align="center">
-            <button class="ui button green" id="btn" style="margin: 0 auto; width: 30%">确定修改</button>
-        </div>
-    </div>
+        }
+    }
+   
 </div>
-<input id="checknum" style="display:none" value="@ViewBag.model.Id" />
 
 @section scripts{
     <script>
@@ -188,6 +203,7 @@
                     },
                     success: function (data) {
                         alert("发送成功");
+                        top.location = '..';
                     }
                 });
             }
