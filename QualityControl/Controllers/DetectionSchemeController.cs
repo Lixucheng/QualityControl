@@ -19,8 +19,8 @@ namespace QualityControl.Controllers
             x.MaxQuote = 5000;
             x.MinQuote = 1000;
             x.MaxTime = 20;
-            x.MinTime = 2;
-            x.ProductId = 1;
+            x.MinTime = 19;
+            x.ProductId = 2;
             x.Status = QualityControl.Db.EnumDetectionSchemeStatus.未发送;
             x.CheckNum = Guid.NewGuid().ToString();
             Db.DetectionSchemes.Add(x);
@@ -39,11 +39,11 @@ namespace QualityControl.Controllers
             Db.ProductBatchs.AddRange(list);
             Db.SaveChanges();
 
-//            var pro = Db.Products.Find(x.ProductId);
-//            var
-//            company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
-            ViewBag.productname = "pro.Name";
-            ViewBag.company = "company.Name";
+            var pro = Db.Products.Find(x.ProductId);
+            var
+            company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
+            ViewBag.productname = pro.Name;
+            ViewBag.company = company.Name;
 
          
             ViewBag.model = x;
@@ -53,9 +53,8 @@ namespace QualityControl.Controllers
 
         public ActionResult SignContract(string checknum)
         {
-            //todo: 判断用户
 
-            var x=Db.DetectionSchemes.FirstOrDefault(e => e.CheckNum == checknum && e.Status == EnumDetectionSchemeStatus.已发送待确定);
+            var x = Db.DetectionSchemes.FirstOrDefault(e => e.CheckNum == checknum && e.Status == EnumDetectionSchemeStatus.已发送待确定);
             ViewBag.model = x;
             var pro = Db.Products.Find(x.ProductId);
             var
@@ -64,22 +63,30 @@ namespace QualityControl.Controllers
             ViewBag.company = company.Name;
             var list = Db.ProductBatchs.Where(e => e.CheckNum == checknum).ToList();
             ViewBag.list = list;
-
-            var user = UserManager.FindById(User.Identity.GetUserId());
-
-            var c = new Contract
+            //todo: 判断用户
+            var have = Db.Contracts.FirstOrDefault(e => e.CheckNum == checknum && e.Status == EnumContractStatus.未签订);
+            if (have == null)
             {
-                CheckNum = checknum,
-                Level = x.Level,
-                MaxTime = x.MaxTime,
-                MinTime = x.MinTime,
-                ProductId = x.ProductId,
-                Quote = x.UserQuote,
-                Status = EnumContractStatus.已签定,
-                UserId = "123123"
-            };
-            Db.Contracts.Add(c);
-            Db.SaveChanges();
+
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                double quote = 0;
+                quote = x.UserQuote;
+                //quote = user.Type == (int) Enum.EnumUserType.User ? x.UserQuote : x.OrganQuote;
+                var c = new Contract
+                {
+                    CheckNum = checknum,
+                    Level = x.Level,
+                    Time=x.Time,
+                    ProductId = x.ProductId,
+                    Quote = quote,
+                    Status = EnumContractStatus.未签订,
+                    UserId="userid"
+                   //todo: UserId = user.Id
+                };
+                Db.Contracts.Add(c);
+                Db.SaveChanges();
+            }
+           
 
             return View();
         }
@@ -90,15 +97,17 @@ namespace QualityControl.Controllers
         /// <param name="checknum"></param>
         /// <param name="quser"></param>
         /// <param name="qother"></param>
+        /// <param name="time"></param>
         /// <returns></returns>
-        public ActionResult SendDetectionScheme(string checknum,double quser,double qother)
+        public JsonResult SendDetectionScheme(string checknum,double quser,double qother,int time)
         {
             var x = Db.DetectionSchemes.FirstOrDefault(e => e.CheckNum == checknum && e.Status == EnumDetectionSchemeStatus.未发送);
             x.UserQuote = quser;
             x.OrganQuote = qother;
+            x.Time = time;
             x.Status = EnumDetectionSchemeStatus.已发送待确定;
             Db.SaveChanges();
-            return View();
+            return Json(1);
         }
 
         public ActionResult Sign(string checknum)
@@ -109,18 +118,70 @@ namespace QualityControl.Controllers
             var x1= Db.DetectionSchemes.FirstOrDefault(e => e.CheckNum == checknum && e.Status==EnumDetectionSchemeStatus.已发送待确定);
             x1.Status = EnumDetectionSchemeStatus.已确定;
             Db.SaveChanges();
-            return View();
+            return Redirect("..");
         }
 
-        public ActionResult Modify(string checknum, string modify)
+        public JsonResult Modify(string checknum, string modify)
         {
             var x = Db.Contracts.FirstOrDefault(e => e.CheckNum == checknum && e.Status == EnumContractStatus.未签订);
             x.Status = EnumContractStatus.修改后未审核;
             Db.SaveChanges();
             var x1 = Db.DetectionSchemes.FirstOrDefault(e => e.CheckNum == checknum && e.Status == EnumDetectionSchemeStatus.已发送待确定);
-            x1.Status = EnumDetectionSchemeStatus.已确定;
+            x1.Status = EnumDetectionSchemeStatus.返回修改;
             Db.SaveChanges();
+
+            var mod = new Db.ContractModification();
+            mod.ContractId = x.Id;
+            mod.Modify = modify;
+            mod.UserId = User.Identity.GetUserId();
+            Db.ContractModifications.Add(mod);
+            Db.SaveChanges();
+            return Json(1);
+        }
+
+        public ActionResult CheckModify(string checknum)
+        {
+            var dec =
+                Db.DetectionSchemes.FirstOrDefault(
+                    e => e.CheckNum == checknum && e.Status == EnumDetectionSchemeStatus.返回修改);
+            var pro = Db.Products.FirstOrDefault(e => e.Id == dec.ProductId);
+
+            var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
+
+            ViewBag.productname = pro.Name;
+            ViewBag.company = company.Name;
+            var list = Db.ProductBatchs.Where(e => e.CheckNum == checknum);
+            ViewBag.model = dec;
+            ViewBag.list = list;
+
+            var modify = Db.ContractModifications.Where(e => e.ContractId == dec.Id).ToList();
+            ViewBag.mlist = modify;
             return View();
+        }
+
+        public JsonResult ModifyDetectionScheme(long detectionid, double quser, double qother, int time)
+        {
+            var x = Db.DetectionSchemes.Find(detectionid);
+            x.Status = EnumDetectionSchemeStatus.修改完成留档保存;
+            Db.SaveChanges();
+            var n = new DetectionScheme
+            {
+                CheckNum = x.CheckNum,
+                Level = x.Level,
+                MaxQuote = x.MaxQuote,
+                MaxTime = x.MaxTime,
+                MinQuote = x.MinQuote,
+                MinTime = x.MinTime,
+                OrganQuote = qother,
+                ProductId = x.ProductId,
+                Time = time,
+                UserQuote = quser,
+                Status = EnumDetectionSchemeStatus.已发送待确定
+            };
+            Db.DetectionSchemes.Add(n);
+            Db.SaveChanges();
+
+            return Json(1);
         }
     }
 }

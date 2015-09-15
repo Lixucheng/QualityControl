@@ -283,6 +283,7 @@
     <Content Include="Views\DetectionScheme\SignContract.cshtml" />
     <Content Include="Views\Company\Info.cshtml" />
     <Content Include="Views\Company\Index.cshtml" />
+    <Content Include="Views\DetectionScheme\CheckModify.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

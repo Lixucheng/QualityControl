@@ -23,17 +23,23 @@ namespace QualityControl.Db
 
         public string Level { get; set; }    //检查级别
 
-        public int MaxTime { get; set; }       //检测时间 几天
 
         public double MaxQuote { get; set; }      //报价
 
-        public int MinTime { get; set; }       //检测时间 几天
-
         public double MinQuote { get; set; }      //报价
+
+        public int MaxTime { get; set; }       //检测范围 几天
+
+
+        public int MinTime { get; set; }       //检测范围 几天
+
+
 
         public double UserQuote { get; set; }     //给用户的报价
 
         public double OrganQuote { get; set; }    //给检测机构的报价
+
+        public int Time { get; set; }          //确定时间
 
         public EnumDetectionSchemeStatus Status { get; set; }
     }
@@ -54,16 +60,12 @@ namespace QualityControl.Db
 
         public string Level { get; set; }      //级别
 
-        public int MaxTime { get; set; }       //检测时间 几天
-
-    
-        public int MinTime { get; set; }       //检测时间 几天
 
         public double Quote { get; set; }      //报价
 
         public string UserId { get; set; }     //用户
 
-
+        public int Time { get; set; }          //确定时间
         public EnumContractStatus Status { get; set; } //状态
 
 
@@ -96,12 +98,10 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public long ContractId { get; set; }                //合同id
+        public long  ContractId { get; set; }               //合同id
 
         public string UserId { get; set; }                  //修改人
 
-        public string TimeModification { get; set; }        //时间修改意见
-
-        public string QuoteModification { get; set; }       //报价修改意见
+        public string Modify { get; set; }
     }
 }

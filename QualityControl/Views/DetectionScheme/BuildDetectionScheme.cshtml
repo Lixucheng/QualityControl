@@ -43,8 +43,8 @@
                     <p>@temp.Count</p>
                 </div>
             }
-           
-            
+
+
 
         </div>
 
@@ -71,9 +71,26 @@
 
         <div class="ui segment">
             <p class="title">检测时间范围：</p>
-            <p class="title">@ViewBag.MinTime 天</p>
+            <p class="title">@ViewBag.model.MinTime 天</p>
             <p class="title">~</p>
-            <p>@ViewBag.MaxTime 天</p>
+            <p>@ViewBag.model.MaxTime 天</p>
+
+        </div>
+
+        <div class="ui segment form">
+
+            <div class="field">
+                <div class="3 fields">
+                    <div class="field" style="">
+                        <p style="margin: 0 auto">确定检测时间：</p>
+                    </div>
+                    <div class="field">
+                        <input id="time" style="height: 25px" type="text"  placeholder="" value="">
+                    </div>
+
+                </div>
+            </div>
+
 
         </div>
 
@@ -86,53 +103,69 @@
         </div>
 
 
-            <div class="ui segment form">
+        <div class="ui segment form">
 
-                <div class="field">
-                    <div class="3 fields">
-                        <div class="field" style="">
-                            <p style="margin: 0 auto">用户检测报价：</p>
-                        </div>
-                        <div class="field">
-                            <input id="q1" style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="3000">
-                        </div>
-
+            <div class="field">
+                <div class="3 fields">
+                    <div class="field" style="">
+                        <p style="margin: 0 auto">用户检测报价：</p>
                     </div>
+                    <div class="field">
+                        <input id="q1" style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="">
+                    </div>
+
                 </div>
-
-
             </div>
 
-            <div class="ui segment form">
 
-                <div class="field">
-                    <div class="3 fields">
-                        <div class="field" style="">
-                            <p style="margin: 0 auto">检测机构报价：</p>
-                        </div>
-                        <div class="field">
-                            <input id="q2" style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="3000">
-                        </div>
+        </div>
 
+        <div class="ui segment form">
+
+            <div class="field">
+                <div class="3 fields">
+                    <div class="field" style="">
+                        <p style="margin: 0 auto">检测机构报价：</p>
                     </div>
+                    <div class="field">
+                        <input id="q2" style="height: 25px" type="text" name="shipping[first-name]" placeholder="" value="">
+                    </div>
+
                 </div>
-
-
             </div>
+
+
+        </div>
 
 
         <div class="ui segment" align="center">
-            <button class="ui button green" id="btn" style="margin: 0 auto;width:30%">发送</button>
+            <button class="ui button green" id="btn" style="margin: 0 auto; width: 30%">发送</button>
         </div>
     </div>
 </div>
+<input id="checknum" style="display:none" value="@ViewBag.model.CheckNum"/>
 
 @section scripts{
     <script>
         $("#btn").click(function() {
+
             var q1 = $("#q1").val();
             var q2 = $("#q2").val();
-            
+            var time = $("#time").val();
+            var c = $("#checknum").val();
+            $.ajax({
+                url: '../DetectionScheme/SendDetectionScheme',
+                type: 'post',
+                data: { checknum:c, quser:q1, qother:q2,time:time},
+
+                error: function () {
+                    alert('error');
+                },
+                success: function (data) {
+                    alert("发送成功");
+                }
+            });
+
         });
     </script>
 }
