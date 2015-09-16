@@ -274,7 +274,7 @@ namespace QualityControl.Controllers
             };
             Db.DetectionSchemes.Add(n);
             Db.SaveChanges();
-
+            //todo 写一个message
             return Json(1);
         }
 
