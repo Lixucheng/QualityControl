@@ -129,11 +129,10 @@
 @section scripts{
     <script>
         $("#agree").click(function() {
-            var r=confirm("请仔细查看合同，确定合同内容，如果对方无异议则自动签订！");
+            var r=confirm("请仔细查看内容，确认后跳到签字界面！");
             if (r==true)
-            {
-                alert("合同已确定！");
-                //top.location = '../DetectionScheme/Sign?checknum=' + $("#checknum").val();
+            {               
+                top.location = '../DetectionScheme/CompactSign?checknum=' + $("#checknum").val();
             }          
         });
 
