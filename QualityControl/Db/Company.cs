@@ -9,6 +9,7 @@ namespace QualityControl.Db
     /// <summary>
     /// 企业信息
     /// </summary>
+    [Table("GxCompany")]
     public class Company
     {
         [Key]
@@ -51,6 +52,7 @@ namespace QualityControl.Db
         public virtual List<Product> Products { get; set; }
     }
 
+    [Table("GxCompanyProduct")]
     public class CompanyProduct
     {
         [Key]

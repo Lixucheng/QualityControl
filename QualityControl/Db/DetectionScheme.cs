@@ -11,6 +11,7 @@ namespace QualityControl.Db
     /// <summary>
     /// 检测方案
     /// </summary>
+    [Table("GxDetectionScheme")]
     public class DetectionScheme
     {
         [Key]
@@ -47,6 +48,7 @@ namespace QualityControl.Db
     /// <summary>
     /// 合同
     /// </summary>
+    [Table("GxContract")]
     public class Contract
     {
         [Key]
@@ -91,6 +93,7 @@ namespace QualityControl.Db
     /// <summary>
     /// 合同修改意见
     /// </summary>
+    [Table("GxContractModification")]
     public class ContractModification
     {
 

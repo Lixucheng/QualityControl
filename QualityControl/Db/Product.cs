@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QualityControl.Db
 {
+    [Table("GxProduct")]
     public class Product
     {
         [Key]
@@ -27,6 +28,7 @@ namespace QualityControl.Db
 
     }
 
+    [Table("GxProductType")]
     public class ProductType
     {
         [Key]
@@ -51,6 +53,7 @@ namespace QualityControl.Db
 
     }
 
+    [Table("GxProductBatch")]
     public class ProductBatch
     {
         [Key]
