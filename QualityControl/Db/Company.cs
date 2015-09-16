@@ -37,8 +37,6 @@ namespace QualityControl.Db
         [Required]
         public string CorporationIdentity { get; set; }
 
-        public string Postcode { get; set; }
-
         [Required]
         public string OrganizationCode { get; set; }
 

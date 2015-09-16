@@ -2,14 +2,11 @@
 using Newtonsoft.Json;
 using QualityControl.Db;
 using QualityControl.Enum;
-using QualityControl.Util;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
+
 
 namespace QualityControl.Controllers
 {
@@ -25,9 +22,11 @@ namespace QualityControl.Controllers
         }
 
         [HttpGet]
-        public ActionResult Save(long id = 0, Company model = null)
+        public ActionResult Save()
         {
-            return View(model == null ? Db.Companies.Find(id): model);
+            var userId = User.Identity.GetUserId();
+            var company = Db.Companies.FirstOrDefault(a => a.UserId == userId);
+            return View(company);
         }
 
         [HttpPost]
@@ -40,7 +39,7 @@ namespace QualityControl.Controllers
             if (model.Id == 0)
             {
                 model.UserId = User.Identity.GetUserId();
-                var company = Db.Companies.FirstOrDefault(a => a.UserId == User.Identity.GetUserId());
+                var company = Db.Companies.FirstOrDefault(a => a.UserId == model.UserId);
                 if (company != null)
                 {
                     model.Id = company.Id;
@@ -56,6 +55,10 @@ namespace QualityControl.Controllers
                 if (company == null)
                 {
                     return View();
+                }
+                if (Util.Util.Equal(model, company, excepts: new List<string> { "UserId" }))
+                {
+                    return RedirectToAction("Index");
                 }
                 company.UpdateJson = JsonConvert.SerializeObject(model);
                 company.Status = EnumStatus.Unchecked;

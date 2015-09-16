@@ -1,4 +1,4 @@
-namespace QualityControl.ThenCtxMigrations
+namespace QualityControl.TheCtxMigrations
 {
     using System;
     using System.Data.Entity;
@@ -10,11 +10,10 @@ namespace QualityControl.ThenCtxMigrations
         public TheDbConf()
         {
             AutomaticMigrationsEnabled = true;
-            MigrationsDirectory = @"ThenCtxMigrations";
-            ContextKey = "QualityControl.Db.TheContext";
+            MigrationsDirectory = @"TheCtxMigrations";
         }
 
-        protected override void Seed(Db.TheContext context)
+        protected override void Seed(QualityControl.Db.TheContext context)
         {
             //  This method will be called after migrating to the latest version.
 

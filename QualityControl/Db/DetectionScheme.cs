@@ -112,6 +112,7 @@ namespace QualityControl.Db
     /// <summary>
     /// 协议内容
     /// </summary>
+    [Table("GxCompact")]
     public class Compact
     {
         [Key]

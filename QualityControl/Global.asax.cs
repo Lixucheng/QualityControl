@@ -13,8 +13,8 @@ namespace QualityControl
         protected void Application_Start()
         {
             // Code First Db init
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<TheContext>());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<TheContext>());
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

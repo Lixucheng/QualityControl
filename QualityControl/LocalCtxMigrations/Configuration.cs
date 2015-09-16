@@ -11,7 +11,6 @@ namespace QualityControl.LocalCtxMigrations
         {
             AutomaticMigrationsEnabled = true;
             MigrationsDirectory = @"LocalCtxMigrations";
-            ContextKey = "QualityControl.Models.ApplicationDbContext";
         }
 
         protected override void Seed(QualityControl.Models.ApplicationDbContext context)

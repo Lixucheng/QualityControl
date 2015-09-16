@@ -1,7 +1,6 @@
 ﻿@{    Layout = "~/Views/Shared/_LayoutWithHeader.cshtml";
 }
-
-
+@model QualityControl.Db.Company
 @section head{
     <title>企业信息</title>
 }
@@ -19,7 +18,7 @@
                     </div>
                     <div class="field">
                         <label>注册时间</label>
-                        <input placeholder="注册时间" name="EstablishedTime" type="date" value="@(Model != null ? Model.EstablishedTime.ToShortDateString() : "")">
+                        <input placeholder="注册时间" name="EstablishedTime" type="date" value='@Model.EstablishedTime.ToString("yyy-MM-dd")'>
                     </div>
                 </div>
                 <div class="field">

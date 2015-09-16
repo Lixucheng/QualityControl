@@ -80,7 +80,6 @@ namespace QualityControl.Controllers
             {
                 case SignInStatus.Success:
                     var tt = User.Identity.AuthenticationType;
-                    UserManager.AddClaim(User.Identity.GetUserId(), new Claim("Role", "1"));
                     return RedirectToLocal("/Home/Redirect");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -422,8 +421,8 @@ namespace QualityControl.Controllers
 
         //
         // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

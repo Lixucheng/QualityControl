@@ -294,3 +294,17 @@
 .am-padding-right-xl {
   padding-right: 3.2rem;
 }
+
+.zh {
+    font-family: "Microsoft YaHei";
+}
+.zh-force {
+    font-family: "Microsoft YaHei" !important;
+}
+
+.fw-normal{
+    font-weight: normal;
+}
+.fw-normal-force{
+    font-weight: normal !important;
+}
