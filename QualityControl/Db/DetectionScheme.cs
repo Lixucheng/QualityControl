@@ -98,7 +98,7 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public long  ContractId { get; set; }               //合同id
+        public long DetectionSchemeId { get; set; }               //合同id
 
         public string UserId { get; set; }                  //修改人
 

@@ -203,7 +203,7 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
 
             var mod = new Db.ContractModification();
-            mod.ContractId = x1.Id;
+            mod.DetectionSchemeId = x1.Id;
             mod.Modify = modify;
             mod.UserId = User.Identity.GetUserId();
             Db.ContractModifications.Add(mod);
@@ -233,7 +233,7 @@ namespace QualityControl.Controllers
                 ViewBag.model = dec;
                 ViewBag.list = list;
 
-                var modify = Db.ContractModifications.Where(e => e.ContractId == dec.Id).ToList();
+                var modify = Db.ContractModifications.Where(e => e.DetectionSchemeId == dec.Id).ToList();
                 ViewBag.mlist = modify;
                 ViewBag.ok = 1;
             }
