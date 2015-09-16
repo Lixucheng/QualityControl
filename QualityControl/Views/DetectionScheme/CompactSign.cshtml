@@ -31,7 +31,7 @@
         {
             <form class="">
 
-                <h1>委托方: <input/>
+                <h1>委托方: <input type="text" id="name"/>
                 </h1>
 
                 <h1>检验方:</h1>
@@ -43,7 +43,7 @@
 
                 <h1>委托方: </h1>
 
-                <h1>检验方: <input/>
+                <h1>检验方: <input type="text" id="name"/>
                 </h1>
             </form>
         }
@@ -53,21 +53,41 @@
 
     <div class="ui segment" align="center">
         <button id="agree" class="positive ui button" style="width: 25%">同意</button>
-        <p>如果同意以上内容请确定，不同意请填写更改意见后点击返回修改</p>
+        <p>请看清以上内容，确认后无法修改！</p>
     </div>
 </div>
+<input id="checknum" style="display:none" value="@ViewBag.checknum" />
 
 @section scripts{
     <script>
         $("#agree").click(function() {
-            var r=confirm("请仔细查看合同，确定合同内容，如果对方无异议则自动签订！");
-            if (r==true)
-            {
-                alert("合同已确定！");
-                //top.location = '../DetectionScheme/Sign?checknum=' + $("#checknum").val();
-            }
-        });
+            var r=confirm("请仔细查看合同，确定合同内容，签订后无法修改！");
+            if (r==true) {
+                var name = $("#name").val();
+                var c = $("#checknum").val();
+                if (name == "") {
+                    alert("请先输入签名！");
+                } else {
+                    $.ajax({
+                        url: '../DetectionScheme/CheckName',
+                        type: 'post',
+                        data: { name: name,checknum:c },
 
-       
+                        error: function () {
+                            alert('连接错误！');
+                        },
+                        success: function (data) {
+                            if (data == 1) {
+                                top.location = '..';
+                            } else {
+                                alert("签名错误，请重新输入！");
+                            }
+
+                        }
+                    });
+                }
+               
+            }
+        });       
     </script>
 }

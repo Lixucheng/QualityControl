@@ -284,6 +284,7 @@ namespace QualityControl.Controllers
         [HttpGet]
         public ActionResult CompactSign(string checknum)
         {
+            //todo: 判断checknum
            
             string s0 = "一、";
             
@@ -325,32 +326,66 @@ namespace QualityControl.Controllers
             ViewBag.user=1;//标记输入框位置
             ViewBag.time = DateTime.Today.ToShortDateString();
             ViewBag.Content = s0 + s1 + s2;
+            ViewBag.checknum = checknum;
             return View();
         }
-        [HttpPost]
-        public ActionResult CompactSign(Compact a)
+        public bool BoolCompactSign(string checknum)
         {
+            string s0 = "一、";
+
+            string s2 = @"（以下简称检验方）接受委托方书面检验委托。委托检验申请单（以下简称委托单）作为本协议的附件。本协议以委托方代表人在委托单上签名盖章，检验方加盖受理骑缝章后生效。 
+                          <br />二、委托方应如实填写委托单，如有必要，还应根据检验方的要求提供必要的单据及相关资料。 
+                          <br />三、检验方按委托方在委托单上填明的检验要求进行检验，并出具检验报告。 
+                          <br />四、委托方必须注明要求使用的检验方法。 
+                          <br />五、检验方的检验时间根据检验内容而定，原则上以检验方公布的时间为准，特殊情况双方协商确定，并在委托单上注明。 
+                          <br />六、检验方检验收费按有关规定计价。对于批量样品如需减免检验费用的，委托方应在委托时与检验方协商确定，并在委托单上“备注”栏内注明。要求加急服务的，需支付加急费。 
+                          <br />七、检验方接受委托方自送样品的检验，检验报告仅对样品负责。 
+                          <br />八、对于某些项目，检验方需要分包检验的，检验方应以书面或电子媒体形式通知委托方。除委托方或上级管理机构指定的分包方外，检验方为分包方的工作对委托方负责。 
+                          <br />九、检验方在接受委托时，须详细审核委托单内容。在确认委托方的委托及要求后，应填写委托单同一页上的领证凭条交付委托方，委托人凭此查询及索取检验报告。 
+                          <br />十、检验方的检验报告有固定的格式，并仅提供唯一正本。如对检验报告有特殊要求，委托方应在委托单上“备注”栏内注明。 
+                          <br />十一、检验报告通常采用中文书写。如需采用其他语种，委托方应在委托单“备注”栏内注明，并用相应语种填写有关内容。 
+                          <br />十二、委托方如对检验结果有异议的，须在一个月内凭检验证书原件向检验方要求复检，检验方应于十日内安排复检。复检结果维持原检验结果的，委托方须按规定向检验方支付复检费。复检结果确认原检验结果有误的，检验方不再收取复检费。委托方对复检结果仍有异议，双方协商不成时，应与检验方书面协议，委托仲裁机构仲裁。 
+                          <br />十五、委托方对本协议及委托单有不明之处，应在填写委托单时，向检验方工作人员咨询。协议自填单之日起生效。";
+            string s1 = "管控中心";
             var c = new Compact();
-            c.FirstParty = a.FirstParty;
-            c.CheckNum = a.CheckNum;
-            c.SecondParty = a.SecondParty;
-            c.Content =a.Content;
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user.Type == (int)Enum.EnumUserType.User)
+            {
+                c.FirstParty = user.UserName;
+                c.SecondParty = "管控中心";
+                s1 = "管控中心";
+             
+            }
+            else if (user.Type == (int)Enum.EnumUserType.TestingOrg)
+            {
+                c.FirstParty = "管控中心";
+                c.SecondParty = user.UserName;
+                s1 = "检测公司";
+               
+            }
+            else
+            {
+                throw new Exception("无权查看！");
+            }
+            c.Content = s0 + s1 + s2;       
             c.Time = DateTime.Now;
+            c.CheckNum = checknum;
             Db.Compacts.Add(c);
             Db.SaveChanges();
 
-            Sign(a.CheckNum);//合同详细信息
-            return Redirect("..");
+            Sign(checknum);//合同详细信息
+            return true;
         }
 
-        public bool CheckName(string name)
+        public int CheckName(string name,string checknum)
         {
             var n = User.Identity.GetUserName();
             if (name == n)
             {
-                return true;
+                BoolCompactSign(checknum);
+                return 1;
             }
-            return false;
+            return 0;
         }
 
 
