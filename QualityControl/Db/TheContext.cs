@@ -30,5 +30,11 @@ namespace QualityControl.Db
         public DbSet<ContractModification> ContractModifications { get; set; }
 
         public DbSet<ProductBatch> ProductBatchs { get; set; }
+
+
+        /// <summary>
+        /// 协议内容
+        /// </summary>
+        public DbSet<Compact> Compacts { get; set; }
     }
 }

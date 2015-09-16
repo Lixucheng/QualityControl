@@ -100,8 +100,29 @@ namespace QualityControl.Db
 
         public long DetectionSchemeId { get; set; }               //合同id
 
-        public string UserId { get; set; }                  //修改人
+        public string UserId { get; set; }                        //修改人
 
         public string Modify { get; set; }
+    }
+
+
+    /// <summary>
+    /// 协议内容
+    /// </summary>
+    public class Compact
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
+
+        public string Content { get; set; }
+
+        public string FirstParty { get; set; }
+
+        public string SecondParty { get; set; }
+
+        public DateTime Time { get; set; }
+
+        public string CheckNum { get; set; }
     }
 }
