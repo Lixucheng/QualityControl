@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QualityControl.Db
 {
+    [Table("GxMessage")]
     public class Message
     {
         [Key]
