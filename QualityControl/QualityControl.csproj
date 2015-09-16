@@ -166,7 +166,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationContextMigrations\Configuration.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -199,17 +198,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="LocalCtxMigrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Singleton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ThenContextMigrations\201509160838566_Change.cs" />
-    <Compile Include="ThenContextMigrations\201509160838566_Change.Designer.cs">
-      <DependentUpon>201509160838566_Change.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ThenContextMigrations\Configuration.cs" />
+    <Compile Include="ThenCtxMigrations\Configuration.cs" />
     <Compile Include="Util\Dumper.cs" />
     <Compile Include="Util\IDApi.cs" />
   </ItemGroup>
@@ -307,11 +303,6 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ThenContextMigrations\201509160838566_Change.resx">
-      <DependentUpon>201509160838566_Change.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

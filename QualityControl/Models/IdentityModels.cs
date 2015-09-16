@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using QualityControl.Db;
 using System.Collections.Generic;
+using System.Data.Entity;
 
 namespace QualityControl.Models
 {
@@ -27,6 +28,17 @@ namespace QualityControl.Models
         public ApplicationDbContext()
             : base("TheContext", throwIfV1Schema: false)
         {
+            
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ApplicationUser>().ToTable("GxUser");
+            modelBuilder.Entity<IdentityRole>().ToTable("GxIdentityRole");
+            modelBuilder.Entity<IdentityUserLogin>().ToTable("GxIdentityUserLogin");
+            modelBuilder.Entity<IdentityUserRole>().ToTable("GxIdentityUserRole");
+            modelBuilder.Entity<IdentityUserClaim>().ToTable("GxIdentityUserClaim");
         }
 
         public static ApplicationDbContext Create()

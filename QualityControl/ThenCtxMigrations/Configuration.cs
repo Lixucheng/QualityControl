@@ -1,21 +1,20 @@
-namespace QualityControl.ThenContextMigrations
+namespace QualityControl.ThenCtxMigrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class TheContextDbConfig : DbMigrationsConfiguration<QualityControl.Db.TheContext>
+    internal sealed class TheDbConf : DbMigrationsConfiguration<QualityControl.Db.TheContext>
     {
-        public TheContextDbConfig()
+        public TheDbConf()
         {
             AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
-            MigrationsDirectory = @"ThenContextMigrations";
+            MigrationsDirectory = @"ThenCtxMigrations";
             ContextKey = "QualityControl.Db.TheContext";
         }
 
-        protected override void Seed(QualityControl.Db.TheContext context)
+        protected override void Seed(Db.TheContext context)
         {
             //  This method will be called after migrating to the latest version.
 

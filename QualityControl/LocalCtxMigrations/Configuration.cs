@@ -1,17 +1,16 @@
-namespace QualityControl.ApplicationContextMigrations
+namespace QualityControl.LocalCtxMigrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class LocalDbConfig : DbMigrationsConfiguration<QualityControl.Models.ApplicationDbContext>
+    internal sealed class LocalDbConf : DbMigrationsConfiguration<QualityControl.Models.ApplicationDbContext>
     {
-        public LocalDbConfig()
+        public LocalDbConf()
         {
             AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
-            MigrationsDirectory = @"ApplicationContextMigrations";
+            MigrationsDirectory = @"LocalCtxMigrations";
             ContextKey = "QualityControl.Models.ApplicationDbContext";
         }
 
