@@ -21,22 +21,25 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("访问错误！");
             }
+            List<string> listdown = new List<string>();
             var list=Db.ProductBatchs.Where(e => e.CheckNum == checknum).ToList();        
             list.ForEach(e =>
             {             
                 for (long i = 1; i <= e.Count; i++)
                 {
-                    MakeQrCode(checknum, i, e.BatchName, e.ProductId);
+                    listdown.Add(MakeQrCode(checknum, i, e.BatchName, e.ProductId));
                 }
             });
-                       
+
+            string url = Request.Url.ToString();
+            ViewBag.list = listdown;
             return View();
         }
 
         public string MakeQrCode(string checknum,long num,string batch,long productid)
         {
             var guid = Guid.NewGuid().ToString();
-            var name = checknum + "_" + productid + "_" + batch + "_" + num;
+            var name = checknum + "_" + productid + "_" + batch + "_" + num+".jpg";
             var url = HttpRuntime.AppDomainAppPath;
             ThoughtWorks.QRCode.Codec.QRCodeEncoder encoder = new QRCodeEncoder();
             encoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;//编码方法
@@ -53,10 +56,16 @@ namespace QualityControl.Controllers
             }
 
 
-            image.Save(path+"\\" + name + ".jpg", ImageFormat.Jpeg);
+            image.Save(path+"\\" + name, ImageFormat.Jpeg);
+            var qr = new Db.QrCodeInfo();
+            qr.IdCode = guid;
+            qr.QrName = name;
+            Db.QrCodeInfos.Add(qr);
+            Db.SaveChanges();
 
-            
-            return guid;
+
+            string down ="/Image/"+checknum+"/"+batch+"/"+name;
+            return down;
         }
 
     }

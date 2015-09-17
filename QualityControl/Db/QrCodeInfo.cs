@@ -15,8 +15,8 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public long QrName { get; set; }//产品信息
+        public string QrName { get; set; }//产品信息
 
-        public long IdCode { get; set; }//验证码信息
+        public string IdCode { get; set; }//验证码信息
     }
 }

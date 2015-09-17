@@ -3,6 +3,28 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@section head{
+    <style>
+        .main-container {
+            background-color: #FFFFFF;
+            margin: 0em auto;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            padding: 2em 2em 7em;
+            z-index: 1;
+        }
+    </style>
+}
 
-<h2>Index</h2>
+<div class="main-container">
+    
+    @{
+        int i = 1;
+        foreach (var temp in ViewBag.list)
+        {
+            <a href="..@temp">第 @i 个二维码图片</a>
+            <br/>
+            i++;
+        }
 
+    }
+</div>
