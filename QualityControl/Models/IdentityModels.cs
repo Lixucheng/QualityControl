@@ -73,6 +73,8 @@ namespace QualityControl.Models
         /// 协议内容
         /// </summary>
         public DbSet<Compact> Compacts { get; set; }
+
+        public DbSet<QrCodeInfo> QrCodeInfos { get; set; }
     }
 
 
