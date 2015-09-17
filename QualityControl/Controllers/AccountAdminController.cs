@@ -46,6 +46,7 @@ namespace QualityControl.Controllers
             var user = UserManager.Users.FirstOrDefault(e => e.Id == id);
             user.Status = (int)EnumUserStatus.Normal;
             await UserManager.UpdateAsync(user);
+            //todo status
             Db.Messages.Add(new QualityControl.Db.Message
             {
                 Content = "恭喜您，您的注册申请已经通过审核！",

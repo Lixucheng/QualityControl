@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
+using QualityControl.Db;
 
 namespace QualityControl.Models
 {
@@ -29,9 +30,8 @@ namespace QualityControl.Models
     {
         public ApplicationDbContext()
             : base("TheContext", throwIfV1Schema: false)
-        {
-            
-        }
+        { }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -47,6 +47,8 @@ namespace QualityControl.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<Db.QrCodeInfo> QrCodeInfos { get; set; }
     }
 
 

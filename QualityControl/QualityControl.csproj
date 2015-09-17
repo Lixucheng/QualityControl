@@ -195,6 +195,7 @@
     <Compile Include="Db\Dict.cs" />
     <Compile Include="Db\Message.cs" />
     <Compile Include="Db\Product.cs" />
+    <Compile Include="Db\QrCodeInfo.cs" />
     <Compile Include="Db\RegisterApply.cs" />
     <Compile Include="Db\TheContext.cs" />
     <Compile Include="Enum\EnumStatus.cs" />
