@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using QualityControl.Db;
 using QualityControl.Enum;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -46,6 +47,9 @@ namespace QualityControl.Controllers
                 }
                 else
                 {
+                    model.Status = EnumStatus.FirstUncheked;
+                    model.CreateTime = DateTime.Now;
+                    model.LastChangeTime = model.CreateTime;
                     Db.Companies.Add(model);
                 }
             }
@@ -56,12 +60,20 @@ namespace QualityControl.Controllers
                 {
                     return View();
                 }
-                if (Util.Util.Equal(model, company, excepts: new List<string> { "UserId" }))
+                if (Util.Util.Equal(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime" }))
                 {
                     return RedirectToAction("Index");
                 }
-                company.UpdateJson = JsonConvert.SerializeObject(model);
-                company.Status = EnumStatus.Unchecked;
+                if (company.Status == EnumStatus.FirstUncheked)
+                {
+                    Util.Util.Dump(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "Status" });
+                }
+                else
+                {
+                    company.UpdateJson = JsonConvert.SerializeObject(model);
+                    company.LastChangeTime = DateTime.Now;
+                    company.Status = EnumStatus.Unchecked;
+                }
                 Db.Entry(company).State = EntityState.Modified;
             }
             Db.SaveChanges();

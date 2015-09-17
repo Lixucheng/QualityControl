@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -43,7 +44,7 @@ namespace QualityControl.Util
                 {
                     if (excepts == null || !excepts.Contains(ap.Name))
                     {
-                        if (BasicTypes.Contains(ap.PropertyType.Name) && (isnoreId ? ap.Name != "Id" : true))
+                        if (ap.DeclaringType.BaseType.Name == "Enum" || BasicTypes.Contains(ap.PropertyType.Name) && (isnoreId ? ap.Name != "Id" : true))
                         {
                             var bp = bps.First(i => i.Name == ap.Name);
                             bp.SetValue(dest, ap.GetValue(src));
@@ -88,6 +89,29 @@ namespace QualityControl.Util
                 }
             }
             return true;
+        }
+
+        public static void SetForeignKeyNull<One>(One data, List<string> excepts = null)
+        {
+            var aps = typeof(One).GetProperties();
+
+            foreach (var ap in aps)
+            {
+                try
+                {
+
+                    if (excepts == null || !excepts.Contains(ap.Name))
+                    {
+                        if (!(BasicTypes.Contains(ap.PropertyType.Name) || ap.PropertyType.BaseType.Name == "Enum")) {
+                            ap.SetValue(data, null);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return;
+                }
+            }
         }
 
     }

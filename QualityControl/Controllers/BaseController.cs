@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Caching;
 using QualityControl.Models;
-using QualityControl.Db;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace QualityControl.Controllers
@@ -49,7 +46,7 @@ namespace QualityControl.Controllers
             get { return Singleton.Self; }
         }
 
-        protected TheContext Db
+        protected ApplicationDbContext Db
         {
             get { return Sgt.Db; }
         }

@@ -19,12 +19,12 @@ namespace QualityControl.Models
             get { return HttpContext.Current.Items[SingletonName] as Singleton;  }
         }
 
-        private TheContext _db;
-        public TheContext Db
+        private ApplicationDbContext _db;
+        public ApplicationDbContext Db
         {
             get
             {
-                return _db ?? (_db = new TheContext());
+                return _db ?? (_db = new ApplicationDbContext());
             }
         }
         
