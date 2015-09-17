@@ -308,3 +308,39 @@
 .fw-normal-force{
     font-weight: normal !important;
 }
+
+@media only screen {
+  .am-text-left {
+    text-align: left !important;
+  }
+  .am-text-right {
+    text-align: right !important;
+  }
+  .am-text-center {
+    text-align: center !important;
+  }
+  .am-text-justify {
+    text-align: justify !important;
+  }
+}
+
+.am-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Display */
+.am-block {
+  display: block !important;
+}
+.am-inline {
+  display: inline !important;
+}
+.am-inline-block {
+  display: inline-block !important;
+}
+.am-hide {
+  display: none !important;
+  visibility: hidden !important;
+}
+/*

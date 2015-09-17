@@ -5,14 +5,15 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using QualityControl.Db;
 
 namespace QualityControl.Controllers
 {
+
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
-            
             return View();
         }
 

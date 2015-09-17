@@ -9,6 +9,7 @@ namespace QualityControl.Enum
     {
         Valid = 0,
         Invalid = 1,
-        Unchecked = 2
+        FirstUncheked ,
+        Unchecked
     }
 }

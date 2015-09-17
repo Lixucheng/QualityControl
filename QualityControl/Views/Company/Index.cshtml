@@ -7,12 +7,20 @@
 @model QualityControl.Db.Company
 <div class="am-margin am-padding container ">
     <div class="verborder">
-
+    @if(Model != null)
+    {
         <div class="ui raised segment">
             <div class="am-cf">
                 <a class="ui red ribbon label zh  fw-normal-force">企业信息</a>
                 <span>@Model.Name</span>
-                <span class="ui type tag label teal am-fr">有更改在审核中</span>
+                @if (Model.Status == QualityControl.Enum.EnumStatus.Unchecked)
+                {
+                    <span class="ui type tag label teal am-fr">有更改在审核中</span>
+                }
+                else if (Model.Status == QualityControl.Enum.EnumStatus.FirstUncheked)
+                {
+                    <span class="ui type tag label teal am-fr">企业信息尚未通过</span>
+                }
             </div>
             <p class="ui divider"></p>
             <div class="ui divided selection list">
@@ -53,7 +61,7 @@
         </div>
 
         <div class="am-margin"></div>
-        @if (Model.Status == QualityControl.Enum.EnumStatus.Unchecked)
+        if (Model.Status == QualityControl.Enum.EnumStatus.Unchecked)
         {
             var jsonData = JsonConvert.DeserializeObject<QualityControl.Db.Company>(Model.UpdateJson);
 
@@ -97,5 +105,18 @@
                 <div class="ui divider"></div>
             </div>
         }
+    }
+    else
+    {
+        <div class="am-text-center">
+            <a class="ui animated teal fade button" tabindex="0" href="/Company/Save">
+                <div class="visible content zh fw-normal">完善企业信息</div>
+                <div class="hidden content">
+                    <i class="right arrow icon"></i>
+                </div>
+            </a>
+        </div>
+    }
+
     </div>
 </div>

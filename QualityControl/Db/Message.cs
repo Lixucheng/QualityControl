@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QualityControl.Db
@@ -15,5 +16,9 @@ namespace QualityControl.Db
         public string Content { get; set; }
 
         public int Status { get; set; }
+
+        
+        public DateTime Time { get; set; }
     }
+
 }

@@ -30,8 +30,9 @@ namespace QualityControl.Models
     {
         public ApplicationDbContext()
             : base("TheContext", throwIfV1Schema: false)
-        { }
+        {
 
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -48,7 +49,30 @@ namespace QualityControl.Models
             return new ApplicationDbContext();
         }
 
-        public DbSet<Db.QrCodeInfo> QrCodeInfos { get; set; }
+
+        public DbSet<ProductType> ProductTypes { get; set; }
+
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<Company> Companies { get; set; }
+
+        public DbSet<CompanyProduct> CompanyProducts { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
+
+        public DbSet<DetectionScheme> DetectionSchemes { get; set; }
+
+        public DbSet<Contract> Contracts { get; set; }
+
+        public DbSet<ContractModification> ContractModifications { get; set; }
+
+        public DbSet<ProductBatch> ProductBatchs { get; set; }
+
+
+        /// <summary>
+        /// 协议内容
+        /// </summary>
+        public DbSet<Compact> Compacts { get; set; }
     }
 
 

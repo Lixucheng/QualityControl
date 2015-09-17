@@ -47,6 +47,10 @@ namespace QualityControl.Db
 
         public string UpdateJson { get; set; }
 
+        public DateTime CreateTime { get; set; }
+
+        public DateTime LastChangeTime { get; set; }
+
         public virtual List<Product> Products { get; set; }
     }
 
