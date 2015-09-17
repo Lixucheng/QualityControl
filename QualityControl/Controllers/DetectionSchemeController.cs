@@ -32,7 +32,7 @@ namespace QualityControl.Controllers
                 x.MinQuote = 1000;
                 x.MaxTime = 20;
                 x.MinTime = 19;
-                x.ProductId = 2;
+                x.ProductId = 3;
                 x.Status = QualityControl.Db.EnumDetectionSchemeStatus.未发送;
                 x.CheckNum = checknum;
                 Db.DetectionSchemes.Add(x);
@@ -347,6 +347,8 @@ namespace QualityControl.Controllers
                           <br />十二、委托方如对检验结果有异议的，须在一个月内凭检验证书原件向检验方要求复检，检验方应于十日内安排复检。复检结果维持原检验结果的，委托方须按规定向检验方支付复检费。复检结果确认原检验结果有误的，检验方不再收取复检费。委托方对复检结果仍有异议，双方协商不成时，应与检验方书面协议，委托仲裁机构仲裁。 
                           <br />十五、委托方对本协议及委托单有不明之处，应在填写委托单时，向检验方工作人员咨询。协议自填单之日起生效。";
             string s1 = "管控中心";
+
+            Sign(checknum);//合同详细信息
             var c = new Compact();
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user.Type == (int)Enum.EnumUserType.User)
@@ -373,7 +375,6 @@ namespace QualityControl.Controllers
             Db.Compacts.Add(c);
             Db.SaveChanges();
 
-            Sign(checknum);//合同详细信息
             return true;
         }
 
