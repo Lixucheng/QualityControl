@@ -38,11 +38,14 @@ namespace QualityControl.Areas.Admin.Controllers
         public string Info(long id)
         {
             var data = new CompanyInfo();
-            data.Company = Db.Companies.Find(id);
-            if (data.Company == null)
+            var company = Db.Companies.Find(id);
+            if (company == null)
             {
                 return null;
             }
+            company.Products = null;
+            data.Company = new Company();
+            Util.Util.Dump(company, data.Company, isnoreId: false);
             data.User = Db.Users.Find(data.Company.UserId);
             data.User = new Models.ApplicationUser()
             {
@@ -50,7 +53,7 @@ namespace QualityControl.Areas.Admin.Controllers
                 Email = data.User.Email,
                 UserName = data.User.UserName,
             };
-            Util.Util.SetForeignKeyNull(data.Company);
+            
             return JsonConvert.SerializeObject(data);
         }
 
@@ -64,16 +67,22 @@ namespace QualityControl.Areas.Admin.Controllers
             }
             if (isPass)
             {
-                var model = JsonConvert.DeserializeObject<Company>(company.UpdateJson);
-                Util.Util.Dump(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "UpdateJson", "Status" });
-                company.UpdateJson = null;
+                if (company.Status == EnumStatus.Unchecked)
+                {
+                    var model = JsonConvert.DeserializeObject<Company>(company.UpdateJson);
+                    Util.Util.Dump(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "UpdateJson", "Status" });
+                    company.UpdateJson = null;
+                }
                 company.Status = EnumStatus.Valid;
                 msg = "你的企业信息修改申请已经通过审核";
             }
             else
             {
-                company.Status = EnumStatus.Valid;
-                company.UpdateJson = null;
+                if (company.Status == EnumStatus.Unchecked)
+                {
+                    company.Status = EnumStatus.Valid;
+                    company.UpdateJson = null;
+                }
                 msg = "你的企业信息修改申请未通过审核";
             }
             Db.Messages.Add(new Message

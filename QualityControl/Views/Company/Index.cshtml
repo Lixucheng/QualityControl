@@ -17,7 +17,7 @@
                 {
                     <span class="ui type tag label teal am-fr">有更改在审核中</span>
                 }
-                else
+                else if (Model.Status == QualityControl.Enum.EnumStatus.FirstUncheked)
                 {
                     <span class="ui type tag label teal am-fr">企业信息尚未通过</span>
                 }
