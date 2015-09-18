@@ -43,7 +43,7 @@ namespace QualityControl.Controllers
                     list.Add(new ProductBatch
                     {
                         BatchName = "2015-8-" + i.ToString(),
-                        Count = i * 1000,
+                        Count =5,
                         ProductId = 1,
                         CheckNum = x.CheckNum
                     });
