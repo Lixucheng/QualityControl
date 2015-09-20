@@ -77,6 +77,8 @@ namespace QualityControl.Models
         public DbSet<Compact> Compacts { get; set; }
 
         public DbSet<QrCodeInfo> QrCodeInfos { get; set; }
+
+        public DbSet<SGS> SGSs { get; set; }
     }
 
 
