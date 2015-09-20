@@ -1112,6 +1112,7 @@
     <Content Include="Views\SGS\Index.cshtml" />
     <Content Include="Views\SGS\Save.cshtml" />
     <Content Include="Views\Product\SecondTypeIndex.cshtml" />
+    <Content Include="Views\Product\_ChooseType.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1180,7 +1181,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>58292</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

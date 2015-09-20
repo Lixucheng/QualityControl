@@ -5,6 +5,8 @@
 }
 
 @section head{
+<link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+
     <style>
         .main-container {
             background-color: #FFFFFF;
@@ -12,6 +14,9 @@
             box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
             padding: 2em 2em 7em;
             z-index: 1;
+        }
+        .mycontent {
+            margin-bottom:30px;
         }
     </style>
 }
@@ -22,7 +27,7 @@
         <a class="anchor" id="types"></a>
     </h2>
     <div>
-        <button class="ui button blue icon" onclick="Add()"><i class="add circle icon"></i>添加种类</button>
+        <button class="ui button blue icon" onclick="Add()"><i class="add circle icon"></i>添加产品</button>
     </div>
 
     <table class="ui  celled  table">
@@ -41,7 +46,7 @@
 
             @if (ViewBag.count == 0)
             {
-                <p>无信息！</p>
+               
             }
             else
             {
@@ -68,24 +73,9 @@
             }
 
         </tbody>
-        @*<tfoot>
-            <tr>
-                <th colspan="7">
-                    <div class="ui right floated pagination menu">
-                        <a class="icon item">
-                            <i class="left chevron icon"></i>
-                        </a>
-                        <a class="item">1</a>
-                        <a class="item">2</a>
-                        <a class="item">3</a>
-                        <a class="item">4</a>
-                        <a class="icon item">
-                            <i class="right chevron icon"></i>
-                        </a>
-                    </div>
-                </th>
-            </tr>
-        </tfoot>*@
+        <tfoot>
+            <tr></tr>
+        </tfoot>
     </table>
 </div>
 <div class="ui  modal" id="seecp">
@@ -93,49 +83,39 @@
     <div class="header" id="scpname">
         标题
     </div>
-    <div class=" content">
+    <div class=" content mycontent">
 
-        <div class="field">
-                <label>名称</label>
-                <input type="text" name="Name" placeholder="名称" id="cpname">
-            </div>
+        <form class="ui form"  id="" >                     
             <div class="field">
                 <label>生产许可证号</label>
-                <input type="text" name="ProductionCertificateNo" placeholder="生产许可证号" id="cpProductionCertificateNo">
+                <input disabled type="text" name="ProductionCertificateNo" placeholder="生产许可证号" id="scpProductionCertificateNo">
             </div>
             <div class="field">
                 <label>颁发日期</label>
-                <input type="date" name="GetDate" placeholder="颁发日期" id="cpgetdate">
+                <input  disabled type="date" name="GetDate" placeholder="颁发日期" id="scpgetdate">
             </div>
             <div class="field">
                 <label>生产标准</label>
-                <input type="text" name="Standard" placeholder="生产标准" id="cpstandard">
+                <input disabled type="text" name="Standard" placeholder="生产标准" id="scpstandard">
             </div>
             <div class="field">
                 <label>产品类别</label>
-                <select name="ProductTypeId" id="cpProductTypeId">
-                    @{ Html.RenderAction("_Options", "Product"); }
+                <select disabled name="ProductTypeId" id="scpProductTypeId">
+            
                 </select>
             </div>
             <div class="field">
                 <label>产品状态</label>
-                <select name="CompanyProductStatus" id="cpCompanyProductStatus">
+                <select disabled name="CompanyProductStatus" id="scpCompanyProductStatus">
                     <option value="1">正在生产</option>
                     <option value="0">停产</option>
                 </select>
             </div>
-            <div class="ui error message"></div>
+           
+        </form>
 
     </div>
-    @*<div class="actions">
-            <div class="ui black deny button">
-                Nope
-            </div>
-            <div class="ui positive right labeled icon button">
-                Yep, that's me
-                <i class="checkmark icon"></i>
-            </div>
-        </div>*@
+  
 </div>
 
 
@@ -145,7 +125,7 @@
     <div class="header" id="typetitle">
         产品信息修改
     </div>
-    <div class=" content">
+    <div class=" content mycontent">
 
         <form class="ui form" action="/Product/CpEdit" id="editform">
             <input name="CompanyId" style="display: none" value="@ViewBag.cid">
@@ -166,12 +146,7 @@
                 <label>生产标准</label>
                 <input type="text" name="Standard" placeholder="生产标准" id="cpstandard">
             </div>
-            <div class="field">
-                <label>产品类别</label>
-                <select name="ProductTypeId" id="cpProductTypeId">
-                    @{ Html.RenderAction("_Options", "Product"); }
-                </select>
-            </div>
+            @{ Html.RenderAction("_ChooseType", "Product"); }
             <div class="field">
                 <label>产品状态</label>
                 <select name="CompanyProductStatus" id="cpCompanyProductStatus">
@@ -194,10 +169,10 @@
     <div class="header" id="addtypetitle">
         产品添加
     </div>
-    <div class=" content">
+    <div class=" content mycontent" >
 
-        <form class="ui form" method="post" action="/Product/CpAdd" id="addform">
-            <input name="CompanyId" style="display:none" value="@ViewBag.cid">
+        <form class="ui form" method="post" action="/Product/CpAdd"   id="addform">
+            <input name="CompanyId" style="display:none" value="@ViewBag.cid" >
             <div class="field">
                 <label>名称</label>
                 <input type="text" name="Name" placeholder="名称">
@@ -214,12 +189,9 @@
                 <label>生产标准</label>
                 <input type="text" name="Standard" placeholder="生产标准">
             </div>
-            <div class="field">
-                <label>产品类别</label>
-                <select name="ProductTypeId">
-                    @{ Html.RenderAction("_Options", "Product"); }
-                </select>
-            </div>
+
+            @{ Html.RenderAction("_ChooseType", "Product"); }
+         
             <div class="field">
                 <label>产品状态</label>
                 <select name="CompanyProductStatus">
@@ -238,22 +210,57 @@
 </div>
 
 
-
-
-
 @section scripts{
-    <script>
+<script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
 
+<script>
+        $(document).ready(function () {
+            $('table').DataTable({
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                    "sInfoEmpty": "共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+
+                },
+                "bLengthChange": false
+            });
+        });
 
         function See(x) {
             $.ajax({
                 type: 'Get',
-                url: '/Product/GetTypeInfo',
+                url: '/Product/GetCpInfo',
                 data: { id: x },
                 success: function(data) {
-                    $("#typetitle").html(data.Title);
-                    $("#description").html(data.Description);
-                    $('#seedesc').modal('show');
+                    $("#scpname").html(data.cp.Name);
+                    $("#scpid").val(data.cp.Id);
+                    $("#scpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
+                    $("#scpgetdate").val(data.cp.GetDate);
+                    $("#scpstandard").val(data.cp.Standard);
+                    $("#scpProductTypeId").val(data.cp.Standard);
+                    $("#scpProductTypeId option[value='"+data.cp.ProductTypeId+"']").attr("selected","selected");
+                    $("#scpCompanyProductStatus option[value='"+data.cp.CompanyProductStatus+"']").attr("selected","selected");
+
+                    $('#seecp').modal('show');
                 },
                 dataType: "json"
             });
@@ -267,7 +274,7 @@
                 type: 'Get',
                 url: '/Product/GetCpInfo',
                 data: { id: id },
-                success: function(data) {                         
+                success: function(data) {
                     $("#cpname").val(data.cp.Name);
                     $("#cpid").val(data.cp.Id);
                     $("#cpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
@@ -320,7 +327,7 @@
 
                 }
             });
-    </script>
+</script>
 }
 
 
