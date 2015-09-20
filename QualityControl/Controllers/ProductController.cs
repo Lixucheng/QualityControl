@@ -82,10 +82,11 @@ namespace QualityControl.Controllers
             {
                 x.Title = newone.Title;
                 x.Description = newone.Description;
+                Db.Entry(x).State = System.Data.Entity.EntityState.Modified;
                 Db.SaveChanges();
             }
             else { throw new Exception("不存在此产品"); }
-            return Redirect("./SecondTypeIndex/"+newone.FirstType.Id);
+            return Redirect("./SecondTypeIndex/"+x.FirstType.Id);
         }
                                         
         public ActionResult SecondAdd (Db.SecondProductType newone,long fid)
@@ -94,7 +95,8 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("存在重复或有字段为空，请检查后再输入");
             }
-            Db.FirstProductTypes.Find(fid).SecondProductTypes.Add(newone);
+          
+            Db.FirstProductTypes.Find(fid).SecondProductTypes.Add(newone);            
             Db.SaveChanges();
             return Redirect("./SecondTypeIndex/"+fid);
         }
@@ -133,7 +135,7 @@ namespace QualityControl.Controllers
                 Db.SaveChanges();
             }
             else { throw new Exception("不存在此产品"); }
-            return Redirect("./TypeIndex/"+newone.SecondType.Id);
+            return Redirect("./TypeIndex/"+x.SecondType.Id);
         }
 
         public ActionResult Add(Db.ThirdProductType newone,long fid)
@@ -208,22 +210,24 @@ namespace QualityControl.Controllers
                 case 2:
                 {
                         var x = Db.SecondProductTypes.Find(id);
+                        var n = x.FirstType.Id;
                         if (x != null)
                         {
                             Db.SecondProductTypes.Remove(x);
                             Db.SaveChanges();
                         }
-                        return Redirect("./SecondTypeIndex");
+                        return Redirect("./SecondTypeIndex/"+n);
                     }
                 case 3:
                 {
                         var x = Db.ThirdProductTypes.Find(id);
+                        var n = x.SecondType.Id;
                         if (x != null)
                         {
                             Db.ThirdProductTypes.Remove(x);
                             Db.SaveChanges();
                         }
-                        return Redirect("./ThirdTypeIndex");
+                        return Redirect("./TypeIndex/"+n);
                     }
                 default:
                 {
