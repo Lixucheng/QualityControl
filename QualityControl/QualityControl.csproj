@@ -191,6 +191,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ManufacturerController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Db\Company.cs" />
     <Compile Include="Db\DetectionScheme.cs" />
     <Compile Include="Db\Dict.cs" />
@@ -219,6 +220,10 @@
     <Compile Include="Migrations\201509171035415_QrCodeInfo1.cs" />
     <Compile Include="Migrations\201509171035415_QrCodeInfo1.Designer.cs">
       <DependentUpon>201509171035415_QrCodeInfo1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509200349480_types.cs" />
+    <Compile Include="Migrations\201509200349480_types.Designer.cs">
+      <DependentUpon>201509200349480_types.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1071,6 +1076,8 @@
     <Content Include="Views\DetectionScheme\CheckModify.cshtml" />
     <Content Include="Views\DetectionScheme\CompactSign.cshtml" />
     <Content Include="Views\MakeQrCode\Index.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Product\FirstTypeIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1101,6 +1108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509171035415_QrCodeInfo1.resx">
       <DependentUpon>201509171035415_QrCodeInfo1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509200349480_types.resx">
+      <DependentUpon>201509200349480_types.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

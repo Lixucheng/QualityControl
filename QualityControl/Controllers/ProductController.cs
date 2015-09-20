@@ -8,8 +8,8 @@ namespace QualityControl.Controllers
 {
     public class ProductController : BaseController
     {
-
-        #region  产品种类部分
+        #region 产品种类
+        #region  第三级种类部分
         // GET: Product
         /// <summary>
         /// 产品类别界面
@@ -17,7 +17,7 @@ namespace QualityControl.Controllers
         /// <returns></returns>
         public ActionResult TypeIndex()
         {
-            var list = Db.ProductTypes.ToList();
+            var list = Db.ThirdProductTypes.ToList();
             list.ForEach(e => {
                 if(e.Description.Length>40)
                 e.Description = e.Description.Substring(0, 40) + "...";
@@ -34,19 +34,19 @@ namespace QualityControl.Controllers
         /// <returns></returns>
         public JsonResult GetTypeInfo(long id)
         {
-            var r = Db.ProductTypes.Find(id);
+            var r = Db.ThirdProductTypes.Find(id);
             var ret = new { Title = r.Title, Id = r.Id, Description = r.Description };
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
 
-        public ActionResult Edit(Db.ProductType newone)
+        public ActionResult Edit(Db.ThirdProductType newone)
         {
             if (!CheckNewProduct(newone))
             {
                throw new Exception("存在重复或有字段为空，请检查后再输入");
             }
-            var x = Db.ProductTypes.Find(newone.Id);
+            var x = Db.ThirdProductTypes.Find(newone.Id);
             if(x!=null)
             {
                 x.Title = newone.Title;
@@ -57,23 +57,23 @@ namespace QualityControl.Controllers
             return Redirect("./TypeIndex");
         }
 
-        public ActionResult Add(Db.ProductType newone)
+        public ActionResult Add(Db.ThirdProductType newone)
         {
             if (!CheckNewProduct(newone))
             {
                 throw new Exception("存在重复或有字段为空，请检查后再输入");
             }
-            Db.ProductTypes.Add(newone);
+            Db.ThirdProductTypes.Add(newone);
             Db.SaveChanges();
             return Redirect("./TypeIndex");
         }
 
         public ActionResult Del(long id)
         {
-            var x = Db.ProductTypes.Find(id);
+            var x = Db.ThirdProductTypes.Find(id);
             if (x != null)
             {
-                Db.ProductTypes.Remove(x);
+                Db.ThirdProductTypes.Remove(x);
                 Db.SaveChanges();
             }
             return Redirect("../TypeIndex");
@@ -81,7 +81,7 @@ namespace QualityControl.Controllers
 
         public ActionResult _Options()
         {
-            var thislist=Db.ProductTypes.ToList();
+            var thislist=Db.ThirdProductTypes.ToList();
             ViewBag.thislist = thislist;
             ViewBag.thiscount = thislist.Count;
             return View();
@@ -90,13 +90,13 @@ namespace QualityControl.Controllers
 
         #region productType 逻辑函数
 
-        public bool CheckNewProduct(Db.ProductType newone)
+        public bool CheckNewProduct(Db.ThirdProductType newone)
         {
             if (string.IsNullOrEmpty(newone.Title) || string.IsNullOrEmpty(newone.Description))
             {
                 return false;
             }
-            var x = Db.ProductTypes.Count(e => e.Title == newone.Title&&e.Id!=newone.Id);
+            var x = Db.ThirdProductTypes.Count(e => e.Title == newone.Title&&e.Id!=newone.Id);
             return x <= 0;
         }
 
@@ -104,6 +104,29 @@ namespace QualityControl.Controllers
 
         #endregion
         #endregion
+        #region 第一级
+        public ActionResult FirstTypeIndex()
+        {
+            var list = Db.FirstProductTypes.ToList();
+            list.ForEach(e => {
+                if (e.Description.Length > 40)
+                    e.Description = e.Description.Substring(0, 40) + "...";
+            });
+            ViewBag.list = list;
+            ViewBag.count = list.Count;
+            return View();
+        }
+
+
+
+        #endregion
+        #region 第二级
+
+        #endregion
+        #endregion
+
+
+
 
         #region  生产商产品部分
 
