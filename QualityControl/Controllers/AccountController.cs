@@ -202,7 +202,7 @@ namespace QualityControl.Controllers
             {
                 return View("Error"); 
             }
-            return RedirectToAction("Redirect", "Home");
+            return RedirectToAction("Login");
         }
 
         [HttpGet]
