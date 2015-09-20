@@ -101,9 +101,13 @@ namespace QualityControl.Db
 
         public string BatchName { get; set; }
 
-        public long   Count { get; set; }
+        public int   Count { get; set; }
+
+        public int SampleCount { get; set; }
 
         public string CheckNum { get; set; }
+
+        public string SamplaListJson { get; set; }
     }
 
 }
