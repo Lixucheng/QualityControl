@@ -195,6 +195,7 @@
     <Compile Include="Controllers\TradeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Db\Company.cs" />
+    <Compile Include="Db\DetectionReport.cs" />
     <Compile Include="Db\DetectionScheme.cs" />
     <Compile Include="Db\Dict.cs" />
     <Compile Include="Db\Message.cs" />
@@ -244,6 +245,10 @@
     <Compile Include="Migrations\201509200601032_ProductTypeAndTrade.cs" />
     <Compile Include="Migrations\201509200601032_ProductTypeAndTrade.Designer.cs">
       <DependentUpon>201509200601032_ProductTypeAndTrade.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509200849274_Trade.cs" />
+    <Compile Include="Migrations\201509200849274_Trade.Designer.cs">
+      <DependentUpon>201509200849274_Trade.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1149,6 +1154,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509200601032_ProductTypeAndTrade.resx">
       <DependentUpon>201509200601032_ProductTypeAndTrade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509200849274_Trade.resx">
+      <DependentUpon>201509200849274_Trade.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

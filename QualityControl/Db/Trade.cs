@@ -22,7 +22,12 @@ namespace QualityControl.Db
 
         public int Status { get; set; }
 
+        //批次
+        public List<ProductBatch> Batches { get; set; }
+
         public DateTime FinishTime { get; set; }
+
+        public virtual List<DetectionReport> Report { get; set; }
     }
 
     public enum EnumSample
