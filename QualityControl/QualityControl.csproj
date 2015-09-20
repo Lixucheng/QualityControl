@@ -191,6 +191,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ManufacturerController.cs" />
+    <Compile Include="Controllers\SGSController.cs" />
     <Compile Include="Db\Company.cs" />
     <Compile Include="Db\DetectionScheme.cs" />
     <Compile Include="Db\Dict.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Db\Product.cs" />
     <Compile Include="Db\QrCodeInfo.cs" />
     <Compile Include="Db\RegisterApply.cs" />
+    <Compile Include="Db\SGS.cs" />
     <Compile Include="Enum\EnumStatus.cs" />
     <Compile Include="Enum\EnumUserStatus.cs" />
     <Compile Include="Enum\EnumUserType.cs" />
@@ -1079,6 +1081,7 @@
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\SGS\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
