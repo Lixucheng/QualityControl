@@ -192,6 +192,7 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ManufacturerController.cs" />
     <Compile Include="Controllers\SGSController.cs" />
+    <Compile Include="Controllers\TradeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Db\Company.cs" />
     <Compile Include="Db\DetectionScheme.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Db\QrCodeInfo.cs" />
     <Compile Include="Db\RegisterApply.cs" />
     <Compile Include="Db\SGS.cs" />
+    <Compile Include="Db\Trade.cs" />
     <Compile Include="Enum\EnumStatus.cs" />
     <Compile Include="Enum\EnumUserStatus.cs" />
     <Compile Include="Enum\EnumUserType.cs" />
@@ -238,6 +240,10 @@
     <Compile Include="Migrations\201509200514200_SgsAddProducts.cs" />
     <Compile Include="Migrations\201509200514200_SgsAddProducts.Designer.cs">
       <DependentUpon>201509200514200_SgsAddProducts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509200601032_ProductTypeAndTrade.cs" />
+    <Compile Include="Migrations\201509200601032_ProductTypeAndTrade.Designer.cs">
+      <DependentUpon>201509200601032_ProductTypeAndTrade.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1106,6 +1112,7 @@
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\Trade\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -1139,6 +1146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509200514200_SgsAddProducts.resx">
       <DependentUpon>201509200514200_SgsAddProducts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509200601032_ProductTypeAndTrade.resx">
+      <DependentUpon>201509200601032_ProductTypeAndTrade.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

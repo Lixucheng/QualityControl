@@ -79,6 +79,8 @@ namespace QualityControl.Models
         public DbSet<QrCodeInfo> QrCodeInfos { get; set; }
 
         public DbSet<SGS> SGSs { get; set; }
+
+        public DbSet<Trade> Trades { get; set; }
     }
 
 
