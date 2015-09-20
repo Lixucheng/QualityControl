@@ -146,7 +146,7 @@
                 <label>生产标准</label>
                 <input type="text" name="Standard" placeholder="生产标准" id="cpstandard">
             </div>
-            @{ Html.RenderAction("_ChooseType", "Product"); }
+            @{ Html.RenderAction("_ChooseType", "Product",new {name="edit"}); }
             <div class="field">
                 <label>产品状态</label>
                 <select name="CompanyProductStatus" id="cpCompanyProductStatus">
@@ -190,7 +190,7 @@
                 <input type="text" name="Standard" placeholder="生产标准">
             </div>
 
-            @{ Html.RenderAction("_ChooseType", "Product"); }
+            @{ Html.RenderAction("_ChooseType", "Product", new {name="add"}); }
          
             <div class="field">
                 <label>产品状态</label>

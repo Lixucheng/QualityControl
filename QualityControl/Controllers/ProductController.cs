@@ -272,13 +272,15 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        public ActionResult _ChooseType()
+        public ActionResult _ChooseType(string name="s")
         {
+            ViewBag.id = name;
             return View();
         }
 
         public JsonResult GetType(int type, long fatherid)
         {
+
             switch (type)
             {
                 case 2:
