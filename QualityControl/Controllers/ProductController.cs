@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using QualityControl.Db;
 
 namespace QualityControl.Controllers
 {
@@ -343,9 +344,22 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("生产商不存在");
             }
-            var list = Db.CompanyProducts.Where(e=>e.CompanyId==cid).ToList();
-            ViewBag.list = list;
-            ViewBag.count = list.Count;
+
+            var list = Db.CompanyProducts.Where(e => e.CompanyId == cid).ToList();
+            var list2=list.Select(e =>new Cp
+            {
+                Id=e.Id,
+                CompanyId=e.CompanyId,
+                Name=e.Name,
+                ProductTypeId=Db.ThirdProductTypes.Find(e.ProductTypeId).Title,
+                ProductionCertificateNo=e.ProductionCertificateNo,
+                GetDate=e.GetDate,
+                Standard=e.Standard,
+                CompanyProductStatus= e.CompanyProductStatus               
+            }).ToList();
+          
+            ViewBag.list = list2;
+            ViewBag.count = list2.Count;
             ViewBag.cid = cid;
             return View();
         }
@@ -365,7 +379,9 @@ namespace QualityControl.Controllers
         public JsonResult GetCpInfo(long id)
         {
             var r = Db.CompanyProducts.Find(id);
-            var ret = new { cp=r };
+            var c3 = Db.ThirdProductTypes.Find(r.ProductTypeId);
+
+            var ret = new { cp=r ,tname=c3.Title};
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
@@ -384,8 +400,7 @@ namespace QualityControl.Controllers
                 x.CompanyProductStatus = newone.CompanyProductStatus;
                 x.GetDate = newone.GetDate;
                 x.ProductionCertificateNo = newone.ProductionCertificateNo;
-                x.Standard = newone.Standard;
-                x.ProductTypeId = newone.ProductTypeId;
+                x.Standard = newone.Standard;              
                 Db.SaveChanges();
             }
             else { throw new Exception("不存在此产品"); }
@@ -422,6 +437,25 @@ namespace QualityControl.Controllers
                 return false;
             }
             return true;
+        }
+
+        public class Cp
+        {
+            public long Id { get; set; }
+
+            public long CompanyId { get; set; }
+
+            public string Name { get; set; }
+
+            public string ProductTypeId { get; set; }//所属类别
+
+            public string ProductionCertificateNo { get; set; }//生产许可证编号
+
+            public string GetDate { get; set; }//颁发日期
+
+            public string Standard { get; set; }//执行标准
+            public EnumCompanyProductStatus CompanyProductStatus { get; set; }
+
         }
         #endregion
 

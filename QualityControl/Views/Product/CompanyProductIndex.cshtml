@@ -100,9 +100,9 @@
             </div>
             <div class="field">
                 <label>产品类别</label>
-                <select disabled name="ProductTypeId" id="scpProductTypeId">
+                <input disabled name="ProductTypeId" id="scpProductTypeId"/>
             
-                </select>
+                
             </div>
             <div class="field">
                 <label>产品状态</label>
@@ -146,7 +146,7 @@
                 <label>生产标准</label>
                 <input type="text" name="Standard" placeholder="生产标准" id="cpstandard">
             </div>
-            @{ Html.RenderAction("_ChooseType", "Product",new {name="edit"}); }
+
             <div class="field">
                 <label>产品状态</label>
                 <select name="CompanyProductStatus" id="cpCompanyProductStatus">
@@ -256,8 +256,8 @@
                     $("#scpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
                     $("#scpgetdate").val(data.cp.GetDate);
                     $("#scpstandard").val(data.cp.Standard);
-                    $("#scpProductTypeId").val(data.cp.Standard);
-                    $("#scpProductTypeId option[value='"+data.cp.ProductTypeId+"']").attr("selected","selected");
+                    $("#scpProductTypeId").val(data.tname);
+                   
                     $("#scpCompanyProductStatus option[value='"+data.cp.CompanyProductStatus+"']").attr("selected","selected");
 
                     $('#seecp').modal('show');
@@ -280,8 +280,9 @@
                     $("#cpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
                     $("#cpgetdate").val(data.cp.GetDate);
                     $("#cpstandard").val(data.cp.Standard);
-                    $("#cpProductTypeId").val(data.cp.Standard);
-                    $("#cpProductTypeId option[value='"+data.cp.ProductTypeId+"']").attr("selected","selected");
+                    $(".A.edit option[value='"+data.t1+"']").attr("selected","selected");
+                    $(".B.edit option[value='"+data.t2+"']").attr("selected","selected");
+                    $(".C.edit option[value='"+data.t3+"']").attr("selected","selected");
                     $("#cpCompanyProductStatus option[value='"+data.cp.CompanyProductStatus+"']").attr("selected","selected");
                     $('#edit').modal('show');
                 },
