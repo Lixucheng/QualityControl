@@ -1,8 +1,8 @@
-﻿using QualityControl.Db;
+﻿using Newtonsoft.Json;
+using QualityControl.Db;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Data.Entity;
 using System.Web.Mvc;
 
 namespace QualityControl.Controllers
@@ -15,6 +15,12 @@ namespace QualityControl.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 抽样
+        /// </summary>
+        /// <param name="tradeId"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public ActionResult SelectSampleType(long tradeId, EnumSample type)
         {
             var trade = Db.Trades.Find(tradeId);
@@ -27,30 +33,89 @@ namespace QualityControl.Controllers
 
             //抽样
             var batches = trade.Batches;
+            Random random = new Random();
             if (type == EnumSample.Random)
             {
-                Random random = new Random();
+                // 随机
                 foreach (var b in batches)
                 {
-                    List<string> QrCodes = new List<string>();
+                    List<string> qrCodes = new List<string>();
                     for(var i = 0; i < b.SampleCount; i ++)
                     {
-                        int code;
+                        string code;
                         do
                         {
-                            code = random.Next(0, b.Count);
-                        } while (QrCodes.Contains(trade.Id.ToString("00000000000000")));
+                            code = trade.Id.ToString("D15") + "_" +
+                            b.ProductId.ToString("D10") + "_" +
+                            b.BatchName + "_" +
+                            random.Next(0, b.Count).ToString();
+                        } while (qrCodes.Contains(code));
+                        qrCodes.Add(code);
                     }
-                    
+                    b.SamplaListJson = JsonConvert.SerializeObject(qrCodes);
+                    Db.Entry(b).State = EntityState.Modified;
                 }
             }else
             {
-
+                foreach (var b in batches)
+                {
+                    List<string> qrCodes = new List<string>();
+                    int divider = b.Count / b.SampleCount;
+                    int num = random.Next(0, b.SampleCount);
+                    for (var i = 0; i < b.SampleCount; i++)
+                    {
+                        num += i * b.SampleCount;
+                        string code;
+                        code = trade.Id.ToString("D15") + "_" +
+                            b.ProductId.ToString("D10") + "_" +
+                            b.BatchName + "_" +
+                            num.ToString();
+                        qrCodes.Add(code);
+                    }
+                    b.SamplaListJson = JsonConvert.SerializeObject(qrCodes);
+                    Db.Entry(b).State = EntityState.Modified;
+                }
             }
-            
-
+            trade.Status = (int)EnumTradeStatus.SampleFinshed;
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.Messages.Add(new Message()
+            {
+                UserId = trade.Manufacturer.Id,
+                Content = "你的管控合同抽样信息已经完成，请注意查看",
+                Time = DateTime.Now
+            });
+            Db.Messages.Add(new Message()
+            {
+                UserId = trade.SgsUser.Id,
+                Content = "你的管控合同抽样信息已经完成，请注意查看",
+                Time = DateTime.Now
+            });
             Db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        /// <summary>
+        /// 处理合格与不合格
+        /// </summary>
+        /// <param name="tradeId"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public string ChangeValidStatus(long tradeId, int status)
+        {
+            var trade = Db.Trades.Find(tradeId);
+            if (trade.Status == status)
+            {
+                return null;
+            }
+            if (status == 0 || status == 1)
+            {
+                trade.Status = status;
+            }
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return null;
+        }
+
+
     }
 }
