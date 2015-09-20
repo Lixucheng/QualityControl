@@ -26,20 +26,7 @@ namespace QualityControl.Controllers
             ViewBag.count = list.Count;
             return View();
         }
-
-        /// <summary>
-        /// 根据id返回整体
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public JsonResult GetTypeInfo(long id)
-        {
-            var r = Db.ThirdProductTypes.Find(id);
-            var ret = new { Title = r.Title, Id = r.Id, Description = r.Description };
-            return Json(ret, JsonRequestBehavior.AllowGet);
-        }
-
-
+  
         public ActionResult Edit(Db.ThirdProductType newone)
         {
             if (!CheckNewProduct(newone))
@@ -120,9 +107,51 @@ namespace QualityControl.Controllers
 
 
         #endregion
+
         #region 第二级
 
         #endregion
+
+        #region 种类公共部分
+
+        /// <summary>
+        /// 根据id返回整体
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public JsonResult GetTypeInfo(long id,int type)
+        {
+
+            switch (type)
+            {
+                case 1:
+                {
+                        var r = Db.FirstProductTypes.Find(id);
+                        var ret = new { Title = r.Title, Id = r.Id, Description = r.Description };
+                        return Json(ret, JsonRequestBehavior.AllowGet);
+                    } 
+                case 2:
+                {
+                        var r = Db.SecondProductTypes.Find(id);
+                        var ret = new { Title = r.Title, Id = r.Id, Description = r.Description };
+                        return Json(ret, JsonRequestBehavior.AllowGet);
+                    }
+                case 3:
+                {
+                        var r = Db.ThirdProductTypes.Find(id);
+                        var ret = new { Title = r.Title, Id = r.Id, Description = r.Description };
+                        return Json(ret, JsonRequestBehavior.AllowGet);
+
+                }
+                default:
+                    throw new Exception("访问错误");
+                  
+            }
+          
+        }
+        #endregion
+
         #endregion
 
 
