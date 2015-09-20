@@ -1084,6 +1084,7 @@
     <Content Include="Views\MakeQrCode\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Product\FirstTypeIndex.cshtml" />
+    <Content Include="Views\Product\SecondTypeIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
