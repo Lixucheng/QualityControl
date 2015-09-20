@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using QualityControl.Models;
 
 namespace QualityControl.Db
 {
@@ -28,11 +29,20 @@ namespace QualityControl.Db
         public DateTime FinishTime { get; set; }
 
         public virtual List<DetectionReport> Report { get; set; }
+
+        public ApplicationUser Manufacturer { get; set; }
+
+        public ApplicationUser SgsUser { get; set; }
     }
 
     public enum EnumSample
     {
         Random,
         Systematic
+    }
+
+    public enum EnumTradeStatus
+    {
+        SampleFinshed
     }
 }

@@ -14,6 +14,7 @@ namespace QualityControl.Controllers
     {
         public ActionResult Index()
         {
+            var a = 123.ToString("D15");
             return View();
         }
 
