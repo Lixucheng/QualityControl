@@ -22,9 +22,9 @@ namespace QualityControl.Db
 
         public string UserId { get; set; }
 
+        public virtual Company Company { get; set; }
 
-
-        //public Company Company { get; set; }
+        public virtual List<SgsProduct> SgsProducts { get; set; }
 
     }
 

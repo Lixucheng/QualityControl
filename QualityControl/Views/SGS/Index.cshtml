@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using Newtonsoft.Json
+@model QualityControl.Db.SGS
+<div class="am-margin am-padding container ">
+    <div class="verborder">
+    @if(Model != null)
+    {
+        <div class="ui raised segment">
+            <div class="am-cf">
+                <a class="ui red ribbon label zh  fw-normal-force">机构信息</a>
+                <span>@Model.Name</span>
+                @if (Model.Status == QualityControl.Enum.EnumStatus.Unchecked)
+                {
+                    <span class="ui type tag label teal am-fr">有更改在审核中</span>
+                }
+                else if (Model.Status == QualityControl.Enum.EnumStatus.FirstUncheked)
+                {
+                    <span class="ui type tag label teal am-fr">企业信息尚未通过</span>
+                }
+            </div>
+            <p class="ui divider"></p>
+            <div class="ui divided selection list">
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
+                    @Model.CorporationName
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">联系方式</div>
+                    @Model.Tel
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
+                    @Model.Address
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">资政编号</div>
+                    @Model.License
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">类型说明</div>
+                    @Model.Type
+                </a>
+            </div>
+            <div class="ui divider"></div>
+            <div class="am-cf">
+                <span class="zh">修改将会覆盖未审核通过的修改内容</span>
+                <a class="ui right floated button primary" href="/SGS/Save">修改</a>
+            </div>
+        </div>
+
+        <div class="am-margin"></div>
+        if (Model.Status == QualityControl.Enum.EnumStatus.Unchecked)
+        {
+            var jsonData = JsonConvert.DeserializeObject<QualityControl.Db.SGS>(Model.UpdateJson);
+
+            <div class="ui raised segment">
+                <div class="am-cf">
+                    <a class="ui red ribbon label zh  fw-normal-force">企业信息修改副本</a>
+                    <span>@jsonData.Name</span>
+                    <span class="ui type tag label teal am-fr">未审核</span>
+                </div>
+                <p class="ui divider"></p>
+                <div class="ui divided selection list">
+                    <a class="item">
+                        <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
+                        @jsonData.CorporationName
+                    </a>
+                    <a class="item">
+                        <div class="ui horizontal grey label zh fw-normal-force">联系方式</div>
+                        @jsonData.Tel
+                    </a>
+                    <a class="item">
+                        <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
+                        @jsonData.Address
+                    </a>
+                    <a class="item">
+                        <div class="ui horizontal grey label zh fw-normal-force">资政编号</div>
+                        @jsonData.License
+                    </a>
+                    <a class="item">
+                        <div class="ui horizontal grey label zh fw-normal-force">类型说明</div>
+                        @jsonData.Type
+                    </a>
+                </div>
+                <div class="ui divider"></div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="am-text-center">
+            <a class="ui animated teal fade button" tabindex="0" href="/SGS/Save">
+                <div class="visible content zh fw-normal">完善机构信息</div>
+                <div class="hidden content">
+                    <i class="right arrow icon"></i>
+                </div>
+            </a>
+        </div>
+    }
+
+    </div>
+</div>

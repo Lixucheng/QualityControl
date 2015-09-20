@@ -180,7 +180,7 @@
                     $modal.modal('show');
                 } else {
                     $.ajax({
-                        url: '/Admin/Company/Info',
+                        url: '/Admin/Check/CompanyInfo',
                         data: {
                             id: id
                         },
@@ -212,7 +212,7 @@
                     id = way.get('data.Company.Id');
 
                 $.ajax({
-                    url: '/Admin/Company/Action',
+                    url: '/Admin/Check/CompanyAction',
                     data: {
                         isPass: isPass,
                         id: id

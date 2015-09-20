@@ -13,6 +13,7 @@ namespace QualityControl.Db
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        
         public long Id { get; set; }
 
         public string UserId { get; set; }
@@ -41,5 +42,21 @@ namespace QualityControl.Db
         public string License { get; set; }
 
         public string Type { get; set; }
+    }
+
+    [Table("GxSgsProduct")]
+    public class SgsProduct
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
+
+        public float Price { get; set; }
+
+        public int NeedeDay { get; set; }
+
+        public virtual SGS SGS { get; set; }
+
+        public virtual Product Product { get; set; }
     }
 }
