@@ -1,0 +1,91 @@
+﻿<style>
+    select {
+        float: left;
+    }
+</style>
+
+
+
+<div class="field">
+    <label>产品类别</label>
+    <div class="ui mobile reversed equal width grid">
+        <div class=" column">
+            <select name="" id="s1">
+                @{ Html.RenderAction("_Options", "Product", new {type = 1}); }
+            </select>
+        </div>
+        <div class="column">
+            <select name=""id="s2">
+
+            </select>
+        </div>
+        <div class="column">
+            <select name="ProductTypeId" id="s3">
+
+            </select>
+        </div>
+    </div>
+
+</div>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+   
+   
+    get2();
+    
+
+    function get2() {
+        var v1 = $("#s1").val();
+        $.ajax({
+            type: 'Get',
+            url: '/Product/GetType',
+            data: { fatherid: v1, type: 2 },
+
+            success: function (data) {
+                var l = data.length;
+                var s = "";
+                for(var i=0;i<l;i++) {
+                    s += "<option value=" + data[i].id + ">" +data[i].name + "</option>";
+                }
+                $("#s2").html(s);
+                if (l == 0) {
+                    $("#s3").html("");
+                }
+                else
+                get3();
+            },
+            dataType: "json"
+        });
+    }
+
+    function get3() {
+        var v2 = $("#s2").val();
+        $.ajax({
+            type: 'Get',
+            url: '/Product/GetType',
+            data: { fatherid: v2, type: 3 },
+            success: function (data) {
+                var l = data.length;
+                var s = "";
+                for (var i = 0; i < l; i++) {
+                    s += "<option value=" + data[i].id + ">" + data[i].name + "</option>";
+                }
+                $("#s3").html(s);
+
+            },
+            dataType: "json"
+        });
+    }
+
+    $("#s1").change(function () {
+          
+            get2();
+        }
+    );
+    
+    $("#s2").change(function () {
+   
+        get3();
+    });
+
+</script>

@@ -238,7 +238,7 @@ namespace QualityControl.Controllers
         }
 
 
-        public ActionResult _Options(int type,long fatherid)
+        public ActionResult _Options(int type,long fatherid=0)
         {
 
             switch (type)
@@ -270,6 +270,33 @@ namespace QualityControl.Controllers
 
             
             return View();
+        }
+
+        public ActionResult _ChooseType()
+        {
+            return View();
+        }
+
+        public JsonResult GetType(int type, long fatherid)
+        {
+            switch (type)
+            {
+                case 2:
+                    {
+                        var thislist = Db.FirstProductTypes.Find(fatherid).SecondProductTypes.Select(e => new {id = e.Id, name = e.Title});
+                        return Json(thislist, JsonRequestBehavior.AllowGet);
+                       
+                    }
+                case 3:
+                    {
+                        var thislist = Db.SecondProductTypes.Find(fatherid).Productypes.Select(e => new { id = e.Id, name = e.Title });
+
+                        return Json(thislist, JsonRequestBehavior.AllowGet);
+                    }
+                default:
+                    throw new Exception("访问种类错误！");
+            }
+
         }
 
         public bool CheckNewProduct(Db.ThirdProductType newone)
@@ -330,7 +357,7 @@ namespace QualityControl.Controllers
                 Db.CompanyProducts.Remove(x);
                 Db.SaveChanges();
             }
-            return Redirect("./CompanyProductIndex?cid="+cid);
+            return Redirect("../CompanyProductIndex?cid="+cid);
         }
 
         public JsonResult GetCpInfo(long id)
