@@ -1,0 +1,120 @@
+﻿@{    
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model QualityControl.Db.SGS
+@section head{
+    <title>机构信息</title>
+}
+
+<div class="am-margin-lg am-padding-lg ui center aligned container">
+    <div class="am-padding-horizontal-lg">
+        <div class="am-padding-horizontal-lg">
+            <form class="ui form segment" method="post">
+                <h2>机构信息</h2>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label>机构名称</label>
+                        <input placeholder="机构名称" name="Name" type="text" value="@(Model != null ? Model.Name : "")">
+                    </div>
+                    <div class="field">
+                        <label>资政编号</label>
+                        <input placeholder="资政编号" name="License" type="text" value="@(Model != null ? Model.License : "")">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>注册地址</label>
+                    <input placeholder="注册地址" name="Address" type="text" value="@(Model != null ? Model.Address : "")">
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label>法人姓名</label>
+                        <input placeholder="法人姓名" name="CorporationName" type="text" value="@(Model != null ? Model.CorporationName : "")">
+                    </div>
+                    <div class="field">
+                        <label>联系电话</label>
+                        <input placeholder="联系电话" type="text" name="Tel" value="@(Model != null ? Model.Tel : "")">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>类型说明</label>
+                    <textarea rows="2" name="Type" placeholder="类型说明">@(Model != null ? Model.Type : "")</textarea>
+                </div>
+                <div class="ui error message"></div>
+                <div class="ui red cancel button">取消</div>
+                <div class="ui blue submit button">保存</div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+<script>
+    $(function () {
+        $('.ui.form').form({
+            on: 'blur',
+            fields: {
+                Name: {
+                    identifier: 'Name',
+                    rules: [
+                      {
+                          type: 'empty',
+                          prompt: '请输入企业名称'
+                      }
+                    ]
+                },
+                Address: {
+                    identifier: 'Address',
+                    rules: [
+                      {
+                          type: 'empty',
+                          prompt: '请输入企业地址'
+                      }
+                    ]
+                },
+                License: {
+                    identifier: 'License',
+                    rules: [
+                      {
+                          type: 'empty',
+                          prompt: '请输入资政编号'
+                      }
+                    ]
+                },
+                CorporationName: {
+                    identifier: 'CorporationName',
+                    rules: [
+                      {
+                          type: 'empty',
+                          prompt: '请输入法人姓名'
+                      }
+                    ]
+                },
+                Tel: {
+                    identifier: 'CorporationIdentity',
+                    rules: [
+                      {
+                          type: 'regExp[/^([0-9]{3,4}-[0-9]{7,8})|[0-9]{11}$/]',
+                          prompt: '请输入正确的联系方式，固话（固话区号后请写-）或者手机号'
+                      }
+                    ]
+                },
+                Type: {
+                    identifier: 'Type',
+                    rules: [
+                      {
+                          type: 'empty',
+                          prompt: '请输入类型说明'
+                      }
+                    ]
+                },
+
+            }
+        })
+        ;
+    });
+</script>
+}
+
+

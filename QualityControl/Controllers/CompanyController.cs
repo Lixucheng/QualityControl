@@ -37,29 +37,19 @@ namespace QualityControl.Controllers
             {
                 return View(model);
             }
-            if (model.Id == 0)
+            model.UserId = User.Identity.GetUserId();
+            var company = Db.Companies.FirstOrDefault(a => a.UserId == model.UserId);
+            if (company == null)
             {
-                model.UserId = User.Identity.GetUserId();
-                var company = Db.Companies.FirstOrDefault(a => a.UserId == model.UserId);
-                if (company != null)
-                {
-                    model.Id = company.Id;
-                }
-                else
-                {
-                    model.Status = EnumStatus.FirstUncheked;
-                    model.CreateTime = DateTime.Now;
-                    model.LastChangeTime = model.CreateTime;
-                    Db.Companies.Add(model);
-                }
+         
+                model.Status = EnumStatus.FirstUncheked;
+                model.CreateTime = DateTime.Now;
+                model.LastChangeTime = model.CreateTime;
+                Db.Companies.Add(model);
+                
             }
-            if (model.Id != 0)
+            else
             {
-                var company = Db.Companies.Find(model.Id);
-                if (company == null)
-                {
-                    return View();
-                }
                 if (Util.Util.Equal(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime" }))
                 {
                     return RedirectToAction("Index");

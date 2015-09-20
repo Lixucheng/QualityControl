@@ -177,7 +177,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
-    <Compile Include="Areas\Admin\Controllers\CompanyController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CheckController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Attributes\AllowUnrecognized.cs" />
     <Compile Include="Controllers\AccountAdminController.cs" />
@@ -231,9 +231,14 @@
     <Compile Include="Migrations\201509200403481_SGS.Designer.cs">
       <DependentUpon>201509200403481_SGS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509200507205_SgsAndProductRel.cs" />
+    <Compile Include="Migrations\201509200507205_SgsAndProductRel.Designer.cs">
+      <DependentUpon>201509200507205_SgsAndProductRel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\CompanyInfo.cs" />
+    <Compile Include="Models\Adapters\SGSInfo.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Singleton.cs" />
@@ -259,7 +264,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bower.json" />
     <Content Include="Areas\Admin\Views\web.config" />
-    <Content Include="Areas\Admin\Views\Company\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Check\Company.cshtml" />
     <None Include="Properties\PublishProfiles\pub.pubxml" />
     <Content Include="Scripts\bower_components\font-awesome\.bower.json" />
     <Content Include="Scripts\bower_components\font-awesome\.gitignore" />
@@ -1084,6 +1089,8 @@
     <Content Include="Views\MakeQrCode\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Product\FirstTypeIndex.cshtml" />
+    <Content Include="Views\SGS\Index.cshtml" />
+    <Content Include="Views\SGS\Save.cshtml" />
     <Content Include="Views\Product\SecondTypeIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1094,7 +1101,6 @@
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\SGS\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -1122,6 +1128,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509200403481_SGS.resx">
       <DependentUpon>201509200403481_SGS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509200507205_SgsAndProductRel.resx">
+      <DependentUpon>201509200507205_SgsAndProductRel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
