@@ -42,6 +42,8 @@ namespace QualityControl.Db
         public string Description { get; set; }
 
         public virtual List<SecondProductType> SecondProductTypes { get; set; }
+
+      
     }
 
     [Table("GxSecondProductType")]
@@ -56,6 +58,8 @@ namespace QualityControl.Db
         public string Description { get; set; }
 
         public virtual List<ThirdProductType> Productypes { get; set; }
+
+        public virtual FirstProductType FirstType { get; set; }
     }
 
 
@@ -71,6 +75,8 @@ namespace QualityControl.Db
         public string Description { get; set; }
 
         public virtual List<Product> Products { get; set; }
+
+        public virtual SecondProductType SecondType { get; set; }
     }
 
     public enum EnumProductStatus

@@ -67,6 +67,7 @@ namespace QualityControl.Controllers
             });
             ViewBag.list = list;
             ViewBag.count = list.Count;
+            ViewBag.id = id;
             return View();
         }
 
@@ -84,7 +85,7 @@ namespace QualityControl.Controllers
                 Db.SaveChanges();
             }
             else { throw new Exception("不存在此产品"); }
-            return Redirect("./SecondTypeIndex");
+            return Redirect("./SecondTypeIndex/"+newone.FirstType.Id);
         }
                                         
         public ActionResult SecondAdd (Db.SecondProductType newone,long fid)
@@ -95,7 +96,7 @@ namespace QualityControl.Controllers
             }
             Db.FirstProductTypes.Find(fid).SecondProductTypes.Add(newone);
             Db.SaveChanges();
-            return Redirect("./SecondTypeIndex");
+            return Redirect("./SecondTypeIndex/"+fid);
         }
         #endregion
 
@@ -107,6 +108,7 @@ namespace QualityControl.Controllers
         /// <returns></returns>
         public ActionResult TypeIndex(long id)
         {
+            ViewBag.id = id;
             var list = Db.SecondProductTypes.Find(id).Productypes;
             list.ForEach(e => {
                 if (e.Description.Length > 40)
@@ -131,7 +133,7 @@ namespace QualityControl.Controllers
                 Db.SaveChanges();
             }
             else { throw new Exception("不存在此产品"); }
-            return Redirect("./TypeIndex");
+            return Redirect("./TypeIndex/"+newone.SecondType.Id);
         }
 
         public ActionResult Add(Db.ThirdProductType newone,long fid)
@@ -142,7 +144,7 @@ namespace QualityControl.Controllers
             }
             Db.SecondProductTypes.Find(fid).Productypes.Add(newone);
             Db.SaveChanges();
-            return Redirect("./TypeIndex");
+            return Redirect("./TypeIndex/"+fid);
         }
 
 
