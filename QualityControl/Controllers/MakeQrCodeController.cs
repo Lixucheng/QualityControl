@@ -44,7 +44,7 @@ namespace QualityControl.Controllers
             ThoughtWorks.QRCode.Codec.QRCodeEncoder encoder = new QRCodeEncoder();
             encoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;//编码方法
             encoder.QRCodeScale = 4;//大小
-            encoder.QRCodeVersion = 4;//版本
+            encoder.QRCodeVersion = 0;//版本
             encoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.M;
             String qrdata = name+"_"+guid;
             System.Drawing.Bitmap bp = encoder.Encode(qrdata, ASCIIEncoding.UTF8);

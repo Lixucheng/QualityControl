@@ -16,7 +16,7 @@ namespace QualityControl.Db
 
         public float Price { get; set; }
 
-        public virtual ProductType Type { get; set; }
+        public virtual ThirdProductType Type { get; set; }
 
         public int Status { get; set; }
 
@@ -28,8 +28,39 @@ namespace QualityControl.Db
 
     }
 
-    [Table("GxProductType")]
-    public class ProductType
+
+
+    [Table("GxFirstProductType")]
+    public class FirstProductType
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
+
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public virtual List<SecondProductType> SecondProductTypes { get; set; }
+    }
+
+    [Table("GxSecondProductType")]
+    public class SecondProductType
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
+
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public virtual List<ThirdProductType> Productypes { get; set; }
+    }
+
+
+    [Table("GxThirdProductType")]
+    public class ThirdProductType
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -22,7 +22,7 @@ namespace QualityControl.Areas.Admin.Controllers
         {
             if (page < 1) page = 1;
             if (count < 1) count = 20;
-            var data = Db.ProductTypes.Where(a => a.Title.Contains(key))
+            var data = Db.ThirdProductTypes.Where(a => a.Title.Contains(key))
                 .Skip((page - 1) * count)
                 .Take(count).ToList();
             return View(data);
@@ -33,13 +33,13 @@ namespace QualityControl.Areas.Admin.Controllers
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public long AddType(ProductType type)
+        public long AddType(ThirdProductType type)
         {
             if (string.IsNullOrEmpty(type.Title) || string.IsNullOrEmpty(type.Description))
             {
                 return 0;
             }
-            Db.ProductTypes.Add(type);
+            Db.ThirdProductTypes.Add(type);
             Db.SaveChanges();
             return type.Id;
         }
@@ -49,9 +49,9 @@ namespace QualityControl.Areas.Admin.Controllers
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public int UpdateType(ProductType type)
+        public int UpdateType(ThirdProductType type)
         {
-            var oldType = Db.ProductTypes.Find(type.Id);
+            var oldType = Db.ThirdProductTypes.Find(type.Id);
             if (oldType == null)
             {
                 return -1;
@@ -71,12 +71,12 @@ namespace QualityControl.Areas.Admin.Controllers
         /// <returns></returns>
         public int RemoveType(long id)
         {
-            var type = Db.ProductTypes.Find(id);
+            var type = Db.ThirdProductTypes.Find(id);
             if (type == null)
             {
                 return 0;
             }
-            Db.ProductTypes.Remove(type);
+            Db.ThirdProductTypes.Remove(type);
             Db.SaveChanges();
             return 1;
         }
