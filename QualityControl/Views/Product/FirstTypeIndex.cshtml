@@ -38,33 +38,39 @@
         </thead>
         <tbody>
 
-            @if (ViewBag.count == 0)
-            {
-               
-            }
-            else
-            {
-                foreach (var Tempx in ViewBag.list)
-                {
-                    <tr>
+        @if (ViewBag.count == 0)
+        {
 
-                        <td>@Tempx.Title</td>
-                        <td>@Tempx.Description</td>
+        }
+        else
+        {
+            foreach (var Tempx in ViewBag.list)
+            {
+                <tr>
 
-                        <td>
-                            <div class="2  fluid ui">
-                                <a class="ui  button" href="/Product/SecondtypeIndex?id=@Tempx.Id">查看下属种类</a>
-                                <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
-                                <button class="ui  button" onclick="Edit(@Tempx.Id)">修改</button>
-                                <a class="ui  button" href="/Product/Del?id=@Tempx.Id&&type=1">删除</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
+                    <td>@Tempx.Title</td>
+                    <td>@Tempx.Description</td>
+
+                    <td>
+                        <div class="2  fluid ui">
+                            <a class="ui  button" href="/Product/SecondtypeIndex?id=@Tempx.Id">查看下属种类</a>
+                            <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
+                            <button class="ui  button" onclick="Edit(@Tempx.Id)">修改</button>
+                            <a class="ui  button" href="/Product/Del?id=@Tempx.Id&&type=1">删除</a>
+                        </div>
+                    </td>
+                </tr>
             }
+        }
 
         </tbody>
-   
+
+        <tfoot>
+            <tr>
+              
+            </tr>
+        </tfoot>
+
     </table>
 </div>
 <div class="ui  modal" id="seedesc">
