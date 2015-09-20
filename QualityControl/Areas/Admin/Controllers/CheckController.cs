@@ -114,16 +114,16 @@ namespace QualityControl.Areas.Admin.Controllers
 
         public string SGSInfo(long id)
         {
-            var data = new CompanyInfo();
+            var data = new SGSInfo();
             var sgs = Db.SGSs.Find(id);
             if (sgs == null)
             {
                 return null;
             }
-            sgs = null;
-            data.Company = new Company();
-            Util.Util.Dump(sgs, data.Company, isnoreId: false);
-            data.User = Db.Users.Find(data.Company.UserId);
+            sgs.Products = null;
+            data.SGS = new SGS();
+            Util.Util.Dump(sgs, data.SGS, isnoreId: false);
+            data.User = Db.Users.Find(data.SGS.UserId);
             data.User = new Models.ApplicationUser()
             {
                 Id = data.User.Id,
@@ -136,40 +136,40 @@ namespace QualityControl.Areas.Admin.Controllers
 
         public void SGSAction(long id, bool isPass)
         {
-            var company = Db.Companies.Find(id);
+            var sgs = Db.SGSs.Find(id);
             string msg;
-            if (company == null)
+            if (sgs == null)
             {
                 return;
             }
             if (isPass)
             {
-                if (company.Status == EnumStatus.Unchecked)
+                if (sgs.Status == EnumStatus.Unchecked)
                 {
-                    var model = JsonConvert.DeserializeObject<Company>(company.UpdateJson);
-                    Util.Util.Dump(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "UpdateJson", "Status" });
-                    company.UpdateJson = null;
+                    var model = JsonConvert.DeserializeObject<Company>(sgs.UpdateJson);
+                    Util.Util.Dump(model, sgs, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "UpdateJson", "Status" });
+                    sgs.UpdateJson = null;
                 }
-                company.Status = EnumStatus.Valid;
-                msg = "你的企业信息修改申请已经通过审核";
+                sgs.Status = EnumStatus.Valid;
+                msg = "你的机构信息修改申请已经通过审核";
             }
             else
             {
-                if (company.Status == EnumStatus.Unchecked)
+                if (sgs.Status == EnumStatus.Unchecked)
                 {
-                    company.Status = EnumStatus.Valid;
-                    company.UpdateJson = null;
+                    sgs.Status = EnumStatus.Valid;
+                    sgs.UpdateJson = null;
                 }
-                msg = "你的企业信息修改申请未通过审核";
+                msg = "你的机构信息修改申请未通过审核";
             }
             Db.Messages.Add(new Message
             {
-                UserId = company.UserId,
+                UserId = sgs.UserId,
                 Content = msg,
                 Status = 0,
                 Time = DateTime.Now
             });
-            Db.Entry(company).State = EntityState.Modified;
+            Db.Entry(sgs).State = EntityState.Modified;
             Db.SaveChanges();
         }
         #endregion

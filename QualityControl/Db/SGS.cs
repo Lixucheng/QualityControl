@@ -42,6 +42,8 @@ namespace QualityControl.Db
         public string License { get; set; }
 
         public string Type { get; set; }
+
+        public List<SgsProduct> Products { get; set; }
     }
 
     [Table("GxSgsProduct")]
