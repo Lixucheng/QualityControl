@@ -254,6 +254,10 @@
     <Compile Include="Migrations\201509201004557_Trade1.Designer.cs">
       <DependentUpon>201509201004557_Trade1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509211048483_product.cs" />
+    <Compile Include="Migrations\201509211048483_product.Designer.cs">
+      <DependentUpon>201509211048483_product.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\CompanyInfo.cs" />
@@ -1113,6 +1117,7 @@
     <Content Include="Views\SGS\Save.cshtml" />
     <Content Include="Views\Product\SecondTypeIndex.cshtml" />
     <Content Include="Views\Product\_ChooseType.cshtml" />
+    <Content Include="Views\User\ChooseProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1165,6 +1170,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509201004557_Trade1.resx">
       <DependentUpon>201509201004557_Trade1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509211048483_product.resx">
+      <DependentUpon>201509211048483_product.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -95,7 +95,7 @@ namespace QualityControl.Areas.Admin.Controllers
         {
             if (page < 1) page = 1;
             if (count < 1) count = 20;
-            var data = Db.Products.Where(a => a.Status == status && a.Name.Contains(key))
+            var data = Db.Products.Where(a => (int)a.Status == status && a.Name.Contains(key))
                 .Skip((page - 1) * count)
                 .Take(count).ToList();
             return View(data);
@@ -113,7 +113,7 @@ namespace QualityControl.Areas.Admin.Controllers
             {
                 return 0;
             }
-            product.Status = (int)EnumProductStatus.Published;
+            product.Status = EnumProductStatus.正在生产;
             Db.Entry(product).Property(a => a.Status).IsModified = true;
             Db.SaveChanges();
             return 1;

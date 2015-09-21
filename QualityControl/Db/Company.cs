@@ -73,17 +73,13 @@ namespace QualityControl.Db
 
         public string Standard { get; set; }//执行标准
 
-        public EnumCompanyProductStatus CompanyProductStatus { get; set; }
+        public EnumProductStatus CompanyProductStatus { get; set; }
 
 
     }
 
 
-    public enum EnumCompanyProductStatus
-    {
-        正在生产=1,
-        停产=0
-    }
+  
     public class CompanyViewModel
     {
         [Required]

@@ -345,17 +345,17 @@ namespace QualityControl.Controllers
                 throw new Exception("生产商不存在");
             }
 
-            var list = Db.CompanyProducts.Where(e => e.CompanyId == cid).ToList();
+            var list = c.Products;
             var list2=list.Select(e =>new Cp
             {
                 Id=e.Id,
-                CompanyId=e.CompanyId,
+                CompanyName=c.Name,
                 Name=e.Name,
-                ProductTypeId=Db.ThirdProductTypes.Find(e.ProductTypeId).Title,
+                ProductTypeId=e.Type.Title,
                 ProductionCertificateNo=e.ProductionCertificateNo,
                 GetDate=e.GetDate,
                 Standard=e.Standard,
-                CompanyProductStatus= e.CompanyProductStatus               
+                CompanyProductStatus= e.Status               
             }).ToList();
           
             ViewBag.list = list2;
@@ -443,7 +443,7 @@ namespace QualityControl.Controllers
         {
             public long Id { get; set; }
 
-            public long CompanyId { get; set; }
+            public string CompanyName { get; set; }
 
             public string Name { get; set; }
 
@@ -454,7 +454,7 @@ namespace QualityControl.Controllers
             public string GetDate { get; set; }//颁发日期
 
             public string Standard { get; set; }//执行标准
-            public EnumCompanyProductStatus CompanyProductStatus { get; set; }
+            public EnumProductStatus CompanyProductStatus { get; set; }
 
         }
         #endregion

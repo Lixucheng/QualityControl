@@ -18,17 +18,27 @@ namespace QualityControl.Db
 
         public virtual ThirdProductType Type { get; set; }
 
-        public int Status { get; set; }
+        public EnumProductStatus Status { get; set; }
 
         public string UserId { get; set; }
 
         public virtual Company Company { get; set; }
 
+        public string ProductionCertificateNo { get; set; }//生产许可证编号
+
+        public string GetDate { get; set; }//颁发日期
+
+        public string Standard { get; set; }//执行标准
+
         public virtual List<SgsProduct> SgsProducts { get; set; }
 
     }
 
-
+    public enum EnumProductStatus
+    {
+        正在生产 = 1,
+        停产 = 0
+    }
 
     [Table("GxFirstProductType")]
     public class FirstProductType
@@ -79,11 +89,7 @@ namespace QualityControl.Db
         public virtual SecondProductType SecondType { get; set; }
     }
 
-    public enum EnumProductStatus
-    {
-        Created,
-        Published
-    }
+
 
     public class ProductViewModel
     {
