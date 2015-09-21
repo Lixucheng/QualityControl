@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using QualityControl.Db;
 
 namespace QualityControl.Controllers
@@ -351,7 +352,7 @@ namespace QualityControl.Controllers
                 Id=e.Id,
                 CompanyName=c.Name,
                 Name=e.Name,
-                ProductTypeId=e.Type.Title,
+                ProductTypeName=e.Type.Title,
                 ProductionCertificateNo=e.ProductionCertificateNo,
                 GetDate=e.GetDate,
                 Standard=e.Standard,
@@ -378,60 +379,69 @@ namespace QualityControl.Controllers
 
         public JsonResult GetCpInfo(long id)
         {
-            var r = Db.CompanyProducts.Find(id);
-            var c3 = Db.ThirdProductTypes.Find(r.ProductTypeId);
-
-            var ret = new { cp=r ,tname=c3.Title};
+            var e = Db.Products.Find(id);
+            var name = e.Type.Title;
+            var cpx = new Cp
+            {
+                Id = e.Id,
+                CompanyName = e.Company.Name,
+                Name = e.Name,
+                ProductTypeName = e.Type.Title,
+                ProductionCertificateNo = e.ProductionCertificateNo,
+                GetDate = e.GetDate,
+                Standard = e.Standard,
+                CompanyProductStatus = e.Status
+            };
+            var ret = new { cp=cpx ,tname=name,status=e.Status};
             return Json(ret, JsonRequestBehavior.AllowGet);
         }
 
 
-        public ActionResult CpEdit(Db.CompanyProduct newone)
+        public ActionResult CpEdit(Db.Product newone)
         {
             if (!CheckCp(newone))
             {
                 throw new Exception("存在重复或有字段为空，请检查后再输入");
             }
-            var x = Db.CompanyProducts.Find(newone.Id);
+            var x = Db.Products.Find(newone.Id);
             if (x != null)
             {
                 x.Name = newone.Name;
-                x.CompanyId = newone.CompanyId;
-                x.CompanyProductStatus = newone.CompanyProductStatus;
+                x.Price = newone.Price;
+                x.Status = newone.Status;
                 x.GetDate = newone.GetDate;
                 x.ProductionCertificateNo = newone.ProductionCertificateNo;
                 x.Standard = newone.Standard;              
                 Db.SaveChanges();
             }
             else { throw new Exception("不存在此产品"); }
-            return Redirect("./CompanyProductIndex?cid=" + x.CompanyId);
+            return Redirect("./CompanyProductIndex?cid=" + x.Company.Id);
         }
 
-        public ActionResult CpAdd(Db.CompanyProduct newone)
+        public ActionResult CpAdd(Db.Product newone,long ProductTypeId)
         {
             if (!CheckCp(newone))
             {
                 throw new Exception("存在重复或有字段为空，请检查后再输入");
             }
-            Db.CompanyProducts.Add(newone);
+            var userid = User.Identity.GetUserId();
+            var comp=Db.Companies.FirstOrDefault(e=>e.UserId==userid);
+            var type = Db.ThirdProductTypes.Find(ProductTypeId);
+            newone.Type = type;
+            comp.Products.Add(newone);
             Db.SaveChanges();
-            return Redirect("./CompanyProductIndex?cid=" + newone.CompanyId);
+            return Redirect("./CompanyProductIndex?cid=" + comp.Id);
         }
 
-        public bool CheckCp(Db.CompanyProduct cp)
+        public bool CheckCp(Db.Product cp)
         {         
             if (string.IsNullOrEmpty(cp.GetDate) && string.IsNullOrEmpty(cp.Name) &&
                 string.IsNullOrEmpty(cp.ProductionCertificateNo) &&
                 string.IsNullOrEmpty(cp.Standard))
             {
                 return false;}
-            var x = Db.Companies.Find(cp.CompanyId);
-            if (x == null)
-            {
-                return false;
-            }
-
-            var p = Db.CompanyProducts.FirstOrDefault(e => e.Name == cp.Name&&e.Id!=cp.Id);
+    
+            var p = Db.Products.FirstOrDefault(e => e.Name == cp.Name&&e.Id!=cp.Id);
             if (p != null)
             {
                 return false;
@@ -447,7 +457,7 @@ namespace QualityControl.Controllers
 
             public string Name { get; set; }
 
-            public string ProductTypeId { get; set; }//所属类别
+            public string ProductTypeName { get; set; }//所属类别
 
             public string ProductionCertificateNo { get; set; }//生产许可证编号
 
@@ -457,6 +467,8 @@ namespace QualityControl.Controllers
             public EnumProductStatus CompanyProductStatus { get; set; }
 
         }
+
+    
         #endregion
 
     }

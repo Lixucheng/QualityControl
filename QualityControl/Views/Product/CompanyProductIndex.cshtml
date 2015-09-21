@@ -149,7 +149,7 @@
 
             <div class="field">
                 <label>产品状态</label>
-                <select name="CompanyProductStatus" id="cpCompanyProductStatus">
+                <select name="Status" id="Status" >
                     <option value="1">正在生产</option>
                     <option value="0">停产</option>
                 </select>
@@ -194,7 +194,7 @@
          
             <div class="field">
                 <label>产品状态</label>
-                <select name="CompanyProductStatus">
+                <select name="Status">
                     <option value="1">正在生产</option>
                     <option value="0">停产</option>
                 </select>
@@ -251,6 +251,7 @@
                 url: '/Product/GetCpInfo',
                 data: { id: x },
                 success: function(data) {
+                    
                     $("#scpname").html(data.cp.Name);
                     $("#scpid").val(data.cp.Id);
                     $("#scpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
@@ -258,7 +259,7 @@
                     $("#scpstandard").val(data.cp.Standard);
                     $("#scpProductTypeId").val(data.tname);
                    
-                    $("#scpCompanyProductStatus option[value='"+data.cp.CompanyProductStatus+"']").attr("selected","selected");
+                    $("#scpCompanyProductStatus option[value='"+data.status+"']").attr("selected","selected");
 
                     $('#seecp').modal('show');
                 },
@@ -280,10 +281,7 @@
                     $("#cpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
                     $("#cpgetdate").val(data.cp.GetDate);
                     $("#cpstandard").val(data.cp.Standard);
-                    $(".A.edit option[value='"+data.t1+"']").attr("selected","selected");
-                    $(".B.edit option[value='"+data.t2+"']").attr("selected","selected");
-                    $(".C.edit option[value='"+data.t3+"']").attr("selected","selected");
-                    $("#cpCompanyProductStatus option[value='"+data.cp.CompanyProductStatus+"']").attr("selected","selected");
+                    $("#Status option[value='"+data.status+"']").attr("selected","selected");
                     $('#edit').modal('show');
                 },
                 dataType: "json"
