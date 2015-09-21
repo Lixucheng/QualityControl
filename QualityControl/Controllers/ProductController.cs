@@ -367,11 +367,11 @@ namespace QualityControl.Controllers
 
         public ActionResult CpDel(long id)
         {
-            var x = Db.CompanyProducts.Find(id);
-            var cid = x.CompanyId;
+            var x = Db.Products.Find(id);
+            var cid = x.Company.Id;
             if (x != null)
             {
-                Db.CompanyProducts.Remove(x);
+                Db.Products.Remove(x);
                 Db.SaveChanges();
             }
             return Redirect("../CompanyProductIndex?cid="+cid);

@@ -19,60 +19,103 @@
         .mycontent {
             margin-bottom: 30px;
         }
+   
     </style>
 }
 
 <div class="main-container">
-    <h2 class="ui dividing header">
-        产品选择
-        <a class="anchor" id="types"></a>
-    </h2>
-   
+    <div>
+        <div class="ui form" style="width: 20%; float: left; margin-right:3%">
+            <div class="field">
+                <label>搜索方式</label>
+                <div class="ui mobile reversed equal width grid">
+                    <div class="column">
+                        <select id="sel">
+                            <option value="1">按产品种类搜索</option>
+                            <option value="2">按产品名称搜索</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="ui form type" style="width: 40%; float:left" id="form" action="" method="get">
+            @{ Html.RenderAction("_ChooseType", "Product", new {name = "Choose"}); }
+            
+        </form>
+        <form id="name" class="ui form" style="display: none; width: 20%; float: left;" action="" method="get">
+            <div class="field">
+                <label  id="lable">按产品名称搜索</label>
+                <div class="ui mobile reversed equal width grid">
+                    <div class="column">
+                        <input name="key"/>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <div class="ui form" style=" width: 20%; float: left; margin-left:2%">
+            <div class="field">
+                <label style="opacity:0" hidden="hidden" id="lable0">1</label>
+                <div class="ui mobile reversed equal width grid">
+                    <div class="column">
+                        <button class="ui button blue" id="searchbtn">搜索</button>
+                    </div>
+                   
+                
+                </div>
+            </div>
+
+        </div>
+       
+        </div>
+
+
     <table class="ui  celled  table">
         <thead class="">
-            <tr>
-                <th>名称</th>
-                <th>产品种类</th>
-                <th>许可证号</th>
-                <th>发证日期</th>
-                <th>生产标准</th>
-                <th>产品状态</th>
-                <th>操作</th>
-            </tr>
+        <tr>
+            <th>名称</th>
+            <th>产品种类</th>
+            <th>生产厂家</th>
+            <th>许可证号</th>
+            <th>发证日期</th>
+            <th>生产标准</th>
+            <th>产品状态</th>
+            <th>操作</th>
+        </tr>
         </thead>
         <tbody>
 
-            @if (ViewBag.count == 0)
+        @if (ViewBag.count == 0)
+        {
+
+        }
+        else
+        {
+            foreach (var Tempx in ViewBag.list)
             {
+                <tr>
+                    <td>@Tempx.Name</td>
+                    <td>@Tempx.Type.Title</td>
+                    <td>@Tempx.Company.Name</td>
+                    <td>@Tempx.ProductionCertificateNo</td>
+                    <td>@Tempx.GetDate</td>
+                    <td>@Tempx.Standard</td>
+                    <td>@Tempx.Status</td>
 
+                    <td>
+                        <div class="2  fluid ui">
+                            <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
+
+                            <button class="ui  button" onclick="Choose(@Tempx.Id)" >确定选择</button>
+                        </div>
+                    </td>
+                </tr>
             }
-            else
-            {
-                foreach (var Tempx in ViewBag.list)
-                {
-                    <tr>
-
-                        <td>@Tempx.Name</td>
-                        <td>@Tempx.ProductTypeId</td>
-                        <td>@Tempx.ProductionCertificateNo</td>
-                        <td>@Tempx.GetDate</td>
-                        <td>@Tempx.Standard</td>
-                        <td>@Tempx.CompanyProductStatus</td>
-
-                        <td>
-                            <div class="2  fluid ui">
-                                <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
-                                <button class="ui  button" onclick="Edit(@Tempx.Id)">修改</button>
-                                <a class="ui  button" href="/Product/CpDel/@Tempx.Id">删除</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            }
+        }
 
         </tbody>
         <tfoot>
-            <tr></tr>
+        <tr></tr>
         </tfoot>
     </table>
 </div>
@@ -151,6 +194,7 @@
                 },
                 "bLengthChange": false
             });
+            $("#form .field label").html("按产品种类搜索");
         });
 
         function See(x) {
@@ -175,6 +219,37 @@
 
         };
 
+        $("#sel").change(function() {
+            var x = $(this).val();
+            if (x == 1) {
+                $(".type").show();
+                $('#name').hide();
+            } else {
+                $('#name').show();
+                $(".type").hide();
+            }
+        });
+
+        $('#searchbtn').click(function () {
+
+            var x = $("#sel").val();
+            if (x == 1) {
+                $('#form').submit();
+            } else {
+                $('#name').submit();
+            }
+        });
+
+        function Choose(id) {
+            var r = confirm("确认选择？")
+            if (r == true) {
+                top.location = "../User/Choose/" + id;
+            }
+            else {
+               
+            }
+       
+        }
     </script>
 }
 
