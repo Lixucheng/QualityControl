@@ -32,6 +32,13 @@ namespace QualityControl.Controllers
                 }
             });
 
+            //压缩
+            var urlz = HttpRuntime.AppDomainAppPath;
+            var zipfile = urlz + "Image\\" + checknum;
+            var zipname = urlz + "Image\\" + checknum + ".zip";
+            Zip(zipfile, zipname);
+
+            ViewBag.zipurl = Request.Url.ToString() + "/Image/" + checknum + ".zip";
             string url = Request.Url.ToString();
             ViewBag.list = listdown;
             return View();
@@ -59,9 +66,7 @@ namespace QualityControl.Controllers
 
             image.Save(path+"\\" + name, ImageFormat.Jpeg);
 
-            //压缩
-            var zipdic = url + "\\Image\\" + checknum;
-            Zip(zipdic);
+          
 
             var qr = new Db.QrCodeInfo();
             qr.IdCode = guid;
@@ -74,10 +79,9 @@ namespace QualityControl.Controllers
             return down;
         }
 
-        public bool Zip(string filedictionary)
+        public bool Zip(string zipfile,string zipname)
         {
-            var z = new Models.Zip();
-            z.ZipFile(filedictionary, filedictionary);
+            Models.Zip.PackageFolder(zipfile, zipname, true);
             return true;
         }
     }
