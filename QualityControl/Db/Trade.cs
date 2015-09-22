@@ -35,6 +35,11 @@ namespace QualityControl.Db
         public ApplicationUser SgsUser { get; set; }
 
         public virtual Product Product { get; set; }
+
+        /// <summary>
+        /// 协议内容
+        /// </summary>
+        public virtual Compact Compact { get; set; }
     }
 
     public enum EnumSample

@@ -124,7 +124,7 @@ namespace QualityControl.Db
 
         public int SampleCount { get; set; }
 
-        public string CheckNum { get; set; }
+        public virtual Trade Trade { get; set; }
 
         public string SamplaListJson { get; set; }
     }
