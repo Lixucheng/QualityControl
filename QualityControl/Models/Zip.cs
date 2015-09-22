@@ -5,61 +5,62 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.IO;
+using System.IO.Packaging;
 
-using ICSharpCode.SharpZipLib.Checksums;
-using ICSharpCode.SharpZipLib.Zip;
-using ICSharpCode.SharpZipLib.GZip;
 
 namespace QualityControl.Models
 {
-    class Zip
+    static class Zip
     {
-        public void ZipFile(string strFile, string strZip)
+        /// Add a folder along with its subfolders to a Package
+        /// </summary>
+        /// <param name="folderName">The folder to add</param>
+        /// <param name="compressedFileName">The package to create</param>
+        /// <param name="overrideExisting">Override exsisitng files</param>
+        /// <returns></returns>
+        public static bool PackageFolder(string folderName, string compressedFileName, bool overrideExisting)
         {
-            if (strFile[strFile.Length - 1] != Path.DirectorySeparatorChar)
-                strFile += Path.DirectorySeparatorChar;
-            var s = new ZipOutputStream(File.Create(strZip));
-            s.SetLevel(6); // 0 - store only to 9 - means best compression
-            zip(strFile, s, strFile);
-            s.Finish();
-            s.Close();
-        }
-
-
-        private void zip(string strFile, ZipOutputStream s, string staticFile)
-        {
-            if (strFile[strFile.Length - 1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;
-            Crc32 crc = new Crc32();
-            string[] filenames = Directory.GetFileSystemEntries(strFile);
-            foreach (string file in filenames)
+            if (folderName.EndsWith(@"\"))
+                folderName = folderName.Remove(folderName.Length - 1);
+            bool result = false;
+            if (!Directory.Exists(folderName))
             {
-
-                if (Directory.Exists(file))
-                {
-                    zip(file, s, staticFile);
-                }
-
-                else // 否则直接压缩文件
-                {
-                    //打开压缩文件
-                    FileStream fs = File.OpenRead(file);
-
-                    byte[] buffer = new byte[fs.Length];
-                    fs.Read(buffer, 0, buffer.Length);
-                    string tempfile = file.Substring(staticFile.LastIndexOf("\\") + 1);
-                    ZipEntry entry = new ZipEntry(tempfile);
-
-                    entry.DateTime = DateTime.Now;
-                    entry.Size = fs.Length;
-                    fs.Close();
-                    crc.Reset();
-                    crc.Update(buffer);
-                    entry.Crc = crc.Value;
-                    s.PutNextEntry(entry);
-
-                    s.Write(buffer, 0, buffer.Length);
-                }
+                return result;
             }
+
+            if (!overrideExisting && File.Exists(compressedFileName))
+            {
+                return result;
+            }
+            try
+            {
+                using (Package package = Package.Open(compressedFileName, FileMode.Create))
+                {
+                    var fileList = Directory.EnumerateFiles(folderName, "*", SearchOption.AllDirectories);
+                    foreach (string fileName in fileList)
+                    {
+
+                        //The path in the package is all of the subfolders after folderName
+                        string pathInPackage;
+                        pathInPackage = Path.GetDirectoryName(fileName).Replace(folderName, string.Empty) + "/" + Path.GetFileName(fileName);
+
+                        Uri partUriDocument = PackUriHelper.CreatePartUri(new Uri(pathInPackage, UriKind.Relative));
+                        PackagePart packagePartDocument = package.CreatePart(partUriDocument, "", CompressionOption.Maximum);
+                        using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                        {
+                            fileStream.CopyTo(packagePartDocument.GetStream());
+                        }
+                    }
+                }
+                result = true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error zipping folder " + folderName, e);
+            }
+
+            return result;
         }
+
     }
 }
