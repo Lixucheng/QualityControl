@@ -471,7 +471,17 @@ namespace QualityControl.Controllers
 
         }
 
-
+        [Authorize]
+        public ActionResult CompanyProductInfo(long id)
+        {
+            var company = MyCompany;
+            var product = company.Products.FirstOrDefault(a => a.Id == id);
+            if (product == null)
+            {
+                return RedirectToAction("CompanyProductIndex");
+            }
+            return View(product);
+        }
 
         [Authorize]
         [HttpGet]
@@ -490,6 +500,7 @@ namespace QualityControl.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult CompanyProductSave(Product model, long productTypeId)
         {
@@ -499,7 +510,8 @@ namespace QualityControl.Controllers
             }
             model.UserId = User.Identity.GetUserId();
             var company = MyCompany;
-            if (company == null)
+            var product = company.Products.FirstOrDefault(a => a.Id == model.Id);
+            if (product == null)
             {
                 model.Type = Db.ThirdProductTypes.Find(productTypeId);
                 if (model.Type == null)
@@ -513,13 +525,13 @@ namespace QualityControl.Controllers
             }
             else
             {
-                if (Util.Util.Equal(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime" }))
+                if (Util.Util.Equal(model, product, excepts: new List<string> {  "CreateTime", "LastChangeTime", "Status"}))
                 {
                     return RedirectToAction("Index");
                 }
-                if (company.Status == EnumStatus.FirstUncheked)
+                if (product.Status == EnumStatus.FirstUncheked)
                 {
-                    Util.Util.Dump(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "Status" });
+                    Util.Util.Dump(model, product, excepts: new List<string> { "CreateTime", "LastChangeTime", "Status" });
                     if (model.Type.Id != productTypeId)
                     {
                         model.Type = Db.ThirdProductTypes.Find(productTypeId);
@@ -527,19 +539,19 @@ namespace QualityControl.Controllers
                 }
                 else
                 {
-                    if (Db.ThirdProductTypes.FirstOrDefault(a => a.Id == productTypeId) == null)
+                    model.Type = Db.ThirdProductTypes.Find(productTypeId);
+                    if (model.Type == null)
                     {
                         return View();
                     }
-                    model.Type = new ThirdProductType()
-                    {
-                        Id = productTypeId
-                    };
-                    company.UpdateJson = JsonConvert.SerializeObject(model);
-                    company.LastChangeTime = DateTime.Now;
-                    company.Status = EnumStatus.Unchecked;
+                    model.Type.SecondType.Productypes = null;
+                    model.Type.SecondType.FirstType.SecondProductTypes = null;
+                    model.Type.Products = null;
+                    product.LastChangeTime = DateTime.Now;
+                    product.Status = EnumStatus.Unchecked;
+                    product.UpdateJson = JsonConvert.SerializeObject(model);   
                 }
-                Db.Entry(company).State = EntityState.Modified;
+                Db.Entry(product).State = EntityState.Modified;
             }
             Db.SaveChanges();
             return RedirectToAction("CompanyProductInfo");
