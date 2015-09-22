@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using ThoughtWorks.QRCode;
 using ThoughtWorks.QRCode.Codec;
+using ICSharpCode.SharpZipLib;
 
 namespace QualityControl.Controllers
 {
@@ -57,6 +58,11 @@ namespace QualityControl.Controllers
 
 
             image.Save(path+"\\" + name, ImageFormat.Jpeg);
+
+            //压缩
+            var zipdic = url + "\\Image\\" + checknum;
+            Zip(zipdic);
+
             var qr = new Db.QrCodeInfo();
             qr.IdCode = guid;
             qr.QrName = name;
@@ -68,5 +74,11 @@ namespace QualityControl.Controllers
             return down;
         }
 
+        public bool Zip(string filedictionary)
+        {
+            var z = new Models.Zip();
+            z.ZipFile(filedictionary, filedictionary);
+            return true;
+        }
     }
 }
