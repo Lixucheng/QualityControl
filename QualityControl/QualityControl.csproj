@@ -1122,6 +1122,8 @@
     <Content Include="Views\Product\SecondTypeIndex.cshtml" />
     <Content Include="Views\Product\_ChooseType.cshtml" />
     <Content Include="Views\User\ChooseProduct.cshtml" />
+    <Content Include="Views\User\Choose.cshtml" />
+    <Content Include="Views\User\GetTrade.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

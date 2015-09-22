@@ -69,5 +69,7 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+
     }
 }

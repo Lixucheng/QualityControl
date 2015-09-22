@@ -38,7 +38,23 @@ namespace QualityControl.Controllers
 
         public ActionResult Choose(long id)
         {
+            var p = Db.Products.Find(id);
+            if (p == null)
+            {
+                throw new Exception("访问错误！");
+            }
+            var trade = new Db.Trade
+            {
+                Product = p,CeateTime=DateTime.Now,FinishTime=DateTime.Now
+            
+            };
+            Db.Trades.Add(trade);
+            Db.SaveChanges();
+            return View();
+        }
 
+        public ActionResult GetTrade(long id)
+        {
             return View();
         }
 
