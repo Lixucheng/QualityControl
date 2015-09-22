@@ -33,6 +33,8 @@ namespace QualityControl.Db
         public ApplicationUser Manufacturer { get; set; }
 
         public ApplicationUser SgsUser { get; set; }
+
+        public virtual Product Product { get; set; }
     }
 
     public enum EnumSample
