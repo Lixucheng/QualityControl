@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using QualityControl.Db;
+using QualityControl.Enum;
+using Newtonsoft.Json;
+using System.Data.Entity;
 
 namespace QualityControl.Controllers
 {
@@ -28,7 +31,7 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        public ActionResult FirstEdit(Db.FirstProductType newone)
+        public ActionResult FirstEdit(FirstProductType newone)
         {
             if (!CheckNewProduct(newone))
             {
@@ -356,7 +359,7 @@ namespace QualityControl.Controllers
                 ProductionCertificateNo=e.ProductionCertificateNo,
                 GetDate=e.GetDate,
                 Standard=e.Standard,
-                CompanyProductStatus= e.Status               
+                //CompanyProductStatus= e.Status               
             }).ToList();
           
             ViewBag.list = list2;
@@ -390,7 +393,7 @@ namespace QualityControl.Controllers
                 ProductionCertificateNo = e.ProductionCertificateNo,
                 GetDate = e.GetDate,
                 Standard = e.Standard,
-                CompanyProductStatus = e.Status
+                //CompanyProductStatus = e.Status
             };
             var ret = new { cp=cpx ,tname=name,status=e.Status};
             return Json(ret, JsonRequestBehavior.AllowGet);
@@ -468,7 +471,89 @@ namespace QualityControl.Controllers
 
         }
 
-    
+
+
+        [Authorize]
+        [HttpGet]
+        public ActionResult CompanyProductSave(long id = 0)
+        {
+            var userId = User.Identity.GetUserId();            
+            var company = Db.Companies.FirstOrDefault(a => a.UserId == userId);
+            if (company == null)
+            {
+                return Content("错误操作");
+            }
+            else
+            {
+                var product = company.Products.FirstOrDefault(a => a.Id == id);
+                return View(product);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CompanyProductSave(Product model, long productTypeId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            model.UserId = User.Identity.GetUserId();
+            var company = MyCompany;
+            if (company == null)
+            {
+                model.Type = Db.ThirdProductTypes.Find(productTypeId);
+                if (model.Type == null)
+                {
+                    return View();
+                }
+                model.Status = EnumStatus.FirstUncheked;
+                model.CreateTime = DateTime.Now;
+                model.LastChangeTime = model.CreateTime;
+                company.Products.Add(model);
+            }
+            else
+            {
+                if (Util.Util.Equal(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime" }))
+                {
+                    return RedirectToAction("Index");
+                }
+                if (company.Status == EnumStatus.FirstUncheked)
+                {
+                    Util.Util.Dump(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "Status" });
+                    if (model.Type.Id != productTypeId)
+                    {
+                        model.Type = Db.ThirdProductTypes.Find(productTypeId);
+                    }
+                }
+                else
+                {
+                    if (Db.ThirdProductTypes.FirstOrDefault(a => a.Id == productTypeId) == null)
+                    {
+                        return View();
+                    }
+                    model.Type = new ThirdProductType()
+                    {
+                        Id = productTypeId
+                    };
+                    company.UpdateJson = JsonConvert.SerializeObject(model);
+                    company.LastChangeTime = DateTime.Now;
+                    company.Status = EnumStatus.Unchecked;
+                }
+                Db.Entry(company).State = EntityState.Modified;
+            }
+            Db.SaveChanges();
+            return RedirectToAction("CompanyProductInfo");
+        }
+
+        private Company MyCompany
+        {
+            get
+            {
+                var userId = User.Identity.GetUserId();
+                return Db.Companies.FirstOrDefault(a => a.UserId == userId);
+            }
+        }
+
         #endregion
 
     }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using QualityControl.Enum;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,25 +14,34 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public float Price { get; set; }
 
         public virtual ThirdProductType Type { get; set; }
 
-        public EnumProductStatus Status { get; set; }
+        public EnumStatus Status { get; set; }
 
         public string UserId { get; set; }
 
         public virtual Company Company { get; set; }
 
+        [Required]
         public string ProductionCertificateNo { get; set; }//生产许可证编号
 
+        [Required]
         public string GetDate { get; set; }//颁发日期
 
+        [Required]
         public string Standard { get; set; }//执行标准
 
         public virtual List<SgsProduct> SgsProducts { get; set; }
+
+        public DateTime CreateTime { get; set; }
+
+        public DateTime LastChangeTime { get; set; }
 
     }
 
