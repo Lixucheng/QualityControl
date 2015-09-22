@@ -17,14 +17,33 @@
 
 <div class="main-container">
     
-    @{
-        int i = 1;
-        foreach (var temp in ViewBag.list)
-        {
-            <a href="..@temp">第 @i 个二维码图片</a>
-            <br/>
-            i++;
-        }
-        <a href="..@ViewBag.zipurl">zip</a>
-    }
+    <div>
+        
+
+
+
+        <table class="ui celled striped table">
+            <thead>
+                <tr>
+                    <th colspan="2"><a class="ui button blue" href="..@ViewBag.zipurl">二维码打包下载</a> </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                    foreach (var temp in ViewBag.list)
+                    {
+                        <tr>
+                            <td><a href="..@temp" >第 @i 个二维码图片</a></td>
+                            <td  style="text-align: center;width:100px"><a href="..@temp" class="ui button" download="">下载</a></td>
+                        </tr>
+                        i++;
+                    }
+
+                }
+          
+
+            </tbody>
+        </table>
+    </div>
 </div>

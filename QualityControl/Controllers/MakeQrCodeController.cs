@@ -38,7 +38,7 @@ namespace QualityControl.Controllers
             var zipname = urlz + "Image\\" + checknum + ".zip";
             Zip(zipfile, zipname);
 
-            ViewBag.zipurl = Request.Url.ToString() + "/Image/" + checknum + ".zip";
+            ViewBag.zipurl ="/Image/" + checknum + ".zip";
             string url = Request.Url.ToString();
             ViewBag.list = listdown;
             return View();
