@@ -50,7 +50,7 @@ namespace QualityControl.Controllers
             }
             else
             {
-                if (Util.Util.Equal(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime" }))
+                if (Util.Util.Equal(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "Status" }))
                 {
                     return RedirectToAction("Index");
                 }
