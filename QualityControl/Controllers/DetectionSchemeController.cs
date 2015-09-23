@@ -24,8 +24,16 @@ namespace QualityControl.Controllers
 
             var x = new Db.DetectionScheme();
             var list = trade.Batches;
-            x = trade.Schemes.FirstOrDefault(e =>e.Status!=EnumDetectionSchemeStatus.修改完成留档保存);
-            var sgsprolist = Db.SgsProducts.Where(e=>e.Product==trade.Product);
+            if (trade.Schemes == null)
+            {
+                trade.Schemes = new List<DetectionScheme>();
+                x = null;
+            }
+            else
+            {
+                x = Db.DetectionSchemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存);
+            }         
+            var sgsprolist = Db.SgsProducts.Where(e=>e.Product.Id==trade.Product.Id);
             if (x == null)            
             {
                 //方案
@@ -35,15 +43,14 @@ namespace QualityControl.Controllers
                     MinQuote = sgsprolist.Min(e => e.Price),
                     MaxTime = sgsprolist.Max(e => e.NeedeDay),
                     MinTime = sgsprolist.Min(e => e.NeedeDay),
-                    Product = trade.Product,
                     Status = QualityControl.Db.EnumDetectionSchemeStatus.未发送,
-                    Trade = trade
+                    Trade = trade,
                 };
                 Db.DetectionSchemes.Add(x);
                 Db.SaveChanges();
              
 
-                var pro = x.Product;
+                var pro = x.Trade.Product;
                 var
                 company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
                 ViewBag.productname = pro.Name;
@@ -55,7 +62,7 @@ namespace QualityControl.Controllers
             }
             else if (x.Status == EnumDetectionSchemeStatus.未发送)
             {
-                var pro = x.Product;
+                var pro = x.Trade.Product;
                 var
                 company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
                 ViewBag.productname = pro.Name;
@@ -74,7 +81,8 @@ namespace QualityControl.Controllers
                 throw new Exception("方案已发送待确定或者已确定，不支持编辑！");
             }
             var levelconvert = new Models.ConvertLevel();
-            ViewBag.Level = levelconvert.GetLevelByCount(trade.Batches.First().Count);
+          
+            ViewBag.Level = levelconvert.GetLevelByCount(list.First().Count);
             ViewBag.tradeid = tradeid;
             return View();
         }
@@ -101,7 +109,7 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("访问错误！");
             }
-            if (userid != trade.User.Id && userid != trade.SgsUser.Id)
+            if (userid != trade.UserId && userid != trade.SgsUser.Id)
             {
                 throw new Exception("访问错误！");
             }
@@ -114,7 +122,7 @@ namespace QualityControl.Controllers
             else
             {
                 ViewBag.model = x;
-                var pro = x.Product;
+                var pro = x.Trade.Product;
                 var
                 company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
                 ViewBag.productname = pro.Name;
@@ -140,7 +148,7 @@ namespace QualityControl.Controllers
                         DetectionScheme=detectionscheme,
                         Level = x.Level,
                         Time = x.Time,
-                        Product = detectionscheme.Product,
+                        Product = detectionscheme.Trade.Product,
                         Quote = quote,
                         Status = EnumContractStatus.未签订,
                         UserId = user.Id                        
@@ -255,7 +263,7 @@ namespace QualityControl.Controllers
             }
 
             {
-                var pro = dec.Product;
+                var pro = dec.Trade.Product;
 
                 var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
 
@@ -295,7 +303,6 @@ namespace QualityControl.Controllers
                 MinQuote = x.MinQuote,
                 MinTime = x.MinTime,
                 OrganQuote = qother,
-                Product = x.Product,
                 Time = time,
                 UserQuote = quser,
                 Status = EnumDetectionSchemeStatus.已发送待确定
@@ -427,6 +434,23 @@ namespace QualityControl.Controllers
             return 0;
         }
 
+
+
+        public void test()
+        {
+            var t = Db.Trades.Find(5);
+            for (int i = 0; i < 5; i++)
+            {
+                Db.ProductBatchs.Add(new ProductBatch
+                {
+                    ProductId=9,
+                    BatchName="2015-9-"+i.ToString(),
+                    Count=5,
+                    Trade=t
+                });
+                Db.SaveChanges();
+            }
+        }
 
     }
 }

@@ -288,6 +288,18 @@
     <Compile Include="Migrations\201509230505411_adduserid.Designer.cs">
       <DependentUpon>201509230505411_adduserid.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509230718072_trade-user-virtual.cs" />
+    <Compile Include="Migrations\201509230718072_trade-user-virtual.Designer.cs">
+      <DependentUpon>201509230718072_trade-user-virtual.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509230727019_trade-userid.cs" />
+    <Compile Include="Migrations\201509230727019_trade-userid.Designer.cs">
+      <DependentUpon>201509230727019_trade-userid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509230809127_detectionsheme-product.cs" />
+    <Compile Include="Migrations\201509230809127_detectionsheme-product.Designer.cs">
+      <DependentUpon>201509230809127_detectionsheme-product.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\CompanyInfo.cs" />
@@ -1227,6 +1239,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509230505411_adduserid.resx">
       <DependentUpon>201509230505411_adduserid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509230718072_trade-user-virtual.resx">
+      <DependentUpon>201509230718072_trade-user-virtual.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509230727019_trade-userid.resx">
+      <DependentUpon>201509230727019_trade-userid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509230809127_detectionsheme-product.resx">
+      <DependentUpon>201509230809127_detectionsheme-product.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

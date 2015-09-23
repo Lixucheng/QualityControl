@@ -148,7 +148,7 @@
         </div>
     </div>
 </div>
-<input id="checknum" style="display:none" value="@ViewBag.model.CheckNum"/>
+<input id="checknum" style="display:none" value="@ViewBag.model.Trade.Id"/>
 <input id="tradeid" style="display:none" value="@ViewBag.tradeid" />
 @section scripts{
     <script>
@@ -161,7 +161,7 @@
             $.ajax({
                 url: '../DetectionScheme/SendDetectionScheme',
                 type: 'post',
-                data: { checknum: c, quser: q1, qother: q2, time: time },
+                data: { Tradeid: c, quser: q1, qother: q2, time: time },
 
                 error: function() {
                     alert('error');

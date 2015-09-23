@@ -30,11 +30,11 @@ namespace QualityControl.Db
 
         public virtual List<DetectionReport> Report { get; set; }
 
-        public ApplicationUser Manufacturer { get; set; }
+        public virtual ApplicationUser Manufacturer { get; set; }
 
-        public ApplicationUser SgsUser { get; set; }
+        public virtual ApplicationUser SgsUser { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public string UserId { get; set; }
 
         public virtual Product Product { get; set; }
 
@@ -53,6 +53,7 @@ namespace QualityControl.Db
 
     public enum EnumTradeStatus
     {
-        SampleFinshed
+        SampleFinshed,
+        Create
     }
 }

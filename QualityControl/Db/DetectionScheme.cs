@@ -20,7 +20,6 @@ namespace QualityControl.Db
 
         public Trade Trade { get;set; }
 
-        public virtual Product Product { get; set; } 
 
         public string Level { get; set; }    //检查级别
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using QualityControl.Db;
 
 namespace QualityControl.Controllers
 {
@@ -38,6 +40,7 @@ namespace QualityControl.Controllers
 
         public ActionResult Choose(long id)
         {
+            var userid=User.Identity.GetUserId();
             var p = Db.Products.Find(id);
             if (p == null)
             {
@@ -45,8 +48,8 @@ namespace QualityControl.Controllers
             }
             var trade = new Db.Trade
             {
-                Product = p,CeateTime=DateTime.Now,FinishTime=DateTime.Now
-            
+                Product = p,CeateTime=DateTime.Now,FinishTime=DateTime.Now,  
+                UserId=userid,Status=(int)EnumTradeStatus.Create   
             };
             Db.Trades.Add(trade);
             Db.SaveChanges();

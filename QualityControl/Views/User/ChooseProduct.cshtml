@@ -79,7 +79,7 @@
             <th>许可证号</th>
             <th>发证日期</th>
             <th>生产标准</th>
-            <th>产品状态</th>
+          
             <th>操作</th>
         </tr>
         </thead>
@@ -100,7 +100,7 @@
                     <td>@Tempx.ProductionCertificateNo</td>
                     <td>@Tempx.GetDate</td>
                     <td>@Tempx.Standard</td>
-                    <td>@Tempx.Status</td>
+                 
 
                     <td>
                         <div class="2  fluid ui">
@@ -139,12 +139,7 @@
                 <label>生产标准</label>
                 <input disabled type="text" name="Standard" placeholder="生产标准" id="scpstandard">
             </div>
-            <div class="field">
-                <label>产品类别</label>
-                <input disabled name="ProductTypeId" id="scpProductTypeId" />
-
-
-            </div>
+          
             <div class="field">
                 <label>产品状态</label>
                 <select disabled name="CompanyProductStatus" id="scpCompanyProductStatus">
@@ -210,7 +205,7 @@
                     $("#scpstandard").val(data.cp.Standard);
                     $("#scpProductTypeId").val(data.tname);
 
-                    $("#scpCompanyProductStatus option[value='"+data.cp.CompanyProductStatus+"']").attr("selected","selected");
+                 
 
                     $('#seecp').modal('show');
                 },
