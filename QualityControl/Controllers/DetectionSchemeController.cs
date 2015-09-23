@@ -93,7 +93,6 @@ namespace QualityControl.Controllers
         }
 
   
-
         public ActionResult SignContract(long tradeid)
         {
             var userid = User.Identity.GetUserId();

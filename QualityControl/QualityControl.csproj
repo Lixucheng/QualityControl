@@ -284,6 +284,10 @@
     <Compile Include="Migrations\201509221237041_sgsproducts.Designer.cs">
       <DependentUpon>201509221237041_sgsproducts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509230505411_adduserid.cs" />
+    <Compile Include="Migrations\201509230505411_adduserid.Designer.cs">
+      <DependentUpon>201509230505411_adduserid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\CompanyInfo.cs" />
@@ -1220,6 +1224,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509221237041_sgsproducts.resx">
       <DependentUpon>201509221237041_sgsproducts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509230505411_adduserid.resx">
+      <DependentUpon>201509230505411_adduserid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
