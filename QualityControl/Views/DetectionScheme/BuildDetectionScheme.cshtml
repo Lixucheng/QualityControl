@@ -53,7 +53,7 @@
             <p>检查级别：</p>
 
         </div>
-        <div class="ui segments">
+        <div class="ui segments form">
             <div class="ui horizontal segments">
                 <div class="ui segment">
                     <select id="s1">
@@ -62,12 +62,15 @@
                     </select>
                 </div>
                 <div class="ui segment">
-                    <select id="s2">
-                       
+                    <select id="s2">                       
+                        <option value='1'>S-1</option>"                      
+                        <option value='2'>S-2</option>"                    
+                        <option value='3'>S-3</option>"                   
+                        <option value='4'>S-4</option>"
                     </select>
                 </div>
-                <div class="ui segment">
-                    <p id="s3">A</p>
+                <div class="ui segment" align="center">
+                    <h1 id="s3">A</h1>
                 </div>
             </div>
         </div>
@@ -161,7 +164,7 @@
             $.ajax({
                 url: '../DetectionScheme/SendDetectionScheme',
                 type: 'post',
-                data: { Tradeid: c, quser: q1, qother: q2, time: time },
+                data: { Tradeid: c, quser: q1, qother: q2, time: time,l1:$("#s1").val(),l2:$("#s2").val(),l3:$("#s3").html() },
 
                 error: function() {
                     alert('error');

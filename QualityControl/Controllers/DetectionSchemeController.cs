@@ -7,6 +7,9 @@ using Microsoft.AspNet.Identity;
 using QualityControl.Db;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
+using QualityControl.Enum;
+using QualityControl.Models;
 
 namespace QualityControl.Controllers
 {
@@ -22,7 +25,7 @@ namespace QualityControl.Controllers
                 throw new Exception("访问错误！");
             }
 
-            var x = new Db.DetectionScheme();
+            var x = new DetectionScheme();
             var list = trade.Batches;
             if (trade.Schemes == null)
             {
@@ -37,13 +40,13 @@ namespace QualityControl.Controllers
             if (x == null)            
             {
                 //方案
-                x = new Db.DetectionScheme
+                x = new DetectionScheme
                 {
                     MaxQuote = sgsprolist.Max(e => e.Price),
                     MinQuote = sgsprolist.Min(e => e.Price),
                     MaxTime = sgsprolist.Max(e => e.NeedeDay),
                     MinTime = sgsprolist.Min(e => e.NeedeDay),
-                    Status = QualityControl.Db.EnumDetectionSchemeStatus.未发送,
+                    Status = EnumDetectionSchemeStatus.未发送,
                     Trade = trade,
                 };
                 Db.DetectionSchemes.Add(x);
@@ -80,7 +83,7 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("方案已发送待确定或者已确定，不支持编辑！");
             }
-            var levelconvert = new Models.ConvertLevel();
+            var levelconvert = new ConvertLevel();
           
             ViewBag.Level = levelconvert.GetLevelByCount(list.First().Count);
             ViewBag.tradeid = tradeid;
@@ -90,13 +93,8 @@ namespace QualityControl.Controllers
         public JsonResult GetLevel(long tradeid, int  s2 )
         {
             var trade = Db.Trades.Find(tradeid);
-            var levelconvert = new Models.ConvertLevel();
+            var levelconvert = new ConvertLevel();
             var l=levelconvert.GetLevel(trade.Batches.First().Count,s2);
-            var she=trade.Schemes.First(e => e.Status == EnumDetectionSchemeStatus.未发送);           
-            var s1 = 0;
-            s1 = s2 < 10 ? 0 : 1;
-            she.Level = Json(new {l1=s1,l2=s2,l3=l}).ToString();
-            Db.SaveChanges();
             return Json(l);
         }
 
@@ -113,6 +111,7 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("访问错误！");
             }
+            
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
             if (x == null)
             {
@@ -121,6 +120,9 @@ namespace QualityControl.Controllers
             }
             else
             {
+                var usernow = UserManager.FindById(userid);
+                ViewBag.u = usernow.Type == (int) EnumUserType.User ? 0 : 1;
+
                 ViewBag.model = x;
                 var pro = x.Trade.Product;
                 var
@@ -142,7 +144,7 @@ namespace QualityControl.Controllers
                     
                     var user = UserManager.FindById(User.Identity.GetUserId());
                     double quote = 0;
-                    quote = user.Type == (int) Enum.EnumUserType.User ? x.UserQuote : x.OrganQuote;
+                    quote = user.Type == (int) EnumUserType.User ? x.UserQuote : x.OrganQuote;
                     var c = new Contract
                     {
                         DetectionScheme=detectionscheme,
@@ -156,6 +158,10 @@ namespace QualityControl.Controllers
                     Db.Contracts.Add(c);
                     Db.SaveChanges();
                 }
+
+                var s = x.Level;
+                var l = JsonConvert.DeserializeObject<Level>(s);
+                ViewBag.l = l;
 
             }
 
@@ -171,11 +177,11 @@ namespace QualityControl.Controllers
         /// <param name="qother"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        public JsonResult SendDetectionScheme(long tradeid,double quser,double qother,int time,string level)
+        public JsonResult SendDetectionScheme(long tradeid,double quser,double qother,int time,int l1,int l2,string l3)
         {
             var trade = Db.Trades.Find(tradeid);
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.未发送);
-            x.Level = level;
+            x.Level = JsonConvert.SerializeObject(new {l1=l1,l2=l2,l3=l3});
             x.UserQuote = quser;
             x.OrganQuote = qother;
             x.Time = time;
@@ -199,7 +205,8 @@ namespace QualityControl.Controllers
             {
                 return false;
             }
-            var x = scheme.Contracts.FirstOrDefault(e =>  e.Status == EnumContractStatus.未签订);
+            var userid = User.Identity.GetUserId();
+            var x = scheme.Contracts.FirstOrDefault(e =>e.UserId==userid&&e.Status == EnumContractStatus.未签订);
             if (x == null)
             {
                 throw new Exception("无待签合同");
@@ -239,7 +246,7 @@ namespace QualityControl.Controllers
             scheme.Status = EnumDetectionSchemeStatus.返回修改;
             Db.SaveChanges();
 
-            var mod = new Db.ContractModification();
+            var mod = new ContractModification();
             mod.DetectionScheme = scheme;
             mod.Modify = modify;
             mod.UserId = User.Identity.GetUserId();
@@ -273,7 +280,17 @@ namespace QualityControl.Controllers
                 ViewBag.model = dec;
                 ViewBag.list = list;
 
-                var modify = dec.Modifications;
+                var modify = dec.Modifications.Select(e =>
+                {
+                    var u = UserManager.FindById(e.UserId);
+                    if (u.Type == (int) EnumUserType.User)
+                        return new ModifyWithName {Modify = e.Modify, User = "用户（"+u.UserName+")"};
+                    else
+                    {
+                        return new ModifyWithName { Modify = e.Modify, User = "检测中心（" + u.UserName + ")" };
+                    }
+                }).ToList();
+                
                 ViewBag.mlist = modify;
                 ViewBag.ok = 1;
             }
@@ -305,7 +322,7 @@ namespace QualityControl.Controllers
                 OrganQuote = qother,
                 Time = time,
                 UserQuote = quser,
-                Status = EnumDetectionSchemeStatus.已发送待确定
+                Status = EnumDetectionSchemeStatus.已发送待确定,                                
             };
             Db.DetectionSchemes.Add(n);
             Db.SaveChanges();
@@ -325,6 +342,11 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("访问错误！");
             }
+            var userid=User.Identity.GetUserId();
+            if (userid != trade.UserId && userid != trade.SgsUser.Id)
+            {
+                throw new Exception("无权限查看！");
+            }
             string s0 = "一、";
             
             string s2 = @"（以下简称检验方）接受委托方书面检验委托。委托检验申请单（以下简称委托单）作为本协议的附件。本协议以委托方代表人在委托单上签名盖章，检验方加盖受理骑缝章后生效。 
@@ -340,29 +362,29 @@ namespace QualityControl.Controllers
                           <br />十一、检验报告通常采用中文书写。如需采用其他语种，委托方应在委托单“备注”栏内注明，并用相应语种填写有关内容。 
                           <br />十二、委托方如对检验结果有异议的，须在一个月内凭检验证书原件向检验方要求复检，检验方应于十日内安排复检。复检结果维持原检验结果的，委托方须按规定向检验方支付复检费。复检结果确认原检验结果有误的，检验方不再收取复检费。委托方对复检结果仍有异议，双方协商不成时，应与检验方书面协议，委托仲裁机构仲裁。 
                           <br />十五、委托方对本协议及委托单有不明之处，应在填写委托单时，向检验方工作人员咨询。协议自填单之日起生效。";
-            string s1= "管控中心";
-            ViewBag.FirstParty = "张三";
-            ViewBag.SecondParty = "管控中心";
-            //var user = UserManager.FindById(User.Identity.GetUserId());
-            //if (user.Type == (int)Enum.EnumUserType.User)
-            //{
-            //    ViewBag.FirstParty = user.UserName;
-            //    ViewBag.SecondParty = "管控中心";
-            //    s1 = "管控中心";
-            //    ViewBag.user=1;
-            //}
-            //else if (user.Type == (int)Enum.EnumUserType.TestingOrg)
-            //{
-            //    ViewBag.FirstParty = "管控中心";
-            //    ViewBag.SecondParty = user.UserName;
-            //    s1 = "检测公司";
-            //    ViewBag.user=2;
-            //}
-            //else
-            //{
-            //    throw new Exception("无权查看！");
-            //}
-            ViewBag.user=1;//标记输入框位置
+            string s1= "";
+            var sysid = trade.SgsUser.Id;
+            
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user.Type == (int)Enum.EnumUserType.User)
+            {
+                ViewBag.FirstParty = user.UserName;
+                s1 = "管控中心";
+                ViewBag.SecondParty = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name; ;
+                ViewBag.user=1;
+            }
+            else if (user.Type == (int)Enum.EnumUserType.TestingOrg)
+            {
+                ViewBag.FirstParty = "管控中心";
+                ViewBag.SecondParty = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name;
+                s1 = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name;
+                ViewBag.user=2;
+            }
+            else
+            {
+                throw new Exception("无权查看！");
+            }
+           
             ViewBag.time = DateTime.Today.ToShortDateString();
             ViewBag.Content = s0 + s1 + s2;
             ViewBag.checknum = trade.Id;
@@ -395,20 +417,19 @@ namespace QualityControl.Controllers
 
             Sign(tradeid);//合同详细信息
             var c = new Compact();
+            var sysid = trade.SgsUser.Id;
+
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user.Type == (int)Enum.EnumUserType.User)
             {
                 c.FirstParty = user.UserName;
-                c.SecondParty = "管控中心";
-                s1 = "管控中心";
-             
+                c.SecondParty = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name; ;            
             }
             else if (user.Type == (int)Enum.EnumUserType.TestingOrg)
             {
                 c.FirstParty = "管控中心";
-                c.SecondParty = user.UserName;
-                s1 = "检测公司";
-               
+                c.SecondParty = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name;
+ 
             }
             else
             {
@@ -416,10 +437,10 @@ namespace QualityControl.Controllers
             }
             c.Content = s0 + s1 + s2;       
             c.Time = DateTime.Now;
-            c.Trade = trade;
             Db.Compacts.Add(c);
             Db.SaveChanges();
-
+            trade.Compact = c;
+            Db.SaveChanges();
             return true;
         }
 
@@ -435,22 +456,45 @@ namespace QualityControl.Controllers
         }
 
 
-
-        public void test()
+        public class Level
         {
-            var t = Db.Trades.Find(5);
-            for (int i = 0; i < 5; i++)
+            public int l1;
+
+            public string L1 => l1 == 0 ? "特殊检测等级" : "一般检查等级";
+            public int l2;
+
+            public string L2
             {
-                Db.ProductBatchs.Add(new ProductBatch
+                get
                 {
-                    ProductId=9,
-                    BatchName="2015-9-"+i.ToString(),
-                    Count=5,
-                    Trade=t
-                });
-                Db.SaveChanges();
+                    switch (l2)
+                    {
+                        case 1:
+                            return "S-1";
+                        case 2:
+                            return "S-2";
+                        case 3:
+                            return "S-3";
+                        case 4:
+                            return "S-4";
+                        case 11:
+                            return "I";
+                        case 12:
+                            return "Ⅱ";
+                        case 13:
+                            return "Ⅲ";
+                        default: return null;
+                    }
+                }
             }
+            public string l3;
         }
 
+        public class ModifyWithName
+        {
+            public string User;
+            public string Modify;
+
+        }
     }
 }

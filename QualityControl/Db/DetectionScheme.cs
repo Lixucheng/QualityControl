@@ -18,7 +18,7 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public Trade Trade { get;set; }
+        public virtual Trade Trade { get;set; }
 
 
         public string Level { get; set; }    //检查级别
@@ -47,6 +47,7 @@ namespace QualityControl.Db
         /// 合同详细信息
         /// </summary>
         public virtual List<Contract> Contracts { get; set; }
+
 
         public virtual List<ContractModification> Modifications { get; set; }
     }
@@ -123,7 +124,7 @@ namespace QualityControl.Db
     [Table("GxCompact")]
     public class Compact
     {
-        [Key, ForeignKey("Trade")]
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
@@ -135,6 +136,5 @@ namespace QualityControl.Db
 
         public DateTime Time { get; set; }
 
-        public virtual Trade Trade { get; set; }
     }
 }

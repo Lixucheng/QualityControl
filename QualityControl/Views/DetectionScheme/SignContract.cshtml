@@ -19,112 +19,139 @@
     </style>
 }
 <div class="bigestdiv">
-    <div class="ui segments">
-        <div class="ui segment">
-            <p style="text-align: center; font-size: 30px">管控合同</p>
-        </div>
-
-        <div class="ui segment">
-            <p class="title">检测产品：</p>
-            <p>@ViewBag.productname</p>
-        </div>
-        <div class="ui segment">
-            <p class="title">生产商：</p>
-            <p>@ViewBag.company</p>
-        </div>
-
-        <div class="ui segment">
-            <p class="">批次数量信息：</p>
-        </div>
-
-        <div class="ui segments">
-            @foreach (var temp in ViewBag.list)
-            {
-                <div class="ui segment">
-                    <p class="title">@temp.BatchName：</p>
-                    <p>@temp.Count</p>
-                </div>
-            }
-           
-
-        </div>
-
-
-        <div class="ui segment">
-            <p>检查级别：</p>
-
-        </div>
-        <div class="ui segments">
-            <div class="ui horizontal segments">
-                <div class="ui segment">
-                    <p>特殊检测水平</p>
-                </div>
-                <div class="ui segment">
-                    <p>s-1</p>
-                </div>
-                <div class="ui segment">
-                    <p>A</p>
-                </div>
+    @{
+        if (ViewBag.ok == 0)
+        {
+            <div class="ui orange inverted segment" align="center">
+                <h1 class="ui  header ">此合同不在修改状态！</h1>
             </div>
-        </div>
 
-        <div class="ui segment ">
 
-            <div class="field">
-                <div class="3 fields">
-                    <div class="field" style="">
-                        <p style="margin: 0 auto" class="title">检测时间：</p>
+        }
+        else
+        {
+            <div class="ui segments">
+                <div class="ui segment">
+                    <p style="text-align: center; font-size: 30px">管控合同</p>
+                </div>
+
+                <div class="ui segment">
+                    <p class="title">检测产品：</p>
+                    <p>@ViewBag.productname</p>
+                </div>
+                <div class="ui segment">
+                    <p class="title">生产商：</p>
+                    <p>@ViewBag.company</p>
+                </div>
+
+                <div class="ui segment">
+                    <p class="">批次数量信息：</p>
+                </div>
+
+                <div class="ui segments">
+                    @foreach (var temp in ViewBag.list)
+                    {
+                        <div class="ui segment">
+                            <p class="title">@temp.BatchName：</p>
+                            <p>@temp.Count</p>
+                        </div>
+                    }
+
+
+                </div>
+
+
+                <div class="ui segment">
+                    <p>检查级别：</p>
+
+                </div>
+
+                <div class="ui segments">
+                    <div class="ui horizontal segments">
+                        <div class="ui segment">
+                            <p>@ViewBag.l.L1</p>
+                        </div>
+                        <div class="ui segment">
+                            <p>@ViewBag.l.L2</p>
+                        </div>
+                        <div class="ui segment">
+                            <p>@ViewBag.l.l3</p>
+                        </div>
                     </div>
+                </div>
+
+                <div class="ui segment ">
+
                     <div class="field">
-                        <p style="margin: 0 auto">@ViewBag.model.Time 天</p>
+                        <div class="3 fields">
+                            <div class="field" style="">
+                                <p style="margin: 0 auto" class="title">检测时间：</p>
+                            </div>
+                            <div class="field">
+                                <p style="margin: 0 auto">@ViewBag.model.Time 天</p>
+                            </div>
+
+
+
+                        </div>
                     </div>
-                    
-                   
-                 
+
+
                 </div>
-            </div>
 
+                <div class="ui segment form">
 
-        </div>
-
-        <div class="ui segment form">
-
-            <div class="field">
-                <div class="3 fields">
-                    <div class="field" style="">
-                        <p style="margin: 0 auto">检测报价：</p>
-                    </div>
                     <div class="field">
-                        <p style="margin: 0 auto">@ViewBag.model.UserQuote </p>
+                        <div class="3 fields">
+                            <div class="field" style="">
+                                <p style="margin: 0 auto">检测报价：</p>
+                            </div>
+                            <div class="field">
+                                @{
+                                    if (ViewBag.u == 0)
+                                    {
+                                        <p style="margin: 0 auto">@ViewBag.model.UserQuote </p>
+                                    }
+                                    else
+                                    {
+                                        <p style="margin: 0 auto">@ViewBag.model.OrganQuote </p>
+                                    }
 
+                                }
+                                
+
+                            </div>
+
+
+                        </div>
                     </div>
 
-                  
+
+                </div>
+
+                <div class="ui segment form">
+                    <div class="field">
+                        <p class="title">更改意见：</p>
+                    </div>
+                    <div class="">
+                        <textarea id="modify"></textarea>
+                    </div>
+                </div>
+
+
+
+                <div class="ui segment" align="center">
+                    <button id="agree" class="positive ui button" style="width: 25%">同意</button>
+                    <button id="noagr" class="negative ui button" style="width: 25%">返回修改</button>
+                    <p>如果同意以上内容请确定，不同意请填写更改意见后点击返回修改</p>
                 </div>
             </div>
+            <input id="checknum" style="display:none" value="@ViewBag.model.Trade.Id" />
 
-
-        </div>
-
-        <div class="ui segment form">
-            <div class="field" >
-                <p class="title">更改意见：</p>
-            </div>
-            <div class="">
-                <textarea id="modify"></textarea>
-            </div>
-        </div>
-
-
-
-        <div class="ui segment" align="center">
-            <button id="agree" class="positive ui button" style="width:25%">同意</button>
-            <button id="noagr" class="negative ui button" style="width: 25%">返回修改</button>
-            <p>如果同意以上内容请确定，不同意请填写更改意见后点击返回修改</p>
-        </div>
-    </div>
+        }
+    }
+   
 </div>
-<input id="checknum" style="display:none" value="@ViewBag.model.CheckNum" />
 
 @section scripts{
     <script>
@@ -132,7 +159,7 @@
             var r=confirm("请仔细查看内容，确认后跳到签字界面！");
             if (r==true)
             {               
-                top.location = '../DetectionScheme/CompactSign?checknum=' + $("#checknum").val();
+                top.location = '../DetectionScheme/CompactSign?tradeid=' + $("#checknum").val();
             }          
         });
 
@@ -146,7 +173,7 @@
                 $.ajax({
                     url: '../DetectionScheme/Modify',
                     type: 'post',
-                    data: { checknum: c, modify: q1 },
+                    data: { tradeid: c, modify: q1 },
 
                     error: function () {
                         alert('连接错误！');

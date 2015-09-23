@@ -15,7 +15,7 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public List<DetectionScheme> Schemes { get; set; }
+        public virtual List<DetectionScheme> Schemes { get; set; }
 
         public EnumSample SampleType { get; set; }
 
@@ -24,7 +24,7 @@ namespace QualityControl.Db
         public int Status { get; set; }
 
         //批次
-        public List<ProductBatch> Batches { get; set; }
+        public virtual List<ProductBatch> Batches { get; set; }
 
         public DateTime FinishTime { get; set; }
 

@@ -300,6 +300,22 @@
     <Compile Include="Migrations\201509230809127_detectionsheme-product.Designer.cs">
       <DependentUpon>201509230809127_detectionsheme-product.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509230909074_tradevirtual.cs" />
+    <Compile Include="Migrations\201509230909074_tradevirtual.Designer.cs">
+      <DependentUpon>201509230909074_tradevirtual.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509231229047_tradevirtual1.cs" />
+    <Compile Include="Migrations\201509231229047_tradevirtual1.Designer.cs">
+      <DependentUpon>201509231229047_tradevirtual1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509231330225_Compactkey.cs" />
+    <Compile Include="Migrations\201509231330225_Compactkey.Designer.cs">
+      <DependentUpon>201509231330225_Compactkey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509231340436_compactup.cs" />
+    <Compile Include="Migrations\201509231340436_compactup.Designer.cs">
+      <DependentUpon>201509231340436_compactup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\CompanyInfo.cs" />
@@ -1248,6 +1264,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509230809127_detectionsheme-product.resx">
       <DependentUpon>201509230809127_detectionsheme-product.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509230909074_tradevirtual.resx">
+      <DependentUpon>201509230909074_tradevirtual.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509231229047_tradevirtual1.resx">
+      <DependentUpon>201509231229047_tradevirtual1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509231330225_Compactkey.resx">
+      <DependentUpon>201509231330225_Compactkey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509231340436_compactup.resx">
+      <DependentUpon>201509231340436_compactup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
