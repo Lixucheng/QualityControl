@@ -23,35 +23,25 @@ namespace QualityControl.Controllers
             }
 
             var x = new Db.DetectionScheme();
-            var list = new List<ProductBatch>();
+            var list = trade.Batches;
             x = trade.Schemes.FirstOrDefault(e =>e.Status!=EnumDetectionSchemeStatus.修改完成留档保存);
+            var sgsprolist = Db.SgsProducts.Where(e=>e.Product==trade.Product);
             if (x == null)            
             {
                 //方案
-                x = new Db.DetectionScheme();
-                x.Level = "特殊检测水平 S-1 A";
-                x.MaxQuote = 5000;
-                x.MinQuote = 1000;
-                x.MaxTime = 20;
-                x.MinTime = 19;
-                x.Product = trade.Product;
-                x.Status = QualityControl.Db.EnumDetectionSchemeStatus.未发送;
-                x.Trade = trade;
+                x = new Db.DetectionScheme
+                {
+                    MaxQuote = sgsprolist.Max(e => e.Price),
+                    MinQuote = sgsprolist.Min(e => e.Price),
+                    MaxTime = sgsprolist.Max(e => e.NeedeDay),
+                    MinTime = sgsprolist.Min(e => e.NeedeDay),
+                    Product = trade.Product,
+                    Status = QualityControl.Db.EnumDetectionSchemeStatus.未发送,
+                    Trade = trade
+                };
                 Db.DetectionSchemes.Add(x);
                 Db.SaveChanges();
-                //批次
-                for (int i = 1; i < 5; i++)
-                {
-                    list.Add(new ProductBatch
-                    {
-                        BatchName = "2015-8-" + i.ToString(),
-                        Count =5,
-                        ProductId = 1,
-                        Trade=trade
-                    });
-                }
-                Db.ProductBatchs.AddRange(list);
-                Db.SaveChanges();
+             
 
                 var pro = x.Product;
                 var
@@ -83,16 +73,36 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("方案已发送待确定或者已确定，不支持编辑！");
             }
-         
-          
+            var levelconvert = new Models.ConvertLevel();
+            ViewBag.Level = levelconvert.GetLevelByCount(trade.Batches.First().Count);
+            ViewBag.tradeid = tradeid;
             return View();
         }
 
+        public JsonResult GetLevel(long tradeid, int  s2 )
+        {
+            var trade = Db.Trades.Find(tradeid);
+            var levelconvert = new Models.ConvertLevel();
+            var l=levelconvert.GetLevel(trade.Batches.First().Count,s2);
+            var she=trade.Schemes.First(e => e.Status == EnumDetectionSchemeStatus.未发送);           
+            var s1 = 0;
+            s1 = s2 < 10 ? 0 : 1;
+            she.Level = Json(new {l1=s1,l2=s2,l3=l}).ToString();
+            Db.SaveChanges();
+            return Json(l);
+        }
+
+  
+
         public ActionResult SignContract(long tradeid)
         {
-            //todo 根据用户判断是否有权查看 双方之一
+            var userid = User.Identity.GetUserId();
             var trade = Db.Trades.Find(tradeid);
             if (trade == null)
+            {
+                throw new Exception("访问错误！");
+            }
+            if (userid != trade.User.Id && userid != trade.SgsUser.Id)
             {
                 throw new Exception("访问错误！");
             }
@@ -112,8 +122,8 @@ namespace QualityControl.Controllers
                 ViewBag.company = company.Name;
                 var list = trade.Batches;
                 ViewBag.list = list;
-                //todo 这块查找带上用户
-                var userid = User.Identity.GetUserId();
+   
+               
                 var detectionscheme = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
                 if (detectionscheme == null)
                 {
@@ -122,10 +132,9 @@ namespace QualityControl.Controllers
                 var have = detectionscheme.Contracts.FirstOrDefault(e => e.UserId==userid&& e.Status == EnumContractStatus.未签订);
                 if (have == null)
                 {
-                    //todo: 判断用户 生成双方的合同
+                    
                     var user = UserManager.FindById(User.Identity.GetUserId());
                     double quote = 0;
-                    quote = x.UserQuote;
                     quote = user.Type == (int) Enum.EnumUserType.User ? x.UserQuote : x.OrganQuote;
                     var c = new Contract
                     {
@@ -135,8 +144,7 @@ namespace QualityControl.Controllers
                         Product = detectionscheme.Product,
                         Quote = quote,
                         Status = EnumContractStatus.未签订,
-                        UserId = user.Id
-                        //todo: UserId = user.Id
+                        UserId = user.Id                        
                     };
                     Db.Contracts.Add(c);
                     Db.SaveChanges();
@@ -156,10 +164,11 @@ namespace QualityControl.Controllers
         /// <param name="qother"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        public JsonResult SendDetectionScheme(long tradeid,double quser,double qother,int time)
+        public JsonResult SendDetectionScheme(long tradeid,double quser,double qother,int time,string level)
         {
             var trade = Db.Trades.Find(tradeid);
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.未发送);
+            x.Level = level;
             x.UserQuote = quser;
             x.OrganQuote = qother;
             x.Time = time;

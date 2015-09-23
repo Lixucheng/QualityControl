@@ -56,13 +56,18 @@
         <div class="ui segments">
             <div class="ui horizontal segments">
                 <div class="ui segment">
-                    <p>特殊检测水平</p>
+                    <select id="s1">
+                        <option value="0">特殊检测级别</option>
+                        <option value="1">一般检测级别</option>
+                    </select>
                 </div>
                 <div class="ui segment">
-                    <p>s-1</p>
+                    <select id="s2">
+                       
+                    </select>
                 </div>
                 <div class="ui segment">
-                    <p>A</p>
+                    <p id="s3">A</p>
                 </div>
             </div>
         </div>
@@ -144,7 +149,7 @@
     </div>
 </div>
 <input id="checknum" style="display:none" value="@ViewBag.model.CheckNum"/>
-
+<input id="tradeid" style="display:none" value="@ViewBag.tradeid" />
 @section scripts{
     <script>
         $("#btn").click(function() {
@@ -156,17 +161,50 @@
             $.ajax({
                 url: '../DetectionScheme/SendDetectionScheme',
                 type: 'post',
-                data: { checknum:c, quser:q1, qother:q2,time:time},
+                data: { checknum: c, quser: q1, qother: q2, time: time },
 
-                error: function () {
+                error: function() {
                     alert('error');
                 },
-                success: function (data) {
+                success: function(data) {
                     alert("发送成功");
                     top.location = '..';
                 }
             });
 
+        });
+
+        $("#s1").change(function() {
+            var ss1 = $(this).val();
+            var s = "";
+            if (ss1 == 0) {
+                s = " <option value='1'>S-1</option>";
+                s += "<option value='2'>S-2</option>";
+                s += "<option value='3'>S-3</option>";
+                s += "<option value='4'>S-4</option>";
+            } else {
+                s = " <option value='11'>I</option>";
+                s += "<option value='12'>Ⅱ</option>";
+                s += "<option value='13'>Ⅲ</option>";
+            }
+            $("#s2").html(s);
+        });
+
+        $("#s2").change(function() {
+            var s2 = $(this).val();
+
+            $.ajax({
+                url: '../DetectionScheme/GetLevel',
+                type: 'post',
+                data: { tradeid:@ViewBag.tradeid,s2:s2},
+
+                error: function () {
+                    alert('error');
+                },
+                success: function (data) {
+                    $("#s3").html(data);
+                }
+            });
         });
     </script>
 }

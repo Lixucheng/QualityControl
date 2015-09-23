@@ -81,6 +81,9 @@ namespace QualityControl.Models
         public DbSet<SGS> SGSs { get; set; }
 
         public DbSet<Trade> Trades { get; set; }
+        public DbSet<SgsProduct> SgsProducts { get; set; }
+
+        public DbSet<CheckLevel> Levels { get; set; }
     }
 
 
