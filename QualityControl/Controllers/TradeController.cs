@@ -80,13 +80,13 @@ namespace QualityControl.Controllers
             Db.Entry(trade).State = EntityState.Modified;
             Db.Messages.Add(new Message()
             {
-                UserId = trade.Manufacturer.Id,
+                UserId = trade.ManufacturerId,
                 Content = "你的管控合同抽样信息已经完成，请注意查看",
                 Time = DateTime.Now
             });
             Db.Messages.Add(new Message()
             {
-                UserId = trade.SgsUser.Id,
+                UserId = trade.SgsUserId,
                 Content = "你的管控合同抽样信息已经完成，请注意查看",
                 Time = DateTime.Now
             });

@@ -22,7 +22,8 @@ namespace QualityControl.Controllers
             var trade = Db.Trades.Find(tradeid);
             if (trade == null)
             {
-                throw new Exception("访问错误！");
+                ViewBag.ok = 1;
+                ViewBag.message = "访问错误，订单不存在！";
             }
 
             var x = new DetectionScheme();
@@ -37,6 +38,14 @@ namespace QualityControl.Controllers
                 x = Db.DetectionSchemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存);
             }         
             var sgsprolist = Db.SgsProducts.Where(e=>e.Product.Id==trade.Product.Id);
+            if (!sgsprolist.Any())
+            {
+
+                ViewBag.ok = 1;
+                ViewBag.message = "没有检测机构可以检测此产品！";
+            }
+            ViewBag.sgslist = sgsprolist.Select(e => e.SGS).Distinct();
+          
             if (x == null)            
             {
                 //方案
@@ -81,7 +90,8 @@ namespace QualityControl.Controllers
             }
             else
             {
-                throw new Exception("方案已发送待确定或者已确定，不支持编辑！");
+                ViewBag.ok = 1;
+                ViewBag.message = "方案已发送待确定或者已确定，不支持编辑！";
             }
             var levelconvert = new ConvertLevel();
           
@@ -107,7 +117,7 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("访问错误！");
             }
-            if (userid != trade.UserId && userid != trade.SgsUser.Id)
+            if (userid != trade.UserId && userid != trade.SgsUserId)
             {
                 throw new Exception("访问错误！");
             }
@@ -177,9 +187,14 @@ namespace QualityControl.Controllers
         /// <param name="qother"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        public JsonResult SendDetectionScheme(long tradeid,double quser,double qother,int time,int l1,int l2,string l3)
+        public JsonResult SendDetectionScheme(long tradeid,double quser,double qother,int time,int l1,int l2,string l3,long sgsid)
         {
             var trade = Db.Trades.Find(tradeid);
+            var sgsuserid = Db.SGSs.Find(sgsid).UserId;
+           
+            trade.SgsUserId = sgsuserid;
+            Db.SaveChanges();
+
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.未发送);
             x.Level = JsonConvert.SerializeObject(new {l1=l1,l2=l2,l3=l3});
             x.UserQuote = quser;
@@ -187,6 +202,10 @@ namespace QualityControl.Controllers
             x.Time = time;
             x.Status = EnumDetectionSchemeStatus.已发送待确定;
             Db.SaveChanges();
+            //发送站内信息
+            SendMessage(trade.UserId, "合同已发送，请查看！");
+            SendMessage(trade.SgsUserId, "合同已发送，请查看！");
+
             return Json(1);
         }
 
@@ -220,6 +239,9 @@ namespace QualityControl.Controllers
             {
                 scheme.Status = EnumDetectionSchemeStatus.已确定;
                 Db.SaveChanges();
+                //发送站内信息
+                SendMessage(trade.UserId, "合同双方已签订，随后进入付款流程");
+                SendMessage(trade.SgsUserId, "合同双方已签订，随后进入付款流程");
             }
 
             return true;
@@ -252,6 +274,10 @@ namespace QualityControl.Controllers
             mod.UserId = User.Identity.GetUserId();
             Db.ContractModifications.Add(mod);
             Db.SaveChanges();
+            //发送站内信息
+            SendMessage(trade.UserId, "用户提出合同修改意见，之前的合同已失效，等待管控中心审核并下发新合同！");
+            SendMessage(trade.SgsUserId, "用户提出合同修改意见，之前的合同已失效，等待管控中心审核并下发新合同！");
+
             return Json(1);
         }
 
@@ -326,7 +352,9 @@ namespace QualityControl.Controllers
             };
             Db.DetectionSchemes.Add(n);
             Db.SaveChanges();
-            //todo 写一个message
+            //发送站内信息
+            SendMessage(x.Trade.UserId, "修改后的合同已下发，请注意查看！");
+            SendMessage(x.Trade.SgsUserId, "修改后的合同已下发，请注意查看！");
             return Json(1);
         }
 
@@ -343,7 +371,7 @@ namespace QualityControl.Controllers
                 throw new Exception("访问错误！");
             }
             var userid=User.Identity.GetUserId();
-            if (userid != trade.UserId && userid != trade.SgsUser.Id)
+            if (userid != trade.UserId && userid != trade.SgsUserId)
             {
                 throw new Exception("无权限查看！");
             }
@@ -363,7 +391,7 @@ namespace QualityControl.Controllers
                           <br />十二、委托方如对检验结果有异议的，须在一个月内凭检验证书原件向检验方要求复检，检验方应于十日内安排复检。复检结果维持原检验结果的，委托方须按规定向检验方支付复检费。复检结果确认原检验结果有误的，检验方不再收取复检费。委托方对复检结果仍有异议，双方协商不成时，应与检验方书面协议，委托仲裁机构仲裁。 
                           <br />十五、委托方对本协议及委托单有不明之处，应在填写委托单时，向检验方工作人员咨询。协议自填单之日起生效。";
             string s1= "";
-            var sysid = trade.SgsUser.Id;
+            var sysid = trade.SgsUserId;
             
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user.Type == (int)Enum.EnumUserType.User)
@@ -417,7 +445,7 @@ namespace QualityControl.Controllers
 
             Sign(tradeid);//合同详细信息
             var c = new Compact();
-            var sysid = trade.SgsUser.Id;
+            var sysid = trade.SgsUserId;
 
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user.Type == (int)Enum.EnumUserType.User)
@@ -495,6 +523,21 @@ namespace QualityControl.Controllers
             public string User;
             public string Modify;
 
+        }
+
+
+        public bool SendMessage(string userid,string content)
+        {
+            var m = new Message
+            {
+                Status = (int)EnumMeaasgeStatus.Unread,
+                Time = DateTime.Now,
+                Content = content,
+                UserId = userid
+            };          
+            Db.Messages.Add(m);
+            Db.SaveChanges();
+            return true;
         }
     }
 }

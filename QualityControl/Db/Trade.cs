@@ -30,9 +30,9 @@ namespace QualityControl.Db
 
         public virtual List<DetectionReport> Report { get; set; }
 
-        public virtual ApplicationUser Manufacturer { get; set; }
+        public string  ManufacturerId { get; set; }
 
-        public virtual ApplicationUser SgsUser { get; set; }
+        public string  SgsUserId { get; set; }
 
         public string UserId { get; set; }
 
