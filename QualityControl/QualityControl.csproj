@@ -320,6 +320,10 @@
     <Compile Include="Migrations\201509240953571_userid.Designer.cs">
       <DependentUpon>201509240953571_userid.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509241231024_sgsvirtual.cs" />
+    <Compile Include="Migrations\201509241231024_sgsvirtual.Designer.cs">
+      <DependentUpon>201509241231024_sgsvirtual.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\CompanyInfo.cs" />
@@ -1186,6 +1190,8 @@
     <Content Include="Views\User\GetTrade.cshtml" />
     <Content Include="Views\Product\CompanyProductSave.cshtml" />
     <Content Include="Views\Product\CompanyProductInfo.cshtml" />
+    <Content Include="Views\SGS\ChooseProduct.cshtml" />
+    <Content Include="Views\SGS\ManageProducts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1283,6 +1289,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509240953571_userid.resx">
       <DependentUpon>201509240953571_userid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509241231024_sgsvirtual.resx">
+      <DependentUpon>201509241231024_sgsvirtual.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

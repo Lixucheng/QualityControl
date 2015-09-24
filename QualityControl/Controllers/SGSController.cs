@@ -65,5 +65,86 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public ActionResult ChooseProduct(string key = "", long ProductTypeId = 0)
+        {
+            var userid = User.Identity.GetUserId();
+            var user = UserManager.FindById(userid);
+            if (user.Type != (int) EnumUserType.TestingOrg)
+            {
+
+                throw new Exception("您不是检测中心管理员，无权限查看！");
+            }
+
+            var x = new List<Db.Product>();
+            if (ProductTypeId != 0)
+            {
+                var t = Db.ThirdProductTypes.Find(ProductTypeId);
+                if (t == null)
+                {
+                    throw new Exception("访问错误");
+                }
+                else
+                {
+                    x = t.Products;
+                }
+
+            }
+
+            if (!string.IsNullOrEmpty(key))
+                x = Db.Products.Where(e => e.Name.Contains(key)).ToList();
+
+            x = Db.Products.Take(20).ToList();
+            ViewBag.list = x;
+
+            var sgs = Db.SGSs.First(e => e.UserId == userid);
+            ViewBag.hadlist = sgs.Products.Select(e => e.Product.Id).ToList();
+
+            return View();
+        }
+
+        public ActionResult AddSgsProduct(long pid,float price,int days)
+        {
+
+            var userid = User.Identity.GetUserId();
+            var sgs = Db.SGSs.First(e => e.UserId == userid);
+            var sgsp = new SgsProduct
+            {
+                NeedeDay = days,
+                Price = price,
+                Product = Db.Products.Find(pid)
+            };
+            sgs.Products.Add(sgsp);
+            Db.SaveChanges();
+            return Redirect("./ChooseProduct");
+        }
+
+        public ActionResult ManageProducts()
+        {
+            var userid = User.Identity.GetUserId();
+            var user = UserManager.FindById(userid);
+            if (user.Type != (int)EnumUserType.TestingOrg)
+            {
+
+                throw new Exception("您不是检测中心管理员，无权限查看！");
+            }
+       
+
+            var sgs = Db.SGSs.First(e => e.UserId == userid);
+            ViewBag.list = sgs.Products;
+
+            return View();
+        }
+
+        public ActionResult UpdateSGSProduct(long pid, int price, int days)
+        {
+            var sgsp = Db.SgsProducts.Find(pid);
+            sgsp.Price = price;
+            sgsp.NeedeDay = days;
+            Db.SaveChanges();
+            return Redirect("./ManageProducts");
+        }
+
+
     }
 }

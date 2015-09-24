@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using QualityControl.Db;
+using QualityControl.Enum;
 
 namespace QualityControl.Controllers
 {
@@ -40,7 +41,13 @@ namespace QualityControl.Controllers
 
         public ActionResult Choose(long id)
         {
-            var userid=User.Identity.GetUserId();
+            var userid = User.Identity.GetUserId();
+            var user = UserManager.FindById(userid);
+            if (user.Type != (int)EnumUserType.User)
+            {
+
+                throw new Exception("您不是用户，无权限查看！");
+            }
             var p = Db.Products.Find(id);
             if (p == null)
             {
