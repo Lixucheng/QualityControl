@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -10,11 +7,6 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using QualityControl.Models;
 using QualityControl.Enum;
-using Newtonsoft.Json;
-using QualityControl.Db;
-using System.Net.Mail;
-using System.Text;
-using System.Net;
 
 namespace QualityControl.Controllers
 {
@@ -80,6 +72,23 @@ namespace QualityControl.Controllers
             {
                 case SignInStatus.Success:
                     var tt = User.Identity.AuthenticationType;
+                    var user = UserManager.FindByEmail(model.Email);
+                    if (user.Type == 0)
+                    {
+                        return RedirectToLocal("/User/ChooseProduct");
+                    }
+                    if (user.Type == 1)
+                    {
+                        return RedirectToLocal("/Company/Index");
+                    }
+                    if (user.Type == 2)
+                    {
+                        return RedirectToLocal("/SGS/Index");
+                    }
+                    if (user.Type == 3)
+                    {
+                        return RedirectToLocal("/Admin/Check/Company");
+                    }
                     return RedirectToLocal("/Home/Redirect");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
