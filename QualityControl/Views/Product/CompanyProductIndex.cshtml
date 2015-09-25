@@ -38,7 +38,6 @@
                 <th>许可证号</th>
                 <th>发证日期</th>
                 <th>生产标准</th>
-                <th>产品状态</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -59,7 +58,6 @@
                         <td>@Tempx.ProductionCertificateNo</td>
                         <td>@Tempx.GetDate</td>
                         <td>@Tempx.Standard</td>
-                        <td>@Tempx.CompanyProductStatus</td>
 
                         <td>
                             <div class="2  fluid ui">
@@ -147,13 +145,7 @@
                 <input type="text" name="Standard" placeholder="生产标准" id="cpstandard">
             </div>
 
-            <div class="field">
-                <label>产品状态</label>
-                <select name="Status" id="Status" >
-                    <option value="1">正在生产</option>
-                    <option value="0">停产</option>
-                </select>
-            </div>
+           
             <div class="ui error message"></div>
         </form>
 
@@ -192,13 +184,6 @@
 
             @{ Html.RenderAction("_ChooseType", "Product", new {name="add"}); }
          
-            <div class="field">
-                <label>产品状态</label>
-                <select name="Status">
-                    <option value="1">正在生产</option>
-                    <option value="0">停产</option>
-                </select>
-            </div>
             <div class="ui error message"></div>
         </form>
 
@@ -259,7 +244,7 @@
                     $("#scpstandard").val(data.cp.Standard);
                     $("#scpProductTypeId").val(data.tname);
                    
-                    $("#scpCompanyProductStatus option[value='"+data.status+"']").attr("selected","selected");
+                  
 
                     $('#seecp').modal('show');
                 },
@@ -281,7 +266,7 @@
                     $("#cpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
                     $("#cpgetdate").val(data.cp.GetDate);
                     $("#cpstandard").val(data.cp.Standard);
-                    $("#Status option[value='"+data.status+"']").attr("selected","selected");
+                 
                     $('#edit').modal('show');
                 },
                 dataType: "json"
