@@ -1192,6 +1192,7 @@
     <Content Include="Views\Product\CompanyProductInfo.cshtml" />
     <Content Include="Views\SGS\ChooseProduct.cshtml" />
     <Content Include="Views\SGS\ManageProducts.cshtml" />
+    <Content Include="Views\User\Apply.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

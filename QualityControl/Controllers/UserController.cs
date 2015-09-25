@@ -26,6 +26,8 @@ namespace QualityControl.Controllers
                 else
                 {
                     x = t.Products;
+                    ViewBag.list = x;
+                    return View();
                 }
                 
             }
@@ -66,6 +68,20 @@ namespace QualityControl.Controllers
 
         public ActionResult GetTrade(long id)
         {
+            return View();
+        }
+
+        public ActionResult Apply()
+        {
+            var userid = User.Identity.GetUserId();
+            var user = UserManager.FindById(userid);
+            if (user.Type != (int)EnumUserType.User)
+            {
+
+                throw new Exception("您不是用户，无权限查看！");
+            }
+            var trade = Db.Trades.FirstOrDefault(e => e.UserId == userid&&e.Status==(int)(EnumTradeStatus.Create));
+            ViewBag.t = trade;
             return View();
         }
 

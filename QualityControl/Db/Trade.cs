@@ -59,9 +59,9 @@ namespace QualityControl.Db
         /// </summary>
         Create,
         /// <summary>
-        /// 确定批次信息
+        /// 申请完成
         /// </summary>
-        EnsureBatch,
+        AlreadyApply,
         /// <summary>
         /// 合同确认流程
         /// </summary>
@@ -76,9 +76,9 @@ namespace QualityControl.Db
         /// </summary>
         MakeQrCode,
         /// <summary>
-        /// 抽样流程
+        /// 抽样流程结束
         /// </summary>
-        Sample,
+        SampleFinshed,
         /// <summary>
         /// 检查中
         /// </summary>
