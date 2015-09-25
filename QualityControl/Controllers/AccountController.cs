@@ -87,7 +87,7 @@ namespace QualityControl.Controllers
                     }
                     if (user.Type == 3)
                     {
-                        return RedirectToLocal("/Admin/Check/Company");
+                        return RedirectToLocal("/Trade/Trades");
                     }
                     return RedirectToLocal("/Home/Redirect");
                 case SignInStatus.LockedOut:

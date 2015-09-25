@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using QualityControl.Db;
+using QualityControl.Models.Adapters;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace QualityControl.Controllers
@@ -15,6 +17,15 @@ namespace QualityControl.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult Trades()
+        {
+            return View(Db.Trades.Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo()
+            {
+                Trade = trade,
+                User = user
+            }).ToList());
         }
 
         /// <summary>

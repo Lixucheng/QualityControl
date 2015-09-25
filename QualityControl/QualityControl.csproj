@@ -326,6 +326,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Adapters\TradeInfo.cs" />
     <Compile Include="Models\Adapters\CompanyInfo.cs" />
     <Compile Include="Models\Adapters\SGSInfo.cs" />
     <Compile Include="Models\ConvertLevel.cs" />
@@ -1193,6 +1194,7 @@
     <Content Include="Views\SGS\ChooseProduct.cshtml" />
     <Content Include="Views\SGS\ManageProducts.cshtml" />
     <Content Include="Views\User\Apply.cshtml" />
+    <Content Include="Views\Trade\Trades.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1202,7 +1204,6 @@
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\Trade\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
