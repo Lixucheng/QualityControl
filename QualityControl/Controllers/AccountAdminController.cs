@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace QualityControl.Controllers
 {
+    [Authorize]
     public class AccountAdminController : BaseController
     {
         /// <summary>

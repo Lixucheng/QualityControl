@@ -53,7 +53,47 @@ namespace QualityControl.Db
 
     public enum EnumTradeStatus
     {
-        SampleFinshed,
-        Create
+        
+        /// <summary>
+        /// 创建
+        /// </summary>
+        Create,
+        /// <summary>
+        /// 确定批次信息
+        /// </summary>
+        EnsureBatch,
+        /// <summary>
+        /// 合同确认流程
+        /// </summary>
+        EnsureContract,
+
+        /// <summary>
+        /// 合同已签
+        /// </summary>
+        Signed,
+        /// <summary>
+        /// 制码流程
+        /// </summary>
+        MakeQrCode,
+        /// <summary>
+        /// 抽样流程
+        /// </summary>
+        Sample,
+        /// <summary>
+        /// 检查中
+        /// </summary>
+        Testing,
+
+        /// <summary>
+        /// 检测接受，等待审核
+        /// </summary>
+        Tested,
+
+        /// <summary>
+        /// 结束
+        /// </summary>
+        Finish
+
+
     }
 }

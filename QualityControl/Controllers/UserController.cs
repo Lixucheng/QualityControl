@@ -9,6 +9,7 @@ using QualityControl.Enum;
 
 namespace QualityControl.Controllers
 {
+    [Authorize]
     public class UserController : BaseController
     {
         // GET: User

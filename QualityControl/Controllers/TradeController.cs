@@ -7,9 +7,11 @@ using System.Web.Mvc;
 
 namespace QualityControl.Controllers
 {
+    [Authorize]
     public class TradeController : BaseController
     {
         // GET: Trade
+
         public ActionResult Index()
         {
             return View();

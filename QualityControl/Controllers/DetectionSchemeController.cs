@@ -13,6 +13,7 @@ using QualityControl.Models;
 
 namespace QualityControl.Controllers
 {
+    [Authorize]
     public class DetectionSchemeController : BaseController
     {
         //检测方案合同部分 1121112231
