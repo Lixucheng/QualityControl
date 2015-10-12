@@ -11,7 +11,7 @@ using System.Data.Entity;
 
 namespace QualityControl.Controllers
 {
-    [Authorize]
+
     public class ProductController : BaseController
     {
 

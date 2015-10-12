@@ -20,6 +20,7 @@ namespace QualityControl.Controllers
         // GET: DetectionScheme
         public ActionResult BuildDetectionScheme(long tradeid)
         {
+            test(tradeid);
             var trade = Db.Trades.Find(tradeid);
             if (trade == null)
             {
@@ -36,7 +37,7 @@ namespace QualityControl.Controllers
             }
             else
             {
-                x = Db.DetectionSchemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存);
+                x = Db.DetectionSchemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存&&e.Trade.Id==tradeid);
             }         
             var sgsprolist = Db.SgsProducts.Where(e=>e.Product.Id==trade.Product.Id);
             if (!sgsprolist.Any())
@@ -44,6 +45,7 @@ namespace QualityControl.Controllers
 
                 ViewBag.ok = 1;
                 ViewBag.message = "没有检测机构可以检测此产品！";
+                return View();
             }
             ViewBag.sgslist = sgsprolist.Select(e => e.SGS).Distinct();
           
@@ -93,6 +95,7 @@ namespace QualityControl.Controllers
             {
                 ViewBag.ok = 1;
                 ViewBag.message = "方案已发送待确定或者已确定，不支持编辑！";
+                return View();
             }
             var levelconvert = new ConvertLevel();
           
@@ -539,6 +542,23 @@ namespace QualityControl.Controllers
             Db.Messages.Add(m);
             Db.SaveChanges();
             return true;
+        }
+
+
+        public void test(long id)
+        {
+            var x = Db.Trades.Find(id);
+            for (int i = 0; i < 3; i++)
+            {
+                var b = new ProductBatch();
+                b.BatchName = "2015-9-" + i.ToString() + "批次";
+                b.Count = 5;
+                b.ProductId = x.Product.Id;
+                b.Trade = x;
+                Db.ProductBatchs.Add(b);
+                Db.SaveChanges();
+            }
+          
         }
     }
 }
