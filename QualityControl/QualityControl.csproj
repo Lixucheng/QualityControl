@@ -1195,6 +1195,7 @@
     <Content Include="Views\SGS\ManageProducts.cshtml" />
     <Content Include="Views\User\Apply.cshtml" />
     <Content Include="Views\Trade\Trades.cshtml" />
+    <Content Include="Views\Account\GotoEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

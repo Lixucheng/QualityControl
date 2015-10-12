@@ -190,6 +190,8 @@ namespace QualityControl.Controllers
             return RedirectToAction("GotoEmail", new { email = model.Email });
         }
 
+
+
         [HttpGet]
         [AllowAnonymous]
         public ActionResult GotoEmail(string email)
