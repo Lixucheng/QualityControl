@@ -18,9 +18,8 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public string CheckNum { get; set; }  //检测号
+        public virtual Trade Trade { get;set; }
 
-        public long ProductId { get; set; }  //检查产品
 
         public string Level { get; set; }    //检查级别
 
@@ -43,6 +42,14 @@ namespace QualityControl.Db
         public int Time { get; set; }          //确定时间
 
         public EnumDetectionSchemeStatus Status { get; set; }
+
+        /// <summary>
+        /// 合同详细信息
+        /// </summary>
+        public virtual List<Contract> Contracts { get; set; }
+
+
+        public virtual List<ContractModification> Modifications { get; set; }
     }
 
     /// <summary>
@@ -55,9 +62,9 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public string CheckNum { get; set; }  //检测号
+      
 
-        public long ProductId { get; set; }  //检查产品
+       public virtual Product Product { get; set; }
 
 
         public string Level { get; set; }      //级别
@@ -69,6 +76,8 @@ namespace QualityControl.Db
 
         public int Time { get; set; }          //确定时间
         public EnumContractStatus Status { get; set; } //状态
+
+        public virtual DetectionScheme DetectionScheme { get; set; }
 
 
     }
@@ -101,7 +110,7 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public long DetectionSchemeId { get; set; }               //合同id
+       public virtual DetectionScheme DetectionScheme { get; set; }
 
         public string UserId { get; set; }                        //修改人
 
@@ -127,6 +136,5 @@ namespace QualityControl.Db
 
         public DateTime Time { get; set; }
 
-        public string CheckNum { get; set; }
     }
 }

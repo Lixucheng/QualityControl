@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @section head{
+<link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+
     <style>
         .main-container {
             background-color: #FFFFFF;
@@ -17,14 +19,76 @@
 
 <div class="main-container">
     
-    @{
-        int i = 1;
-        foreach (var temp in ViewBag.list)
-        {
-            <a href="..@temp">第 @i 个二维码图片</a>
-            <br/>
-            i++;
-        }
-        <a href="..@ViewBag.zipurl">zip</a>
-    }
+    <div>
+        
+
+        <a class="ui button blue" href="..@ViewBag.zipurl">二维码打包下载</a>
+
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>操作</th>                  
+                </tr>
+            </thead>
+            <tbody>
+
+            @{
+                int i = 1;
+                foreach (var temp in ViewBag.list)
+                {
+                    <tr>
+                        <td><a href="..@temp">第 @i 个二维码图片</a></td>
+                        <td style="text-align: center; width: 150px"><a href="..@temp" class="ui button" download="">下载</a></td>
+
+                    </tr>
+                    i++;
+                }
+
+            }
+            </tbody>
+            <tfoot>
+            <tr></tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
+
+@section scripts{
+    <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('table').DataTable({
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                    "sInfoEmpty": "共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+
+                },
+                "bLengthChange": false
+            });
+        });
+     
+
+    </script>
+}

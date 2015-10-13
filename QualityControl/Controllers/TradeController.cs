@@ -1,18 +1,31 @@
 ﻿using Newtonsoft.Json;
 using QualityControl.Db;
+using QualityControl.Models.Adapters;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace QualityControl.Controllers
 {
+    [Authorize]
     public class TradeController : BaseController
     {
         // GET: Trade
+
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult Trades()
+        {
+            return View(Db.Trades.Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo()
+            {
+                Trade = trade,
+                User = user
+            }).ToList());
         }
 
         /// <summary>
@@ -80,13 +93,13 @@ namespace QualityControl.Controllers
             Db.Entry(trade).State = EntityState.Modified;
             Db.Messages.Add(new Message()
             {
-                UserId = trade.Manufacturer.Id,
+                UserId = trade.ManufacturerId,
                 Content = "你的管控合同抽样信息已经完成，请注意查看",
                 Time = DateTime.Now
             });
             Db.Messages.Add(new Message()
             {
-                UserId = trade.SgsUser.Id,
+                UserId = trade.SgsUserId,
                 Content = "你的管控合同抽样信息已经完成，请注意查看",
                 Time = DateTime.Now
             });

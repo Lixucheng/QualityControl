@@ -21,4 +21,10 @@ namespace QualityControl.Db
         public DateTime Time { get; set; }
     }
 
+    public enum EnumMeaasgeStatus
+    {
+        Unread,
+        Readed,
+    }
+
 }

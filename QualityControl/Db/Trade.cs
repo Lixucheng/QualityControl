@@ -15,7 +15,7 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public List<DetectionScheme> Schemes { get; set; }
+        public virtual List<DetectionScheme> Schemes { get; set; }
 
         public EnumSample SampleType { get; set; }
 
@@ -24,17 +24,25 @@ namespace QualityControl.Db
         public int Status { get; set; }
 
         //批次
-        public List<ProductBatch> Batches { get; set; }
+        public virtual List<ProductBatch> Batches { get; set; }
 
         public DateTime FinishTime { get; set; }
 
         public virtual List<DetectionReport> Report { get; set; }
 
-        public ApplicationUser Manufacturer { get; set; }
+        public string  ManufacturerId { get; set; }
 
-        public ApplicationUser SgsUser { get; set; }
+        public string  SgsUserId { get; set; }
+
+        public string UserId { get; set; }
 
         public virtual Product Product { get; set; }
+
+        /// <summary>
+        /// 协议内容
+        /// </summary>
+        public virtual Compact Compact { get; set; }
+
     }
 
     public enum EnumSample
@@ -45,6 +53,47 @@ namespace QualityControl.Db
 
     public enum EnumTradeStatus
     {
-        SampleFinshed
+        
+        /// <summary>
+        /// 创建
+        /// </summary>
+        Create,
+        /// <summary>
+        /// 申请完成
+        /// </summary>
+        AlreadyApply,
+        /// <summary>
+        /// 合同确认流程
+        /// </summary>
+        EnsureContract,
+
+        /// <summary>
+        /// 合同已签
+        /// </summary>
+        Signed,
+        /// <summary>
+        /// 制码流程
+        /// </summary>
+        MakeQrCode,
+        /// <summary>
+        /// 抽样流程结束
+        /// </summary>
+        SampleFinshed,
+        /// <summary>
+        /// 检查中
+        /// </summary>
+        Testing,
+
+        /// <summary>
+        /// 检测接受，等待审核
+        /// </summary>
+        Tested,
+
+        /// <summary>
+        /// 结束
+        /// </summary>
+        Finish
+
+
     }
 }

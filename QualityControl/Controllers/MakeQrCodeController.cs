@@ -16,38 +16,39 @@ namespace QualityControl.Controllers
     public class MakeQrCodeController : BaseController
     {
         // GET: MakeQrCode
-        public ActionResult Index(string checknum)
+        public ActionResult Index(long tradeid )
         {
-            if (string.IsNullOrEmpty(checknum))
+            var trade = Db.Trades.Find(tradeid);
+            if (trade == null)
             {
                 throw new Exception("访问错误！");
             }
             List<string> listdown = new List<string>();
-            var list=Db.ProductBatchs.Where(e => e.CheckNum == checknum).ToList();        
+            var list = trade.Batches;     
             list.ForEach(e =>
             {             
                 for (long i = 1; i <= e.Count; i++)
                 {
-                    listdown.Add(MakeQrCode(checknum, i, e.BatchName, e.ProductId));
+                    listdown.Add(MakeQrCode(tradeid, i, e.BatchName, e.ProductId));
                 }
             });
 
             //压缩
             var urlz = HttpRuntime.AppDomainAppPath;
-            var zipfile = urlz + "Image\\" + checknum;
-            var zipname = urlz + "Image\\" + checknum + ".zip";
+            var zipfile = urlz + "Image\\" + tradeid;
+            var zipname = urlz + "Image\\" + tradeid + ".zip";
             Zip(zipfile, zipname);
 
-            ViewBag.zipurl = Request.Url.ToString() + "/Image/" + checknum + ".zip";
+            ViewBag.zipurl ="/Image/" + tradeid + ".zip";
             string url = Request.Url.ToString();
             ViewBag.list = listdown;
             return View();
         }
 
-        public string MakeQrCode(string checknum,long num,string batch,long productid)
+        public string MakeQrCode(long tradeid,long num,string batch,long productid)
         {
             var guid = Guid.NewGuid().ToString();
-            var name = checknum + "_" + productid + "_" + batch + "_" + num+".jpg";
+            var name = tradeid + "_" + productid + "_" + batch + "_" + num+".jpg";
             var url = HttpRuntime.AppDomainAppPath;
             ThoughtWorks.QRCode.Codec.QRCodeEncoder encoder = new QRCodeEncoder();
             encoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;//编码方法
@@ -57,7 +58,7 @@ namespace QualityControl.Controllers
             String qrdata = name+"_"+guid;
             System.Drawing.Bitmap bp = encoder.Encode(qrdata, ASCIIEncoding.UTF8);
             Image image = bp;
-            var path = url + "\\Image\\" + checknum+"\\"+batch;
+            var path = url + "\\Image\\" + tradeid + "\\"+batch;
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -75,7 +76,7 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
 
 
-            string down ="/Image/"+checknum+"/"+batch+"/"+name;
+            string down ="/Image/"+ tradeid + "/"+batch+"/"+name;
             return down;
         }
 

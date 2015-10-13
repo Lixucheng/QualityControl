@@ -43,7 +43,7 @@ namespace QualityControl.Db
 
         public string Type { get; set; }
 
-        public List<SgsProduct> Products { get; set; }
+        public virtual List<SgsProduct> Products { get; set; }
     }
 
     [Table("GxSgsProduct")]

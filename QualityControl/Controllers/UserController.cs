@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using QualityControl.Db;
+using QualityControl.Enum;
 
 namespace QualityControl.Controllers
 {
+    [Authorize]
     public class UserController : BaseController
     {
         // GET: User
@@ -22,6 +26,8 @@ namespace QualityControl.Controllers
                 else
                 {
                     x = t.Products;
+                    ViewBag.list = x;
+                    return View();
                 }
                 
             }
@@ -38,6 +44,13 @@ namespace QualityControl.Controllers
 
         public ActionResult Choose(long id)
         {
+            var userid = User.Identity.GetUserId();
+            var user = UserManager.FindById(userid);
+            if (user.Type != (int)EnumUserType.User)
+            {
+
+                throw new Exception("您不是用户，无权限查看！");
+            }
             var p = Db.Products.Find(id);
             if (p == null)
             {
@@ -45,8 +58,8 @@ namespace QualityControl.Controllers
             }
             var trade = new Db.Trade
             {
-                Product = p,CeateTime=DateTime.Now,FinishTime=DateTime.Now
-            
+                Product = p,CeateTime=DateTime.Now,FinishTime=DateTime.Now,  
+                UserId=userid,Status=(int)EnumTradeStatus.Create   
             };
             Db.Trades.Add(trade);
             Db.SaveChanges();
@@ -55,6 +68,20 @@ namespace QualityControl.Controllers
 
         public ActionResult GetTrade(long id)
         {
+            return View();
+        }
+
+        public ActionResult Apply()
+        {
+            var userid = User.Identity.GetUserId();
+            var user = UserManager.FindById(userid);
+            if (user.Type != (int)EnumUserType.User)
+            {
+
+                throw new Exception("您不是用户，无权限查看！");
+            }
+            var trade = Db.Trades.FirstOrDefault(e => e.UserId == userid&&e.Status==(int)(EnumTradeStatus.Create));
+            ViewBag.t = trade;
             return View();
         }
 

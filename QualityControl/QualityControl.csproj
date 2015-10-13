@@ -199,6 +199,7 @@
     <Compile Include="Controllers\SGSController.cs" />
     <Compile Include="Controllers\TradeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Db\CheckLevel.cs" />
     <Compile Include="Db\Company.cs" />
     <Compile Include="Db\DetectionReport.cs" />
     <Compile Include="Db\DetectionScheme.cs" />
@@ -275,10 +276,60 @@
     <Compile Include="Migrations\201509220830586_ProductAddUpdateJson.Designer.cs">
       <DependentUpon>201509220830586_ProductAddUpdateJson.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509221224374_Detectionscheme.cs" />
+    <Compile Include="Migrations\201509221224374_Detectionscheme.Designer.cs">
+      <DependentUpon>201509221224374_Detectionscheme.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509221237041_sgsproducts.cs" />
+    <Compile Include="Migrations\201509221237041_sgsproducts.Designer.cs">
+      <DependentUpon>201509221237041_sgsproducts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509230505411_adduserid.cs" />
+    <Compile Include="Migrations\201509230505411_adduserid.Designer.cs">
+      <DependentUpon>201509230505411_adduserid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509230718072_trade-user-virtual.cs" />
+    <Compile Include="Migrations\201509230718072_trade-user-virtual.Designer.cs">
+      <DependentUpon>201509230718072_trade-user-virtual.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509230727019_trade-userid.cs" />
+    <Compile Include="Migrations\201509230727019_trade-userid.Designer.cs">
+      <DependentUpon>201509230727019_trade-userid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509230809127_detectionsheme-product.cs" />
+    <Compile Include="Migrations\201509230809127_detectionsheme-product.Designer.cs">
+      <DependentUpon>201509230809127_detectionsheme-product.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509230909074_tradevirtual.cs" />
+    <Compile Include="Migrations\201509230909074_tradevirtual.Designer.cs">
+      <DependentUpon>201509230909074_tradevirtual.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509231229047_tradevirtual1.cs" />
+    <Compile Include="Migrations\201509231229047_tradevirtual1.Designer.cs">
+      <DependentUpon>201509231229047_tradevirtual1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509231330225_Compactkey.cs" />
+    <Compile Include="Migrations\201509231330225_Compactkey.Designer.cs">
+      <DependentUpon>201509231330225_Compactkey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509231340436_compactup.cs" />
+    <Compile Include="Migrations\201509231340436_compactup.Designer.cs">
+      <DependentUpon>201509231340436_compactup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509240953571_userid.cs" />
+    <Compile Include="Migrations\201509240953571_userid.Designer.cs">
+      <DependentUpon>201509240953571_userid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509241231024_sgsvirtual.cs" />
+    <Compile Include="Migrations\201509241231024_sgsvirtual.Designer.cs">
+      <DependentUpon>201509241231024_sgsvirtual.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Adapters\TradeInfo.cs" />
     <Compile Include="Models\Adapters\CompanyInfo.cs" />
     <Compile Include="Models\Adapters\SGSInfo.cs" />
+    <Compile Include="Models\ConvertLevel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Singleton.cs" />
@@ -1141,6 +1192,11 @@
     <Content Include="Views\User\GetTrade.cshtml" />
     <Content Include="Views\Product\CompanyProductSave.cshtml" />
     <Content Include="Views\Product\CompanyProductInfo.cshtml" />
+    <Content Include="Views\SGS\ChooseProduct.cshtml" />
+    <Content Include="Views\SGS\ManageProducts.cshtml" />
+    <Content Include="Views\User\Apply.cshtml" />
+    <Content Include="Views\Trade\Trades.cshtml" />
+    <Content Include="Views\Account\GotoEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1150,7 +1206,6 @@
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\Trade\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -1205,6 +1260,42 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509220830586_ProductAddUpdateJson.resx">
       <DependentUpon>201509220830586_ProductAddUpdateJson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509221224374_Detectionscheme.resx">
+      <DependentUpon>201509221224374_Detectionscheme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509221237041_sgsproducts.resx">
+      <DependentUpon>201509221237041_sgsproducts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509230505411_adduserid.resx">
+      <DependentUpon>201509230505411_adduserid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509230718072_trade-user-virtual.resx">
+      <DependentUpon>201509230718072_trade-user-virtual.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509230727019_trade-userid.resx">
+      <DependentUpon>201509230727019_trade-userid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509230809127_detectionsheme-product.resx">
+      <DependentUpon>201509230809127_detectionsheme-product.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509230909074_tradevirtual.resx">
+      <DependentUpon>201509230909074_tradevirtual.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509231229047_tradevirtual1.resx">
+      <DependentUpon>201509231229047_tradevirtual1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509231330225_Compactkey.resx">
+      <DependentUpon>201509231330225_Compactkey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509231340436_compactup.resx">
+      <DependentUpon>201509231340436_compactup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509240953571_userid.resx">
+      <DependentUpon>201509240953571_userid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509241231024_sgsvirtual.resx">
+      <DependentUpon>201509241231024_sgsvirtual.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
