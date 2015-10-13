@@ -3,9 +3,9 @@
     ViewBag.Title = "CompanyProductIndex";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+@model List<QualityControl.Db.Product>
 @section head{
-<link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
 
     <style>
         .main-container {
@@ -15,8 +15,9 @@
             padding: 2em 2em 7em;
             z-index: 1;
         }
+
         .mycontent {
-            margin-bottom:30px;
+            margin-bottom: 30px;
         }
     </style>
 }
@@ -27,7 +28,7 @@
         <a class="anchor" id="types"></a>
     </h2>
     <div>
-        <button class="ui button blue icon" onclick="Add()"><i class="add circle icon"></i>添加产品</button>
+        <a class="ui button blue icon" href="/Product/CompanyProductSave"><i class="add circle icon"></i>添加产品</a>
     </div>
 
     <table class="ui  celled  table">
@@ -38,38 +39,28 @@
                 <th>许可证号</th>
                 <th>发证日期</th>
                 <th>生产标准</th>
-                <th>产品状态</th>
                 <th>操作</th>
             </tr>
         </thead>
         <tbody>
 
-            @if (ViewBag.count == 0)
+            @foreach (var Tempx in Model)
             {
-               
-            }
-            else
-            {
-                foreach (var Tempx in ViewBag.list)
-                {
-                    <tr>
+                <tr>
 
-                        <td>@Tempx.Name</td>
-                        <td>@Tempx.ProductTypeName</td>
-                        <td>@Tempx.ProductionCertificateNo</td>
-                        <td>@Tempx.GetDate</td>
-                        <td>@Tempx.Standard</td>
-                        <td>@Tempx.CompanyProductStatus</td>
-
-                        <td>
-                            <div class="2  fluid ui">
-                                <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
-                                <button class="ui  button" onclick="Edit(@Tempx.Id)">修改</button>
-                                <a class="ui  button" href="/Product/CpDel/@Tempx.Id">删除</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
+                    <td>@Tempx.Name</td>
+                    <td>@Tempx.Type.SecondType.FirstType.Title / @Tempx.Type.SecondType.Title / @Tempx.Type.Title</td>
+                    <td>@Tempx.ProductionCertificateNo</td>
+                    <td>@Tempx.GetDate</td>
+                    <td>@Tempx.Standard</td>
+                    <td>
+                        <div class="2  fluid ui">
+                            <a class="ui  button" href="/Product/CompanyProductInfo/@Tempx.Id">详细</a>
+                            <a class="ui  button" href="/Product/CompanyProductSave/@Tempx.Id">修改</a>
+                            <a class="ui  button delete-btn" data-id="@Tempx.Id">删除</a>
+                        </div>
+                    </td>
+                </tr>
             }
 
         </tbody>
@@ -78,142 +69,12 @@
         </tfoot>
     </table>
 </div>
-<div class="ui  modal" id="seecp">
-    <i class="close icon"></i>
-    <div class="header" id="scpname">
-        标题
-    </div>
-    <div class=" content mycontent">
-
-        <form class="ui form"  id="" >                     
-            <div class="field">
-                <label>生产许可证号</label>
-                <input disabled type="text" name="ProductionCertificateNo" placeholder="生产许可证号" id="scpProductionCertificateNo">
-            </div>
-            <div class="field">
-                <label>颁发日期</label>
-                <input  disabled type="date" name="GetDate" placeholder="颁发日期" id="scpgetdate">
-            </div>
-            <div class="field">
-                <label>生产标准</label>
-                <input disabled type="text" name="Standard" placeholder="生产标准" id="scpstandard">
-            </div>
-            <div class="field">
-                <label>产品类别</label>
-                <input disabled name="ProductTypeId" id="scpProductTypeId"/>
-            
-                
-            </div>
-            <div class="field">
-                <label>产品状态</label>
-                <select disabled name="CompanyProductStatus" id="scpCompanyProductStatus">
-                    <option value="1">正在生产</option>
-                    <option value="0">停产</option>
-                </select>
-            </div>
-           
-        </form>
-
-    </div>
-  
-</div>
-
-
-
-<div class="ui  modal" id="edit">
-    <i class="close icon"></i>
-    <div class="header" id="typetitle">
-        产品信息修改
-    </div>
-    <div class=" content mycontent">
-
-        <form class="ui form" action="/Product/CpEdit" id="editform">
-            <input name="CompanyId" style="display: none" value="@ViewBag.cid">
-            <input name="Id" style="display:none" id="cpid">
-            <div class="field">
-                <label>名称</label>
-                <input type="text" name="Name" placeholder="名称" id="cpname">
-            </div>
-            <div class="field">
-                <label>生产许可证号</label>
-                <input type="text" name="ProductionCertificateNo" placeholder="生产许可证号" id="cpProductionCertificateNo">
-            </div>
-            <div class="field">
-                <label>颁发日期</label>
-                <input type="date" name="GetDate" placeholder="颁发日期" id="cpgetdate">
-            </div>
-            <div class="field">
-                <label>生产标准</label>
-                <input type="text" name="Standard" placeholder="生产标准" id="cpstandard">
-            </div>
-
-            <div class="field">
-                <label>产品状态</label>
-                <select name="Status" id="Status" >
-                    <option value="1">正在生产</option>
-                    <option value="0">停产</option>
-                </select>
-            </div>
-            <div class="ui error message"></div>
-        </form>
-
-    </div>
-    <div class="actions">
-        <button class="ui green button" onclick="sub()">确定修改</button>
-    </div>
-</div>
-
-
-<div class="ui  modal" id="AddModel">
-    <i class="close icon"></i>
-    <div class="header" id="addtypetitle">
-        产品添加
-    </div>
-    <div class=" content mycontent" >
-
-        <form class="ui form" method="post" action="/Product/CpAdd"   id="addform">
-            <input name="CompanyId" style="display:none" value="@ViewBag.cid" >
-            <div class="field">
-                <label>名称</label>
-                <input type="text" name="Name" placeholder="名称">
-            </div>
-            <div class="field">
-                <label>生产许可证号</label>
-                <input type="text" name="ProductionCertificateNo" placeholder="生产许可证号">
-            </div>
-            <div class="field">
-                <label>颁发日期</label>
-                <input type="date" name="GetDate" placeholder="颁发日期">
-            </div>
-            <div class="field">
-                <label>生产标准</label>
-                <input type="text" name="Standard" placeholder="生产标准">
-            </div>
-
-            @{ Html.RenderAction("_ChooseType", "Product", new {name="add"}); }
-         
-            <div class="field">
-                <label>产品状态</label>
-                <select name="Status">
-                    <option value="1">正在生产</option>
-                    <option value="0">停产</option>
-                </select>
-            </div>
-            <div class="ui error message"></div>
-        </form>
-
-    </div>
-    <div class="actions">
-        <button class="ui green button" onclick="Addsub()">提交</button>
-    </div>
-
-</div>
 
 
 @section scripts{
-<script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
 
-<script>
+    <script>
         $(document).ready(function () {
             $('table').DataTable({
                 "language": {
@@ -245,88 +106,26 @@
             });
         });
 
-        function See(x) {
-            $.ajax({
-                type: 'Get',
-                url: '/Product/GetCpInfo',
-                data: { id: x },
-                success: function(data) {
-                    
-                    $("#scpname").html(data.cp.Name);
-                    $("#scpid").val(data.cp.Id);
-                    $("#scpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
-                    $("#scpgetdate").val(data.cp.GetDate);
-                    $("#scpstandard").val(data.cp.Standard);
-                    $("#scpProductTypeId").val(data.tname);
-                   
-                    $("#scpCompanyProductStatus option[value='"+data.status+"']").attr("selected","selected");
-
-                    $('#seecp').modal('show');
-                },
-                dataType: "json"
-            });
-
-        };
-
-
-        function Edit(id) {
+        $('.delete-btn').click(function () {
+            var $this = $(this);
+            var id = $this.data('id');
 
             $.ajax({
-                type: 'Get',
-                url: '/Product/GetCpInfo',
-                data: { id: id },
-                success: function(data) {
-                    $("#cpname").val(data.cp.Name);
-                    $("#cpid").val(data.cp.Id);
-                    $("#cpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
-                    $("#cpgetdate").val(data.cp.GetDate);
-                    $("#cpstandard").val(data.cp.Standard);
-                    $("#Status option[value='"+data.status+"']").attr("selected","selected");
-                    $('#edit').modal('show');
+                url: '/Product/CompanyProductRemove',
+                data: {
+                    id: id
                 },
-                dataType: "json"
-            });
-
-        };
-
-        function Add() {
-            $('#AddModel').modal('show');
-        }
-
-        function sub() {
-            $("#editform").submit();
-        }
-
-        function Addsub() {
-            $("#addform").submit();
-        }
-
-        //表单验证
-        $('.ui.form')
-            .form({
-                fields: {
-                    name: {
-                        identifier: 'Title',
-                        rules: [
-                            {
-                                type: 'empty',
-                                prompt: '请输入名称！'
-                            }
-                        ]
-                    },
-                    Description: {
-                        identifier: 'Description',
-                        rules: [
-                            {
-                                type: 'empty',
-                                prompt: '请输入描述！'
-                            }
-                        ]
-                    }
-
+                success: function () {
+                    $this.parents('tr').remove();
+                },
+                error: function () {
+                    alert('操作失败，请刷新重试');
                 }
             });
-</script>
+        });
+    </script>
+
+
 }
 
 

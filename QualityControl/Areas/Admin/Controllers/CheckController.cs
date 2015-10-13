@@ -173,5 +173,75 @@ namespace QualityControl.Areas.Admin.Controllers
             Db.SaveChanges();
         }
         #endregion
+
+        #region CompanyProduct
+        public ActionResult CompanyProduct()
+        {
+            return View(
+                Db.Products
+                    .Where(a => a.Status == EnumStatus.Unchecked || a.Status == EnumStatus.FirstUncheked)
+                    .OrderByDescending(a => a.LastChangeTime)
+                    .ToList()
+            );
+        }
+
+        public string CompanyProductInfo(long id)
+        {
+            var data = new Product();
+            var product = Db.Products.Find(id);
+            if (product == null)
+            {
+                return null;
+            }
+            Util.Util.Dump(product, data, false);
+            product.Company = null;
+            data.Type = new ThirdProductType();
+            Util.Util.Dump(product.Type, data.Type, false);
+            data.Type.SecondType = new SecondProductType();
+            Util.Util.Dump(product.Type.SecondType, data.Type.SecondType, false);
+            data.Type.SecondType.FirstType = new FirstProductType();
+            Util.Util.Dump(product.Type.SecondType.FirstType, data.Type.SecondType.FirstType, false);
+            return JsonConvert.SerializeObject(data);
+        }
+
+        public void CompanyProductAction(long id, bool isPass)
+        {
+            var product = Db.Products.Find(id);
+            string msg;
+            if (product == null)
+            {
+                return;
+            }
+            if (isPass)
+            {
+                if (product.Status == EnumStatus.Unchecked)
+                {
+                    var model = JsonConvert.DeserializeObject<Company>(product.UpdateJson);
+                    Util.Util.Dump(model, product, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "UpdateJson", "Status" });
+                    product.UpdateJson = null;
+                }
+                product.Status = EnumStatus.Valid;
+                msg = "你的机构信息修改申请已经通过审核";
+            }
+            else
+            {
+                if (product.Status == EnumStatus.Unchecked)
+                {
+                    product.Status = EnumStatus.Valid;
+                    product.UpdateJson = null;
+                }
+                msg = "你的机构信息修改申请未通过审核";
+            }
+            Db.Messages.Add(new Message
+            {
+                UserId = product.UserId,
+                Content = msg,
+                Status = 0,
+                Time = DateTime.Now
+            });
+            Db.Entry(product).State = EntityState.Modified;
+            Db.SaveChanges();
+        }
+        #endregion
     }
 }

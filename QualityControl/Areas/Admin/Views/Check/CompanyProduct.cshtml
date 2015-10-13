@@ -1,0 +1,248 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model List<QualityControl.Db.Product>
+<div class="container ui am-padding">
+    @if (Model.Count != 0)
+    {
+        <table class="ui compact celled table">
+            <thead>
+                <tr>
+                    <th>企业名称</th>
+                    <th>产品名称</th>
+                    <th>申请时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Company.Name</td>
+                        <td>@item.Name</td>
+                        <td>@item.LastChangeTime</td>
+                        <td>
+                            @(item.UpdateJson == null ? "初次审核" : "修改审核")
+                        </td>
+                        <td>
+                            <span class="ui button detail-btn" data-id="@item.Id">查看</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+
+</div>
+
+<!--modal-->
+<div class="ui large modal">
+    <i class="close icon"></i>
+    <div class="header">
+        <span way-data="data.User.UserName"></span>的企业修改信息
+    </div>
+    <div class="content">
+        <div class="description">
+            <div class="ui grid">
+                <div class="row">
+                    <div class="eight wide column">
+                        <div class="ui raised segment">
+                            <div class="am-cf">
+                                <a class="ui red ribbon label zh  fw-normal-force">原产品信息</a>
+                                <span way-data="data.Company.Name"></span>
+                            </div>
+                            <p class="ui divider"></p>
+                            <div class="ui divided selection list">
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
+                                    <span way-data="data.Company.CorporationName"></span>
+                                </a>
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">法人身份证号</div>
+                                    <span way-data="data.Company.CorporationIdentity"></span>
+                                </a>
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">注册时间</div>
+                                    <span way-data="data.Company.EstablishedTime"></span>
+                                </a>
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
+                                    <span way-data="data.Company.Address"></span>
+                                </a>
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
+                                    <span way-data="data.Company.License"></span>
+                                </a>
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
+                                    <span way-data="data.Company.OrganizationCode"></span>
+                                </a>
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">营业范围</div>
+                                    <span way-data="data.Company.LicenseScope"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="eight wide column">
+                        <div class="ui raised segment">
+                            <div class="am-cf">
+                                <a class="ui red ribbon label zh  fw-normal-force">修改后的企业信息</a>
+                                <span way-data="data.updateJson.Company.Name"></span>
+                            </div>
+                            <p class="ui divider"></p>
+                            <div class="ui divided selection list">
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
+                                    <span way-data="data.updateJson.Company.CorporationName"></span>
+                                </a>
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">法人身份证号</div>
+                                    <span way-data="data.updateJson.Company.CorporationIdentity"></span>
+                                </a>
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">注册时间</div>
+                                    <span way-data="data.Company.EstablishedTime"></span>
+                                </a>
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
+                                    <span way-data="data.Company.Address"></span>
+                                </a>
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
+                                    <span way-data="data.Company.License"></span>
+                                </a>
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
+                                    <span way-data="data.Company.OrganizationCode"></span>
+                                </a>
+                                <a class="item">
+                                    <div class="ui horizontal grey label zh fw-normal-force">营业范围</div>
+                                    <span way-data="data.Company.LicenseScope"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui black deny button">
+            取消
+        </div>
+        <div class="ui orange labeled icon deny button reject-btn">
+            不通过
+            <i class="remove icon"></i>
+        </div>
+        <div class="ui positive right labeled icon button pass-btn">
+            通过
+            <i class="checkmark icon"></i>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script src="~/Scripts/bower_components/way.js/way.min.js"></script>
+    <script>
+        $(function () {
+            var $modal = $('.modal').modal();
+            var cached = {};
+            var $currentRow;
+
+            var $modalColumn = $modal.find('.column');
+
+            $('.detail-btn').click(function () {
+                var $this = $(this);
+                var id = $this.data('id');
+                $currentRow = $this.parents('tr');
+                if (cached[id]) {
+                    way.set('data', cached[id]);
+                    if (cached[id].UpdateJson == null) {
+                        $modalColumn.eq(1).hide();
+                        $modalColumn.eq(0).removeClass().addClass('sixteen wide column');
+                    } else {
+                        $modalColumn.eq(1).show();
+                        $modalColumn.eq(0).removeClass().addClass('eight  wide column');
+
+                    }
+                    $modal.modal('show');
+                } else {
+                    $.ajax({
+                        url: '/Admin/Check/CompanyProductInfo',
+                        data: {
+                            id: id
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            data.updateJson = $.parseJSON(data.UpdateJson);
+                            cached[id] = data;
+                            way.set('data', data);
+                            if (data.UpdateJson == null) {
+                                $modalColumn.eq(1).hide();
+                                $modalColumn.eq(0).removeClass().addClass('sixteen wide column');
+                            } else {
+                                $modalColumn.eq(1).show();
+                                $modalColumn.eq(0).removeClass().addClass('eight  wide column');
+                            }
+                            $modal.modal('show');
+                        },
+                        error: function () {
+                            alert('操作失败，请刷新重试');
+                        }
+                    });
+                }
+            });
+
+            $('.reject-btn, .pass-btn').click(function () {
+
+                var $this = $(this),
+                    isPass = $this.hasClass('pass-btn'),
+                    id = way.get('data.Company.Id');
+
+                $.ajax({
+                    url: '/Admin/Check/CompanyProductAction',
+                    data: {
+                        isPass: isPass,
+                        id: id
+                    },
+                    success: function () {
+                        $currentRow.slideUp(400, function () {
+                            $currentRow.remove();
+                        });
+                    },
+                    error: function () {
+                        alert('操作失败，请刷新重试');
+                    }
+                })
+
+            });
+            //way.set('data', {
+            //    User: {
+            //        UserName: 'lext',
+            //        Email: 'lext@lext.com',
+            //    },
+            //    Company: {
+            //        Name: 'gonsi',
+            //        Address: "wewer",
+            //        EstablishedTime: "213213",
+            //        License: '123',
+            //        CorporationName: '123',
+            //        CorporationIdentity: '123',
+            //        OrganizationCode: '123',
+            //        LicenseScope: '123',
+            //        Status: '123',
+            //    }
+            //});
+        });
+    </script>
+}

@@ -341,134 +341,10 @@ namespace QualityControl.Controllers
 
         #region  生产商产品部分
 
-        public ActionResult CompanyProductIndex(long cid)
+        [Authorize]
+        public ActionResult CompanyProductIndex()
         {
-            var c = Db.Companies.Find(cid);
-            if (c == null)
-            {
-                throw new Exception("生产商不存在");
-            }
-
-            var list = c.Products;
-            var list2=list.Select(e =>new Cp
-            {
-                Id=e.Id,
-                CompanyName=c.Name,
-                Name=e.Name,
-                ProductTypeName=e.Type.Title,
-                ProductionCertificateNo=e.ProductionCertificateNo,
-                GetDate=e.GetDate,
-                Standard=e.Standard,
-                //CompanyProductStatus= e.Status               
-            }).ToList();
-          
-            ViewBag.list = list2;
-            ViewBag.count = list2.Count;
-            ViewBag.cid = cid;
-            return View();
-        }
-
-        public ActionResult CpDel(long id)
-        {
-            var x = Db.Products.Find(id);
-            var cid = x.Company.Id;
-            if (x != null)
-            {
-                Db.Products.Remove(x);
-                Db.SaveChanges();
-            }
-            return Redirect("../CompanyProductIndex?cid="+cid);
-        }
-
-        public JsonResult GetCpInfo(long id)
-        {
-            var e = Db.Products.Find(id);
-            var name = e.Type.Title;
-            var cpx = new Cp
-            {
-                Id = e.Id,
-                CompanyName = e.Company.Name,
-                Name = e.Name,
-                ProductTypeName = e.Type.Title,
-                ProductionCertificateNo = e.ProductionCertificateNo,
-                GetDate = e.GetDate,
-                Standard = e.Standard,
-                //CompanyProductStatus = e.Status
-            };
-            var ret = new { cp=cpx ,tname=name,status=e.Status};
-            return Json(ret, JsonRequestBehavior.AllowGet);
-        }
-
-
-        public ActionResult CpEdit(Db.Product newone)
-        {
-            if (!CheckCp(newone))
-            {
-                throw new Exception("存在重复或有字段为空，请检查后再输入");
-            }
-            var x = Db.Products.Find(newone.Id);
-            if (x != null)
-            {
-                x.Name = newone.Name;
-                x.Price = newone.Price;
-                x.Status = newone.Status;
-                x.GetDate = newone.GetDate;
-                x.ProductionCertificateNo = newone.ProductionCertificateNo;
-                x.Standard = newone.Standard;              
-                Db.SaveChanges();
-            }
-            else { throw new Exception("不存在此产品"); }
-            return Redirect("./CompanyProductIndex?cid=" + x.Company.Id);
-        }
-
-        public ActionResult CpAdd(Db.Product newone,long ProductTypeId)
-        {
-            if (!CheckCp(newone))
-            {
-                throw new Exception("存在重复或有字段为空，请检查后再输入");
-            }
-            var userid = User.Identity.GetUserId();
-            var comp=Db.Companies.FirstOrDefault(e=>e.UserId==userid);
-            var type = Db.ThirdProductTypes.Find(ProductTypeId);
-            newone.Type = type;
-            comp.Products.Add(newone);
-            Db.SaveChanges();
-            return Redirect("./CompanyProductIndex?cid=" + comp.Id);
-        }
-
-        public bool CheckCp(Db.Product cp)
-        {         
-            if (string.IsNullOrEmpty(cp.GetDate) && string.IsNullOrEmpty(cp.Name) &&
-                string.IsNullOrEmpty(cp.ProductionCertificateNo) &&
-                string.IsNullOrEmpty(cp.Standard))
-            {
-                return false;}
-    
-            var p = Db.Products.FirstOrDefault(e => e.Name == cp.Name&&e.Id!=cp.Id);
-            if (p != null)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public class Cp
-        {
-            public long Id { get; set; }
-
-            public string CompanyName { get; set; }
-
-            public string Name { get; set; }
-
-            public string ProductTypeName { get; set; }//所属类别
-
-            public string ProductionCertificateNo { get; set; }//生产许可证编号
-
-            public string GetDate { get; set; }//颁发日期
-
-            public string Standard { get; set; }//执行标准
-            public EnumProductStatus CompanyProductStatus { get; set; }
-
+            return View(MyCompany.Products);
         }
 
         [Authorize]
@@ -496,13 +372,17 @@ namespace QualityControl.Controllers
             else
             {
                 var product = company.Products.FirstOrDefault(a => a.Id == id);
+                if (product != null && product.Status == EnumStatus.Invalid)
+                {
+                    return Content("错误操作");
+                }
                 return View(product);
             }
         }
 
         [Authorize]
         [HttpPost]
-        public ActionResult CompanyProductSave(Product model, long productTypeId)
+        public ActionResult CompanyProductSaveAction(Product model, long productTypeId)
         {
             if (!ModelState.IsValid)
             {
@@ -511,6 +391,12 @@ namespace QualityControl.Controllers
             model.UserId = User.Identity.GetUserId();
             var company = MyCompany;
             var product = company.Products.FirstOrDefault(a => a.Id == model.Id);
+
+            if(product != null && product.Status == EnumStatus.Invalid)
+            {
+                return RedirectToAction("CompanyProductIndex");
+            }
+
             if (product == null)
             {
                 model.Type = Db.ThirdProductTypes.Find(productTypeId);
@@ -532,21 +418,24 @@ namespace QualityControl.Controllers
                 if (product.Status == EnumStatus.FirstUncheked)
                 {
                     Util.Util.Dump(model, product, excepts: new List<string> { "CreateTime", "LastChangeTime", "Status" });
-                    if (model.Type.Id != productTypeId)
+                    if (product.Type.Id != productTypeId)
                     {
                         model.Type = Db.ThirdProductTypes.Find(productTypeId);
                     }
                 }
                 else
                 {
-                    model.Type = Db.ThirdProductTypes.Find(productTypeId);
-                    if (model.Type == null)
+                    var type = Db.ThirdProductTypes.Find(productTypeId);
+                    if (type == null)
                     {
                         return View();
                     }
-                    model.Type.SecondType.Productypes = null;
-                    model.Type.SecondType.FirstType.SecondProductTypes = null;
-                    model.Type.Products = null;
+                    model.Type = new ThirdProductType();
+                    Util.Util.Dump(type, model.Type, false);
+                    model.Type.SecondType = new SecondProductType();
+                    Util.Util.Dump(type.SecondType, model.Type.SecondType, false);
+                    model.Type.SecondType.FirstType = new FirstProductType();
+                    Util.Util.Dump(type.SecondType.FirstType, model.Type.SecondType.FirstType, false);
                     product.LastChangeTime = DateTime.Now;
                     product.Status = EnumStatus.Unchecked;
                     product.UpdateJson = JsonConvert.SerializeObject(model);   
@@ -554,7 +443,20 @@ namespace QualityControl.Controllers
                 Db.Entry(product).State = EntityState.Modified;
             }
             Db.SaveChanges();
-            return RedirectToAction("CompanyProductInfo");
+            return RedirectToAction("CompanyProductInfo", new { id = model.Id});
+        }
+
+        public string CompanyProductRemove(long id)
+        {
+            var product = MyCompany.Products.FirstOrDefault(a => a.Id == id);
+            if (product == null || product.Status == EnumStatus.Invalid)
+            {
+                return null;
+            }
+            product.Status = EnumStatus.Invalid;
+            Db.Entry(product).State = EntityState.Modified;
+            Db.SaveChanges();
+            return "1";
         }
 
         private Company MyCompany
@@ -567,6 +469,111 @@ namespace QualityControl.Controllers
         }
 
         #endregion
+
+
+        //public ActionResult CpDel(long id)
+        //{
+        //    var x = Db.Products.Find(id);
+        //    var cid = x.Company.Id;
+        //    if (x != null)
+        //    {
+        //        Db.Products.Remove(x);
+        //        Db.SaveChanges();
+        //    }
+        //    return Redirect("../CompanyProductIndex?cid=" + cid);
+        //}
+
+        //public JsonResult GetCpInfo(long id)
+        //{
+        //    var e = Db.Products.Find(id);
+        //    var name = e.Type.Title;
+        //    var cpx = new Cp
+        //    {
+        //        Id = e.Id,
+        //        CompanyName = e.Company.Name,
+        //        Name = e.Name,
+        //        ProductTypeName = e.Type.Title,
+        //        ProductionCertificateNo = e.ProductionCertificateNo,
+        //        GetDate = e.GetDate,
+        //        Standard = e.Standard,
+        //        //CompanyProductStatus = e.Status
+        //    };
+        //    var ret = new { cp = cpx, tname = name, status = e.Status };
+        //    return Json(ret, JsonRequestBehavior.AllowGet);
+        //}
+
+
+        //public ActionResult CpEdit(Db.Product newone)
+        //{
+        //    if (!CheckCp(newone))
+        //    {
+        //        throw new Exception("存在重复或有字段为空，请检查后再输入");
+        //    }
+        //    var x = Db.Products.Find(newone.Id);
+        //    if (x != null)
+        //    {
+        //        x.Name = newone.Name;
+        //        x.Price = newone.Price;
+        //        x.Status = newone.Status;
+        //        x.GetDate = newone.GetDate;
+        //        x.ProductionCertificateNo = newone.ProductionCertificateNo;
+        //        x.Standard = newone.Standard;
+        //        Db.SaveChanges();
+        //    }
+        //    else { throw new Exception("不存在此产品"); }
+        //    return Redirect("./CompanyProductIndex?cid=" + x.Company.Id);
+        //}
+
+        //public ActionResult CpAdd(Db.Product newone, long ProductTypeId)
+        //{
+        //    if (!CheckCp(newone))
+        //    {
+        //        throw new Exception("存在重复或有字段为空，请检查后再输入");
+        //    }
+        //    var userid = User.Identity.GetUserId();
+        //    var comp = Db.Companies.FirstOrDefault(e => e.UserId == userid);
+        //    var type = Db.ThirdProductTypes.Find(ProductTypeId);
+        //    newone.Type = type;
+        //    comp.Products.Add(newone);
+        //    Db.SaveChanges();
+        //    return Redirect("./CompanyProductIndex?cid=" + comp.Id);
+        //}
+
+        //public bool CheckCp(Db.Product cp)
+        //{
+        //    if (string.IsNullOrEmpty(cp.GetDate) && string.IsNullOrEmpty(cp.Name) &&
+        //        string.IsNullOrEmpty(cp.ProductionCertificateNo) &&
+        //        string.IsNullOrEmpty(cp.Standard))
+        //    {
+        //        return false;
+        //    }
+
+        //    var p = Db.Products.FirstOrDefault(e => e.Name == cp.Name && e.Id != cp.Id);
+        //    if (p != null)
+        //    {
+        //        return false;
+        //    }
+        //    return true;
+        //}
+
+        //public class Cp
+        //{
+        //    public long Id { get; set; }
+
+        //    public string CompanyName { get; set; }
+
+        //    public string Name { get; set; }
+
+        //    public string ProductTypeName { get; set; }//所属类别
+
+        //    public string ProductionCertificateNo { get; set; }//生产许可证编号
+
+        //    public string GetDate { get; set; }//颁发日期
+
+        //    public string Standard { get; set; }//执行标准
+        //    public EnumProductStatus CompanyProductStatus { get; set; }
+
+        //}
 
     }
 }

@@ -307,6 +307,7 @@
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\Check\Company.cshtml" />
     <Content Include="Areas\Admin\Views\Check\SGS.cshtml" />
+    <Content Include="Areas\Admin\Views\Check\CompanyProduct.cshtml" />
     <None Include="Properties\PublishProfiles\pub.pubxml" />
     <Content Include="Scripts\bower_components\font-awesome\.bower.json" />
     <Content Include="Scripts\bower_components\font-awesome\.gitignore" />
