@@ -26,7 +26,7 @@
         <a class="anchor" id="types"></a>
     </h2>
     <div>
-        <button class="ui button blue icon" onclick="Add()"><i class="add circle icon"></i>添加种类</button>
+        <button class="ui button blue icon" onclick="Add()"><i class="add circle icon"></i>添加批次</button>
     </div>
 
     <table class="ui  celled  table">
@@ -55,7 +55,7 @@
                         <td>
                             <div class="2  fluid ui">
                                 <button class="ui  button" onclick="Edit(@Tempx.Id)">修改</button>
-                                <a class="ui  button" href="/BaseProductBatch/Del?id=@Tempx.Id&&type=1">删除</a>
+                                <a class="ui  button" href="/Product/BaseProductBatchDel?id=@Tempx.Id&&pid=@ViewBag.p.Id">删除</a>
                             </div>
                         </td>
                     </tr>
@@ -175,8 +175,9 @@
                 type: 'Get',
                 url: '/Product/GetBPBInfo',
                 data: { id: id ,type:1},
-                success: function(data) {                   
-                    $("#editname").html(data.BatchName);
+                success: function(data) {
+                    
+                    $("#editname").val(data.BatchName);
                     $("#editcount").val(data.Count);
                     $("#editid").val(data.Id);
                     $('#edit').modal('show');

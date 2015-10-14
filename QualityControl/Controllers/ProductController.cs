@@ -491,12 +491,12 @@ namespace QualityControl.Controllers
             return Redirect("./BaseProductBatch?pid="+pid);
         }
 
-        public ActionResult BaseProductBatchDel(long id)
+        public ActionResult BaseProductBatchDel(long id,long pid)
         {
             var p = Db.BaseProductBatchs.Find(id);
             Db.BaseProductBatchs.Remove(p);
             Db.SaveChanges();
-            return View();
+            return Redirect("./BaseProductBatch?pid=" + pid);
         }
 
 
