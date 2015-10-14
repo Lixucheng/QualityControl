@@ -9,7 +9,8 @@
 <div class="am-margin-lg am-padding-lg ui center aligned container">
     <div class="am-padding-horizontal-lg">
         <div class="am-padding-horizontal-lg">
-            <form class="ui form segment" method="post">
+            <form class="ui form segment" method="post" action="/Product/CompanyProductSaveAction">
+                <input name="id" type="hidden" value="@(Model != null ? Model.Id.ToString() : "0")">
                 <h2>企业产品信息</h2>
                 <div class="two fields">
                     <div class="field">

@@ -7,114 +7,85 @@
 @model QualityControl.Db.Product
 <div class="am-margin am-padding container ">
     <div class="verborder">
-        @if (Model != null)
-        {
+        <div class="ui raised segment">
+            <div class="am-cf">
+                <a class="ui red ribbon label zh  fw-normal-force">企业产品信息</a>
+                <span>@Model.Name</span>
+                @if (Model.Status == QualityControl.Enum.EnumStatus.Unchecked)
+                {
+                    <span class="ui type tag label teal am-fr">有更改在审核中</span>
+                }
+                else if (Model.Status == QualityControl.Enum.EnumStatus.FirstUncheked)
+                {
+                    <span class="ui type tag label teal am-fr">信息尚未通过</span>
+                }
+            </div>
+            <p class="ui divider"></p>
+            <div class="ui divided selection list">
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">价格</div>
+                    @Model.Price
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">生产许可证编号</div>
+                    @Model.ProductionCertificateNo
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">执行标准</div>
+                    @Model.Standard
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">颁发日期</div>
+                    @Model.GetDate
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">类型</div>
+                    @Model.Type.SecondType.FirstType.Title / @Model.Type.SecondType.Title / @Model.Type.Title
+                </a>
+
+            </div>
+            <div class="ui divider"></div>
+            <div class="am-cf">
+                <span class="zh">修改将会覆盖未审核通过的修改内容</span>
+                <a class="ui right floated button primary" href="/Product/CompanyProductSave/@Model.Id">修改</a>
+            </div>
+        </div>
+
+        <div class="am-margin"></div>
+        @if (Model.Status == QualityControl.Enum.EnumStatus.Unchecked)
+            {
+                var jsonData = JsonConvert.DeserializeObject<QualityControl.Db.Product>(Model.UpdateJson);
+
             <div class="ui raised segment">
                 <div class="am-cf">
-                    <a class="ui red ribbon label zh  fw-normal-force">企业产品信息</a>
-                    <span>@Model.Name</span>
-                    @if (Model.Status == QualityControl.Enum.EnumStatus.Unchecked)
-                    {
-                        <span class="ui type tag label teal am-fr">有更改在审核中</span>
-                    }
-                    else if (Model.Status == QualityControl.Enum.EnumStatus.FirstUncheked)
-                    {
-                        <span class="ui type tag label teal am-fr">信息尚未通过</span>
-                    }
+                    <a class="ui red ribbon label zh  fw-normal-force">企业信息修改副本</a>
+                    <span>@jsonData.Name</span>
+                    <span class="ui type tag label teal am-fr">未审核</span>
                 </div>
                 <p class="ui divider"></p>
                 <div class="ui divided selection list">
                     <a class="item">
                         <div class="ui horizontal grey label zh fw-normal-force">价格</div>
-                        @Model.Price
+                        @jsonData.Price
                     </a>
                     <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">法人身份证号</div>
-                        @Model.ProductionCertificateNo
+                        <div class="ui horizontal grey label zh fw-normal-force">生产许可证编号</div>
+                        @jsonData.ProductionCertificateNo
                     </a>
                     <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">注册时间</div>
-                        @Model.EstablishedTime.ToShortDateString()
+                        <div class="ui horizontal grey label zh fw-normal-force">执行标准</div>
+                        @jsonData.Standard
                     </a>
                     <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
-                        @Model.Address
+                        <div class="ui horizontal grey label zh fw-normal-force">v</div>
+                        @jsonData.GetDate
                     </a>
                     <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
-                        @Model.License
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
-                        @Model.OrganizationCode
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">营业范围</div>
-                        @Model.LicenseScope
+                        <div class="ui horizontal grey label zh fw-normal-force">类型</div>
+                        @jsonData.Type.SecondType.FirstType.Title / @jsonData.Type.SecondType.Title / @jsonData.Type.Title
                     </a>
                 </div>
                 <div class="ui divider"></div>
-                <div class="am-cf">
-                    <span class="zh">修改将会覆盖未审核通过的修改内容</span>
-                    <a class="ui right floated button primary" href="/Company/Save">修改</a>
-                </div>
-            </div>
-
-            <div class="am-margin"></div>
-            if (Model.Status == QualityControl.Enum.EnumStatus.Unchecked)
-            {
-                var jsonData = JsonConvert.DeserializeObject<QualityControl.Db.Company>(Model.UpdateJson);
-
-                <div class="ui raised segment">
-                    <div class="am-cf">
-                        <a class="ui red ribbon label zh  fw-normal-force">企业信息修改副本</a>
-                        <span>@jsonData.Name</span>
-                        <span class="ui type tag label teal am-fr">未审核</span>
-                    </div>
-                    <p class="ui divider"></p>
-                    <div class="ui divided selection list">
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
-                            @jsonData.CorporationName
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">法人身份证号</div>
-                            @jsonData.CorporationIdentity
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">注册时间</div>
-                            @jsonData.EstablishedTime.ToShortDateString()
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
-                            @jsonData.Address
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
-                            @jsonData.License
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
-                            @jsonData.OrganizationCode
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">营业范围</div>
-                            @jsonData.LicenseScope
-                        </a>
-                    </div>
-                    <div class="ui divider"></div>
-                </div>
-            }
-        }
-        else
-        {
-            <div class="am-text-center">
-                <a class="ui animated teal fade button" tabindex="0" href="/Company/Save">
-                    <div class="visible content zh fw-normal">完善企业信息</div>
-                    <div class="hidden content">
-                        <i class="right arrow icon"></i>
-                    </div>
-                </a>
             </div>
         }
 
