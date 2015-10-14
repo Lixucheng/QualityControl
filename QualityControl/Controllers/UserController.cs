@@ -45,7 +45,16 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        public ActionResult Choose(long productId, List<long> batchIds)
+        public ActionResult ChooseProductBatchs(long pid)
+        {
+            var p = Db.Products.Find(pid);
+            var list = p.BaseProductBatchs;
+            ViewBag.list = list;
+            ViewBag.p = p;
+            return View();
+        }
+
+        public ActionResult Choose(long id)
         {
             var userid = User.Identity.GetUserId();
             var user = UserManager.FindById(userid);
@@ -82,6 +91,16 @@ namespace QualityControl.Controllers
             };
             Db.Trades.Add(trade);
             Db.SaveChanges();
+            return View();
+        }
+
+        /// <summary>
+        /// 选择productbatch
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ChoosePb(List<long> list)
+        {
+
             return View();
         }
 
