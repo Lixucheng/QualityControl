@@ -6,6 +6,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using QualityControl.Db;
 using QualityControl.Enum;
+using QualityControl.Util;
+using QualityControl.Models;
+using Newtonsoft.Json;
 
 namespace QualityControl.Controllers
 {
@@ -51,24 +54,35 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        public ActionResult Choose(long id)
+        public ActionResult Choose(long productId, List<long> batchIds)
         {
             var userid = User.Identity.GetUserId();
             var user = UserManager.FindById(userid);
-            if (user.Type != (int)EnumUserType.User)
-            {
-
-                throw new Exception("您不是用户，无权限查看！");
-            }
-            var p = Db.Products.Find(id);
+            var p = Db.Products.Find(productId);  
             if (p == null)
             {
                 throw new Exception("访问错误！");
             }
+            var batches = new List<ProductBatch>();
+            foreach(var item in batchIds)
+            {
+                var batch = p.BaseProductBatchs.FirstOrDefault(a => a.Id == item);
+                if (batch == null)
+                {
+                    throw new Exception("访问错误！");
+                }
+                var pb = new ProductBatch();
+                Dumper.Dump(batch, pb, false);
+                batches.Add(pb);
+            }
+            var pStr = new ProductCopy(p);
             var trade = new Db.Trade
             {
-                Product = p,CeateTime=DateTime.Now,FinishTime=DateTime.Now,  
-                UserId=userid,Status=(int)EnumTradeStatus.Create   
+                Product = JsonConvert.SerializeObject(pStr),
+                CeateTime =DateTime.Now,
+                FinishTime =DateTime.Now,  
+                UserId=userid,
+                Status =(int)EnumTradeStatus.Create   
             };
             Db.Trades.Add(trade);
             Db.SaveChanges();

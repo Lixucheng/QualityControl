@@ -23,9 +23,6 @@ namespace QualityControl.Db
 
         public int Status { get; set; }
 
-        //批次
-        public virtual List<ProductBatch> Batches { get; set; }
-
         public DateTime FinishTime { get; set; }
 
         public virtual List<DetectionReport> Report { get; set; }
@@ -36,12 +33,14 @@ namespace QualityControl.Db
 
         public string UserId { get; set; }
 
-        public virtual Product Product { get; set; }
+        public string Product { get; set; }
 
         /// <summary>
         /// 协议内容
         /// </summary>
         public virtual Compact Compact { get; set; }
+
+        public virtual List<ProductBatch> Batches { get; set; }
 
     }
 

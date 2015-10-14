@@ -38,8 +38,9 @@ namespace QualityControl.Controllers
             else
             {
                 x = Db.DetectionSchemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存&&e.Trade.Id==tradeid);
-            }         
-            var sgsprolist = Db.SgsProducts.Where(e=>e.Product.Id==trade.Product.Id);
+            }
+            var tradeProduct = JsonConvert.DeserializeObject<ProductCopy>(trade.Product);
+            var sgsprolist = Db.SgsProducts.Where(e => e.Product.Id == tradeProduct.Id);
             if (!sgsprolist.Any())
             {
 
@@ -65,9 +66,8 @@ namespace QualityControl.Controllers
                 Db.SaveChanges();
              
 
-                var pro = x.Trade.Product;
-                var
-                company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
+                var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
+                var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
                 ViewBag.productname = pro.Name;
                 ViewBag.company = company.Name;
 
@@ -77,9 +77,8 @@ namespace QualityControl.Controllers
             }
             else if (x.Status == EnumDetectionSchemeStatus.未发送)
             {
-                var pro = x.Trade.Product;
-                var
-                company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
+                var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
+                var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
                 ViewBag.productname = pro.Name;
                 ViewBag.company = company.Name;
 
@@ -138,9 +137,8 @@ namespace QualityControl.Controllers
                 ViewBag.u = usernow.Type == (int) EnumUserType.User ? 0 : 1;
 
                 ViewBag.model = x;
-                var pro = x.Trade.Product;
-                var
-                company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
+                var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
+                var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
                 ViewBag.productname = pro.Name;
                 ViewBag.company = company.Name;
                 var list = trade.Batches;
@@ -164,7 +162,7 @@ namespace QualityControl.Controllers
                         DetectionScheme=detectionscheme,
                         Level = x.Level,
                         Time = x.Time,
-                        Product = detectionscheme.Trade.Product,
+                        Product = JsonConvert.DeserializeObject<ProductCopy>(detectionscheme.Trade.Product).ToProductDbOject(),
                         Quote = quote,
                         Status = EnumContractStatus.未签订,
                         UserId = user.Id                        
@@ -176,10 +174,7 @@ namespace QualityControl.Controllers
                 var s = x.Level;
                 var l = JsonConvert.DeserializeObject<Level>(s);
                 ViewBag.l = l;
-
             }
-
-
             return View();
         }
 
@@ -300,7 +295,7 @@ namespace QualityControl.Controllers
             }
 
             {
-                var pro = dec.Trade.Product;
+                var pro = JsonConvert.DeserializeObject<ProductCopy>(dec.Trade.Product);
 
                 var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
 
@@ -553,7 +548,7 @@ namespace QualityControl.Controllers
                 var b = new ProductBatch();
                 b.BatchName = "2015-9-" + i.ToString() + "批次";
                 b.Count = 5;
-                b.ProductId = x.Product.Id;
+                b.ProductId = JsonConvert.DeserializeObject<ProductCopy>(x.Product).Id;
                 b.Trade = x;
                 Db.ProductBatchs.Add(b);
                 Db.SaveChanges();
