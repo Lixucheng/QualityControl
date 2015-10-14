@@ -3,27 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace QualityControl.Controllers
 {
+   
     public class MessageController : BaseController
     {
         // GET: Message
-        public ActionResult Index(string id)
+        [Authorize]
+        public ActionResult Index(int s=0)
         {
-            var list = Db.Messages.Where(e => e.UserId == id && e.Status == 0).ToList();
+            var id = User.Identity.GetUserId();
+            var list = Db.Messages.Where(e => e.UserId == id && e.Status == s).ToList();
             ViewBag.list = list;
+            ViewBag.s = s;
             return View();
         }
 
         
-        public ActionResult See(long id)
+        public ActionResult Read(long id)
         {
             var m = Db.Messages.Find(id);
-            ViewBag.m = m;
             m.Status = 1;
             Db.SaveChanges();
-            return View();
+            return Redirect("/message/index");
         }
+
+        
+
+       
     }
 }
