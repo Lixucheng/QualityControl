@@ -35,6 +35,8 @@ namespace QualityControl.Db
 
         public string Product { get; set; }
 
+        public bool SGSPaied { get; set; }
+
         /// <summary>
         /// 协议内容
         /// </summary>

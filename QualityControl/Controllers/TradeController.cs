@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using QualityControl.Db;
+using QualityControl.Enum;
 using QualityControl.Models.Adapters;
 using System;
 using System.Collections.Generic;
@@ -127,6 +129,23 @@ namespace QualityControl.Controllers
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
             return null;
+        }
+
+
+        public ActionResult TradeDetail(long id)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = Db.Users.Find(userId);
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return Content("错误操作");
+            }
+            if(trade.UserId != userId && trade.SgsUserId != userId && user.Type != (int)EnumUserType.Controller)
+            {
+                return Content("错误操作");
+            }
+            return View(trade);
         }
 
 

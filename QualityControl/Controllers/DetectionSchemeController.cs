@@ -555,5 +555,29 @@ namespace QualityControl.Controllers
             }
           
         }
+
+        public int ConfirmPay(long tradeId, int type)
+        {
+            var trade = Db.Trades.Find(tradeId); 
+            if (trade == null)
+            {
+                return 0;
+            }
+            if (trade.Status != (int)EnumTradeStatus.Signed)
+            {
+                return 0;
+            }
+            if (type == 0)
+            {
+                trade.Status = (int)EnumTradeStatus.MakeQrCode;
+            } else
+            {
+                trade.SGSPaied = true;
+            }
+            Db.Entry(trade).State = System.Data.Entity.EntityState.Modified;
+            Db.SaveChanges();
+            return 1;
+            
+        }
     }
 }

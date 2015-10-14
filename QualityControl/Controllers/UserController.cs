@@ -82,7 +82,8 @@ namespace QualityControl.Controllers
                 CeateTime =DateTime.Now,
                 FinishTime =DateTime.Now,  
                 UserId=userid,
-                Status =(int)EnumTradeStatus.Create   
+                Status =(int)EnumTradeStatus.Create,
+                SGSPaied = false
             };
             Db.Trades.Add(trade);
             Db.SaveChanges();
