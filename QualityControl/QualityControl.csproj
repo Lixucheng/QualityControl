@@ -194,6 +194,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MakeQrCodeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ManufacturerController.cs" />
     <Compile Include="Controllers\SGSController.cs" />
@@ -1211,6 +1212,7 @@
     <Content Include="Views\Account\GotoEmail.cshtml" />
     <Content Include="Views\Product\BaseProductBatch.cshtml" />
     <Content Include="Views\User\ChooseProductBatchs.cshtml" />
+    <Content Include="Views\Message\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
