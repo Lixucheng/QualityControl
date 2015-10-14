@@ -1210,6 +1210,7 @@
     <Content Include="Views\Trade\Trades.cshtml" />
     <Content Include="Views\Account\GotoEmail.cshtml" />
     <Content Include="Views\Product\BaseProductBatch.cshtml" />
+    <Content Include="Views\User\ChooseProductBatchs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
