@@ -1,0 +1,231 @@
+﻿
+@{
+    ViewBag.Title = "BaseProductBatch";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@section head{
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+
+
+    <style>
+        .main-container {
+            background-color: #FFFFFF;
+            margin: 0em auto;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            padding: 2em 2em 7em;
+            z-index: 1;
+        }
+    </style>
+}
+
+<div class="main-container">
+    <h2 class="ui dividing header">
+        产品批次管理：@ViewBag.p.Name
+        <a class="anchor" id="types"></a>
+    </h2>
+    <div>
+        <button class="ui button blue icon" onclick="Add()"><i class="add circle icon"></i>添加种类</button>
+    </div>
+
+    <table class="ui  celled  table">
+        <thead class="">
+            <tr>
+                <th>名称</th>
+                <th>数量</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (ViewBag.count == 0)
+            {
+
+            }
+            else
+            {
+                foreach (var Tempx in ViewBag.list)
+                {
+                    <tr>
+
+                        <td>@Tempx.BatchName</td>
+                        <td>@Tempx.Count</td>
+
+                        <td>
+                            <div class="2  fluid ui">
+                                <button class="ui  button" onclick="Edit(@Tempx.Id)">修改</button>
+                                <a class="ui  button" href="/BaseProductBatch/Del?id=@Tempx.Id&&type=1">删除</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+
+        <tfoot>
+            <tr></tr>
+        </tfoot>
+
+    </table>
+</div>
+
+
+
+
+<div class="ui  modal" id="edit">
+    <i class="close icon"></i>
+    <div class="header" id="typetitle">
+        产品批次修改
+    </div>
+    <div class=" content">
+
+        <form class="ui form" action="/Product/BaseProductBatchEdit" id="editform">
+            <input name="Id" style="display: none" id="editid">
+            <input name="pid" value="@ViewBag.p.Id" style="display:none">
+            <div class="field">
+                <label>名称</label>
+                <input type="text" name="BatchName" placeholder="名称" id="editname">
+            </div>
+            <div class="field">
+                <label>数量</label>
+                <input type="number" name="Count" placeholder="数量" id="editcount">
+            </div>
+            <div class="ui error message"></div>
+        </form>
+
+    </div>
+    <div class="actions">
+        <button class="ui green button" onclick="sub()">确定修改</button>
+    </div>
+</div>
+
+
+<div class="ui  modal" id="AddModel">
+    <i class="close icon"></i>
+    <div class="header" id="addtypetitle">
+        产品批次添加
+    </div>
+    <div class=" content">
+
+        <form class="ui form" action="/Product/BaseProductBatchAdd" id="addform">
+            <input name="pid" value="@ViewBag.p.Id" style="display:none">
+            <div class="field">
+                <label>名称</label>
+                <input type="text" name="BatchName" placeholder="名称">
+            </div>
+            <div class="field">
+                <label>数量</label>
+                <input type="number" name="Count" placeholder="数量">
+            </div>
+            <div class="ui error message"></div>
+        </form>
+
+    </div>
+    <div class="actions">
+        <button class="ui green button" onclick="Addsub()">提交</button>
+    </div>
+
+</div>
+
+
+
+
+
+@section scripts{
+    <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('table').DataTable({
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                    "sInfoEmpty": "共 0 项",
+
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+
+                },
+                "bLengthChange": false
+            });
+        });
+
+       
+        function Edit(id) {
+
+            $.ajax({
+                type: 'Get',
+                url: '/Product/GetBPBInfo',
+                data: { id: id ,type:1},
+                success: function(data) {                   
+                    $("#editname").html(data.BatchName);
+                    $("#editcount").val(data.Count);
+                    $("#editid").val(data.Id);
+                    $('#edit').modal('show');
+                },
+                dataType: "json"
+            });
+
+        };
+
+        function Add() {
+            $('#AddModel').modal('show');
+        }
+
+        function sub() {
+            $("#editform").submit();
+        }
+
+        function Addsub() {
+            $("#addform").submit();
+        }
+
+        //表单验证
+        $('.ui.form')
+            .form({
+                fields: {
+                    name: {
+                        identifier: 'Name',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入名称！'
+                            }
+                        ]
+                    },
+                    Description: {
+                        identifier: 'Count',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入数量！'
+                            }
+                        ]
+                    }
+
+                }
+            });
+    </script>
+}
+
+
+
+

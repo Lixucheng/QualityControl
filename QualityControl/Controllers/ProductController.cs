@@ -558,6 +558,60 @@ namespace QualityControl.Controllers
             return RedirectToAction("CompanyProductInfo");
         }
 
+        /// <summary>
+        /// 生产商产品批次
+        /// </summary>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public ActionResult BaseProductBatch(long pid)
+        {
+            var p = Db.Products.Find(pid);
+            var list = p.BaseProductBatchs;
+            ViewBag.list = list;
+            ViewBag.p = p;
+            return View();
+        }
+
+        public ActionResult BaseProductBatchAdd(BaseProductBatch bpb ,long pid)
+        {
+            var p=Db.Products.Find(pid);
+            p.BaseProductBatchs.Add(bpb);
+            Db.SaveChanges();
+            return Redirect("./BaseProductBatch?pid=" + pid);
+        }
+
+        public ActionResult BaseProductBatchEdit(BaseProductBatch bpb ,long pid)
+        {
+            var p = Db.BaseProductBatchs.Find(bpb.Id);
+            p.BatchName = bpb.BatchName;
+            p.Count = bpb.Count;
+            Db.SaveChanges();
+            return Redirect("./BaseProductBatch?pid="+pid);
+        }
+
+        public ActionResult BaseProductBatchDel(long id)
+        {
+            var p = Db.BaseProductBatchs.Find(id);
+            Db.BaseProductBatchs.Remove(p);
+            Db.SaveChanges();
+            return View();
+        }
+
+
+
+        /// <summary>
+        /// 获取BaseProductBatch信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult GetBPBInfo(long id)
+        {
+            var e = Db.BaseProductBatchs.Find(id);
+           
+         
+            return Json(e, JsonRequestBehavior.AllowGet); 
+        }
+
         private Company MyCompany
         {
             get

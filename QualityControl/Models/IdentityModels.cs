@@ -84,6 +84,8 @@ namespace QualityControl.Models
         public DbSet<SgsProduct> SgsProducts { get; set; }
 
         public DbSet<CheckLevel> Levels { get; set; }
+
+        public DbSet<BaseProductBatch> BaseProductBatchs { get; set; }
     }
 
 

@@ -39,6 +39,8 @@ namespace QualityControl.Db
 
         public virtual List<SgsProduct> SgsProducts { get; set; }
 
+        public virtual List<BaseProductBatch> BaseProductBatchs { get; set; }//产品批次
+
         public DateTime CreateTime { get; set; }
 
         public DateTime LastChangeTime { get; set; }
@@ -127,6 +129,20 @@ namespace QualityControl.Db
         public virtual Trade Trade { get; set; }
 
         public string SamplaListJson { get; set; }
+    }
+
+    [Table("GxBaseProductBatch")]
+    public class BaseProductBatch
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
+
+        public long ProductId { get; set; }
+
+        public string BatchName { get; set; }
+
+        public int Count { get; set; }      
     }
 
 }
