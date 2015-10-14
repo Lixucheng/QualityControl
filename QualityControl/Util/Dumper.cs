@@ -22,7 +22,7 @@ namespace QualityControl.Util
             }
         }
 
-        public static void Dump<A, B>(A src, B dest, bool isnoreId = true, List<string> excepts = null)
+        public static void Dump<A, B>(A src, B dest, bool ignoreId = true, List<string> excepts = null)
              where B : new()
         {
             if (src == null)
@@ -42,7 +42,7 @@ namespace QualityControl.Util
                 {
                     if (excepts == null || !excepts.Contains(ap.Name))
                     {
-                        if (BasicTypes.Contains(ap.PropertyType.Name) && ap.Name != "Id")
+                        if (BasicTypes.Contains(ap.PropertyType.Name) && (ignoreId ? ap.Name != "Id": true ))
                         {
                             var bp = bps.First(i => i.Name == ap.Name);
                             bp.SetValue(dest, ap.GetValue(src));

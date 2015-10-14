@@ -54,15 +54,10 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        public ActionResult Choose(long id)
+        public ActionResult Choose(long productId, List<long> batchIds)
         {
             var userid = User.Identity.GetUserId();
             var user = UserManager.FindById(userid);
-            if (user.Type != (int)EnumUserType.User)
-            {
-
-                throw new Exception("您不是用户，无权限查看！");
-            }
             var p = Db.Products.Find(productId);  
             if (p == null)
             {

@@ -336,6 +336,10 @@
     <Compile Include="Migrations\201510131321181_BaseProductBatchtable.Designer.cs">
       <DependentUpon>201510131321181_BaseProductBatchtable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510141145507_TradeProductChange.cs" />
+    <Compile Include="Migrations\201510141145507_TradeProductChange.Designer.cs">
+      <DependentUpon>201510141145507_TradeProductChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\TradeInfo.cs" />
@@ -1320,6 +1324,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510131321181_BaseProductBatchtable.resx">
       <DependentUpon>201510131321181_BaseProductBatchtable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510141145507_TradeProductChange.resx">
+      <DependentUpon>201510141145507_TradeProductChange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

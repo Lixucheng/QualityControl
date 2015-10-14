@@ -27,7 +27,8 @@
     </h2>
 
 
- <form method="post" action="/user/choosePb">
+ <form method="post" action="/user/choose">
+     <input type="hidden" value="@ViewBag.p.Id" name="productId" />
     <table class="ui compact celled  table">
         <thead>
         <tr>
@@ -49,7 +50,7 @@
                 <tr>
                     <td class="collapsing">
                         <div class="ui fitted slider checkbox">
-                            <input type="checkbox" name="pbid" value="@Tempx.Id"> <label></label>
+                            <input type="checkbox" name="batchIds" value="@Tempx.Id"> <label></label>
                         </div>
                     </td>
                     <td>@Tempx.BatchName</td>
