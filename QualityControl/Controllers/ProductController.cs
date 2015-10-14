@@ -538,24 +538,24 @@ namespace QualityControl.Controllers
         //    return Redirect("../CompanyProductIndex?cid=" + cid);
         //}
 
-        //public JsonResult GetCpInfo(long id)
-        //{
-        //    var e = Db.Products.Find(id);
-        //    var name = e.Type.Title;
-        //    var cpx = new Cp
-        //    {
-        //        Id = e.Id,
-        //        CompanyName = e.Company.Name,
-        //        Name = e.Name,
-        //        ProductTypeName = e.Type.Title,
-        //        ProductionCertificateNo = e.ProductionCertificateNo,
-        //        GetDate = e.GetDate,
-        //        Standard = e.Standard,
-        //        //CompanyProductStatus = e.Status
-        //    };
-        //    var ret = new { cp = cpx, tname = name, status = e.Status };
-        //    return Json(ret, JsonRequestBehavior.AllowGet);
-        //}
+        public JsonResult GetCpInfo(long id)
+        {
+            var e = Db.Products.Find(id);
+            var name = e.Type.Title;
+            var cpx = new Cp
+            {
+                Id = e.Id,
+                CompanyName = e.Company.Name,
+                Name = e.Name,
+                ProductTypeName = e.Type.Title,
+                ProductionCertificateNo = e.ProductionCertificateNo,
+                GetDate = e.GetDate,
+                Standard = e.Standard,
+                //CompanyProductStatus = e.Status
+            };
+            var ret = new { cp = cpx, tname = name, status = e.Status };
+            return Json(ret, JsonRequestBehavior.AllowGet);
+        }
 
 
         //public ActionResult CpEdit(Db.Product newone)
@@ -611,24 +611,24 @@ namespace QualityControl.Controllers
         //    return true;
         //}
 
-        //public class Cp
-        //{
-        //    public long Id { get; set; }
+        public class Cp
+        {
+            public long Id { get; set; }
 
-        //    public string CompanyName { get; set; }
+            public string CompanyName { get; set; }
 
-        //    public string Name { get; set; }
+            public string Name { get; set; }
 
-        //    public string ProductTypeName { get; set; }//所属类别
+            public string ProductTypeName { get; set; }//所属类别
 
-        //    public string ProductionCertificateNo { get; set; }//生产许可证编号
+            public string ProductionCertificateNo { get; set; }//生产许可证编号
 
-        //    public string GetDate { get; set; }//颁发日期
+            public string GetDate { get; set; }//颁发日期
 
-        //    public string Standard { get; set; }//执行标准
-        //    public EnumProductStatus CompanyProductStatus { get; set; }
+            public string Standard { get; set; }//执行标准
+            public EnumProductStatus CompanyProductStatus { get; set; }
 
-        //}
+        }
 
     }
 }

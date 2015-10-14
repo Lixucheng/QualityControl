@@ -13,6 +13,7 @@
     "tests"
   ],
   "dependencies": {
+    "datatables": "~1.10.9",
     "font-awesome": "~4.4.0",
     "semantic": "semantic-ui#~2.0.8",
     "way.js": "https://github.com/gwendall/way.js.git"

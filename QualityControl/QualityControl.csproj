@@ -344,6 +344,7 @@
     <Compile Include="Models\ConvertLevel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ProductCopy.cs" />
     <Compile Include="Models\Singleton.cs" />
     <Compile Include="Models\Zip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
