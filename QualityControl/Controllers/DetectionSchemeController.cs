@@ -238,6 +238,7 @@ namespace QualityControl.Controllers
             if (c == 2)
             {
                 scheme.Status = EnumDetectionSchemeStatus.已确定;
+                scheme.Trade.Status = (int)EnumTradeStatus.Signed;
                 Db.SaveChanges();
                 //发送站内信息
                 SendMessage(trade.UserId, "合同双方已签订，随后进入付款流程");
