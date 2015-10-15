@@ -94,7 +94,7 @@ namespace QualityControl.Controllers
         public ActionResult TradeList()
         {
             var id=User.Identity.GetUserId();
-            var list = Db.Trades.Where(e => e.UserId == id).ToList();
+            var list = Db.Trades.Where(e => e.UserId == id&&e.Id==17).ToList();
             return View(list);
         }
         public ActionResult GetTrade(long id)

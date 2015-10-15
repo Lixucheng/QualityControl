@@ -6,6 +6,24 @@
 @using Newtonsoft.Json
 @using QualityControl.Models
 @model IEnumerable<QualityControl.Db.Trade>
+
+@section head{
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+
+    <style>
+        .main-container {
+            background-color: #FFFFFF;
+            margin: 0em auto;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            padding: 2em 2em 7em;
+            z-index: 1;
+        }
+
+        .mycontent {
+            margin-bottom: 30px;
+        }
+    </style>
+}
 <div class="main-container">
     <h2 class="ui dividing header">
         所有订单
@@ -18,8 +36,9 @@
                 <th>订单号</th>
                 <th>检测产品</th>
                 <th>检测报价</th>
-                <th>检测时间</th>               
-                <th>订单状态</th>        
+                <th>检测时间</th>
+                <th>订单状态</th>
+                <th>查看</th>
             </tr>
         </thead>
         <tbody>
@@ -37,19 +56,15 @@
                     <tr>
                         <td>@Tempx.Id</td>
                         <td>@p.Name</td>
-                        <td>@Tempx.Schemes.Where(e=>e.Status!=QualityControl.Db.EnumDetectionSchemeStatus.修改完成留档保存).First().</td>
-                        <td>@Tempx.ProductionCertificateNo</td>
-                        <td>@Tempx.GetDate</td>
-                        <td>@Tempx.Standard</td>
-
-
+                        <td>@Tempx.Schemes.First(e=>e.Status!=QualityControl.Db.EnumDetectionSchemeStatus.修改完成留档保存).UserQuote</td>
+                        <td>@Tempx.Schemes.First(e => e.Status != QualityControl.Db.EnumDetectionSchemeStatus.修改完成留档保存).Time</td>
+                        <td>@Tempx.Schemes.First(e => e.Status != QualityControl.Db.EnumDetectionSchemeStatus.修改完成留档保存).Status</td>
                         <td>
                             <div class="2  fluid ui">
-                                <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
+                                <a class="ui  button" href="/Trade/TradeDetail/@Tempx.Id">查看</a>
 
-                                <button class="ui  button" onclick="Choose(@Tempx.Id)">确定选择</button>
                             </div>
-                        </td>
+                        </td>                    
                     </tr>
                 }
             }
@@ -62,3 +77,41 @@
 
 </div>
 
+@section scripts{
+    <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('table').DataTable({
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                    "sInfoEmpty": "共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+
+                },
+                "bLengthChange": false
+            });
+            $("#form .field label").html("按产品种类搜索");
+        });
+
+
+    </script>}
