@@ -44,6 +44,7 @@ namespace QualityControl.Models
         public ProductCopy(Product src)
         {
             Dumper.Dump(src, this, false);
+            this.TypeId = src.Type.Id;
         }
 
         public Product ToProductDbOject()

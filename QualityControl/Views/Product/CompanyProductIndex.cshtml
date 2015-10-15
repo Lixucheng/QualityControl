@@ -3,7 +3,7 @@
     ViewBag.Title = "CompanyProductIndex";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+@model List<QualityControl.Db.Product>
 @section head{
 <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
 
@@ -27,7 +27,7 @@
         <a class="anchor" id="types"></a>
     </h2>
     <div>
-        <button class="ui button blue icon" onclick="Add()"><i class="add circle icon"></i>添加产品</button>
+        <a href="/Product/CompanyProductSave" class="ui button blue icon" ><i class="add circle icon"></i>添加产品</a>
     </div>
 
     <table class="ui  celled  table">
@@ -42,19 +42,21 @@
             </tr>
         </thead>
         <tbody>
-
+            @{ 
+                ViewBag.count = Model.Count;
+            }
             @if (ViewBag.count == 0)
             {
                
             }
             else
             {
-                foreach (var Tempx in ViewBag.list)
+                foreach (var Tempx in Model)
                 {
                     <tr>
 
                         <td>@Tempx.Name</td>
-                        <td>@Tempx.ProductTypeName</td>
+                        <td>@Tempx.Type.Title</td>
                         <td>@Tempx.ProductionCertificateNo</td>
                         <td>@Tempx.GetDate</td>
                         <td>@Tempx.Standard</td>

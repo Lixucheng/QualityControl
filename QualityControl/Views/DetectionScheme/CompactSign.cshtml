@@ -78,7 +78,7 @@
                         },
                         success: function (data) {
                             if (data == 1) {
-                                top.location = '..';
+                                window.location = '/Trade/TradeDetail/@ViewBag.TradeId';
                             } else {
                                 alert("签名错误，请重新输入！");
                             }
