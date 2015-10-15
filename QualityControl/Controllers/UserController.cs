@@ -89,16 +89,7 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        /// <summary>
-        /// 选择productbatch
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult ChoosePb(List<long> list)
-        {
-
-            return View();
-        }
-
+     
         public ActionResult GetTrade(long id)
         {
             return View();
