@@ -128,22 +128,27 @@
 
 
                 </div>
-
-                <div class="ui segment form">
-                    <div class="field">
-                        <p class="title">更改意见：</p>
-                    </div>
-                    <div class="">
-                        <textarea id="modify"></textarea>
-                    </div>
-                </div>
-
-
+                @if (ViewBag.disable == 0)
+                {
+                    <div class="ui segment form">
+                       <div class="field">
+                           <p class="title">更改意见：</p>
+                       </div>
+                       <div class="">
+                           <textarea id="modify"></textarea>
+                       </div>
+                   </div>
+                
+                }
 
                 <div class="ui segment" align="center">
-                    <button id="agree" class="positive ui button" style="width: 25%">同意</button>
-                    <button id="noagr" class="negative ui button" style="width: 25%">返回修改</button>
-                    <p>如果同意以上内容请确定，不同意请填写更改意见后点击返回修改</p>
+                    @if (ViewBag.disable == 0)
+                    {
+                        <button id="agree" class="positive ui button" style="width: 25%">同意</button>
+                        <button id="noagr" class="negative ui button" style="width: 25%">返回修改</button>
+                        <p>如果同意以上内容请确定，不同意请填写更改意见后点击返回修改</p>
+                    }
+                   
                 </div>
             </div>
             <input id="checknum" style="display:none" value="@ViewBag.model.Trade.Id" />

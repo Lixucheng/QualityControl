@@ -125,6 +125,11 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("访问错误！");
             }
+            var see = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已确定);
+            if (see != null)
+            {
+                return Redirect("SeeContract?tradeid=" + tradeid);
+            }
             
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
             if (x == null)
@@ -151,6 +156,12 @@ namespace QualityControl.Controllers
                 {
                     throw new Exception("没有待确认合同！");
                 }
+                var haveAllreadysend = detectionscheme.Contracts.FirstOrDefault(e => e.UserId == userid && e.Status == EnumContractStatus.修改后未审核);
+                if (haveAllreadysend != null)
+                {
+                    ViewBag.ok = 0;
+                    ViewBag.message = "合同已经在修改中,等待管控中心再次制定方案！";
+                }
                 var have = detectionscheme.Contracts.FirstOrDefault(e => e.UserId==userid&& e.Status == EnumContractStatus.未签订);
                 if (have == null)
                 {
@@ -176,7 +187,37 @@ namespace QualityControl.Controllers
                 var l = JsonConvert.DeserializeObject<Level>(s);
                 ViewBag.l = l;
             }
+            ViewBag.disable = 0;//可编辑
             return View();
+        }
+
+        /// <summary>
+        /// 查看已经确定的
+        /// </summary>
+        /// <param name="tradeid"></param>
+        /// <returns></returns>
+        public ActionResult SeeContract(long tradeid)
+        {
+            var userid = User.Identity.GetUserId();
+            var trade = Db.Trades.Find(tradeid);
+            var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已确定);
+          
+            var usernow = UserManager.FindById(userid);
+            ViewBag.u = usernow.Type == (int) EnumUserType.User ? 0 : 1;
+            ViewBag.model = x;
+            var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
+            var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
+            ViewBag.productname = pro.Name;
+            ViewBag.company = company.Name;
+            var list = trade.Batches;
+            ViewBag.list = list;
+            var s = x.Level;
+            var l = JsonConvert.DeserializeObject<Level>(s);
+            ViewBag.l = l;
+            
+          
+            ViewBag.disable = 1;//不可编辑
+            return View("SignContract");
         }
 
         /// <summary>
