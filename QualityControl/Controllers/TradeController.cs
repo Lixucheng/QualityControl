@@ -132,6 +132,33 @@ namespace QualityControl.Controllers
         }
 
 
+        public ActionResult ComfirmPay(long id)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = Db.Users.Find(userId);
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return Content("错误操作");
+            }
+            if (user.Type == (int)EnumUserType.Controller)
+            {
+                trade.Status = (int)EnumTradeStatus.MakeQrCode;
+            }
+            else if (trade.SgsUserId == userId)
+            {
+                trade.SGSPaied = true;
+            }
+            else
+            {
+                return Content("错误操作");
+            }
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return RedirectToAction("TradeDetail", new { id = id });
+        }
+
+
         public ActionResult TradeDetail(long id)
         {
             var userId = User.Identity.GetUserId();

@@ -168,4 +168,65 @@
         </div>
     }
 
+    @if (Model.Status == (int)QualityControl.Db.EnumTradeStatus.Signed)
+    {
+        if (user.Type == (int)QualityControl.Enum.EnumUserType.User)
+        {
+            <div class="ui segment">
+                <p class="am-cf">
+                    <span>检测方案已经完成，您可以查看，请及时付款，并等待控制中心确认收到付款</span>
+                </p>
+            </div>
+        }
+        else if (user.Type == (int)QualityControl.Enum.EnumUserType.Controller)
+        {
+            <div class="ui segment">
+                <p class="am-cf">
+                    <span>检测方案已经完成，请确认付款</span>
+                    <a href="/Trade/comfirmPay/@Model.Id" class="am-fr primary ui button">确认收到付款</a>
+                </p>
+            </div>
+        }
+    }
+    @if (user.Type == (int)QualityControl.Enum.EnumUserType.TestingOrg)
+    {
+        if (!Model.SGSPaied)
+        {
+            <div class="ui segment">
+                <p class="am-cf">
+                    <span>检测方案已经完成，请确认付款</span>
+                    <a href="/Trade/comfirmPay/@Model.Id" class="am-fr primary ui button">确认收到付款</a>
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="ui segment">
+                <p class="am-cf">
+                    <span>确认收到付款</span>
+                </p>
+            </div>
+        }
+    }
+
+    @if (Model.Status >= (int)QualityControl.Db.EnumTradeStatus.MakeQrCode)
+    {
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>用户已确认付款，开始制码流程</span>
+            </p>
+        </div>
+    }
+
+    @if (Model.Status >= (int)QualityControl.Db.EnumTradeStatus.SampleFinshed)
+    {
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>制码完成，开始抽样</span>
+            </p>
+        </div>
+    }
+
+
+
 </div>
