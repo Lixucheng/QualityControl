@@ -63,6 +63,7 @@ namespace QualityControl.Controllers
                     Trade = trade,
                 };
                 Db.DetectionSchemes.Add(x);
+                trade.Status = (int)EnumTradeStatus.AlreadyApply;
                 Db.SaveChanges();
              
 
@@ -415,8 +416,10 @@ namespace QualityControl.Controllers
             ViewBag.time = DateTime.Today.ToShortDateString();
             ViewBag.Content = s0 + s1 + s2;
             ViewBag.checknum = trade.Id;
+            ViewBag.TradeId = trade.Id;
             return View();
         }
+
         public bool BoolCompactSign(long tradeid)
         {
 
@@ -481,6 +484,8 @@ namespace QualityControl.Controllers
             }
             return 0;
         }
+
+        
 
 
         public class Level

@@ -2,7 +2,170 @@
     ViewBag.Title = "交易详情";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+@using Newtonsoft.Json
 @model QualityControl.Db.Trade
 
+@{ 
+    var product = JsonConvert.DeserializeObject<QualityControl.Models.ProductCopy>(Model.Product);
+    var user = ViewBag.User as QualityControl.Models.ApplicationUser;
+    var sgs = ViewBag.SGS as QualityControl.Db.SGS;
+}
 
+<div class="am-margin am-padding container ">
+    <div class="am-margin-vertical ui message">
+        <div class="header">
+            状态:
+            @if (Model.Status == (int)QualityControl.Db.EnumTradeStatus.Create)
+            {
+                <span>成功添加订单，等待控制中心制作方案</span>
+            }
+            else if (Model.Status == (int)QualityControl.Db.EnumTradeStatus.AlreadyApply)
+            {
+                <span>制作方案已经制作完成，请去查看</span>
+            }
+        </div>
+    </div>
+    <div class="verborder">
+        <div class="ui raised segment">
+            <div class="am-cf">
+                <a class="ui red ribbon label zh  fw-normal-force">产品信息</a>
+                <span>@product.Name</span>
+            </div>
+            <p class="ui divider"></p>
+            <div class="ui divided selection list">
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">价格</div>
+                    @product.Price
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">生产许可证编号</div>
+                    @product.ProductionCertificateNo
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">执行标准</div>
+                    @product.Standard
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">颁发日期</div>
+                    @product.GetDate
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">类型</div>
+                    @{
+                        var type = QualityControl.Models.Singleton.Self.Db.ThirdProductTypes.Find(product.TypeId);
+                    }
+                    @(type == null ? "" : type.Title)
+                </a>
+            </div>
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>批次名</th>
+                        <th>数量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var b in Model.Batches)
+                    {
+                        <tr>
+                            <td>@b.BatchName</td>
+                            <td>@b.Count</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>                    
+    </div>
+
+    @if (Model.Status >= (int)QualityControl.Db.EnumTradeStatus.AlreadyApply)
+    {
+        if (user.Type == (int)QualityControl.Enum.EnumUserType.User || user.Type == (int)QualityControl.Enum.EnumUserType.Controller)
+        {
+            <div class="ui segments">
+                <div class="ui segment">
+                    <p>检测机构信心</p>
+                </div>
+                <div class="ui secondary segment">
+                    <div class="ui list">
+                        <div class="item">
+                            <i class="group icon"></i>
+                            <div class="content">
+                                <span>@sgs.Name</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="user icon"></i>
+                            <div class="content">
+                                <span>@user.UserName</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="marker icon"></i>
+                            <div class="content">
+                                <span>@sgs.Address</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="phone icon"></i>
+                            <div class="content">
+                                <span>@sgs.Tel</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="clock icon"></i>
+                            <div class="content">
+                                <span>@sgs.CorporationName</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="point icon"></i>
+                            <div class="content">
+                                <span>@sgs.License</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+        if (user.Type == (int)QualityControl.Enum.EnumUserType.TestingOrg || user.Type == (int)QualityControl.Enum.EnumUserType.Controller)
+        {
+            <div class="ui segments">
+                <div class="ui segment">
+                    <p>用户信心</p>
+                </div>
+                <div class="ui secondary segment">
+                    <div class="ui list">
+                        <div class="item">
+                            <i class="users icon"></i>
+                            <div class="content">
+                                <span>@user.UserName</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="phone icon"></i>
+                            <div class="content">
+                                <span>@user.PhoneNumber</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="mail icon"></i>
+                            <div class="content">
+                                <span>@user.Email</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>检测方案已经完成，请前去确认</span>
+                <a href="/DetectionScheme/SignContract?tradeId=@Model.Id" class="am-fr primary ui button">查看</a>
+            </p>
+        </div>
+    }
+
+</div>

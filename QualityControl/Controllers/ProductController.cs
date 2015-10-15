@@ -387,7 +387,7 @@ namespace QualityControl.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return RedirectToAction("CompanyProductSave");
             }
             model.UserId = User.Identity.GetUserId();
             var company = MyCompany;

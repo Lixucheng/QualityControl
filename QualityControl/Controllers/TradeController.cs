@@ -136,7 +136,9 @@ namespace QualityControl.Controllers
         {
             var userId = User.Identity.GetUserId();
             var user = Db.Users.Find(userId);
+            ViewBag.User = user;
             var trade = Db.Trades.Find(id);
+            ViewBag.SGS = Db.SGSs.FirstOrDefault(a => a.UserId == trade.SgsUserId);
             if (trade == null)
             {
                 return Content("错误操作");
