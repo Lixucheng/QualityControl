@@ -59,10 +59,12 @@ namespace QualityControl.Db
         /// 创建
         /// </summary>
         Create,
+
         /// <summary>
         /// 申请完成
         /// </summary>
         AlreadyApply,
+
         /// <summary>
         /// 合同确认流程
         /// </summary>
@@ -72,6 +74,7 @@ namespace QualityControl.Db
         /// 合同已签
         /// </summary>
         Signed,
+
         /// <summary>
         /// 制码流程
         /// </summary>
@@ -97,4 +100,6 @@ namespace QualityControl.Db
 
 
     }
+
+  
 }

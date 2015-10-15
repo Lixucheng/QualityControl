@@ -91,7 +91,13 @@ namespace QualityControl.Controllers
             return View();
         }
 
-     
+
+        public ActionResult TradeList()
+        {
+            var id=User.Identity.GetUserId();
+            var list = Db.Trades.Where(e => e.UserId == id&&e.Id==17).ToList();
+            return View(list);
+        }
         public ActionResult GetTrade(long id)
         {
             return View();
@@ -110,6 +116,7 @@ namespace QualityControl.Controllers
             ViewBag.t = trade;
             return View();
         }
+
 
         
     }
