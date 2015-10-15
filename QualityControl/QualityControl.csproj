@@ -1223,6 +1223,7 @@
     <Content Include="Views\User\ChooseProductBatchs.cshtml" />
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\Trade\TradeDetail.cshtml" />
+    <Content Include="Views\User\TradeList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
