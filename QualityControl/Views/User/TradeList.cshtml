@@ -5,6 +5,7 @@
 }
 @using Newtonsoft.Json
 @using QualityControl.Models
+@using QualityControl.Models.Adapters
 @model IEnumerable<QualityControl.Db.Trade>
 
 @section head{
@@ -52,13 +53,13 @@
                 foreach (var Tempx in Model)
                 {
                     var p = JsonConvert.DeserializeObject<ProductCopy>(Tempx.Product);
-                    
+                    var s = ConvertTradeStatus.GetStatusName(Tempx.Status);
                     <tr>
                         <td>@Tempx.Id</td>
                         <td>@p.Name</td>
                         <td>@Tempx.Schemes.First(e=>e.Status!=QualityControl.Db.EnumDetectionSchemeStatus.修改完成留档保存).UserQuote</td>
                         <td>@Tempx.Schemes.First(e => e.Status != QualityControl.Db.EnumDetectionSchemeStatus.修改完成留档保存).Time</td>
-                        <td>@Tempx.Status</td>
+                        <td>@s</td>
                         <td>
                             <div class="2  fluid ui">
                                 <a class="ui  button" href="/Trade/TradeDetail/@Tempx.Id">查看</a>

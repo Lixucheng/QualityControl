@@ -359,6 +359,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Adapters\ConvertTradeStatus.cs" />
     <Compile Include="Models\Adapters\TradeInfo.cs" />
     <Compile Include="Models\Adapters\CompanyInfo.cs" />
     <Compile Include="Models\Adapters\SGSInfo.cs" />

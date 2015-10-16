@@ -48,8 +48,8 @@ namespace QualityControl.Controllers
                 return View();
             }
             ViewBag.sgslist = sgsprolist.Select(e => e.SGS).Distinct();
-
-            if (x == null)
+          
+            if (x == null)            
             {
                 //方案
                 x = new DetectionScheme
@@ -64,7 +64,7 @@ namespace QualityControl.Controllers
                 Db.DetectionSchemes.Add(x);
                 trade.Status = (int) EnumTradeStatus.AlreadyApply;
                 Db.SaveChanges();
-
+             
 
                 var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
                 var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
@@ -97,7 +97,7 @@ namespace QualityControl.Controllers
                 return View();
             }
             var levelconvert = new ConvertLevel();
-
+          
             ViewBag.Level = levelconvert.GetLevelByCount(list.First().Count);
             ViewBag.tradeid = tradeid;
             return View();
@@ -111,7 +111,7 @@ namespace QualityControl.Controllers
             return Json(l);
         }
 
-
+  
         public ActionResult SignContract(long tradeid)
         {
             var userid = User.Identity.GetUserId();
@@ -124,7 +124,12 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("访问错误！");
             }
-
+            var see = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已确定);
+            if (see != null)
+            {
+                return Redirect("SeeContract?tradeid=" + tradeid);
+            }
+            
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
             if (x == null)
             {
@@ -143,13 +148,20 @@ namespace QualityControl.Controllers
                 ViewBag.company = company.Name;
                 var list = trade.Batches;
                 ViewBag.list = list;
-
-
+   
+               
                 var detectionscheme = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
                 if (detectionscheme == null)
                 {
                     throw new Exception("没有待确认合同！");
                 }
+                var haveAllreadysend = detectionscheme.Contracts.FirstOrDefault(e => e.UserId == userid && e.Status == EnumContractStatus.修改后未审核);
+                if (haveAllreadysend != null)
+                {
+                    ViewBag.ok = 0;
+                    ViewBag.message = "合同已经在修改中,等待管控中心再次制定方案！";
+                }
+                var have = detectionscheme.Contracts.FirstOrDefault(e => e.UserId==userid&& e.Status == EnumContractStatus.未签订);
                 var have =
                     detectionscheme.Contracts.FirstOrDefault(
                         e => e.UserId == userid && e.Status == EnumContractStatus.未签订);
@@ -167,7 +179,7 @@ namespace QualityControl.Controllers
                             JsonConvert.DeserializeObject<ProductCopy>(detectionscheme.Trade.Product).ToProductDbOject(),
                         Quote = quote,
                         Status = EnumContractStatus.未签订,
-                        UserId = user.Id
+                        UserId = user.Id                        
                     };
                     Db.Contracts.Add(c);
                     Db.SaveChanges();
@@ -177,10 +189,41 @@ namespace QualityControl.Controllers
                 var l = JsonConvert.DeserializeObject<Level>(s);
                 ViewBag.l = l;
             }
+            ViewBag.disable = 0;//可编辑
             return View();
         }
 
         /// <summary>
+        /// 查看已经确定的
+        /// </summary>
+        /// <param name="tradeid"></param>
+        /// <returns></returns>
+        public ActionResult SeeContract(long tradeid)
+        {
+            var userid = User.Identity.GetUserId();
+            var trade = Db.Trades.Find(tradeid);
+            var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已确定);
+          
+            var usernow = UserManager.FindById(userid);
+            ViewBag.u = usernow.Type == (int) EnumUserType.User ? 0 : 1;
+            ViewBag.model = x;
+            var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
+            var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
+            ViewBag.productname = pro.Name;
+            ViewBag.company = company.Name;
+            var list = trade.Batches;
+            ViewBag.list = list;
+            var s = x.Level;
+            var l = JsonConvert.DeserializeObject<Level>(s);
+            ViewBag.l = l;
+            
+          
+            ViewBag.disable = 1;//不可编辑
+            return View("SignContract");
+        }
+
+        /// <summary>
+        /// 将合同发送给两方
         ///     将合同发送给两方
         /// </summary>
         /// <param name="checknum"></param>
@@ -193,7 +236,7 @@ namespace QualityControl.Controllers
         {
             var trade = Db.Trades.Find(tradeid);
             var sgsuserid = Db.SGSs.Find(sgsid).UserId;
-
+           
             trade.SgsUserId = sgsuserid;
             Db.SaveChanges();
 
@@ -262,7 +305,7 @@ namespace QualityControl.Controllers
             var scheme = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
             if (scheme == null)
             {
-                throw new Exception("访问错误，请返回刷新!");
+               throw new Exception("访问错误，请返回刷新!");
             }
             var userid = User.Identity.GetUserId();
             var x = scheme.Contracts.FirstOrDefault(e => e.UserId == userid && e.Status == EnumContractStatus.未签订);
@@ -316,7 +359,7 @@ namespace QualityControl.Controllers
                         return new ModifyWithName {Modify = e.Modify, User = "用户（" + u.UserName + ")"};
                     return new ModifyWithName {Modify = e.Modify, User = "检测中心（" + u.UserName + ")"};
                 }).ToList();
-
+                
                 ViewBag.mlist = modify;
                 ViewBag.ok = 1;
             }
@@ -375,7 +418,7 @@ namespace QualityControl.Controllers
                 throw new Exception("无权限查看！");
             }
             var s0 = "一、";
-
+            
             var s2 = @"（以下简称检验方）接受委托方书面检验委托。委托检验申请单（以下简称委托单）作为本协议的附件。本协议以委托方代表人在委托单上签名盖章，检验方加盖受理骑缝章后生效。 
                           <br />二、委托方应如实填写委托单，如有必要，还应根据检验方的要求提供必要的单据及相关资料。 
                           <br />三、检验方按委托方在委托单上填明的检验要求进行检验，并出具检验报告。 
@@ -391,7 +434,7 @@ namespace QualityControl.Controllers
                           <br />十五、委托方对本协议及委托单有不明之处，应在填写委托单时，向检验方工作人员咨询。协议自填单之日起生效。";
             var s1 = "";
             var sysid = trade.SgsUserId;
-
+            
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (user.Type == (int) EnumUserType.User)
             {
@@ -412,7 +455,7 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("无权查看！");
             }
-
+           
             ViewBag.time = DateTime.Today.ToShortDateString();
             ViewBag.Content = s0 + s1 + s2;
             ViewBag.checknum = trade.Id;
@@ -464,7 +507,7 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("无权查看！");
             }
-            c.Content = s0 + s1 + s2;
+            c.Content = s0 + s1 + s2;       
             c.Time = DateTime.Now;
             Db.Compacts.Add(c);
             Db.SaveChanges();
@@ -484,7 +527,7 @@ namespace QualityControl.Controllers
             return 0;
         }
 
-
+        
         public bool SendMessage(string userid, string content)
         {
             var m = new Message
@@ -493,7 +536,7 @@ namespace QualityControl.Controllers
                 Time = DateTime.Now,
                 Content = content,
                 UserId = userid
-            };
+            };          
             Db.Messages.Add(m);
             Db.SaveChanges();
             return true;
@@ -517,7 +560,7 @@ namespace QualityControl.Controllers
 
         public int ConfirmPay(long tradeId, int type)
         {
-            var trade = Db.Trades.Find(tradeId);
+            var trade = Db.Trades.Find(tradeId); 
             if (trade == null)
             {
                 return 0;
@@ -574,7 +617,7 @@ namespace QualityControl.Controllers
                 }
             }
         }
-
+            
         public class ModifyWithName
         {
             public string Modify;
