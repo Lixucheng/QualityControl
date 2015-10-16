@@ -1,22 +1,38 @@
-﻿@{
+﻿@using Microsoft.AspNet.Identity
+@using QualityControl.Enum
+@using QualityControl.Models
+@{
     Layout = null;
 }
-
+@{
+    var userId = User.Identity.GetUserId();
+    var user = Singleton.Self.Db.Users.Find(userId);
+}
 <div class="menu-aside am-fl">
     <div class="ui vertical text fluid accordion menu">
         <div class="item active">
             <a class="active title" href="#introduction"><i class="icon home"></i><b>Introduction</b></a>
         </div>
         <div class="item">
-            <a class="title active"><i class="home icon"></i><b>Content</b></a>
+            <a class="title active"><i class="dollar icon"></i><b>交易管理</b></a>
             <div class="content menu active">
-                <a class="item active" href="#headers">Headers</a>
-                <a class="item" href="#page-font">Page Font</a>
+                @if (user.Type == (int) EnumUserType.User)
+                {
+                    <a class="item active" href="/User/ChooseProduct">新建交易</a>
+                }
+
+                <a class="item" href="User/Trades">交易列表</a>
                 <a class="item" href="#text-selection">Text Selection</a>
                 <a class="item" href="#spacing">Spacing</a>
                 <a class="item" href="#links">Links</a>
             </div>
         </div>
+        @if (user.Type == (int)EnumUserType.TestingOrg)
+        {
+            <div class="item active">
+                <a class="active title" href="/SGS/Index"><i class="icon copyright"></i><b>机构信息</b></a>
+            </div>
+        }
         <div class="item">
             <a class="title"><i class="dropdown icon"></i><b>Variables</b></a>
             <div class="content menu">

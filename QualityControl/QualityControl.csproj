@@ -345,6 +345,18 @@
     <Compile Include="Migrations\201510141255264_TradeAddSGSPaied.Designer.cs">
       <DependentUpon>201510141255264_TradeAddSGSPaied.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510151442325_TradeBigChanges.cs" />
+    <Compile Include="Migrations\201510151442325_TradeBigChanges.Designer.cs">
+      <DependentUpon>201510151442325_TradeBigChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510151643598_SomeChange.cs" />
+    <Compile Include="Migrations\201510151643598_SomeChange.Designer.cs">
+      <DependentUpon>201510151643598_SomeChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510161532206_TradeRevert.cs" />
+    <Compile Include="Migrations\201510161532206_TradeRevert.Designer.cs">
+      <DependentUpon>201510161532206_TradeRevert.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\TradeInfo.cs" />
@@ -1224,6 +1236,9 @@
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\Trade\TradeDetail.cshtml" />
     <Content Include="Views\User\TradeList.cshtml" />
+    <Content Include="Views\Trade\SelectSample.cshtml" />
+    <Content Include="Views\Trade\Report.cshtml" />
+    <Content Include="Views\Trade\MakeReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1338,6 +1353,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510141255264_TradeAddSGSPaied.resx">
       <DependentUpon>201510141255264_TradeAddSGSPaied.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510151442325_TradeBigChanges.resx">
+      <DependentUpon>201510151442325_TradeBigChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510151643598_SomeChange.resx">
+      <DependentUpon>201510151643598_SomeChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510161532206_TradeRevert.resx">
+      <DependentUpon>201510161532206_TradeRevert.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

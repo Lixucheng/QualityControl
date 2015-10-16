@@ -214,15 +214,60 @@
         <div class="ui segment">
             <p class="am-cf">
                 <span>用户已确认付款，开始制码流程</span>
+                @if (user.Type == (int)QualityControl.Enum.EnumUserType.Controller && Model.Status == (int)QualityControl.Db.EnumTradeStatus.MakeQrCode)
+                {
+                    <a href="/Trade/MakeQrCodeFinish/@Model.Id" class="am-fr primary ui button">确认制码结束</a>
+                }
             </p>
         </div>
     }
 
-    @if (Model.Status >= (int)QualityControl.Db.EnumTradeStatus.SampleFinshed)
+    @if (Model.Status >= (int)QualityControl.Db.EnumTradeStatus.SampleStart)
     {
         <div class="ui segment">
             <p class="am-cf">
                 <span>制码完成，开始抽样</span>
+                @if (user.Type == (int)QualityControl.Enum.EnumUserType.Controller && Model.Status == (int)QualityControl.Db.EnumTradeStatus.SampleStart)
+                {
+                    <a href="/Trade/SelectSample/@Model.Id" class="am-fr primary ui button">选择抽样方式</a>
+                }
+            </p>
+        </div>
+    }
+
+    @if (Model.Status >= (int)QualityControl.Db.EnumTradeStatus.Testing)
+    {
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>抽样完成，等待检测完成</span>
+                @if (user.Type == (int)QualityControl.Enum.EnumUserType.TestingOrg)
+                {
+                    <a href="/Trade/MakeReport/@Model.Id" class="am-fr primary ui button">上传检测报告</a>
+                }
+            </p>
+        </div>
+    }
+
+    @if (Model.Status >= (int)QualityControl.Db.EnumTradeStatus.Tested)
+    {
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>检测完成</span>
+                <a href="/Trade/Report/@Model.Id" class="am-fr primary ui button">查看检测报告</a>
+                @if (user.Type == (int)QualityControl.Enum.EnumUserType.Controller && Model.Status == (int)QualityControl.Db.EnumTradeStatus.Tested)
+                {
+                    <a href="/Trade/Finish/@Model.Id" class="am-fr primary ui button">通过检查报告</a>
+                }
+            </p>
+        </div>
+    }
+
+
+    @if (Model.Status >= (int)QualityControl.Db.EnumTradeStatus.Finish)
+    {
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>交易完成</span>
             </p>
         </div>
     }

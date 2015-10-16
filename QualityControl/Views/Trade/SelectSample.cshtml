@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "SelectSample";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model QualityControl.Db.Trade
+
+<div class="am-margin am-padding container ">
+
+    <form class="ui form" action="/Trade/Sample">
+        <input type="hidden" value="@Model.Id" name="tradeId" />
+        @foreach (var b in Model.Batches)
+        {
+            <div class="field">
+                <label>@b.BatchName</label>
+                <input type="number" placeholder="" data-id="@b.Id" required name="sampleCounts" max="@b.Count" min="0"/>
+            </div>
+        }
+        <div class="inline fields">
+            <label for="fruit">选择抽样方式:</label>
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" value="0" name="type" checked="" tabindex="0" class="hidden">
+                    <label>随机抽样</label>
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" value="1" name="type" tabindex="0" class="hidden">
+                    <label>系统抽样</label>
+                </div>
+            </div>
+        </div>
+        <button class="ui submit button">提交</button>
+    </form>
+
+</div>
+
+@section scripts{
+    <script>
+        var $inputs = $('input');
+        $('.ui.radio.checkbox').checkbox();
+        $('.ui.form').submit(function (event) {
+            var data = [];
+            $inputs.each(function () {
+                var $this = $(this);
+                var max = $this.attr('max');
+                var val = $this.val();
+                if (val.length === 0 || parseInt(val) > parseInt(max)) {
+                    $this.focus();
+                    event.preventDefault();
+                    event.stopPropagation();
+                    return;
+                }
+                data.push({
+                    Id: $this.data('id'),
+                    SampleCount: val
+                });
+            });
+            $('<input name="data" type="hidden"/>').val(JSON.stringify(data)).appendTo('.ui.form');
+        })
+    </script>
+}

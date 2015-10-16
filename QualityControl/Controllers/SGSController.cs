@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNet.Identity;
-using Newtonsoft.Json;
-using QualityControl.Db;
-using QualityControl.Enum;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
+using QualityControl.Db;
+using QualityControl.Enum;
 
 namespace QualityControl.Controllers
 {
@@ -45,14 +45,17 @@ namespace QualityControl.Controllers
                 model.LastChangeTime = model.CreateTime;
                 Db.SGSs.Add(model);
             }
-            else {
-                if (Util.Util.Equal(model, sgs, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "Status" }))
+            else
+            {
+                if (Util.Util.Equal(model, sgs,
+                    excepts: new List<string> {"UserId", "CreateTime", "LastChangeTime", "Status"}))
                 {
                     return RedirectToAction("Index");
                 }
                 if (sgs.Status == EnumStatus.FirstUncheked)
                 {
-                    Util.Util.Dump(model, sgs, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "Status" });
+                    Util.Util.Dump(model, sgs,
+                        excepts: new List<string> {"UserId", "CreateTime", "LastChangeTime", "Status"});
                 }
                 else
                 {
@@ -72,11 +75,10 @@ namespace QualityControl.Controllers
             var user = UserManager.FindById(userid);
             if (user.Type != (int) EnumUserType.TestingOrg)
             {
-
                 throw new Exception("您不是检测中心管理员，无权限查看！");
             }
 
-            var x = new List<Db.Product>();
+            var x = new List<Product>();
             if (ProductTypeId != 0)
             {
                 var t = Db.ThirdProductTypes.Find(ProductTypeId);
@@ -84,11 +86,7 @@ namespace QualityControl.Controllers
                 {
                     throw new Exception("访问错误");
                 }
-                else
-                {
-                    x = t.Products;
-                }
-
+                x = t.Products;
             }
 
             if (!string.IsNullOrEmpty(key))
@@ -103,9 +101,8 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        public ActionResult AddSgsProduct(long pid,float price,int days)
+        public ActionResult AddSgsProduct(long pid, float price, int days)
         {
-
             var userid = User.Identity.GetUserId();
             var sgs = Db.SGSs.First(e => e.UserId == userid);
             var sgsp = new SgsProduct
@@ -123,12 +120,11 @@ namespace QualityControl.Controllers
         {
             var userid = User.Identity.GetUserId();
             var user = UserManager.FindById(userid);
-            if (user.Type != (int)EnumUserType.TestingOrg)
+            if (user.Type != (int) EnumUserType.TestingOrg)
             {
-
                 throw new Exception("您不是检测中心管理员，无权限查看！");
             }
-       
+
 
             var sgs = Db.SGSs.First(e => e.UserId == userid);
             ViewBag.list = sgs.Products;
@@ -144,7 +140,5 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
             return Redirect("./ManageProducts");
         }
-
-
     }
 }

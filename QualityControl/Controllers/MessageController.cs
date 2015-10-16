@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 
 namespace QualityControl.Controllers
 {
-   
     public class MessageController : BaseController
     {
         // GET: Message
         [Authorize]
-        public ActionResult Index(int s=0)
+        public ActionResult Index(int s = 0)
         {
             var id = User.Identity.GetUserId();
             var list = Db.Messages.Where(e => e.UserId == id && e.Status == s).ToList();
@@ -21,7 +17,7 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        
+
         public ActionResult Read(long id)
         {
             var m = Db.Messages.Find(id);
@@ -29,9 +25,5 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
             return Redirect("/message/index");
         }
-
-        
-
-       
     }
 }

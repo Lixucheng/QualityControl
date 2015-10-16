@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNet.Identity;
-using Newtonsoft.Json;
-using QualityControl.Db;
-using QualityControl.Enum;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-
+using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
+using QualityControl.Db;
+using QualityControl.Enum;
 
 namespace QualityControl.Controllers
 {
@@ -41,22 +40,22 @@ namespace QualityControl.Controllers
             var company = Db.Companies.FirstOrDefault(a => a.UserId == model.UserId);
             if (company == null)
             {
-         
                 model.Status = EnumStatus.FirstUncheked;
                 model.CreateTime = DateTime.Now;
                 model.LastChangeTime = model.CreateTime;
                 Db.Companies.Add(model);
-                
             }
             else
             {
-                if (Util.Util.Equal(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "Status" }))
+                if (Util.Util.Equal(model, company,
+                    excepts: new List<string> {"UserId", "CreateTime", "LastChangeTime", "Status"}))
                 {
                     return RedirectToAction("Index");
                 }
                 if (company.Status == EnumStatus.FirstUncheked)
                 {
-                    Util.Util.Dump(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "Status" });
+                    Util.Util.Dump(model, company,
+                        excepts: new List<string> {"UserId", "CreateTime", "LastChangeTime", "Status"});
                 }
                 else
                 {
@@ -69,7 +68,5 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-
     }
 }

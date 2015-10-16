@@ -25,7 +25,7 @@ namespace QualityControl.Db
 
         public DateTime FinishTime { get; set; }
 
-        public virtual List<DetectionReport> Report { get; set; }
+        public virtual DetectionReport Result { get; set; }
 
         public string  ManufacturerId { get; set; }
 
@@ -36,6 +36,10 @@ namespace QualityControl.Db
         public string Product { get; set; }
 
         public bool SGSPaied { get; set; }
+
+        public DateTime SamplingDate { get; set; }
+
+        public DateTime DetectingDate { get; set; }
 
         /// <summary>
         /// 协议内容
@@ -80,9 +84,10 @@ namespace QualityControl.Db
         /// </summary>
         MakeQrCode,
         /// <summary>
-        /// 抽样流程结束
+        /// 抽样开始
         /// </summary>
-        SampleFinshed,
+        SampleStart,
+
         /// <summary>
         /// 检查中
         /// </summary>

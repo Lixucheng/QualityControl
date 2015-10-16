@@ -5,8 +5,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using QualityControl.Models;
 using QualityControl.Enum;
+using QualityControl.Models;
 
 namespace QualityControl.Controllers
 {
@@ -14,28 +14,22 @@ namespace QualityControl.Controllers
     public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
-        
+
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
-            :base(userManager)
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+            : base(userManager)
         {
             SignInManager = signInManager;
         }
 
         public ApplicationSignInManager SignInManager
         {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set 
-            { 
-                _signInManager = value; 
-            }
+            get { return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>(); }
+            private set { _signInManager = value; }
         }
 
         //
@@ -44,12 +38,6 @@ namespace QualityControl.Controllers
         public ActionResult Login()
         {
             return View();
-        }
-
-        public ActionResult Test()
-        {
-            var tt = UserManager.GetClaims(User.Identity.GetUserId());
-            return Content("hello");
         }
 
         //
@@ -66,16 +54,16 @@ namespace QualityControl.Controllers
 
             // 这不会计入到为执行帐户锁定而统计的登录失败次数中
             // 若要在多次输入错误密码的情况下触发帐户锁定，请更改为 shouldLockout: true
-            var result = await SignInManager.PasswordSignByEmailInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            
+            var result =
+                await SignInManager.PasswordSignByEmailInAsync(model.Email, model.Password, model.RememberMe, false);
+
             switch (result)
             {
                 case SignInStatus.Success:
-                    var tt = User.Identity.AuthenticationType;
                     var user = UserManager.FindByEmail(model.Email);
                     if (user.Type == 0)
                     {
-                        return RedirectToLocal("/User/ChooseProduct");
+                        return RedirectToLocal("/User/Index");
                     }
                     if (user.Type == 1)
                     {
@@ -94,7 +82,6 @@ namespace QualityControl.Controllers
                     return View("Lockout");
                 //case SignInStatus.RequiresVerification:
                 //    return RedirectToAction("SendCode", new { RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "无效的登录尝试。");
                     return View(model);
@@ -111,7 +98,7 @@ namespace QualityControl.Controllers
             {
                 return View("Error");
             }
-            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
+            return View(new VerifyCodeViewModel {Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe});
         }
 
         //
@@ -130,14 +117,16 @@ namespace QualityControl.Controllers
             // 如果用户输入错误代码的次数达到指定的次数，则会将
             // 该用户帐户锁定指定的时间。
             // 可以在 IdentityConfig 中配置帐户锁定设置
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result =
+                await
+                    SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe,
+                        model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(model.ReturnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
-                case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "代码无效。");
                     return View(model);
@@ -162,15 +151,15 @@ namespace QualityControl.Controllers
             if (!ModelState.IsValid)
             {
                 // 如果我们进行到这一步时某个地方出错，则重新显示表单
-                return View(model);          
+                return View(model);
             }
 
             var user = new ApplicationUser
             {
                 UserName = model.Name,
                 Email = model.Email,
-                Type = (int)model.Type,
-                Status = (int)EnumUserStatus.UnRecognized,
+                Type = (int) model.Type,
+                Status = (int) EnumUserStatus.UnRecognized,
                 PhoneNumber = model.Phone
             };
             var result = await UserManager.CreateAsync(user, model.Password);
@@ -179,24 +168,23 @@ namespace QualityControl.Controllers
                 return View("RegisterError", result);
             }
             //AddCache("Register_" + user.Id, user, DateTime.Now.AddHours(1));
-            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+            await SignInManager.SignInAsync(user, false, false);
 
 
             // 有关如何启用帐户确认和密码重置的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=320771
             // 发送包含此链接的电子邮件
-            string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+            var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account", new {userId = user.Id, code}, Request.Url.Scheme);
             await UserManager.SendEmailAsync(user.Id, "确认你的帐户", "请通过单击 <a href=\"" + callbackUrl + "\">這裏</a>来确认你的帐户");
-            return RedirectToAction("GotoEmail", new { email = model.Email });
+            return RedirectToAction("GotoEmail", new {email = model.Email});
         }
-
 
 
         [HttpGet]
         [AllowAnonymous]
         public ActionResult GotoEmail(string email)
         {
-            return View(model:email);
+            return View(model: email);
         }
 
         //
@@ -211,21 +199,10 @@ namespace QualityControl.Controllers
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             if (!result.Succeeded)
             {
-                return View("Error"); 
+                return View("Error");
             }
             return RedirectToAction("Login");
         }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult CompanyInfo()
-        {
-            //var userId = User.Identity.GetUserId();
-            //var model =  Db.Companies.Where(a => a.UserId == userId);
-            return View();
-        }
-
-
 
         //
         // GET: /Account/ForgotPassword
@@ -252,8 +229,9 @@ namespace QualityControl.Controllers
 
                 // 有关如何启用帐户确认和密码重置的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=320771
                 // 发送包含此链接的电子邮件
-                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new {userId = user.Id, code},
+                    Request.Url.Scheme);
                 await UserManager.SendEmailAsync(user.Id, "重置密码", "请通过单击 <a href=\"" + callbackUrl + "\">此处</a>来重置你的密码");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
@@ -275,7 +253,7 @@ namespace QualityControl.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string userId, string code)
         {
-            var user =  UserManager.FindById(userId);
+            var user = UserManager.FindById(userId);
             ViewBag.email = user.Email;
             return code == null ? View("Error") : View();
         }
@@ -314,8 +292,6 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        
-
         //
         // POST: /Account/ExternalLogin
         [HttpPost]
@@ -324,7 +300,8 @@ namespace QualityControl.Controllers
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // 请求重定向到外部登录提供程序
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult(provider,
+                Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = returnUrl}));
         }
 
         //
@@ -338,8 +315,10 @@ namespace QualityControl.Controllers
                 return View("Error");
             }
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+            var factorOptions =
+                userFactors.Select(purpose => new SelectListItem {Text = purpose, Value = purpose}).ToList();
+            return
+                View(new SendCodeViewModel {Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe});
         }
 
         //
@@ -359,7 +338,8 @@ namespace QualityControl.Controllers
             {
                 return View("Error");
             }
-            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+            return RedirectToAction("VerifyCode",
+                new {Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe});
         }
 
         //
@@ -374,7 +354,7 @@ namespace QualityControl.Controllers
             }
 
             // 如果用户已具有登录名，则使用此外部登录提供程序将该用户登录
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            var result = await SignInManager.ExternalSignInAsync(loginInfo, false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -382,13 +362,14 @@ namespace QualityControl.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, RememberMe = false});
                 case SignInStatus.Failure:
                 default:
                     // 如果用户没有帐户，则提示该用户创建帐户
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    return View("ExternalLoginConfirmation",
+                        new ExternalLoginConfirmationViewModel {Email = loginInfo.Email});
             }
         }
 
@@ -397,7 +378,8 @@ namespace QualityControl.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,
+            string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -412,14 +394,14 @@ namespace QualityControl.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        await SignInManager.SignInAsync(user, false, false);
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -463,15 +445,13 @@ namespace QualityControl.Controllers
         }
 
         #region 帮助程序
+
         // 用于在添加外部登录名时提供 XSRF 保护
         private const string XsrfKey = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager
         {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
+            get { return HttpContext.GetOwinContext().Authentication; }
         }
 
         private void AddErrors(IdentityResult result)
@@ -511,7 +491,7 @@ namespace QualityControl.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
-                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
+                var properties = new AuthenticationProperties {RedirectUri = RedirectUri};
                 if (UserId != null)
                 {
                     properties.Dictionary[XsrfKey] = UserId;
@@ -519,6 +499,7 @@ namespace QualityControl.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
         #endregion
     }
 }

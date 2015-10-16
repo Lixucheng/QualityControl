@@ -1,24 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using QualityControl.Db;
 using QualityControl.Enum;
-using QualityControl.Util;
 using QualityControl.Models;
-using Newtonsoft.Json;
+using QualityControl.Util;
 
 namespace QualityControl.Controllers
 {
     [Authorize]
     public class UserController : BaseController
     {
-        // GET: User
-        public ActionResult ChooseProduct(string key="",long ProductTypeId=0)
+        public ActionResult Index()
         {
-            var x = new List<Db.Product>();
+            return View();
+        }
+
+        // GET: User
+        public ActionResult ChooseProduct(string key = "", long ProductTypeId = 0)
+        {
+            var x = new List<Product>();
             if (ProductTypeId != 0)
             {
                 var t = Db.ThirdProductTypes.Find(ProductTypeId);
@@ -26,22 +30,18 @@ namespace QualityControl.Controllers
                 {
                     throw new Exception("访问错误");
                 }
-                else
-                {
-                    x = t.Products;
-                    ViewBag.list = x;
-                    return View();
-                }
-                
+                x = t.Products;
+                ViewBag.list = x;
+                return View();
             }
-           
+
             if (!string.IsNullOrEmpty(key))
-            x = Db.Products.Where(e => e.Name.Contains(key)).ToList();
+                x = Db.Products.Where(e => e.Name.Contains(key)).ToList();
 
             x = Db.Products.Take(20).ToList();
             ViewBag.list = x;
 
-            
+
             return View();
         }
 
@@ -57,14 +57,14 @@ namespace QualityControl.Controllers
         public ActionResult Choose(long productId, List<long> batchIds)
         {
             var userid = User.Identity.GetUserId();
-            var user = UserManager.FindById(userid);
-            var p = Db.Products.Find(productId);  
+            UserManager.FindById(userid);
+            var p = Db.Products.Find(productId);
             if (p == null)
             {
                 throw new Exception("访问错误！");
             }
             var batches = new List<ProductBatch>();
-            foreach(var item in batchIds)
+            foreach (var item in batchIds)
             {
                 var batch = p.BaseProductBatchs.FirstOrDefault(a => a.Id == item);
                 if (batch == null)
@@ -76,15 +76,18 @@ namespace QualityControl.Controllers
                 batches.Add(pb);
             }
             var pStr = new ProductCopy(p);
-            var trade = new Db.Trade
+            var trade = new Trade
             {
                 Product = JsonConvert.SerializeObject(pStr),
-                CeateTime =DateTime.Now,
-                FinishTime =DateTime.Now,  
-                UserId=userid,
-                Status =(int)EnumTradeStatus.Create,
+                CeateTime = DateTime.Now,
+                FinishTime = DateTime.Now,
+                SamplingDate = DateTime.Now,
+                DetectingDate = DateTime.Now,
+                UserId = userid,
+                Status = (int) EnumTradeStatus.Create,
                 SGSPaied = false,
-                Batches = batches
+                Batches = batches,
+                ManufacturerId = p.UserId
             };
             Db.Trades.Add(trade);
             Db.SaveChanges();
@@ -94,10 +97,11 @@ namespace QualityControl.Controllers
 
         public ActionResult TradeList()
         {
-            var id=User.Identity.GetUserId();
-            var list = Db.Trades.Where(e => e.UserId == id&&e.Id==17).ToList();
+            var id = User.Identity.GetUserId();
+            var list = Db.Trades.Where(e => e.UserId == id && e.Id == 17).ToList();
             return View(list);
         }
+
         public ActionResult GetTrade(long id)
         {
             return View();
@@ -107,17 +111,13 @@ namespace QualityControl.Controllers
         {
             var userid = User.Identity.GetUserId();
             var user = UserManager.FindById(userid);
-            if (user.Type != (int)EnumUserType.User)
+            if (user.Type != (int) EnumUserType.User)
             {
-
                 throw new Exception("您不是用户，无权限查看！");
             }
-            var trade = Db.Trades.FirstOrDefault(e => e.UserId == userid&&e.Status==(int)(EnumTradeStatus.Create));
+            var trade = Db.Trades.FirstOrDefault(e => e.UserId == userid && e.Status == (int) (EnumTradeStatus.Create));
             ViewBag.t = trade;
             return View();
         }
-
-
-        
     }
 }

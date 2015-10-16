@@ -1,44 +1,34 @@
 ﻿using System;
 using System.Web;
-using System.Web.Mvc;
 using System.Web.Caching;
-using QualityControl.Models;
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
+using QualityControl.Models;
 
 namespace QualityControl.Controllers
 {
     public class BaseController : Controller
     {
-
         private ApplicationUserManager _userManager;
 
-        public ApplicationUserManager UserManager
+        public BaseController()
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
         }
-
-        public BaseController() { }
 
         public BaseController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
         }
 
+        public ApplicationUserManager UserManager
+        {
+            get { return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set { _userManager = value; }
+        }
+
         protected Cache CacheManager
         {
             get { return HttpRuntime.Cache; }
-        }
-
-        protected void AddCache(string key, object value, DateTime time)
-        {
-            CacheManager.Add(key, value, null, time, TimeSpan.Zero, CacheItemPriority.Normal, null);
         }
 
         protected Singleton Sgt
@@ -49,6 +39,11 @@ namespace QualityControl.Controllers
         protected ApplicationDbContext Db
         {
             get { return Sgt.Db; }
+        }
+
+        protected void AddCache(string key, object value, DateTime time)
+        {
+            CacheManager.Add(key, value, null, time, TimeSpan.Zero, CacheItemPriority.Normal, null);
         }
 
         protected override void Dispose(bool disposing)
@@ -64,6 +59,5 @@ namespace QualityControl.Controllers
 
             base.Dispose(disposing);
         }
-
     }
 }
