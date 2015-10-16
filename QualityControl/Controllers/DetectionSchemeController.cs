@@ -162,9 +162,6 @@ namespace QualityControl.Controllers
                     ViewBag.message = "合同已经在修改中,等待管控中心再次制定方案！";
                 }
                 var have = detectionscheme.Contracts.FirstOrDefault(e => e.UserId==userid&& e.Status == EnumContractStatus.未签订);
-                var have =
-                    detectionscheme.Contracts.FirstOrDefault(
-                        e => e.UserId == userid && e.Status == EnumContractStatus.未签订);
                 if (have == null)
                 {
                     var user = UserManager.FindById(User.Identity.GetUserId());

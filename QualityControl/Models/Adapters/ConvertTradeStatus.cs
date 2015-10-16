@@ -24,13 +24,9 @@ namespace QualityControl.Models.Adapters
                     {
                         return "制码流程";
                     }
-                case (int)EnumTradeStatus.SampleFinshed:
-                    {
-                        return "抽样完成";
-                    }
                 case (int)EnumTradeStatus.Testing:
                     {
-                        return "检测中";
+                        return "抽样完成, 检测中";
                     }
                 case (int)EnumTradeStatus.Tested:
                     {
