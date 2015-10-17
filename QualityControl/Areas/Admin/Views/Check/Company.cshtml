@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -9,36 +8,36 @@
     {
         <table class="ui compact celled table">
             <thead>
-                <tr>
-                    <th>用户名</th>
-                    <th>用户邮箱</th>
-                    <th>企业名称</th>
-                    <th>申请时间</th>
-                    <th>状态</th>
-                    <th>操作</th>
-                </tr>
+            <tr>
+                <th>用户名</th>
+                <th>用户邮箱</th>
+                <th>企业名称</th>
+                <th>申请时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach(var item in Model)
-                {
-                    <tr>
-                        <td>@item.User.UserName</td>
-                        <td>@item.User.Email</td>
-                        <td>@item.Company.Name</td>
-                        <td>@item.Company.LastChangeTime</td>
-                        <td>
-                            @(item.Company.UpdateJson == null ? "初次审核" : "修改审核")
-                        </td>
-                        <td>
-                            <span class="ui button detail-btn" data-id="@item.Company.Id">查看</span>
-                        </td>
-                    </tr>
-                }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.User.UserName</td>
+                    <td>@item.User.Email</td>
+                    <td>@item.Company.Name</td>
+                    <td>@item.Company.LastChangeTime</td>
+                    <td>
+                        @(item.Company.UpdateJson == null ? "初次审核" : "修改审核")
+                    </td>
+                    <td>
+                        <span class="ui button detail-btn" data-id="@item.Company.Id">查看</span>
+                    </td>
+                </tr>
+            }
             </tbody>
-            
+
         </table>
     }
-    
+
 </div>
 
 <!--modal-->
@@ -130,16 +129,16 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
-            
+
         </div>
     </div>
     <div class="actions">
         <div class="ui black deny button">
             取消
         </div>
-        <div class="ui orange labeled icon deny button reject-btn"> 
+        <div class="ui orange labeled icon deny button reject-btn">
             不通过
             <i class="remove icon"></i>
         </div>
@@ -152,18 +151,17 @@
 </div>
 
 
-
 @section scripts{
     <script src="~/Scripts/bower_components/way.js/way.min.js"></script>
     <script>
-        $(function () {
+        $(function() {
             var $modal = $('.modal').modal();
             var cached = {};
             var $currentRow;
 
             var $modalColumn = $modal.find('.column');
 
-            $('.detail-btn').click(function () {
+            $('.detail-btn').click(function() {
                 var $this = $(this);
                 var id = $this.data('id');
                 $currentRow = $this.parents('tr');
@@ -185,7 +183,7 @@
                             id: id
                         },
                         dataType: 'json',
-                        success: function (data) {
+                        success: function(data) {
                             data.updateJson = $.parseJSON(data.Company.UpdateJson);
                             cached[id] = data;
                             way.set('data', data);
@@ -198,14 +196,14 @@
                             }
                             $modal.modal('show');
                         },
-                        error: function () {
+                        error: function() {
                             alert('操作失败，请刷新重试');
                         }
                     });
                 }
             });
 
-            $('.reject-btn, .pass-btn').click(function () {
+            $('.reject-btn, .pass-btn').click(function() {
 
                 var $this = $(this),
                     isPass = $this.hasClass('pass-btn'),
@@ -217,16 +215,15 @@
                         isPass: isPass,
                         id: id
                     },
-                    success: function () {
-                        $currentRow.slideUp(400, function () {
+                    success: function() {
+                        $currentRow.slideUp(400, function() {
                             $currentRow.remove();
                         });
                     },
-                    error: function () {
+                    error: function() {
                         alert('操作失败，请刷新重试');
                     }
-                })
-
+                });
             });
             //way.set('data', {
             //    User: {

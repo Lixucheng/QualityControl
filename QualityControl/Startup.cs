@@ -1,7 +1,9 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using QualityControl;
 
-[assembly: OwinStartupAttribute(typeof(QualityControl.Startup))]
+[assembly: OwinStartup(typeof (Startup))]
+
 namespace QualityControl
 {
     public partial class Startup

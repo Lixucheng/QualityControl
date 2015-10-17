@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "GotoEmail";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -7,29 +6,28 @@
 @section head{
     <style>
         .bigestdiv {
+            margin-bottom: 50px;
             margin-left: 5%;
             margin-right: 5%;
             margin-top: 50px;
-            margin-bottom: 50px;
         }
 
-        .title {
-            float: left;
-        }
+        .title { float: left; }
     </style>
 }
 <div class="bigestdiv">
     <div class="ui blue inverted segment" align="center">
-        <p1 class="ui  header ">账户已注册，接下来请验证您的邮箱
-            <button id="jump" class="ui button blue" style="font-size:17px">-->转到</button>
-         </p1>
-        <input style="display:none" value="@Model"/>
+        <p1 class="ui  header ">
+            账户已注册，接下来请验证您的邮箱
+            <button id="jump" class="ui button blue" style="font-size: 17px">-->转到</button>
+        </p1>
+        <input style="display: none" value="@Model"/>
     </div>
 </div>
 @section Scripts{
 
     <script>
-        
+
         $('#jump').click(function() {
             var uurl = gotoEmail($('input').val());
             if (uurl != "") {

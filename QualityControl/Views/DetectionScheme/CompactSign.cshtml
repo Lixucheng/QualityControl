@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "CompactSign";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -7,14 +6,15 @@
 @section head{
     <style>
         .bigestdiv {
+            margin-bottom: 50px;
             margin-left: 10%;
             margin-right: 10%;
             margin-top: 50px;
-            margin-bottom: 50px;
         }
+
         .title {
-            font-size:20px;
             float: left;
+            font-size: 20px;
         }
 
     </style>
@@ -31,7 +31,8 @@
         {
             <form class="">
 
-                <h1>委托方: <input type="text" id="name"/>
+                <h1>
+                    委托方: <input type="text" id="name"/>
                 </h1>
 
                 <h1>检验方:</h1>
@@ -43,7 +44,8 @@
 
                 <h1>委托方: </h1>
 
-                <h1>检验方: <input type="text" id="name"/>
+                <h1>
+                    检验方: <input type="text" id="name"/>
                 </h1>
             </form>
         }
@@ -56,13 +58,13 @@
         <p>请看清以上内容，确认后无法修改！</p>
     </div>
 </div>
-<input id="checknum" style="display:none" value="@ViewBag.checknum" />
+<input id="checknum" style="display: none" value="@ViewBag.checknum"/>
 
 @section scripts{
     <script>
         $("#agree").click(function() {
-            var r=confirm("请仔细查看合同，确定合同内容，签订后无法修改！");
-            if (r==true) {
+            var r = confirm("请仔细查看合同，确定合同内容，签订后无法修改！");
+            if (r == true) {
                 var name = $("#name").val();
                 var c = $("#checknum").val();
                 if (name == "") {
@@ -71,12 +73,12 @@
                     $.ajax({
                         url: '../DetectionScheme/CheckName',
                         type: 'post',
-                        data: { name: name,tradeid:c },
+                        data: { name: name, tradeid: c },
 
-                        error: function () {
+                        error: function() {
                             alert('连接错误！');
                         },
-                        success: function (data) {
+                        success: function(data) {
                             if (data == 1) {
                                 window.location = '/Trade/TradeDetail/@ViewBag.TradeId';
                             } else {
@@ -86,8 +88,8 @@
                         }
                     });
                 }
-               
+
             }
-        });       
+        });
     </script>
 }

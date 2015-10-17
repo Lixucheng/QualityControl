@@ -1,19 +1,18 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "ChooseProductBatchs";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 
 @section head{
-    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet"/>
 
 
     <style>
         .main-container {
             background-color: #FFFFFF;
-            margin: 0em auto;
             box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            margin: 0em auto;
             padding: 2em 2em 7em;
             z-index: 1;
         }
@@ -27,68 +26,60 @@
     </h2>
 
 
- <form method="post" action="/user/choose">
-     <input type="hidden" value="@ViewBag.p.Id" name="productId" />
-    <table class="ui compact celled  table">
-        <thead>
-        <tr>
-            <th></th>
-            <th>名称</th>
-            <th>数量</th>
-        </tr>
-        </thead>
-        <tbody>
+    <form method="post" action="/user/choose">
+        <input type="hidden" value="@ViewBag.p.Id" name="productId"/>
+        <table class="ui compact celled  table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>名称</th>
+                <th>数量</th>
+            </tr>
+            </thead>
+            <tbody>
 
-        @if (ViewBag.count == 0)
-        {
-
-        }
-        else
-        {
-            foreach (var Tempx in ViewBag.list)
+            @if (ViewBag.count == 0)
             {
-                <tr>
-                    <td class="collapsing">
-                        <div class="ui fitted slider checkbox">
-                            <input type="checkbox" name="batchIds" value="@Tempx.Id"> <label></label>
-                        </div>
-                    </td>
-                    <td>@Tempx.BatchName</td>
-                    <td>@Tempx.Count</td>
-
-
-                </tr>
             }
-        }
+            else
+            {
+                foreach (var Tempx in ViewBag.list)
+                {
+                    <tr>
+                        <td class="collapsing">
+                            <div class="ui fitted slider checkbox">
+                                <input type="checkbox" name="batchIds" value="@Tempx.Id"> <label></label>
+                            </div>
+                        </td>
+                        <td>@Tempx.BatchName</td>
+                        <td>@Tempx.Count</td>
 
-        </tbody>
-        <tfoot class="full-width">
-        <tr>
-            <th></th>
-            <th colspan="4">
-                <div class="ui right floated small primary labeled  button" onclick="sub()">
-                    确定选择
-                </div>
 
-            </th>
-        </tr>
-        </tfoot>
-    </table>
+                    </tr>
+                }
+            }
+
+            </tbody>
+            <tfoot class="full-width">
+            <tr>
+                <th></th>
+                <th colspan="4">
+                    <div class="ui right floated small primary labeled  button" onclick="sub()">
+                        确定选择
+                    </div>
+
+                </th>
+            </tr>
+            </tfoot>
+        </table>
     </form>
 </div>
-
-
-
-
-
-
-
 
 
 @section scripts{
     <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('table').DataTable({
                 "language": {
                     "sProcessing": "处理中...",
@@ -125,13 +116,9 @@
             if (r == true) {
                 $('form').submit();
             }
-           
+
         }
-   
+
 
     </script>
 }
-
-
-
-

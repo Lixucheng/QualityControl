@@ -5,39 +5,74 @@
     Layout = null;
 }
 @{
-    var userId = User.Identity.GetUserId();
-    var user = Singleton.Self.Db.Users.Find(userId);
+    var user = ViewBag.User as ApplicationUser;
+    if (user == null)
+    {
+        var userId = User.Identity.GetUserId();
+        user = Singleton.Self.Db.Users.Find(userId);
+    }
 }
 <div class="menu-aside am-fl">
     <div class="ui vertical text fluid accordion menu">
-        <div class="item active">
-            <a class="active title" href="#introduction"><i class="icon home"></i><b>Introduction</b></a>
-        </div>
         <div class="item">
-            <a class="title active"><i class="dollar icon"></i><b>交易管理</b></a>
-            <div class="content menu active">
+            <a class="title active">
+                <i class="dollar icon"></i><b>交易管理</b>
+            </a>
+            <div class="content menu">
                 @if (user.Type == (int) EnumUserType.User)
                 {
-                    <a class="item active" href="/User/ChooseProduct">新建交易</a>
+                    <a class="item" href="/User/ChooseProduct">新建交易</a>
                 }
-
-                <a class="item" href="User/Trades">交易列表</a>
-                <a class="item" href="#text-selection">Text Selection</a>
-                <a class="item" href="#spacing">Spacing</a>
-                <a class="item" href="#links">Links</a>
+                @if (user.Type == (int) EnumUserType.Controller)
+                {
+                    <a class="item" href="/Trade/Trades">交易列表</a>
+                }
+                else
+                {
+                    <a class="item" href="/User/TradeList">交易列表</a>
+                }
             </div>
         </div>
-        @if (user.Type == (int)EnumUserType.TestingOrg)
+        @if (user.Type == (int) EnumUserType.TestingOrg)
         {
             <div class="item active">
-                <a class="active title" href="/SGS/Index"><i class="icon copyright"></i><b>机构信息</b></a>
+                <a class="active title" href="/SGS/Index">
+                    <i class="icon copyright"></i><b>机构信息</b>
+                </a>
             </div>
         }
-        <div class="item">
-            <a class="title"><i class="dropdown icon"></i><b>Variables</b></a>
-            <div class="content menu">
-                <a class="item" href="#brand-colors">Brand Colors</a><a class="item" href="#colors">Colors</a><a class="item" href="#border-styles">Border Styles</a><a class="item" href="#size">Size</a>
+        @if (user.Type == (int) EnumUserType.Producer)
+        {
+            <div class="item active">
+                <a class="active title" href="/Company/Index">
+                    <i class="icon copyright"></i><b>企业信息</b>
+                </a>
             </div>
+
+            <div class="item active">
+                <a class="active title" href="/Product/CompanyProductIndex">
+                    <i class="icon copyright"></i><b>产品信息</b>
+                </a>
+            </div>
+        }
+        @if (user.Type == (int) EnumUserType.Controller)
+        {
+            <div class="item">
+                <a class="title active">
+                    <i class="sitemap icon"></i><b>组织管理</b>
+                </a>
+                <div class="content menu">
+                    <a class="item" href="/AccountAdmin/ApplyList">用户申请核</a>
+                    <a class="item" href="/Admin/Check/Company">生厂商申请核</a>
+                    <a class="item" href="/Admin/Check/SGS">检测机构申请核</a>
+                    <a class="item" href="/Admin/Check/CompanyProduct">产品审核</a>
+                </div>
+            </div>
+        }
+        <div class="item active">
+            <a class="active title" href="/Message/Index">
+                <i class="icon inbox"></i><b>消息管理</b>
+            </a>
         </div>
     </div>
 </div>

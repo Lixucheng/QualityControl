@@ -19,7 +19,12 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        // GET: User
+        /// <summary>
+        ///     选择产品
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="ProductTypeId"></param>
+        /// <returns></returns>
         public ActionResult ChooseProduct(string key = "", long ProductTypeId = 0)
         {
             var x = new List<Product>();
@@ -45,6 +50,11 @@ namespace QualityControl.Controllers
             return View();
         }
 
+        /// <summary>
+        ///     选择批次
+        /// </summary>
+        /// <param name="pid"></param>
+        /// <returns></returns>
         public ActionResult ChooseProductBatchs(long pid)
         {
             var p = Db.Products.Find(pid);
@@ -54,6 +64,12 @@ namespace QualityControl.Controllers
             return View();
         }
 
+        /// <summary>
+        ///     提交订单
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="batchIds"></param>
+        /// <returns></returns>
         public ActionResult Choose(long productId, List<long> batchIds)
         {
             var userid = User.Identity.GetUserId();
@@ -94,11 +110,33 @@ namespace QualityControl.Controllers
             return View();
         }
 
-
+        /// <summary>
+        ///     订单列表
+        /// </summary>
+        /// <returns></returns>
         public ActionResult TradeList()
         {
-            var id = User.Identity.GetUserId();
-            var list = Db.Trades.Where(e => e.UserId == id && e.Id == 17).ToList();
+            var userId = User.Identity.GetUserId();
+            var user = Db.Users.Find((userId));
+            var type = user.Type;
+            ViewBag.Type = type;
+            List<Trade> list;
+            if (type == (int) EnumUserType.User)
+            {
+                list = Db.Trades.Where(e => e.UserId == userId).ToList();
+            }
+            else if (type == (int) EnumUserType.TestingOrg)
+            {
+                list = Db.Trades.Where(e => e.SgsUserId == userId).ToList();
+            }
+            else if (type == (int) EnumUserType.Producer)
+            {
+                list = Db.Trades.Where(e => e.ManufacturerId == userId).ToList();
+            }
+            else
+            {
+                return Content("错误操作");
+            }
             return View(list);
         }
 

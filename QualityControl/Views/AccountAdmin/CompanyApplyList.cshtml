@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "CompanyApplyList";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -7,15 +6,16 @@
     <style>
         .main-container {
             background-color: #FFFFFF;
-            margin: 0em auto;
             box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            margin: 0em auto;
             padding: 2em 2em 7em;
             z-index: 1;
         }
-        p3{
-            display:block;
-            text-align:justify;
-            width:100px;
+
+        p3 {
+            display: block;
+            text-align: justify;
+            width: 100px;
         }
     </style>
 }
@@ -27,65 +27,65 @@
     </h2>
     <table class="ui compact celled definition table">
         <thead class="full-width">
-            <tr>
-                <th></th>
-                <th>姓名</th>
-                <th>邮箱地址</th>
-                <th>电话</th>
-                <th>操作</th>
-            </tr>
+        <tr>
+            <th></th>
+            <th>姓名</th>
+            <th>邮箱地址</th>
+            <th>电话</th>
+            <th>操作</th>
+        </tr>
         </thead>
         <tbody>
 
-            @if (ViewBag.count == 0)
+        @if (ViewBag.count == 0)
+        {
+            <p>无信息！</p>
+        }
+        else
+        {
+            foreach (var Tempx in ViewBag.list)
             {
-                <p>无信息！</p>
-            }
-            else
-            {
-                foreach (var Tempx in ViewBag.list)
-                {
-                    <tr>
-                        <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox" class="CheckList" value="@Tempx.Id"> <label></label>
-                            </div>
-                        </td>
-                        <td>@Tempx.UserName</td>
-                        <td>@Tempx.Email</td>
-                        <td>@Tempx.PhoneNumber</td>
+                <tr>
+                    <td class="collapsing">
+                        <div class="ui fitted slider checkbox">
+                            <input type="checkbox" class="CheckList" value="@Tempx.Id"> <label></label>
+                        </div>
+                    </td>
+                    <td>@Tempx.UserName</td>
+                    <td>@Tempx.Email</td>
+                    <td>@Tempx.PhoneNumber</td>
 
-                        <td>
-                            <div class="2  fluid ui">
-                                <button class="ui  button" onclick="See('@Tempx.Id')">查看公司信息</button>
-                                <a class="ui  button" href="~/accountadmin/pass/@Tempx.Id">通过</a>
-                                <a class="ui  button" href="~/accountadmin/refuse/@Tempx.Id">拒绝</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
+                    <td>
+                        <div class="2  fluid ui">
+                            <button class="ui  button" onclick="See('@Tempx.Id')">查看公司信息</button>
+                            <a class="ui  button" href="~/accountadmin/pass/@Tempx.Id">通过</a>
+                            <a class="ui  button" href="~/accountadmin/refuse/@Tempx.Id">拒绝</a>
+                        </div>
+                    </td>
+                </tr>
             }
+        }
 
         </tbody>
         <tfoot class="full-width">
-            <tr>
-                <th></th>
-                <th colspan="4">
+        <tr>
+            <th></th>
+            <th colspan="4">
 
-                    <div class="ui small   button" id="ppass">
-                        批量审核
-                    </div>
-                    <div class="ui small   button" id="prefuse">
-                        批量拒绝
-                    </div>
-                    <div class="ui small   button" id="passall">
-                        审核全部
-                    </div>
-                    <div class="ui small   button" id="refuseall">
-                        拒绝全部
-                    </div>
-                </th>
-            </tr>
+                <div class="ui small   button" id="ppass">
+                    批量审核
+                </div>
+                <div class="ui small   button" id="prefuse">
+                    批量拒绝
+                </div>
+                <div class="ui small   button" id="passall">
+                    审核全部
+                </div>
+                <div class="ui small   button" id="refuseall">
+                    拒绝全部
+                </div>
+            </th>
+        </tr>
         </tfoot>
     </table>
 </div>
@@ -98,20 +98,20 @@
     <div class=" content">
 
         <div class="description">
-            <p3 id="" >地址   ：</p3><p4  id="c1" >aaaa</p4>
-            <hr />
+            <p3 id="">地址 ：</p3><p4 id="c1">aaaa</p4>
+            <hr/>
             <p3 id="">成立时间：</p3><p4 id="c2">aaaa</p4>
-            <hr />
+            <hr/>
             <p3 id="">营业执照号：</p3><p4 id="c3">aaaa</p4>
-            <hr />
+            <hr/>
             <p3 id="">法人：</p3><p4 id="c4">aaaa</p4>
-            <hr />
+            <hr/>
             <p3 id="">法人身份证：</p3><p4 id="c5">aaaa</p4>
-            <hr />
+            <hr/>
             <p3 id="">邮编：</p3><p4 id="c6">aaaa</p4>
-            <hr />
+            <hr/>
             <p3 id="">组织机构代码：</p3><p4 id="c7">aaaa</p4>
-            <hr />
+            <hr/>
             <p3 id="">营业执照经营范围：</p3><p4 id="c8">aaaa</p4>
         </div>
     </div>
@@ -119,14 +119,12 @@
 </div>
 
 
-
-
 @section scripts{
     <script>
-        $(function () {
+        $(function() {
             var list = [];
-            $("#ppass").click(function () {
-                $("input:checkbox:checked").each(function () {
+            $("#ppass").click(function() {
+                $("input:checkbox:checked").each(function() {
                     list.push($(this).val());
                 });
 
@@ -135,15 +133,14 @@
                     url: '/AccountAdmin/PassList',
                     data: { ids: list },
                     traditional: true,
-                    success: function (data) {
+                    success: function(data) {
                         location.reload();
                     },
                     dataType: "json"
                 });
-            })
-
-            $("#prefuse").click(function () {
-                $("input:checkbox:checked").each(function () {
+            });
+            $("#prefuse").click(function() {
+                $("input:checkbox:checked").each(function() {
                     list.push($(this).val());
                 });
 
@@ -152,15 +149,14 @@
                     url: '/AccountAdmin/RefuseList',
                     data: { ids: list },
                     traditional: true,
-                    success: function (data) {
+                    success: function(data) {
                         location.reload();
                     },
                     dataType: "json"
                 });
-            })
-
-            $("#passall").click(function () {
-                $("input:checkbox").each(function () {
+            });
+            $("#passall").click(function() {
+                $("input:checkbox").each(function() {
                     list.push($(this).val());
                 });
 
@@ -169,15 +165,14 @@
                     url: '/AccountAdmin/PassList',
                     data: { ids: list },
                     traditional: true,
-                    success: function (data) {
+                    success: function(data) {
                         location.reload();
                     },
                     dataType: "json"
                 });
-            })
-
-            $("#refuseall").click(function () {
-                $("input:checkbox").each(function () {
+            });
+            $("#refuseall").click(function() {
+                $("input:checkbox").each(function() {
                     list.push($(this).val());
                 });
 
@@ -186,24 +181,20 @@
                     url: '/AccountAdmin/RefuseList',
                     data: { ids: list },
                     traditional: true,
-                    success: function (data) {
+                    success: function(data) {
                         location.reload();
                     },
                     dataType: "json"
                 });
-            })
+            });
+        });
 
-
-
-        })
-
-        function See(id)
-        {
+        function See(id) {
             $.ajax({
                 type: 'Get',
                 url: '/AccountAdmin/GetCompanyInfo',
-                data: {userid:id},
-                success: function (data) {
+                data: { userid: id },
+                success: function(data) {
                     $("#c0").html(data.c.Name);
                     $("#c1").html(data.c.Address);
                     $("#c2").html(data.time);
@@ -213,12 +204,12 @@
                     $("#c6").html(data.c.Postcode);
                     $("#c7").html(data.c.OrganizationCode);
                     $("#c8").html(data.c.LicenseScope);
-                    $('#seedesc').modal('show');             
+                    $('#seedesc').modal('show');
                 },
-                dataType:"json"
+                dataType: "json"
             });
         }
 
-      
+
     </script>
 }

@@ -1,8 +1,8 @@
-﻿using QualityControl.Enum;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using QualityControl.Enum;
 
 namespace QualityControl.Db
 {
@@ -29,24 +29,23 @@ namespace QualityControl.Db
         public virtual Company Company { get; set; }
 
         [Required]
-        public string ProductionCertificateNo { get; set; }//生产许可证编号
+        public string ProductionCertificateNo { get; set; } //生产许可证编号
 
         [Required]
-        public string GetDate { get; set; }//颁发日期
+        public string GetDate { get; set; } //颁发日期
 
         [Required]
-        public string Standard { get; set; }//执行标准
+        public string Standard { get; set; } //执行标准
 
         public virtual List<SgsProduct> SgsProducts { get; set; }
 
-        public virtual List<BaseProductBatch> BaseProductBatchs { get; set; }//产品批次
+        public virtual List<BaseProductBatch> BaseProductBatchs { get; set; } //产品批次
 
         public DateTime CreateTime { get; set; }
 
         public DateTime LastChangeTime { get; set; }
 
         public string UpdateJson { get; set; }
-
     }
 
     public enum EnumProductStatus
@@ -67,8 +66,6 @@ namespace QualityControl.Db
         public string Description { get; set; }
 
         public virtual List<SecondProductType> SecondProductTypes { get; set; }
-
-      
     }
 
     [Table("GxSecondProductType")]
@@ -105,10 +102,8 @@ namespace QualityControl.Db
     }
 
 
-
     public class ProductViewModel
     {
-
     }
 
     [Table("GxProductBatch")]
@@ -116,13 +111,13 @@ namespace QualityControl.Db
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long   Id { get; set; }
+        public long Id { get; set; }
 
-        public long   ProductId { get; set; }
+        public long ProductId { get; set; }
 
         public string BatchName { get; set; }
 
-        public int   Count { get; set; }
+        public int Count { get; set; }
 
         public int SampleCount { get; set; }
 
@@ -142,7 +137,6 @@ namespace QualityControl.Db
 
         public string BatchName { get; set; }
 
-        public int Count { get; set; }      
+        public int Count { get; set; }
     }
-
 }

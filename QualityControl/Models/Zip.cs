@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using System.IO;
 using System.IO.Packaging;
 
-
 namespace QualityControl.Models
 {
-    static class Zip
+    internal static class Zip
     {
         /// Add a folder along with its subfolders to a Package
         /// </summary>
@@ -22,7 +16,7 @@ namespace QualityControl.Models
         {
             if (folderName.EndsWith(@"\"))
                 folderName = folderName.Remove(folderName.Length - 1);
-            bool result = false;
+            var result = false;
             if (!Directory.Exists(folderName))
             {
                 return result;
@@ -34,19 +28,19 @@ namespace QualityControl.Models
             }
             try
             {
-                using (Package package = Package.Open(compressedFileName, FileMode.Create))
+                using (var package = Package.Open(compressedFileName, FileMode.Create))
                 {
                     var fileList = Directory.EnumerateFiles(folderName, "*", SearchOption.AllDirectories);
-                    foreach (string fileName in fileList)
+                    foreach (var fileName in fileList)
                     {
-
                         //The path in the package is all of the subfolders after folderName
                         string pathInPackage;
-                        pathInPackage = Path.GetDirectoryName(fileName).Replace(folderName, string.Empty) + "/" + Path.GetFileName(fileName);
+                        pathInPackage = Path.GetDirectoryName(fileName).Replace(folderName, string.Empty) + "/" +
+                                        Path.GetFileName(fileName);
 
-                        Uri partUriDocument = PackUriHelper.CreatePartUri(new Uri(pathInPackage, UriKind.Relative));
-                        PackagePart packagePartDocument = package.CreatePart(partUriDocument, "", CompressionOption.Maximum);
-                        using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                        var partUriDocument = PackUriHelper.CreatePartUri(new Uri(pathInPackage, UriKind.Relative));
+                        var packagePartDocument = package.CreatePart(partUriDocument, "", CompressionOption.Maximum);
+                        using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                         {
                             fileStream.CopyTo(packagePartDocument.GetStream());
                         }
@@ -61,6 +55,5 @@ namespace QualityControl.Models
 
             return result;
         }
-
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace QualityControl.Db
+﻿namespace QualityControl.Db
 {
     public class CheckLevel
     {
@@ -28,6 +22,4 @@ namespace QualityControl.Db
 
         public string III { get; set; }
     }
- 
-
 }

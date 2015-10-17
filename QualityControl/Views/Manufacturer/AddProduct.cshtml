@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "AddProduct";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -35,7 +34,7 @@
                         <input placeholder="产品条码" type="text" name="OrganizationCode" value="@(Model != null ? Model.OrganizationCode : "")">
                     </div>
                 </div>
-               
+
                 <div class="field">
                     <label>覆盖范围</label>
                     <textarea rows="2" name="LicenseScope" placeholder="覆盖范围">@(Model != null ? Model.LicenseScope : "")</textarea>
@@ -51,77 +50,75 @@
 </div>
 
 <script>
-    $(function () {
+    $(function() {
         $('.ui.form').form({
             fields: {
                 Name: {
                     identifier: 'Name',
                     rules: [
-                      {
-                          type: '请输入企业名称'
-                      }
+                        {
+                            type: '请输入企业名称'
+                        }
                     ]
                 },
                 Address: {
                     identifier: 'Address',
                     rules: [
-                      {
-                          type: '请输入企业地址'
-                      }
+                        {
+                            type: '请输入企业地址'
+                        }
                     ]
                 },
                 EstablishedTime: {
                     identifier: 'EstablishedTime',
                     rules: [
-                      {
-                          type: '请输入企业成立时间'
-                      }
+                        {
+                            type: '请输入企业成立时间'
+                        }
                     ]
                 },
                 License: {
                     identifier: 'License',
                     rules: [
-                      {
-                          type: '请输入营业执照号'
-                      }
+                        {
+                            type: '请输入营业执照号'
+                        }
                     ]
                 },
                 CorporationName: {
                     identifier: 'CorporationName',
                     rules: [
-                      {
-                          type: '请输入法人姓名'
-                      }
+                        {
+                            type: '请输入法人姓名'
+                        }
                     ]
                 },
                 CorporationIdentity: {
                     identifier: 'CorporationIdentity',
                     rules: [
-                      {
-                          type: '请输入法人身份证'
-                      }
+                        {
+                            type: '请输入法人身份证'
+                        }
                     ]
                 },
                 OrganizationCode: {
                     identifier: 'OrganizationCode',
                     rules: [
-                      {
-                          type: '请输入组织机构代码'
-                      }
+                        {
+                            type: '请输入组织机构代码'
+                        }
                     ]
                 },
                 LicenseScope: {
                     identifier: 'LicenseScope',
                     rules: [
-                      {
-                          type: '请输入营业执照经营范围'
-                      }
+                        {
+                            type: '请输入营业执照经营范围'
+                        }
                     ]
                 },
 
             }
-        })
-        ;
+        });
     });
 </script>
-

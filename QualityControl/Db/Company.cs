@@ -1,13 +1,13 @@
-﻿using QualityControl.Enum;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using QualityControl.Enum;
 
 namespace QualityControl.Db
 {
     /// <summary>
-    /// 企业信息
+    ///     企业信息
     /// </summary>
     [Table("GxCompany")]
     public class Company
@@ -65,21 +65,18 @@ namespace QualityControl.Db
 
         public string Name { get; set; }
 
-        public long ProductTypeId { get; set; }//所属类别id
+        public long ProductTypeId { get; set; } //所属类别id
 
-        public string ProductionCertificateNo { get; set; }//生产许可证编号
+        public string ProductionCertificateNo { get; set; } //生产许可证编号
 
-        public string GetDate { get; set; }//颁发日期
+        public string GetDate { get; set; } //颁发日期
 
-        public string Standard { get; set; }//执行标准
+        public string Standard { get; set; } //执行标准
 
         public EnumProductStatus CompanyProductStatus { get; set; }
-
-
     }
 
 
-  
     public class CompanyViewModel
     {
         [Required]
@@ -118,6 +115,5 @@ namespace QualityControl.Db
         [Required]
         [Display(Name = "营业执照经营范围")]
         public string LicenseScope { get; set; }
-
     }
 }

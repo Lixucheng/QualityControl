@@ -1,7 +1,17 @@
-﻿@{
+﻿@using Microsoft.AspNet.Identity
+@using QualityControl.Enum
+@using QualityControl.Models
+@{
     Layout = null;
 }
-
+@{
+    var user = ViewBag.User as ApplicationUser;
+    if (user == null)
+    {
+        var userId = User.Identity.GetUserId();
+        user = Singleton.Self.Db.Users.Find(userId);
+    }
+}
 <!-- header -->
 <div class="ui borderless main menu">
     <div class="ui container">
@@ -9,24 +19,24 @@
             <img class="logo" src="bower_components/semantic/examples/assets/images/logo.png">
             Project Name
         </div>
-        <a href="#" class="item">Blog</a>
-        <a href="#" class="item">Articles</a>
+        @if (user.Type != (int) EnumUserType.Controller)
+        {
+            <a href="/User/TradeList" class="item">交易</a>
+        }
+        else
+        {
+            <a href="/Trade/Trades" class="item">交易</a>
+        }
+        @if (user.Type == (int) EnumUserType.User)
+        {
+            <a href="/User/ChooseProduct" class="item">新建交易</a>
+        }
         <a href="#" class="ui right floated dropdown item">
-            Dropdown <i class="dropdown icon"></i>
+            @user.UserName <i class="dropdown icon"></i>
             <div class="menu">
-                <div class="item">Link Item</div>
-                <div class="item">Link Item</div>
-                <div class="divider"></div>
-                <div class="header">Header Item</div>
-                <div class="item">
-                    <i class="dropdown icon"></i>
-                    Sub Menu
-                    <div class="menu">
-                        <div class="item">Link Item</div>
-                        <div class="item">Link Item</div>
-                    </div>
+                <div class="item" onclick="location = '/account/logoff'">
+                    注销
                 </div>
-                <div class="item">Link Item</div>
             </div>
         </a>
     </div>

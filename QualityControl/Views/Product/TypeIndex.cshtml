@@ -1,17 +1,16 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "TypeIndex";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 @section head{
-<link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet"/>
 
     <style>
         .main-container {
             background-color: #FFFFFF;
-            margin: 0em auto;
             box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            margin: 0em auto;
             padding: 2em 2em 7em;
             z-index: 1;
         }
@@ -29,17 +28,16 @@
 
     <table class="ui  celled  table">
         <thead class="">
-            <tr>
-                <th>姓名</th>
-                <th>描述</th>
-                <th>操作</th>
-            </tr>
+        <tr>
+            <th>姓名</th>
+            <th>描述</th>
+            <th>操作</th>
+        </tr>
         </thead>
         <tbody>
 
         @if (ViewBag.count == 0)
         {
-
         }
         else
         {
@@ -63,9 +61,9 @@
 
         </tbody>
         <tfoot>
-            <tr></tr>
+        <tr></tr>
         </tfoot>
-     
+
     </table>
 </div>
 <div class="ui  modal" id="seedesc">
@@ -74,11 +72,11 @@
         标题
     </div>
     <div class=" content">
-       
+
         <div class="description">
-            <div class="ui header" >详细信息</div>
-            <p id="description" style="word-break:break-all"></p>
-           
+            <div class="ui header">详细信息</div>
+            <p id="description" style="word-break: break-all"></p>
+
         </div>
     </div>
     @*<div class="actions">
@@ -91,7 +89,6 @@
         </div>
     </div>*@
 </div>
-
 
 
 <div class="ui  modal" id="edit">
@@ -133,11 +130,11 @@
             <input name="fid" value="@ViewBag.id" style="display: none">
             <div class="field">
                 <label>名称</label>
-                <input type="text" name="Title" placeholder="名称" >
+                <input type="text" name="Title" placeholder="名称">
             </div>
             <div class="field">
                 <label>详细描述</label>
-                <textarea name="Description" ></textarea>
+                <textarea name="Description"></textarea>
             </div>
             <div class="ui error message"></div>
         </form>
@@ -146,18 +143,15 @@
     <div class="actions">
         <button class="ui green button" onclick="Addsub()">提交</button>
     </div>
-  
+
 </div>
 
 
-
-
-
 @section scripts{
-<script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('table').DataTable({
                 "language": {
                     "sProcessing": "处理中...",
@@ -193,7 +187,7 @@
             $.ajax({
                 type: 'Get',
                 url: '/Product/GetTypeInfo',
-                data: { id: x ,type:3},
+                data: { id: x, type: 3 },
                 success: function(data) {
                     $("#typetitle").html(data.Title);
                     $("#description").html(data.Description);
@@ -210,7 +204,7 @@
             $.ajax({
                 type: 'Get',
                 url: '/Product/GetTypeInfo',
-                data: { id: id,type:3 },
+                data: { id: id, type: 3 },
                 success: function(data) {
                     //$("#editdesc").html(data.Decription);
                     $("#editdesc").html(data.Description);

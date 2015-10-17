@@ -210,7 +210,8 @@ namespace QualityControl.Controllers
             {
                 return Content("错误操作");
             }
-            if (trade.UserId != userId && trade.SgsUserId != userId && user.Type != (int) EnumUserType.Controller)
+            if (trade.UserId != userId && trade.SgsUserId != userId && trade.ManufacturerId != userId &&
+                user.Type != (int) EnumUserType.Controller)
             {
                 return Content("错误操作");
             }

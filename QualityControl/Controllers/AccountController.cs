@@ -77,6 +77,7 @@ namespace QualityControl.Controllers
                     {
                         return RedirectToLocal("/Trade/Trades");
                     }
+
                     return RedirectToLocal("/Home/Redirect");
                 case SignInStatus.LockedOut:
                     return View("Lockout");

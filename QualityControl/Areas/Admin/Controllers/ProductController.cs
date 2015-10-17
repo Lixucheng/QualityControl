@@ -1,18 +1,39 @@
-﻿using QualityControl.Controllers;
-using QualityControl.Db;
-using System;
-using System.Collections.Generic;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using QualityControl.Controllers;
+using QualityControl.Db;
 
 namespace QualityControl.Areas.Admin.Controllers
 {
     public class ProductController : BaseController
     {
-        #region 类型
+        #region 产品
+
         /// <summary>
-        /// 类型列表
+        ///     产品列表
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="page"></param>
+        /// <param name="count"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public ActionResult ProductList(int status, int page = 1, int count = 20, string key = null)
+        {
+            if (page < 1) page = 1;
+            if (count < 1) count = 20;
+            var data = Db.Products.Where(a => (int) a.Status == status && a.Name.Contains(key))
+                .Skip((page - 1)*count)
+                .Take(count).ToList();
+            return View(data);
+        }
+
+        #endregion
+
+        #region 类型
+
+        /// <summary>
+        ///     类型列表
         /// </summary>
         /// <param name="page"></param>
         /// <param name="count"></param>
@@ -23,13 +44,13 @@ namespace QualityControl.Areas.Admin.Controllers
             if (page < 1) page = 1;
             if (count < 1) count = 20;
             var data = Db.ThirdProductTypes.Where(a => a.Title.Contains(key))
-                .Skip((page - 1) * count)
+                .Skip((page - 1)*count)
                 .Take(count).ToList();
             return View(data);
         }
 
         /// <summary>
-        /// 添加类型
+        ///     添加类型
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -45,7 +66,7 @@ namespace QualityControl.Areas.Admin.Controllers
         }
 
         /// <summary>
-        /// 编辑类型
+        ///     编辑类型
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -58,14 +79,14 @@ namespace QualityControl.Areas.Admin.Controllers
             }
             oldType.Title = type.Title;
             oldType.Description = type.Description;
-            Db.Entry(oldType).State = System.Data.Entity.EntityState.Modified;
+            Db.Entry(oldType).State = EntityState.Modified;
             Db.SaveChanges();
             return 0;
         }
 
 
         /// <summary>
-        /// 删除类型
+        ///     删除类型
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -80,28 +101,6 @@ namespace QualityControl.Areas.Admin.Controllers
             Db.SaveChanges();
             return 1;
         }
-        #endregion
-
-        #region 产品
-        /// <summary>
-        /// 产品列表
-        /// </summary>
-        /// <param name="status"></param>
-        /// <param name="page"></param>
-        /// <param name="count"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public ActionResult ProductList(int status, int page = 1, int count = 20, string key = null)
-        {
-            if (page < 1) page = 1;
-            if (count < 1) count = 20;
-            var data = Db.Products.Where(a => (int)a.Status == status && a.Name.Contains(key))
-                .Skip((page - 1) * count)
-                .Take(count).ToList();
-            return View(data);
-        } 
-
-
 
         #endregion
     }
