@@ -264,9 +264,10 @@
         <div class="ui segment">
             <p class="am-cf">
                 <span>用户已确认付款，开始制码流程</span>
-                @if (user.Type == (int) EnumUserType.Controller && Model.Status == (int) EnumTradeStatus.MakeQrCode)
+                @if (user.Type == (int)EnumUserType.Controller && Model.Status == (int)EnumTradeStatus.MakeQrCode)
                 {
-                    <a href="/Trade/MakeQrCodeFinish/@Model.Id" class="am-fr primary ui button">确认制码结束</a>
+                    <a href="/MakeQrCode/Index?tradeId=@Model.Id" class="am-fr ui button green">开始制码</a>
+                    //  <a href="/Trade/MakeQrCodeFinish/@Model.Id" class="am-fr primary ui button">确认制码结束</a>
                 }
             </p>
         </div>

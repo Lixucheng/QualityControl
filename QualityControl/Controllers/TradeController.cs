@@ -177,14 +177,14 @@ namespace QualityControl.Controllers
             return RedirectToAction("TradeDetail", new {id});
         }
 
-        public ActionResult MakeQrCodeFinish(long id)
+        public bool MakeQrCodeFinish(long id)
         {
             var userId = User.Identity.GetUserId();
             var user = Db.Users.Find(userId);
             var trade = Db.Trades.Find(id);
             if (trade == null)
             {
-                return Content("错误操作");
+                return false;
             }
             if (user.Type == (int) EnumUserType.Controller)
             {
@@ -192,11 +192,11 @@ namespace QualityControl.Controllers
             }
             else
             {
-                return Content("错误操作");
+                return false;
             }
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
-            return RedirectToAction("TradeDetail", new {id});
+            return true;
         }
 
         public ActionResult TradeDetail(long id)

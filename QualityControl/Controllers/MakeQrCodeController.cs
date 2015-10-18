@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using QualityControl.Db;
 using ThoughtWorks.QRCode.Codec;
+using Microsoft.AspNet.Identity;
+using QualityControl.Enum;
+using System.Data.Entity;
 
 namespace QualityControl.Controllers
 {
@@ -40,6 +43,7 @@ namespace QualityControl.Controllers
             ViewBag.zipurl = "/Image/" + tradeid + ".zip";
             var url = Request.Url.ToString();
             ViewBag.list = listdown;
+            MakeQrCodeFinish(tradeid);
             return View();
         }
         
@@ -48,6 +52,12 @@ namespace QualityControl.Controllers
             var guid = Guid.NewGuid().ToString();
             var name = tradeid + "_" + productid + "_" + batch + "_" + num + ".jpg";
             var url = HttpRuntime.AppDomainAppPath;
+            var path = url + "\\Image\\" + tradeid + "\\" + batch;
+            if(System.IO.File.Exists(path + "\\" + name))
+            {
+                return "/Image/" + tradeid + "/" + batch + "/" + name;
+            }
+           
             var encoder = new QRCodeEncoder();
             encoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE; //编码方法
             encoder.QRCodeScale = 4; //大小
@@ -56,7 +66,7 @@ namespace QualityControl.Controllers
             var qrdata = name + "_" + guid;
             var bp = encoder.Encode(qrdata, Encoding.UTF8);
             Image image = bp;
-            var path = url + "\\Image\\" + tradeid + "\\" + batch;
+           
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -80,6 +90,27 @@ namespace QualityControl.Controllers
         public bool Zip(string zipfile, string zipname)
         {
             Models.Zip.PackageFolder(zipfile, zipname, true);
+            return true;
+        }
+        public bool MakeQrCodeFinish(long id)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = Db.Users.Find(userId);
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return false;
+            }
+            if (user.Type == (int)EnumUserType.Controller)
+            {
+                trade.Status = (int)EnumTradeStatus.SampleStart;
+            }
+            else
+            {
+                return false;
+            }
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
             return true;
         }
     }
