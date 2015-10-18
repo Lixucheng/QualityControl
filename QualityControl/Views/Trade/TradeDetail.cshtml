@@ -6,7 +6,7 @@
 @using QualityControl.Db
 @using QualityControl.Enum
 @using QualityControl.Models
-@model QualityControl.Db.Trade
+@model Trade
 
 @{
     var product = JsonConvert.DeserializeObject<ProductCopy>(Model.Product);
@@ -15,267 +15,274 @@
 }
 
 <div class="am-margin am-padding container ">
-<div class="am-margin-vertical ui message">
-    <div class="header">
-        状态:
-        @if (Model.Status == (int) EnumTradeStatus.Create)
-        {
-            <span>成功添加订单，等待控制中心制作方案</span>
-        }
-        else if (Model.Status == (int) EnumTradeStatus.AlreadyApply)
-        {
-            <span>制作方案已经制作完成，请去查看</span>
-        }
-        else if (Model.Status == (int)EnumTradeStatus.Signed)
-        {
-            <span>合同已经签订，等待制码</span>
-        }
-        else if (Model.Status == (int)EnumTradeStatus.MakeQrCode)
-        {
-            <span>制码开始，请去查看</span>
-        }
-        else if (Model.Status == (int)EnumTradeStatus.SampleStart)
-        {
-            <span>制码完成，开始进行抽样</span>
-        }
-        else if (Model.Status == (int)EnumTradeStatus.Testing)
-        {
-            <span>开始检测</span>
-        }
-        else if (Model.Status == (int)EnumTradeStatus.Tested)
-        {
-            <span>测试已经完成，请查看检测报告</span>
-        }
-        else if (Model.Status == (int)EnumTradeStatus.Finish)
-        {
-            <span>交易完成</span>
-        }
-    </div>
-</div>
-<div class="verborder">
-    <div class="ui raised segment">
-        <div class="am-cf">
-            <a class="ui red ribbon label zh  fw-normal-force">产品信息</a>
-            <span>@product.Name</span>
-        </div>
-        <p class="ui divider"></p>
-        <div class="ui divided selection list">
-            <a class="item">
-                <div class="ui horizontal grey label zh fw-normal-force">价格</div>
-                @product.Price
-            </a>
-            <a class="item">
-                <div class="ui horizontal grey label zh fw-normal-force">生产许可证编号</div>
-                @product.ProductionCertificateNo
-            </a>
-            <a class="item">
-                <div class="ui horizontal grey label zh fw-normal-force">执行标准</div>
-                @product.Standard
-            </a>
-            <a class="item">
-                <div class="ui horizontal grey label zh fw-normal-force">颁发日期</div>
-                @product.GetDate
-            </a>
-            <a class="item">
-                <div class="ui horizontal grey label zh fw-normal-force">类型</div>
-                @{
-                    var type = Singleton.Self.Db.ThirdProductTypes.Find(product.TypeId);
-                }
-                @(type == null ? "" : type.Title)
-            </a>
-        </div>
-        <table class="ui celled table">
-            <thead>
-            <tr>
-                <th>批次名</th>
-                <th>数量</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var b in Model.Batches)
+
+@if (user.Type != (int) EnumUserType.Producer)
+{
+    <div class="am-margin-vertical ui message">
+        <div class="header">
+            状态:
+            @if (Model.Status == (int) EnumTradeStatus.Create)
             {
+                <span>成功添加订单，等待控制中心制作方案</span>
+            }
+            else if (Model.Status == (int) EnumTradeStatus.AlreadyApply)
+            {
+                <span>制作方案已经制作完成，请去查看</span>
+            }
+            else if (Model.Status == (int) EnumTradeStatus.Signed)
+            {
+                <span>合同已经签订，等待制码</span>
+            }
+            else if (Model.Status == (int) EnumTradeStatus.MakeQrCode)
+            {
+                <span>制码开始，请去查看</span>
+            }
+            else if (Model.Status == (int) EnumTradeStatus.SampleStart)
+            {
+                <span>制码完成，开始进行抽样</span>
+            }
+            else if (Model.Status == (int) EnumTradeStatus.Testing)
+            {
+                <span>开始检测</span>
+            }
+            else if (Model.Status == (int) EnumTradeStatus.Tested)
+            {
+                <span>测试已经完成，请查看检测报告</span>
+            }
+            else if (Model.Status == (int) EnumTradeStatus.Finish)
+            {
+                <span>交易完成</span>
+            }
+        </div>
+    </div>
+    <div class="verborder">
+        <div class="ui raised segment">
+            <div class="am-cf">
+                <a class="ui red ribbon label zh  fw-normal-force">产品信息</a>
+                <span>@product.Name</span>
+            </div>
+            <p class="ui divider"></p>
+            <div class="ui divided selection list">
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">价格</div>
+                    @product.Price
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">生产许可证编号</div>
+                    @product.ProductionCertificateNo
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">执行标准</div>
+                    @product.Standard
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">颁发日期</div>
+                    @product.GetDate
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">类型</div>
+                    @{
+                        var type = Singleton.Self.Db.ThirdProductTypes.Find(product.TypeId);
+                    }
+                    @(type == null ? "" : type.Title)
+                </a>
+            </div>
+            <table class="ui celled table">
+                <thead>
                 <tr>
-                    <td>@b.BatchName</td>
-                    <td>@b.Count</td>
+                    <th>批次名</th>
+                    <th>数量</th>
                 </tr>
-            }
+                </thead>
+                <tbody>
+                @foreach (var b in Model.Batches)
+                {
+                    <tr>
+                        <td>@b.BatchName</td>
+                        <td>@b.Count</td>
+                    </tr>
+                }
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-@if (Model.Status == (int)EnumTradeStatus.Create)
-{
-    <div class="ui segment">
-        <p class="am-cf">
-            <span>等待控制中心制作方案</span>
-            @if (user.Type == (int)EnumUserType.Controller)
-            {
-                <a href="/DetectionScheme/BuildDetectionScheme?tradeId=@Model.Id" class="am-fr primary ui button">制作检测方案</a>
-            }
-            
-        </p>
-    </div>
-}
-@if (Model.Status >= (int) EnumTradeStatus.AlreadyApply)
-{
-    if (user.Type == (int) EnumUserType.User || user.Type == (int) EnumUserType.Controller)
+    if (Model.Status == (int) EnumTradeStatus.Create)
     {
-        <div class="ui segments">
-            <div class="ui segment">
-                <p>检测机构信心</p>
-            </div>
-            <div class="ui secondary segment">
-                <div class="ui list">
-                    <div class="item">
-                        <i class="group icon"></i>
-                        <div class="content">
-                            <span>@sgs.Name</span>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <i class="user icon"></i>
-                        <div class="content">
-                            <span>@user.UserName</span>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <i class="marker icon"></i>
-                        <div class="content">
-                            <span>@sgs.Address</span>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <i class="phone icon"></i>
-                        <div class="content">
-                            <span>@sgs.Tel</span>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <i class="clock icon"></i>
-                        <div class="content">
-                            <span>@sgs.CorporationName</span>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <i class="point icon"></i>
-                        <div class="content">
-                            <span>@sgs.License</span>
-                        </div>
-                    </div>
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>等待控制中心制作方案</span>
+                @if (user.Type == (int) EnumUserType.Controller)
+                {
+                    <a href="/DetectionScheme/BuildDetectionScheme?tradeId=@Model.Id" class="am-fr primary ui button">制作检测方案</a>
+                }
 
-                </div>
-            </div>
+            </p>
         </div>
     }
-
-    if (user.Type == (int) EnumUserType.TestingOrg || user.Type == (int) EnumUserType.Controller)
+    if (Model.Status >= (int) EnumTradeStatus.AlreadyApply)
     {
-        <div class="ui segments">
-            <div class="ui segment">
-                <p>用户信心</p>
-            </div>
-            <div class="ui secondary segment">
-                <div class="ui list">
-                    <div class="item">
-                        <i class="users icon"></i>
-                        <div class="content">
-                            <span>@user.UserName</span>
+        if (user.Type == (int) EnumUserType.User || user.Type == (int) EnumUserType.Controller)
+        {
+            <div class="ui segments">
+                <div class="ui segment">
+                    <p>检测机构信息</p>
+                </div>
+                <div class="ui secondary segment">
+                    <div class="ui list">
+                        <div class="item">
+                            <i class="group icon"></i>
+                            <div class="content">
+                                <span>@sgs.Name</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="item">
-                        <i class="phone icon"></i>
-                        <div class="content">
-                            <span>@user.PhoneNumber</span>
+                        <div class="item">
+                            <i class="user icon"></i>
+                            <div class="content">
+                                <span>@user.UserName</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="item">
-                        <i class="mail icon"></i>
-                        <div class="content">
-                            <span>@user.Email</span>
+                        <div class="item">
+                            <i class="marker icon"></i>
+                            <div class="content">
+                                <span>@sgs.Address</span>
+                            </div>
                         </div>
+                        <div class="item">
+                            <i class="phone icon"></i>
+                            <div class="content">
+                                <span>@sgs.Tel</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="clock icon"></i>
+                            <div class="content">
+                                <span>@sgs.CorporationName</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="point icon"></i>
+                            <div class="content">
+                                <span>@sgs.License</span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
-    }
-    <div class="ui segment">
-        <p class="am-cf">
-            <span>检测方案已经完成，请用户和检测机构前去确认</span>
-            <a href="/DetectionScheme/SignContract?tradeId=@Model.Id" class="am-fr primary ui button">查看</a>
-        </p>
-    </div>
-}
+        }
 
-@if (Model.Status == (int) EnumTradeStatus.Signed)
-{
-    if (user.Type == (int) EnumUserType.User)
-    {
+        if (user.Type == (int) EnumUserType.TestingOrg || user.Type == (int) EnumUserType.Controller)
+        {
+            <div class="ui segments">
+                <div class="ui segment">
+                    <p>用户信息</p>
+                </div>
+                <div class="ui secondary segment">
+                    <div class="ui list">
+                        <div class="item">
+                            <i class="users icon"></i>
+                            <div class="content">
+                                <span>@user.UserName</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="phone icon"></i>
+                            <div class="content">
+                                <span>@user.PhoneNumber</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="mail icon"></i>
+                            <div class="content">
+                                <span>@user.Email</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
         <div class="ui segment">
             <p class="am-cf">
-                <span>检测方案已经完成，您可以查看，请及时付款，并等待控制中心确认收到付款</span>
+                <span>检测方案已经完成，请用户和检测机构前去确认</span>
+                <a href="/DetectionScheme/SignContract?tradeId=@Model.Id" class="am-fr primary ui button">查看</a>
             </p>
         </div>
     }
-    else if (user.Type == (int) EnumUserType.Controller)
+
+    if (Model.Status == (int) EnumTradeStatus.Signed)
+    {
+        if (user.Type == (int) EnumUserType.User)
+        {
+            <div class="ui segment">
+                <p class="am-cf">
+                    <span>检测方案已经完成，您可以查看，请及时付款，并等待控制中心确认收到付款</span>
+                </p>
+            </div>
+        }
+        else if (user.Type == (int) EnumUserType.Controller)
+        {
+            <div class="ui segment">
+                <p class="am-cf">
+                    <span>检测方案已经完成，请确认客户已付款</span>
+                    <a href="/Trade/comfirmPay/@Model.Id" class="am-fr primary ui button">确认收到付款</a>
+                </p>
+            </div>
+        }
+    }
+
+    if (user.Type == (int) EnumUserType.TestingOrg && Model.Status >= (int) EnumTradeStatus.Signed)
+    {
+        if (!Model.SGSPaied)
+        {
+            <div class="ui segment">
+                <p class="am-cf">
+                    <span>检测方案已经完成，请确认付款</span>
+                    <a href="/Trade/comfirmPay/@Model.Id" class="am-fr primary ui button">确认收到付款</a>
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="ui segment">
+                <p class="am-cf">
+                    <span>确认收到付款</span>
+                </p>
+            </div>
+        }
+    }
+
+
+    if (Model.Status >= (int) EnumTradeStatus.MakeQrCode)
     {
         <div class="ui segment">
             <p class="am-cf">
-                <span>检测方案已经完成，请确认付款</span>
-                <a href="/Trade/comfirmPay/@Model.Id" class="am-fr primary ui button">确认收到付款</a>
+                <span>用户已确认付款，开始制码流程</span>
+                @if (user.Type == (int) EnumUserType.Controller && Model.Status == (int) EnumTradeStatus.MakeQrCode)
+                {
+                    <a href="/Trade/MakeQrCodeFinish/@Model.Id" class="am-fr primary ui button">确认制码结束</a>
+                }
+            </p>
+        </div>
+    }
+
+    if (Model.Status >= (int) EnumTradeStatus.SampleStart)
+    {
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>制码完成，开始抽样</span>
+                @if (user.Type == (int) EnumUserType.Controller && Model.Status == (int) EnumTradeStatus.SampleStart)
+                {
+                    <a href="/Trade/SelectSample/@Model.Id" class="am-fr primary ui button">选择抽样方式</a>
+                }
             </p>
         </div>
     }
 }
 
-@if (user.Type == (int) EnumUserType.TestingOrg && Model.Status >= (int) EnumTradeStatus.Signed)
-{
-    if (!Model.SGSPaied)
-    {
-        <div class="ui segment">
-            <p class="am-cf">
-                <span>检测方案已经完成，请确认付款</span>
-                <a href="/Trade/comfirmPay/@Model.Id" class="am-fr primary ui button">确认收到付款</a>
-            </p>
-        </div>
-    }
-    else
-    {
-        <div class="ui segment">
-            <p class="am-cf">
-                <span>确认收到付款</span>
-            </p>
-        </div>
-    }
-}
 
 
-@if (Model.Status >= (int) EnumTradeStatus.MakeQrCode)
-{
-    <div class="ui segment">
-        <p class="am-cf">
-            <span>用户已确认付款，开始制码流程</span>
-            @if (user.Type == (int) EnumUserType.Controller && Model.Status == (int) EnumTradeStatus.MakeQrCode)
-            {
-                <a href="/Trade/MakeQrCodeFinish/@Model.Id" class="am-fr primary ui button">确认制码结束</a>
-            }
-        </p>
-    </div>
-}
-
-@if (Model.Status >= (int) EnumTradeStatus.SampleStart)
-{
-    <div class="ui segment">
-        <p class="am-cf">
-            <span>制码完成，开始抽样</span>
-            @if (user.Type == (int) EnumUserType.Controller && Model.Status == (int) EnumTradeStatus.SampleStart)
-            {
-                <a href="/Trade/SelectSample/@Model.Id" class="am-fr primary ui button">选择抽样方式</a>
-            }
-        </p>
-    </div>
-}
 
 @if (Model.Status >= (int) EnumTradeStatus.Testing)
 {
@@ -314,28 +321,31 @@
     </div>
 }
 
-@if (Model.Status >= (int) EnumTradeStatus.Tested)
+@if (user.Type != (int) EnumUserType.Producer)
 {
-    <div class="ui segment">
-        <p class="am-cf">
-            <span>检测完成</span>
-            <a href="/Trade/Report/@Model.Id" class="am-fr primary ui button">查看检测报告</a>
-            @if (user.Type == (int) EnumUserType.Controller && Model.Status == (int) EnumTradeStatus.Tested)
-            {
-                <a href="/Trade/Finish/@Model.Id" class="am-fr primary ui button">通过检查报告</a>
-            }
-        </p>
-    </div>
-}
+    if (Model.Status >= (int) EnumTradeStatus.Tested)
+    {
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>检测完成</span>
+                <a href="/Trade/Report/@Model.Id" class="am-fr primary ui button">查看检测报告</a>
+                @if (user.Type == (int) EnumUserType.Controller && Model.Status == (int) EnumTradeStatus.Tested)
+                {
+                    <a href="/Trade/Finish/@Model.Id" class="am-fr primary ui button">通过检查报告</a>
+                }
+            </p>
+        </div>
+    }
 
 
-@if (Model.Status >= (int) EnumTradeStatus.Finish)
-{
-    <div class="ui segment">
-        <p class="am-cf">
-            <span>交易完成</span>
-        </p>
-    </div>
+    if (Model.Status >= (int) EnumTradeStatus.Finish)
+    {
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>交易完成</span>
+            </p>
+        </div>
+    }
 }
 
 

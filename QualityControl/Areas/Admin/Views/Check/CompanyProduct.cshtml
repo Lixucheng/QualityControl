@@ -52,37 +52,21 @@
                         <div class="ui raised segment">
                             <div class="am-cf">
                                 <a class="ui red ribbon label zh  fw-normal-force">原产品信息</a>
-                                <span way-data="data.Company.Name"></span>
+                                <span way-data="data.Name"></span>
                             </div>
                             <p class="ui divider"></p>
                             <div class="ui divided selection list">
                                 <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
-                                    <span way-data="data.Company.CorporationName"></span>
+                                    <div class="ui horizontal grey label zh fw-normal-force">生产许可证号</div>
+                                    <span way-data="data.ProductionCertificateNo"></span>
                                 </a>
                                 <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">法人身份证号</div>
-                                    <span way-data="data.Company.CorporationIdentity"></span>
+                                    <div class="ui horizontal grey label zh fw-normal-force">颁发日期</div>
+                                    <span way-data="data.GetDate"></span>
                                 </a>
                                 <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">注册时间</div>
-                                    <span way-data="data.Company.EstablishedTime"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
-                                    <span way-data="data.Company.Address"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
-                                    <span way-data="data.Company.License"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
-                                    <span way-data="data.Company.OrganizationCode"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">营业范围</div>
-                                    <span way-data="data.Company.LicenseScope"></span>
+                                    <div class="ui horizontal grey label zh fw-normal-force">生产标准</div>
+                                    <span way-data="data.Standard"></span>
                                 </a>
                             </div>
                         </div>
@@ -91,37 +75,21 @@
                         <div class="ui raised segment">
                             <div class="am-cf">
                                 <a class="ui red ribbon label zh  fw-normal-force">修改后的企业信息</a>
-                                <span way-data="data.updateJson.Company.Name"></span>
+                                <span way-data="data.updateJson.Name"></span>
                             </div>
                             <p class="ui divider"></p>
                             <div class="ui divided selection list">
                                 <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
-                                    <span way-data="data.updateJson.Company.CorporationName"></span>
+                                    <div class="ui horizontal grey label zh fw-normal-force">生产许可证号</div>
+                                    <span way-data="data.updateJson.ProductionCertificateNo"></span>
                                 </a>
                                 <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">法人身份证号</div>
-                                    <span way-data="data.updateJson.Company.CorporationIdentity"></span>
+                                    <div class="ui horizontal grey label zh fw-normal-force">颁发日期</div>
+                                    <span way-data="data.updateJson.GetDate"></span>
                                 </a>
                                 <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">注册时间</div>
-                                    <span way-data="data.Company.EstablishedTime"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
-                                    <span way-data="data.Company.Address"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
-                                    <span way-data="data.Company.License"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
-                                    <span way-data="data.Company.OrganizationCode"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">营业范围</div>
-                                    <span way-data="data.Company.LicenseScope"></span>
+                                    <div class="ui horizontal grey label zh fw-normal-force">生产标准</div>
+                                    <span way-data="data.updateJson.Standard"></span>
                                 </a>
                             </div>
                         </div>
@@ -205,7 +173,7 @@
 
                 var $this = $(this),
                     isPass = $this.hasClass('pass-btn'),
-                    id = way.get('data.Company.Id');
+                    id = way.get('data.Id');
 
                 $.ajax({
                     url: '/Admin/Check/CompanyProductAction',

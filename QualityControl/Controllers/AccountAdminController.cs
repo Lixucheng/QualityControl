@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -51,7 +52,8 @@ namespace QualityControl.Controllers
             {
                 Content = "恭喜您，您的注册申请已经通过审核！",
                 UserId = user.Id,
-                Status = 0
+                Status = 0,
+                Time = DateTime.Now
             });
             Db.SaveChanges();
             return 1;

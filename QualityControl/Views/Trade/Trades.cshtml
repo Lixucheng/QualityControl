@@ -9,6 +9,7 @@
         <table class="ui compact celled table">
             <thead>
             <tr>
+                <th>订单号</th>
                 <th>用户名</th>
                 <th>用户邮箱</th>
                 <th>申请时间</th>
@@ -19,6 +20,7 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>@item.Trade.Id</td>
                     <td>@item.User.UserName</td>
                     <td>@item.User.Email</td>
                     <td>@item.Trade.CeateTime.ToShortDateString()</td>

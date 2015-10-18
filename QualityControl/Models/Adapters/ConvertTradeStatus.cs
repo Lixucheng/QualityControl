@@ -10,7 +10,7 @@ namespace QualityControl.Models.Adapters
             {
                 case (int) EnumTradeStatus.Create:
                 {
-                    return "订单已创建";
+                    return "订单已创建, 待制作方案";
                 }
                 case (int) EnumTradeStatus.Finish:
                 {
@@ -18,7 +18,7 @@ namespace QualityControl.Models.Adapters
                 }
                 case (int) EnumTradeStatus.MakeQrCode:
                 {
-                    return "制码流程";
+                    return "开始制码";
                 }
                 case (int) EnumTradeStatus.Testing:
                 {
