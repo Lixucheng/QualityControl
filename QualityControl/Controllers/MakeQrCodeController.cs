@@ -42,7 +42,7 @@ namespace QualityControl.Controllers
             ViewBag.list = listdown;
             return View();
         }
-
+        
         public string MakeQrCode(long tradeid, long num, string batch, long productid)
         {
             var guid = Guid.NewGuid().ToString();
