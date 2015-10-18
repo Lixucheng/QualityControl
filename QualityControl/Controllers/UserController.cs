@@ -87,8 +87,13 @@ namespace QualityControl.Controllers
                 {
                     throw new Exception("访问错误！");
                 }
-                var pb = new ProductBatch();
-                Dumper.Dump(batch, pb, false);
+                var pb = new ProductBatch
+                {
+                    BatchName = batch.BatchName,
+                    Count = batch.Count,
+                    ProductId = batch.ProductId
+                };
+                
                 batches.Add(pb);
             }
             var pStr = new ProductCopy(p);
@@ -107,7 +112,7 @@ namespace QualityControl.Controllers
             };
             Db.Trades.Add(trade);
             Db.SaveChanges();
-            return View();
+            return RedirectToAction("TradeDetail", "Trade", new {id = trade.Id});
         }
 
         /// <summary>
@@ -135,7 +140,7 @@ namespace QualityControl.Controllers
             }
             else
             {
-                return Content("错误操作");
+                list = Db.Trades.ToList();
             }
             return View(list);
         }

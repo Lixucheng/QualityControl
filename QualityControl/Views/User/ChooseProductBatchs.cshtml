@@ -47,8 +47,8 @@
                 {
                     <tr>
                         <td class="collapsing">
-                            <div class="ui fitted slider checkbox">
-                                <input type="checkbox" name="batchIds" value="@Tempx.Id"> <label></label>
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="batchIds" value="@Tempx.Id">
                             </div>
                         </td>
                         <td>@Tempx.BatchName</td>
@@ -79,7 +79,8 @@
 @section scripts{
     <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+            $('.ui.checkbox').checkbox();
             $('table').DataTable({
                 "language": {
                     "sProcessing": "处理中...",

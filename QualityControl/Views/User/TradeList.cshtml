@@ -4,6 +4,7 @@
 }
 @using Newtonsoft.Json
 @using QualityControl.Db
+@using QualityControl.Enum
 @using QualityControl.Models
 @using QualityControl.Models.Adapters
 @model IEnumerable<QualityControl.Db.Trade>
@@ -33,6 +34,12 @@
         <thead class="">
         <tr>
             <th>订单号</th>
+            @if (ViewBag.Type == (int)EnumUserType.Controller)
+            {
+                <th>用户信息</th>
+                <th>用户邮箱</th>
+            }
+            <th>申请时间</th>
             <th>检测产品</th>
             <th>检测报价</th>
             <th>检测时间</th>
@@ -53,6 +60,13 @@
                 var s = ConvertTradeStatus.GetStatusName(tempx.Status);
                 <tr>
                     <td>@tempx.Id</td>
+                    @if (ViewBag.Type == (int)EnumUserType.Controller)
+                    {
+                        var user = Singleton.Self.Db.Users.Find((tempx.UserId));
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                    }
+                    <td>@tempx.CeateTime.ToShortDateString()</td>
                     <td>@p.Name</td>
                     @{
                         var scheme = tempx.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存);
@@ -66,7 +80,6 @@
                             {
                             }
                             <a class="ui  button" href="/Trade/TradeDetail/@tempx.Id">查看</a>
-
                         </div>
                     </td>
                 </tr>

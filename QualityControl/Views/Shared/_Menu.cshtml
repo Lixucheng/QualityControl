@@ -23,14 +23,12 @@
                 {
                     <a class="item" href="/User/ChooseProduct">新建交易</a>
                 }
+                <a class="item" href="/User/TradeList">交易列表</a>
                 @if (user.Type == (int) EnumUserType.Controller)
                 {
-                    <a class="item" href="/Trade/Trades">交易列表</a>
+                    <a class="item" href="/Trade/Trades">待制作方案交易列表</a>
                 }
-                else
-                {
-                    <a class="item" href="/User/TradeList">交易列表</a>
-                }
+                
             </div>
         </div>
         @if (user.Type == (int) EnumUserType.TestingOrg)

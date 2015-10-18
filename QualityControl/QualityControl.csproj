@@ -1220,7 +1220,6 @@
     <Content Include="Views\Product\FirstTypeIndex.cshtml" />
     <Content Include="Views\SGS\Index.cshtml" />
     <Content Include="Views\SGS\Save.cshtml" />
-    <Content Include="Views\Product\SecondTypeIndex.cshtml" />
     <Content Include="Views\Product\_ChooseType.cshtml" />
     <Content Include="Views\User\ChooseProduct.cshtml" />
     <Content Include="Views\User\Choose.cshtml" />
@@ -1240,6 +1239,7 @@
     <Content Include="Views\Trade\SelectSample.cshtml" />
     <Content Include="Views\Trade\Report.cshtml" />
     <Content Include="Views\Trade\MakeReport.cshtml" />
+    <Content Include="Views\Product\SecondTypeIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

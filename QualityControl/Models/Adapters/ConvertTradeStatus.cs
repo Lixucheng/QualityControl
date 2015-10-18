@@ -36,6 +36,14 @@ namespace QualityControl.Models.Adapters
                 {
                     return "合同确认中";
                 }
+                case (int)EnumTradeStatus.SampleStart:
+                {
+                    return "待抽样";
+                }
+                case (int)EnumTradeStatus.AlreadyApply:
+                {
+                    return "制作方案已经完成";
+                }
             }
             return "";
         }

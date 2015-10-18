@@ -18,7 +18,6 @@ namespace QualityControl.Controllers
         // GET: DetectionScheme
         public ActionResult BuildDetectionScheme(long tradeid)
         {
-            test(tradeid);
             var trade = Db.Trades.Find(tradeid);
             if (trade == null)
             {

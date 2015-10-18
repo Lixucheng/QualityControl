@@ -26,6 +26,30 @@
         {
             <span>制作方案已经制作完成，请去查看</span>
         }
+        else if (Model.Status == (int)EnumTradeStatus.Signed)
+        {
+            <span>合同已经签订，等待制码</span>
+        }
+        else if (Model.Status == (int)EnumTradeStatus.MakeQrCode)
+        {
+            <span>制码开始，请去查看</span>
+        }
+        else if (Model.Status == (int)EnumTradeStatus.SampleStart)
+        {
+            <span>制码完成，开始进行抽样</span>
+        }
+        else if (Model.Status == (int)EnumTradeStatus.Testing)
+        {
+            <span>开始检测</span>
+        }
+        else if (Model.Status == (int)EnumTradeStatus.Tested)
+        {
+            <span>测试已经完成，请查看检测报告</span>
+        }
+        else if (Model.Status == (int)EnumTradeStatus.Finish)
+        {
+            <span>交易完成</span>
+        }
     </div>
 </div>
 <div class="verborder">
@@ -81,6 +105,19 @@
     </div>
 </div>
 
+@if (Model.Status == (int)EnumTradeStatus.Create)
+{
+    <div class="ui segment">
+        <p class="am-cf">
+            <span>等待控制中心制作方案</span>
+            @if (user.Type == (int)EnumUserType.Controller)
+            {
+                <a href="/DetectionScheme/BuildDetectionScheme?tradeId=@Model.Id" class="am-fr primary ui button">制作检测方案</a>
+            }
+            
+        </p>
+    </div>
+}
 @if (Model.Status >= (int) EnumTradeStatus.AlreadyApply)
 {
     if (user.Type == (int) EnumUserType.User || user.Type == (int) EnumUserType.Controller)
