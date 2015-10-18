@@ -1,23 +1,21 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "CompanyProductIndex";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @model List<QualityControl.Db.Product>
 @section head{
-<link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet"/>
 
     <style>
         .main-container {
             background-color: #FFFFFF;
-            margin: 0em auto;
             box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            margin: 0em auto;
             padding: 2em 2em 7em;
             z-index: 1;
         }
-        .mycontent {
-            margin-bottom:30px;
-        }
+
+        .mycontent { margin-bottom: 30px; }
     </style>
 }
 
@@ -27,54 +25,53 @@
         <a class="anchor" id="types"></a>
     </h2>
     <div>
-        <a href="/Product/CompanyProductSave" class="ui button blue icon" ><i class="add circle icon"></i>添加产品</a>
+        <a href="/Product/CompanyProductSave" class="ui button blue icon"><i class="add circle icon"></i>添加产品</a>
     </div>
 
     <table class="ui  celled  table">
         <thead class="">
-            <tr>
-                <th>名称</th>
-                <th>产品种类</th>
-                <th>许可证号</th>
-                <th>发证日期</th>
-                <th>生产标准</th>
-                <th>操作</th>
-            </tr>
+        <tr>
+            <th>名称</th>
+            <th>产品种类</th>
+            <th>许可证号</th>
+            <th>发证日期</th>
+            <th>生产标准</th>
+            <th>操作</th>
+        </tr>
         </thead>
         <tbody>
-            @{ 
-                ViewBag.count = Model.Count;
-            }
-            @if (ViewBag.count == 0)
+        @{
+            ViewBag.count = Model.Count;
+        }
+        @if (ViewBag.count == 0)
+        {
+        }
+        else
+        {
+            foreach (var Tempx in Model)
             {
-               
-            }
-            else
-            {
-                foreach (var Tempx in Model)
-                {
-                    <tr>
+                <tr>
 
-                        <td>@Tempx.Name</td>
-                        <td>@Tempx.Type.Title</td>
-                        <td>@Tempx.ProductionCertificateNo</td>
-                        <td>@Tempx.GetDate</td>
-                        <td>@Tempx.Standard</td>
+                    <td>@Tempx.Name</td>
+                    <td>@Tempx.Type.Title</td>
+                    <td>@Tempx.ProductionCertificateNo</td>
+                    <td>@Tempx.GetDate</td>
+                    <td>@Tempx.Standard</td>
 
-                        <td>
-                            <div class="2  fluid ui">
-                                <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
-                                <button class="ui  button" onclick="Edit(@Tempx.Id)">修改</button>
-                                <a class="ui  button" href="/Product/CpDel/@Tempx.Id">删除</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
+                    <td>
+                        <div class="2  fluid ui">
+                            <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
+                            <button class="ui  button" onclick="Edit(@Tempx.Id)">修改</button>
+                            <a class="ui  button" href="/Product/CpDel/@Tempx.Id">删除</a>
+                        </div>
+                    </td>
+                </tr>
             }
+        }
 
         </tbody>
         <tfoot>
-            <tr></tr>
+        <tr></tr>
         </tfoot>
     </table>
 </div>
@@ -85,14 +82,14 @@
     </div>
     <div class=" content mycontent">
 
-        <form class="ui form"  id="" >                     
+        <form class="ui form" id="">
             <div class="field">
                 <label>生产许可证号</label>
                 <input disabled type="text" name="ProductionCertificateNo" placeholder="生产许可证号" id="scpProductionCertificateNo">
             </div>
             <div class="field">
                 <label>颁发日期</label>
-                <input  disabled type="date" name="GetDate" placeholder="颁发日期" id="scpgetdate">
+                <input disabled type="date" name="GetDate" placeholder="颁发日期" id="scpgetdate">
             </div>
             <div class="field">
                 <label>生产标准</label>
@@ -101,8 +98,8 @@
             <div class="field">
                 <label>产品类别</label>
                 <input disabled name="ProductTypeId" id="scpProductTypeId"/>
-            
-                
+
+
             </div>
             <div class="field">
                 <label>产品状态</label>
@@ -111,13 +108,12 @@
                     <option value="0">停产</option>
                 </select>
             </div>
-           
+
         </form>
 
     </div>
-  
-</div>
 
+</div>
 
 
 <div class="ui  modal" id="edit">
@@ -129,7 +125,7 @@
 
         <form class="ui form" action="/Product/CpEdit" id="editform">
             <input name="CompanyId" style="display: none" value="@ViewBag.cid">
-            <input name="Id" style="display:none" id="cpid">
+            <input name="Id" style="display: none" id="cpid">
             <div class="field">
                 <label>名称</label>
                 <input type="text" name="Name" placeholder="名称" id="cpname">
@@ -147,7 +143,7 @@
                 <input type="text" name="Standard" placeholder="生产标准" id="cpstandard">
             </div>
 
-           
+
             <div class="ui error message"></div>
         </form>
 
@@ -163,10 +159,10 @@
     <div class="header" id="addtypetitle">
         产品添加
     </div>
-    <div class=" content mycontent" >
+    <div class=" content mycontent">
 
-        <form class="ui form" method="post" action="/Product/CpAdd"   id="addform">
-            <input name="CompanyId" style="display:none" value="@ViewBag.cid" >
+        <form class="ui form" method="post" action="/Product/CpAdd" id="addform">
+            <input name="CompanyId" style="display: none" value="@ViewBag.cid">
             <div class="field">
                 <label>名称</label>
                 <input type="text" name="Name" placeholder="名称">
@@ -184,8 +180,8 @@
                 <input type="text" name="Standard" placeholder="生产标准">
             </div>
 
-            @{ Html.RenderAction("_ChooseType", "Product", new {name="add"}); }
-         
+            @{ Html.RenderAction("_ChooseType", "Product", new {name = "add"}); }
+
             <div class="ui error message"></div>
         </form>
 
@@ -198,10 +194,10 @@
 
 
 @section scripts{
-<script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
 
-<script>
-        $(document).ready(function () {
+    <script>
+        $(document).ready(function() {
             $('table').DataTable({
                 "language": {
                     "sProcessing": "处理中...",
@@ -238,15 +234,14 @@
                 url: '/Product/GetCpInfo',
                 data: { id: x },
                 success: function(data) {
-                    
+
                     $("#scpname").html(data.cp.Name);
                     $("#scpid").val(data.cp.Id);
                     $("#scpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
                     $("#scpgetdate").val(data.cp.GetDate);
                     $("#scpstandard").val(data.cp.Standard);
                     $("#scpProductTypeId").val(data.tname);
-                   
-                  
+
 
                     $('#seecp').modal('show');
                 },
@@ -268,7 +263,7 @@
                     $("#cpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
                     $("#cpgetdate").val(data.cp.GetDate);
                     $("#cpstandard").val(data.cp.Standard);
-                 
+
                     $('#edit').modal('show');
                 },
                 dataType: "json"
@@ -313,9 +308,5 @@
 
                 }
             });
-</script>
+    </script>
 }
-
-
-
-

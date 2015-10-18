@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -9,29 +8,29 @@
     {
         <table class="ui compact celled table">
             <thead>
-                <tr>
-                    <th>企业名称</th>
-                    <th>产品名称</th>
-                    <th>申请时间</th>
-                    <th>状态</th>
-                    <th>操作</th>
-                </tr>
+            <tr>
+                <th>企业名称</th>
+                <th>产品名称</th>
+                <th>申请时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Company.Name</td>
-                        <td>@item.Name</td>
-                        <td>@item.LastChangeTime</td>
-                        <td>
-                            @(item.UpdateJson == null ? "初次审核" : "修改审核")
-                        </td>
-                        <td>
-                            <span class="ui button detail-btn" data-id="@item.Id">查看</span>
-                        </td>
-                    </tr>
-                }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Company.Name</td>
+                    <td>@item.Name</td>
+                    <td>@item.LastChangeTime</td>
+                    <td>
+                        @(item.UpdateJson == null ? "初次审核" : "修改审核")
+                    </td>
+                    <td>
+                        <span class="ui button detail-btn" data-id="@item.Id">查看</span>
+                    </td>
+                </tr>
+            }
             </tbody>
 
         </table>
@@ -53,37 +52,21 @@
                         <div class="ui raised segment">
                             <div class="am-cf">
                                 <a class="ui red ribbon label zh  fw-normal-force">原产品信息</a>
-                                <span way-data="data.Company.Name"></span>
+                                <span way-data="data.Name"></span>
                             </div>
                             <p class="ui divider"></p>
                             <div class="ui divided selection list">
                                 <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
-                                    <span way-data="data.Company.CorporationName"></span>
+                                    <div class="ui horizontal grey label zh fw-normal-force">生产许可证号</div>
+                                    <span way-data="data.ProductionCertificateNo"></span>
                                 </a>
                                 <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">法人身份证号</div>
-                                    <span way-data="data.Company.CorporationIdentity"></span>
+                                    <div class="ui horizontal grey label zh fw-normal-force">颁发日期</div>
+                                    <span way-data="data.GetDate"></span>
                                 </a>
                                 <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">注册时间</div>
-                                    <span way-data="data.Company.EstablishedTime"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
-                                    <span way-data="data.Company.Address"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
-                                    <span way-data="data.Company.License"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
-                                    <span way-data="data.Company.OrganizationCode"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">营业范围</div>
-                                    <span way-data="data.Company.LicenseScope"></span>
+                                    <div class="ui horizontal grey label zh fw-normal-force">生产标准</div>
+                                    <span way-data="data.Standard"></span>
                                 </a>
                             </div>
                         </div>
@@ -92,37 +75,21 @@
                         <div class="ui raised segment">
                             <div class="am-cf">
                                 <a class="ui red ribbon label zh  fw-normal-force">修改后的企业信息</a>
-                                <span way-data="data.updateJson.Company.Name"></span>
+                                <span way-data="data.updateJson.Name"></span>
                             </div>
                             <p class="ui divider"></p>
                             <div class="ui divided selection list">
                                 <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
-                                    <span way-data="data.updateJson.Company.CorporationName"></span>
+                                    <div class="ui horizontal grey label zh fw-normal-force">生产许可证号</div>
+                                    <span way-data="data.updateJson.ProductionCertificateNo"></span>
                                 </a>
                                 <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">法人身份证号</div>
-                                    <span way-data="data.updateJson.Company.CorporationIdentity"></span>
+                                    <div class="ui horizontal grey label zh fw-normal-force">颁发日期</div>
+                                    <span way-data="data.updateJson.GetDate"></span>
                                 </a>
                                 <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">注册时间</div>
-                                    <span way-data="data.Company.EstablishedTime"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
-                                    <span way-data="data.Company.Address"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
-                                    <span way-data="data.Company.License"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
-                                    <span way-data="data.Company.OrganizationCode"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">营业范围</div>
-                                    <span way-data="data.Company.LicenseScope"></span>
+                                    <div class="ui horizontal grey label zh fw-normal-force">生产标准</div>
+                                    <span way-data="data.updateJson.Standard"></span>
                                 </a>
                             </div>
                         </div>
@@ -150,18 +117,17 @@
 </div>
 
 
-
 @section scripts{
     <script src="~/Scripts/bower_components/way.js/way.min.js"></script>
     <script>
-        $(function () {
+        $(function() {
             var $modal = $('.modal').modal();
             var cached = {};
             var $currentRow;
 
             var $modalColumn = $modal.find('.column');
 
-            $('.detail-btn').click(function () {
+            $('.detail-btn').click(function() {
                 var $this = $(this);
                 var id = $this.data('id');
                 $currentRow = $this.parents('tr');
@@ -183,7 +149,7 @@
                             id: id
                         },
                         dataType: 'json',
-                        success: function (data) {
+                        success: function(data) {
                             data.updateJson = $.parseJSON(data.UpdateJson);
                             cached[id] = data;
                             way.set('data', data);
@@ -196,18 +162,18 @@
                             }
                             $modal.modal('show');
                         },
-                        error: function () {
+                        error: function() {
                             alert('操作失败，请刷新重试');
                         }
                     });
                 }
             });
 
-            $('.reject-btn, .pass-btn').click(function () {
+            $('.reject-btn, .pass-btn').click(function() {
 
                 var $this = $(this),
                     isPass = $this.hasClass('pass-btn'),
-                    id = way.get('data.Company.Id');
+                    id = way.get('data.Id');
 
                 $.ajax({
                     url: '/Admin/Check/CompanyProductAction',
@@ -215,16 +181,15 @@
                         isPass: isPass,
                         id: id
                     },
-                    success: function () {
-                        $currentRow.slideUp(400, function () {
+                    success: function() {
+                        $currentRow.slideUp(400, function() {
                             $currentRow.remove();
                         });
                     },
-                    error: function () {
+                    error: function() {
                         alert('操作失败，请刷新重试');
                     }
-                })
-
+                });
             });
             //way.set('data', {
             //    User: {

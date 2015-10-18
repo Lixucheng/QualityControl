@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using Newtonsoft.Json
+@using QualityControl.Db
+@using QualityControl.Models
+@model QualityControl.Db.Trade
+@{
+    var p = JsonConvert.DeserializeObject<ProductCopy>(Model.Product);
+}
+<div class="am-margin am-padding container">
+    <h1 class="am-text-center">检测报告</h1>
+    <h3 class="am-text-center">样品名称: @p.Name</h3>
+    <h3 class="am-text-center">生产机构: @ViewBag.Company.Name</h3>
+    <h3 class="am-text-center">检测机构 : @ViewBag.SGS.Name</h3>
+    <h3 class="am-text-center">订单申请时间 : @Model.CeateTime.ToShortDateString()</h3>
+    <h3 class="am-text-center">送样本时间 : @Model.SamplingDate.ToShortDateString()</h3>
+    <h3 class="am-text-center">检测时间 : @Model.DetectingDate.ToShortDateString()</h3>
+    <div class="ui divider"></div>
+    <h2 class="am-text-center">注意事项</h2>
+    <p> 1、 本报告无“检验报告专用章”或检验单位公章无效。</p>
+    <p>2、 复制本报告未重新加盖“检验报告专用章”或检验单位公章无效。</p>
+    <p>3、 报告无编制、审核、批准人签字无效。</p>
+    <p>4、 报告涂改无效。</p>
+    <p>5、 未经本公司书面批准，不得部分复制本报告。</p>
+    <p>6、 对检验报告若有异议，应于收到本报告之日起15日内向本实验室提出，过期不予受理。</p>
+    <p>7、 报告仅对来样负责，受检样品务必在收到本实验室报告一个月内领取，逾期不领者本实验室将自行处理。</p>
+    <div class="ui divider"></div>
+    <h2 class="am-text-center">检测报告明细</h2>
+    @{
+        var dataList = JsonConvert.DeserializeObject<List<DetectionReportDataItem>>(Model.Result.DataList);
+    }
+    <table class="ui celled table">
+        <thead>
+        <tr>
+            <th>测试项目</th>
+            <th>测试要求</th>
+            <th>样品编号</th>
+            <th>测试结果</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in dataList)
+        {
+            <tr>
+                <td>@item.Item</td>
+                <td>@item.Requirement</td>
+                <td>@item.SampleNo</td>
+                <td>@item.Result</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="ui segment">
+        <h4 class="ui header">结论</h4>
+        <p>@Model.Result.Conclusion</p>
+    </div>
+    <div class="ui segment">
+        <h4 class="ui header">备注</h4>
+        <p>@Model.Result.Comments</p>
+    </div>
+
+</div>
+
+@section scripts{
+
+}

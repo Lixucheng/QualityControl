@@ -7,6 +7,5 @@ namespace QualityControl.Models.Adapters
         public SGS SGS { get; set; }
 
         public ApplicationUser User { get; set; }
-
     }
 }

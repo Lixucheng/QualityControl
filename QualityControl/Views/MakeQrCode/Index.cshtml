@@ -1,16 +1,15 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @section head{
-<link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet"/>
 
     <style>
         .main-container {
             background-color: #FFFFFF;
-            margin: 0em auto;
             box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            margin: 0em auto;
             padding: 2em 2em 7em;
             z-index: 1;
         }
@@ -18,33 +17,36 @@
 }
 
 <div class="main-container">
-    
+
     <div>
-        
+
 
         <a class="ui button blue" href="..@ViewBag.zipurl">二维码打包下载</a>
 
         <table class="ui celled table">
             <thead>
-                <tr>
-                    <th>序号</th>
-                    <th>操作</th>                  
-                </tr>
+            <tr>
+                <th>序号</th>
+                <th>操作</th>
+            </tr>
             </thead>
             <tbody>
 
             @{
-                int i = 1;
+                var i = 1;
                 foreach (var temp in ViewBag.list)
                 {
                     <tr>
-                        <td><a href="..@temp">第 @i 个二维码图片</a></td>
-                        <td style="text-align: center; width: 150px"><a href="..@temp" class="ui button" download="">下载</a></td>
+                        <td>
+                            <a href="..@temp">第 @i 个二维码图片</a>
+                        </td>
+                        <td style="text-align: center; width: 150px">
+                            <a href="..@temp" class="ui button" download="">下载</a>
+                        </td>
 
                     </tr>
                     i++;
                 }
-
             }
             </tbody>
             <tfoot>
@@ -58,7 +60,7 @@
     <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
     <script>
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('table').DataTable({
                 "language": {
                     "sProcessing": "处理中...",
@@ -85,7 +87,7 @@
                 ordering: false
             });
         });
-     
+
 
     </script>
 }

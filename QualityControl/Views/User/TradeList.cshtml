@@ -1,28 +1,27 @@
-﻿ 
-@{
+﻿@{
     ViewBag.Title = "TradeList";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @using Newtonsoft.Json
+@using QualityControl.Db
+@using QualityControl.Enum
 @using QualityControl.Models
 @using QualityControl.Models.Adapters
 @model IEnumerable<QualityControl.Db.Trade>
 
 @section head{
-    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet"/>
 
     <style>
         .main-container {
             background-color: #FFFFFF;
-            margin: 0em auto;
             box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            margin: 0em auto;
             padding: 2em 2em 7em;
             z-index: 1;
         }
 
-        .mycontent {
-            margin-bottom: 30px;
-        }
+        .mycontent { margin-bottom: 30px; }
     </style>
 }
 <div class="main-container">
@@ -33,48 +32,65 @@
 
     <table class="ui  celled  table">
         <thead class="">
-            <tr>
-                <th>订单号</th>
-                <th>检测产品</th>
-                <th>检测报价</th>
-                <th>检测时间</th>
-                <th>订单状态</th>
-                <th>查看</th>
-            </tr>
+        <tr>
+            <th>订单号</th>
+            @if (ViewBag.Type == (int)EnumUserType.Controller)
+            {
+                <th>用户信息</th>
+                <th>用户邮箱</th>
+            }
+            <th>申请时间</th>
+            <th>检测产品</th>
+            <th>检测报价</th>
+            <th>检测时间</th>
+            <th>订单状态</th>
+            <th>查看</th>
+        </tr>
         </thead>
         <tbody>
-            
-            @if (ViewBag.count == 0)
-            {
 
-            }
-            else
+        @if (ViewBag.count == 0)
+        {
+        }
+        else
+        {
+            foreach (var tempx in Model)
             {
-                foreach (var Tempx in Model)
-                {
-                    var p = JsonConvert.DeserializeObject<ProductCopy>(Tempx.Product);
-                    var s = ConvertTradeStatus.GetStatusName(Tempx.Status);
-                    <tr>
-                        <td>@Tempx.Id</td>
-                        <td>@p.Name</td>
-                        <td>@Tempx.Schemes.First(e=>e.Status!=QualityControl.Db.EnumDetectionSchemeStatus.修改完成留档保存).UserQuote</td>
-                        <td>@Tempx.Schemes.First(e => e.Status != QualityControl.Db.EnumDetectionSchemeStatus.修改完成留档保存).Time</td>
-                        <td>@s</td>
-                        <td>
-                            <div class="2  fluid ui">
-                                <a class="ui  button" href="/Trade/TradeDetail/@Tempx.Id">查看</a>
-
-                            </div>
-                        </td>                    
-                    </tr>
-                }
+                var p = JsonConvert.DeserializeObject<ProductCopy>(tempx.Product);
+                var s = ConvertTradeStatus.GetStatusName(tempx.Status);
+                <tr>
+                    <td>@tempx.Id</td>
+                    @if (ViewBag.Type == (int)EnumUserType.Controller)
+                    {
+                        var user = Singleton.Self.Db.Users.Find((tempx.UserId));
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                    }
+                    <td>@tempx.CeateTime.ToShortDateString()</td>
+                    <td>@p.Name</td>
+                    @{
+                        var scheme = tempx.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存);
+                    }
+                    <td>@(scheme?.UserQuote.ToString() ?? "暂未报价")</td>
+                    <td>@(scheme?.Time.ToString() ?? "暂未检测")</td>
+                    <td>@s</td>
+                    <td>
+                        <div class="2  fluid ui">
+                            @if (ViewBag.Type == (int) EnumTradeStatus.Create)
+                            {
+                            }
+                            <a class="ui  button" href="/Trade/TradeDetail/@tempx.Id">查看</a>
+                        </div>
+                    </td>
+                </tr>
             }
+        }
 
         </tbody>
         <tfoot>
-            <tr></tr>
+        <tr></tr>
         </tfoot>
-    </table> 
+    </table>
 
 </div>
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using QualityControl.Enum;
-using System;
 
 namespace QualityControl.Models
 {
@@ -20,7 +20,7 @@ namespace QualityControl.Models
     public class SendCodeViewModel
     {
         public string SelectedProvider { get; set; }
-        public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
+        public ICollection<SelectListItem> Providers { get; set; }
         public string ReturnUrl { get; set; }
         public bool RememberMe { get; set; }
     }
@@ -33,6 +33,7 @@ namespace QualityControl.Models
         [Required]
         [Display(Name = "代码")]
         public string Code { get; set; }
+
         public string ReturnUrl { get; set; }
 
         [Display(Name = "记住此浏览器?")]
@@ -92,7 +93,7 @@ namespace QualityControl.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "确认密码")]
-        [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
         public string ConfirmPassword { get; set; }
 
         [Required]
@@ -115,7 +116,7 @@ namespace QualityControl.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "确认密码")]
-        [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -128,6 +129,4 @@ namespace QualityControl.Models
         [Display(Name = "电子邮件")]
         public string Email { get; set; }
     }
-
-    
 }

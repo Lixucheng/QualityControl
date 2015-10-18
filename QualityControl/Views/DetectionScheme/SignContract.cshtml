@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "SignContract";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -7,15 +6,13 @@
 @section head{
     <style>
         .bigestdiv {
+            margin-bottom: 50px;
             margin-left: 5%;
             margin-right: 5%;
             margin-top: 50px;
-            margin-bottom: 50px;
         }
 
-        .title {
-            float: left;
-        }
+        .title { float: left; }
     </style>
 }
 <div class="bigestdiv">
@@ -25,14 +22,12 @@
             <div class="ui orange inverted segment" align="center">
                 <h1 class="ui  header ">此合同不在修改状态！</h1>
             </div>
-
-
         }
         else
         {
             <div class="ui segments">
                 <div class="ui segment">
-                    <p style="text-align: center; font-size: 30px">管控合同</p>
+                    <p style="font-size: 30px; text-align: center;">管控合同</p>
                 </div>
 
                 <div class="ui segment">
@@ -92,7 +87,6 @@
                             </div>
 
 
-
                         </div>
                     </div>
 
@@ -116,9 +110,8 @@
                                     {
                                         <p style="margin: 0 auto">@ViewBag.model.OrganQuote </p>
                                     }
-
                                 }
-                                
+
 
                             </div>
 
@@ -131,14 +124,13 @@
                 @if (ViewBag.disable == 0)
                 {
                     <div class="ui segment form">
-                       <div class="field">
-                           <p class="title">更改意见：</p>
-                       </div>
-                       <div class="">
-                           <textarea id="modify"></textarea>
-                       </div>
-                   </div>
-                
+                        <div class="field">
+                            <p class="title">更改意见：</p>
+                        </div>
+                        <div class="">
+                            <textarea id="modify"></textarea>
+                        </div>
+                    </div>
                 }
 
                 <div class="ui segment" align="center">
@@ -148,27 +140,25 @@
                         <button id="noagr" class="negative ui button" style="width: 25%">返回修改</button>
                         <p>如果同意以上内容请确定，不同意请填写更改意见后点击返回修改</p>
                     }
-                   
+
                 </div>
             </div>
-            <input id="checknum" style="display:none" value="@ViewBag.model.Trade.Id" />
-
+            <input id="checknum" style="display: none" value="@ViewBag.model.Trade.Id"/>
         }
     }
-   
+
 </div>
 
 @section scripts{
     <script>
         $("#agree").click(function() {
-            var r=confirm("请仔细查看内容，确认后跳到签字界面！");
-            if (r==true)
-            {               
+            var r = confirm("请仔细查看内容，确认后跳到签字界面！");
+            if (r == true) {
                 top.location = '../DetectionScheme/CompactSign?tradeid=' + $("#checknum").val();
-            }          
+            }
         });
 
-        $("#noagr").click(function () {
+        $("#noagr").click(function() {
 
             var r = confirm("请仔细查看合同，确定修改？");
             if (r == true) {
@@ -180,16 +170,16 @@
                     type: 'post',
                     data: { tradeid: c, modify: q1 },
 
-                    error: function () {
+                    error: function() {
                         alert('连接错误！');
                     },
-                    success: function (data) {
+                    success: function(data) {
                         alert("已提交修改，等待审核！");
                         top.location = '..';
                     }
                 });
             }
-           
+
         });
     </script>
-    }
+}

@@ -1,0 +1,223 @@
+﻿@{
+    ViewBag.Title = "MakeReport";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using Newtonsoft.Json
+@using QualityControl.Models
+@model QualityControl.Db.Trade
+@{
+    var p = JsonConvert.DeserializeObject<ProductCopy>(Model.Product);
+}
+<div class="am-margin am-padding container">
+    <h1 class="am-text-center">检测报告</h1>
+    <h3 class="am-text-center">样品名称: @p.Name</h3>
+    <h3 class="am-text-center">生产机构: @ViewBag.Company.Name</h3>
+    <h3 class="am-text-center">检测机构 : @ViewBag.SGS.Name</h3>
+    <h3 class="am-text-center">订单申请时间 : @Model.CeateTime.ToShortDateString()</h3>
+    <div class="ui divider"></div>
+    <h2 class="am-text-center">注意事项</h2>
+    <p> 1、 本报告无“检验报告专用章”或检验单位公章无效。</p>
+    <p>2、 复制本报告未重新加盖“检验报告专用章”或检验单位公章无效。</p>
+    <p>3、 报告无编制、审核、批准人签字无效。</p>
+    <p>4、 报告涂改无效。</p>
+    <p>5、 未经本公司书面批准，不得部分复制本报告。</p>
+    <p>6、 对检验报告若有异议，应于收到本报告之日起15日内向本实验室提出，过期不予受理。</p>
+    <p>7、 报告仅对来样负责，受检样品务必在收到本实验室报告一个月内领取，逾期不领者本实验室将自行处理。</p>
+    <div class="ui divider"></div>
+    <h2 class="am-text-center">检测报告明细</h2>
+    <form class="ui form am-margin am-margin-horizontal-lg">
+        <div class="field">
+            <label>测试项目</label>
+            <input type="text" name="Item" placeholder="" required>
+        </div>
+        <div class="field">
+            <label>标准要求</label>
+            <input type="text" name="Requirement" placeholder="" required>
+        </div>
+        <div class="field">
+            <label>样品编号</label>
+            <input type="text" name="SampleNo" placeholder="" required>
+        </div>
+        <div class="field">
+            <label>测试结果</label>
+            <input type="text" name="Result" placeholder="" required>
+        </div>
+        <button class="ui button" type="submit">添加</button>
+    </form>
+    <table class="ui celled table">
+        <thead>
+        <tr>
+            <th>测试项目</th>
+            <th>测试要求</th>
+            <th>样品编号</th>
+            <th>测试结果</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <form class="ui form am-margin-vertical" method="post">
+        <input value="@Model.Id" name="tradeId" type="hidden"/>
+        <div class="two fields">
+            <div class="field">
+                <label>送样本时间</label>
+                <input name="SamplingDate" type="date" required/>
+            </div>
+            <div class="field">
+                <label>检测时间</label>
+                <input name="DetectingDate" type="date" required/>
+            </div>
+        </div>
+        <div class="field">
+            <label>结论</label>
+            <textarea name="Conclusion" required></textarea>
+        </div>
+        <div class="field">
+            <label>备注</label>
+            <textarea name="Comments" required></textarea>
+        </div>
+        <div class="am-text-center">
+            <button class="ui big primary button" type="submit">提交检测报告</button>
+        </div>
+
+    </form>
+
+</div>
+
+@section scripts{
+    <script>
+        var $forms = $('.ui.form');
+        $forms.eq(0).form({
+            fields: {
+                Item: {
+                    identifier: 'Item',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '请输入测试项目'
+                        }
+                    ]
+                },
+                Requirement: {
+                    identifier: 'Requirement',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '请输入测试要求'
+                        }
+                    ]
+                },
+                SampleNo: {
+                    identifier: 'SampleNo',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '请输入样本编号'
+                        }
+                    ]
+                },
+                Result: {
+                    identifier: 'Result',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '请输入测试结果'
+                        }
+                    ]
+                },
+            }
+        });
+
+        $forms.eq(1).form({
+            fields: {
+                SamplingDate: {
+                    identifier: 'SamplingDate',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '请输入送样本时间'
+                        }
+                    ]
+                },
+                DetectingDate: {
+                    identifier: 'DetectingDate',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '请输入检测时间'
+                        }
+                    ]
+                },
+                Conclusion: {
+                    identifier: 'Conclusion',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '请输入结论'
+                        }
+                    ]
+                },
+                Comments: {
+                    identifier: 'Comments',
+                    rules: [
+                        {
+                            type: 'empty',
+                            prompt: '请输入备注'
+                        }
+                    ]
+                },
+            }
+        });
+
+        $forms.eq(0).submit(function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            var $this = $(this);
+            if (!$(this).form('is valid')) {
+                return;
+            }
+            var data = $this.form('get values');
+            console.log(data);
+
+            var tr = '' +
+                '<tr>' +
+                '<td>' + data.Item + '</td>' +
+                '<td>' + data.Requirement + '</td>' +
+                '<td>' + data.SampleNo + '</td>' +
+                '<td>' + data.Result + '</td>' +
+                '<td><span class="delete-btn ui button" data-id="' + tableData.length + '">删除</span></td>' +
+                '</tr>';
+            $table.find('tbody').append(tr);
+            tableData.push(data);
+            $this.form('reset');
+        });
+
+        var $table = $('table');
+        var tableData = [];
+
+        $('table tbody').click(function(event) {
+            var $this = $(event.target);
+            if (!$this.is('.delete-btn')) {
+                return;
+            }
+            tableData.splice(parseInt($this.data('id')), 1);
+            $this.parents('tr').remove();
+        });
+
+        $forms.eq(1).submit(function(event) {
+            var $this = $(this);
+            if (tableData.length === 0) {
+                alert('请添加检测报告条目');
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+            }
+            $('<input type="hidden" name="dataList" >').val(JSON.stringify(tableData)).appendTo($this);
+
+        });
+
+
+    </script>
+}

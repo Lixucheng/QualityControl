@@ -1,24 +1,29 @@
-﻿using Newtonsoft.Json;
-using QualityControl.Controllers;
-using QualityControl.Db;
-using QualityControl.Enum;
-using QualityControl.Models.Adapters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using QualityControl.Controllers;
+using QualityControl.Db;
+using QualityControl.Enum;
+using QualityControl.Models;
+using QualityControl.Models.Adapters;
 
 namespace QualityControl.Areas.Admin.Controllers
 {
     public class CheckController : BaseController
     {
-        public CheckController() { }
+        public CheckController()
+        {
+        }
 
-        public CheckController(ApplicationUserManager userManager) : base(userManager) { }
+        public CheckController(ApplicationUserManager userManager) : base(userManager)
+        {
+        }
 
         #region Company
+
         public ActionResult Company()
         {
             return View(
@@ -31,7 +36,7 @@ namespace QualityControl.Areas.Admin.Controllers
                     .Where(a => a.Company.Status == EnumStatus.Unchecked || a.Company.Status == EnumStatus.FirstUncheked)
                     .OrderByDescending(a => a.Company.LastChangeTime)
                     .ToList()
-            );
+                );
         }
 
         public string CompanyInfo(long id)
@@ -44,13 +49,13 @@ namespace QualityControl.Areas.Admin.Controllers
             }
             company.Products = null;
             data.Company = new Company();
-            Util.Util.Dump(company, data.Company, isnoreId: false);
+            Util.Util.Dump(company, data.Company, false);
             data.User = Db.Users.Find(data.Company.UserId);
-            data.User = new Models.ApplicationUser()
+            data.User = new ApplicationUser
             {
                 Id = data.User.Id,
                 Email = data.User.Email,
-                UserName = data.User.UserName,
+                UserName = data.User.UserName
             };
 
             return JsonConvert.SerializeObject(data);
@@ -69,7 +74,8 @@ namespace QualityControl.Areas.Admin.Controllers
                 if (company.Status == EnumStatus.Unchecked)
                 {
                     var model = JsonConvert.DeserializeObject<Company>(company.UpdateJson);
-                    Util.Util.Dump(model, company, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "UpdateJson", "Status" });
+                    Util.Util.Dump(model, company,
+                        excepts: new List<string> {"UserId", "CreateTime", "LastChangeTime", "UpdateJson", "Status"});
                     company.UpdateJson = null;
                 }
                 company.Status = EnumStatus.Valid;
@@ -94,9 +100,11 @@ namespace QualityControl.Areas.Admin.Controllers
             Db.Entry(company).State = EntityState.Modified;
             Db.SaveChanges();
         }
+
         #endregion
 
         #region SGS
+
         public ActionResult SGS()
         {
             return View(
@@ -109,7 +117,7 @@ namespace QualityControl.Areas.Admin.Controllers
                     .Where(a => a.SGS.Status == EnumStatus.Unchecked || a.SGS.Status == EnumStatus.FirstUncheked)
                     .OrderByDescending(a => a.SGS.LastChangeTime)
                     .ToList()
-            );
+                );
         }
 
         public string SGSInfo(long id)
@@ -122,13 +130,13 @@ namespace QualityControl.Areas.Admin.Controllers
             }
             sgs.Products = null;
             data.SGS = new SGS();
-            Util.Util.Dump(sgs, data.SGS, isnoreId: false);
+            Util.Util.Dump(sgs, data.SGS, false);
             data.User = Db.Users.Find(data.SGS.UserId);
-            data.User = new Models.ApplicationUser()
+            data.User = new ApplicationUser
             {
                 Id = data.User.Id,
                 Email = data.User.Email,
-                UserName = data.User.UserName,
+                UserName = data.User.UserName
             };
 
             return JsonConvert.SerializeObject(data);
@@ -147,7 +155,8 @@ namespace QualityControl.Areas.Admin.Controllers
                 if (sgs.Status == EnumStatus.Unchecked)
                 {
                     var model = JsonConvert.DeserializeObject<Company>(sgs.UpdateJson);
-                    Util.Util.Dump(model, sgs, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "UpdateJson", "Status" });
+                    Util.Util.Dump(model, sgs,
+                        excepts: new List<string> {"UserId", "CreateTime", "LastChangeTime", "UpdateJson", "Status"});
                     sgs.UpdateJson = null;
                 }
                 sgs.Status = EnumStatus.Valid;
@@ -172,9 +181,11 @@ namespace QualityControl.Areas.Admin.Controllers
             Db.Entry(sgs).State = EntityState.Modified;
             Db.SaveChanges();
         }
+
         #endregion
 
         #region CompanyProduct
+
         public ActionResult CompanyProduct()
         {
             return View(
@@ -182,7 +193,7 @@ namespace QualityControl.Areas.Admin.Controllers
                     .Where(a => a.Status == EnumStatus.Unchecked || a.Status == EnumStatus.FirstUncheked)
                     .OrderByDescending(a => a.LastChangeTime)
                     .ToList()
-            );
+                );
         }
 
         public string CompanyProductInfo(long id)
@@ -217,7 +228,8 @@ namespace QualityControl.Areas.Admin.Controllers
                 if (product.Status == EnumStatus.Unchecked)
                 {
                     var model = JsonConvert.DeserializeObject<Company>(product.UpdateJson);
-                    Util.Util.Dump(model, product, excepts: new List<string> { "UserId", "CreateTime", "LastChangeTime", "UpdateJson", "Status" });
+                    Util.Util.Dump(model, product,
+                        excepts: new List<string> {"UserId", "CreateTime", "LastChangeTime", "UpdateJson", "Status"});
                     product.UpdateJson = null;
                 }
                 product.Status = EnumStatus.Valid;
@@ -242,6 +254,7 @@ namespace QualityControl.Areas.Admin.Controllers
             Db.Entry(product).State = EntityState.Modified;
             Db.SaveChanges();
         }
+
         #endregion
     }
 }

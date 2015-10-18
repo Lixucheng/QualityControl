@@ -1,4 +1,4 @@
-﻿@{    
+﻿@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @model QualityControl.Db.Company
@@ -60,89 +60,86 @@
 </div>
 
 @section Scripts{
-<script>
-    $(function () {
-        $('.ui.form').form({
-            on: 'blur',
-            fields: {
-                Name: {
-                    identifier: 'Name',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入企业名称'
-                      }
-                    ]
-                },
-                Address: {
-                    identifier: 'Address',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入企业地址'
-                      }
-                    ]
-                },
-                EstablishedTime: {
-                    identifier: 'EstablishedTime',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入企业成立时间'
-                      }
-                    ]
-                },
-                License: {
-                    identifier: 'License',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入营业执照号'
-                      }
-                    ]
-                },
-                CorporationName: {
-                    identifier: 'CorporationName',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入法人姓名'
-                      }
-                    ]
-                },
-                CorporationIdentity: {
-                    identifier: 'CorporationIdentity',
-                    rules: [
-                      {
-                          type: 'regExp[/^[1-9][0-9]{5}[1-9][0-9]{3}((0[0-9])|(1[0-2]))(([0|1|2][0-9])|3[0-1])[0-9]{4}$/]',
-                          prompt: '请输入正确的身份证号'
-                      }
-                    ]
-                },
-                OrganizationCode: {
-                    identifier: 'OrganizationCode',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入组织机构代码'
-                      }
-                    ]
-                },
-                LicenseScope: {
-                    identifier: 'LicenseScope',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入营业执照经营范围'
-                      }
-                    ]
-                },
+    <script>
+        $(function() {
+            $('.ui.form').form({
+                on: 'blur',
+                fields: {
+                    Name: {
+                        identifier: 'Name',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入企业名称'
+                            }
+                        ]
+                    },
+                    Address: {
+                        identifier: 'Address',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入企业地址'
+                            }
+                        ]
+                    },
+                    EstablishedTime: {
+                        identifier: 'EstablishedTime',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入企业成立时间'
+                            }
+                        ]
+                    },
+                    License: {
+                        identifier: 'License',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入营业执照号'
+                            }
+                        ]
+                    },
+                    CorporationName: {
+                        identifier: 'CorporationName',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入法人姓名'
+                            }
+                        ]
+                    },
+                    CorporationIdentity: {
+                        identifier: 'CorporationIdentity',
+                        rules: [
+                            {
+                                type: 'regExp[/^[1-9][0-9]{5}[1-9][0-9]{3}((0[0-9])|(1[0-2]))(([0|1|2][0-9])|3[0-1])[0-9]{4}$/]',
+                                prompt: '请输入正确的身份证号'
+                            }
+                        ]
+                    },
+                    OrganizationCode: {
+                        identifier: 'OrganizationCode',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入组织机构代码'
+                            }
+                        ]
+                    },
+                    LicenseScope: {
+                        identifier: 'LicenseScope',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入营业执照经营范围'
+                            }
+                        ]
+                    },
 
-            }
-        })
-        ;
-    });
-</script>
+                }
+            });
+        });
+    </script>
 }
-
-

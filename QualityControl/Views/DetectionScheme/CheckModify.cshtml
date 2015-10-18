@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "CheckModify";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -7,15 +6,13 @@
 @section head{
     <style>
         .bigestdiv {
+            margin-bottom: 50px;
             margin-left: 5%;
             margin-right: 5%;
             margin-top: 50px;
-            margin-bottom: 50px;
         }
 
-        .title {
-            float: left;
-        }
+        .title { float: left; }
     </style>
 }
 <div class="bigestdiv">
@@ -25,14 +22,12 @@
             <div class="ui orange inverted segment" align="center">
                 <h1 class="ui  header ">此方案暂时没有更改信息！</h1>
             </div>
-
-
         }
         else
         {
             <div class="ui segments">
                 <div class="ui segment">
-                    <p style="text-align: center; font-size: 30px">检测方案</p>
+                    <p style="font-size: 30px; text-align: center;">检测方案</p>
                 </div>
 
                 <div class="ui segment">
@@ -79,7 +74,6 @@
                         </div>
                     </div>
                 </div>
-
 
 
                 <div class="ui segment">
@@ -164,7 +158,6 @@
 
                             </ul>
                         </div>
-
                     }
 
 
@@ -176,18 +169,17 @@
                     <button class="ui button green" id="btn" style="margin: 0 auto; width: 30%">确定修改</button>
                 </div>
             </div>
-            <input id="checknum" style="display:none" value="@ViewBag.model.Id" />
-
+            <input id="checknum" style="display: none" value="@ViewBag.model.Id"/>
         }
     }
-   
+
 </div>
 
 @section scripts{
     <script>
-        $("#btn").click(function () {
+        $("#btn").click(function() {
 
-            var r = confirm("确定修改？")
+            var r = confirm("确定修改？");
             if (r == true) {
                 var q1 = $("#q1").val();
                 var q2 = $("#q2").val();
@@ -198,20 +190,17 @@
                     type: 'post',
                     data: { detectionid: c, quser: q1, qother: q2, time: time },
 
-                    error: function () {
+                    error: function() {
                         alert('error');
                     },
-                    success: function (data) {
+                    success: function(data) {
                         alert("发送成功");
                         top.location = '..';
                     }
                 });
             }
-           
 
-           
+
         });
     </script>
 }
-
-

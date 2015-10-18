@@ -1,20 +1,17 @@
-﻿using QualityControl.Db;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using QualityControl.Db;
 
 namespace QualityControl.Controllers
 {
     public class ManufacturerController : BaseController
     {
-        public ManufacturerController() { }
-
-        public ManufacturerController(ApplicationUserManager userManager) 
-            :base(userManager)
+        public ManufacturerController()
         {
+        }
 
+        public ManufacturerController(ApplicationUserManager userManager)
+            : base(userManager)
+        {
         }
 
         [HttpGet]

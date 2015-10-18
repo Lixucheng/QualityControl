@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using QualityControl.Models;
-using System.Configuration;
-using System.Net.Mail;
-using System.Text;
 
 namespace QualityControl
 {
@@ -27,7 +22,7 @@ namespace QualityControl
             var pwd = "cxm123";
 
             // Configure the client:smtp-mail.outlook.com
-            SmtpClient client =
+            var client =
                 new SmtpClient("smtp.qq.com");
 
             client.Port = 587;
@@ -35,8 +30,8 @@ namespace QualityControl
             client.UseDefaultCredentials = false;
 
             // Create the credentials:
-            System.Net.NetworkCredential credentials =
-                new System.Net.NetworkCredential(credentialUserName, pwd);
+            var credentials =
+                new NetworkCredential(credentialUserName, pwd);
 
             client.EnableSsl = true;
             client.Credentials = credentials;
@@ -72,7 +67,8 @@ namespace QualityControl
         {
         }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options,
+            IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // 配置用户名的验证逻辑
@@ -85,7 +81,7 @@ namespace QualityControl
             // 配置密码的验证逻辑
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
+                RequiredLength = 6
             };
 
             // 配置用户锁定默认值
@@ -109,7 +105,7 @@ namespace QualityControl
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
+                manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
@@ -126,15 +122,17 @@ namespace QualityControl
 
         public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
         {
-            return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
+            return user.GenerateUserIdentityAsync((ApplicationUserManager) UserManager);
         }
 
-        public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
+        public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options,
+            IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
 
-        public async Task<SignInStatus> PasswordSignByEmailInAsync(string userEmail,string password, bool isPersistent, bool shouldLockout)
+        public async Task<SignInStatus> PasswordSignByEmailInAsync(string userEmail, string password, bool isPersistent,
+            bool shouldLockout)
         {
             if (UserManager == null)
             {
@@ -151,5 +149,4 @@ namespace QualityControl
             return result;
         }
     }
-
 }

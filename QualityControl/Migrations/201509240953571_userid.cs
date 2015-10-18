@@ -1,22 +1,21 @@
+using System.Data.Entity.Migrations;
+
 namespace QualityControl.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
     public partial class userid : DbMigration
     {
         public override void Up()
         {
             DropForeignKey("dbo.GxTrade", "Manufacturer_Id", "dbo.GxUser");
             DropForeignKey("dbo.GxTrade", "SgsUser_Id", "dbo.GxUser");
-            DropIndex("dbo.GxTrade", new[] { "Manufacturer_Id" });
-            DropIndex("dbo.GxTrade", new[] { "SgsUser_Id" });
+            DropIndex("dbo.GxTrade", new[] {"Manufacturer_Id"});
+            DropIndex("dbo.GxTrade", new[] {"SgsUser_Id"});
             AddColumn("dbo.GxTrade", "ManufacturerId", c => c.String());
             AddColumn("dbo.GxTrade", "SgsUserId", c => c.String());
             DropColumn("dbo.GxTrade", "Manufacturer_Id");
             DropColumn("dbo.GxTrade", "SgsUser_Id");
         }
-        
+
         public override void Down()
         {
             AddColumn("dbo.GxTrade", "SgsUser_Id", c => c.String(maxLength: 128));

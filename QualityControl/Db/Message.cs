@@ -17,14 +17,13 @@ namespace QualityControl.Db
 
         public int Status { get; set; }
 
-        
+
         public DateTime Time { get; set; }
     }
 
     public enum EnumMeaasgeStatus
     {
         Unread,
-        Readed,
+        Readed
     }
-
 }

@@ -1,4 +1,4 @@
-﻿@{    
+﻿@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @model QualityControl.Db.SGS
@@ -50,71 +50,68 @@
 </div>
 
 @section Scripts{
-<script>
-    $(function () {
-        $('.ui.form').form({
-            on: 'blur',
-            fields: {
-                Name: {
-                    identifier: 'Name',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入企业名称'
-                      }
-                    ]
-                },
-                Address: {
-                    identifier: 'Address',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入企业地址'
-                      }
-                    ]
-                },
-                License: {
-                    identifier: 'License',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入资政编号'
-                      }
-                    ]
-                },
-                CorporationName: {
-                    identifier: 'CorporationName',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入法人姓名'
-                      }
-                    ]
-                },
-                Tel: {
-                    identifier: 'CorporationIdentity',
-                    rules: [
-                      {
-                          type: 'regExp[/^([0-9]{3,4}-[0-9]{7,8})|[0-9]{11}$/]',
-                          prompt: '请输入正确的联系方式，固话（固话区号后请写-）或者手机号'
-                      }
-                    ]
-                },
-                Type: {
-                    identifier: 'Type',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入类型说明'
-                      }
-                    ]
-                },
+    <script>
+        $(function() {
+            $('.ui.form').form({
+                on: 'blur',
+                fields: {
+                    Name: {
+                        identifier: 'Name',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入企业名称'
+                            }
+                        ]
+                    },
+                    Address: {
+                        identifier: 'Address',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入企业地址'
+                            }
+                        ]
+                    },
+                    License: {
+                        identifier: 'License',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入资政编号'
+                            }
+                        ]
+                    },
+                    CorporationName: {
+                        identifier: 'CorporationName',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入法人姓名'
+                            }
+                        ]
+                    },
+                    Tel: {
+                        identifier: 'CorporationIdentity',
+                        rules: [
+                            {
+                                type: 'regExp[/^([0-9]{3,4}-[0-9]{7,8})|[0-9]{11}$/]',
+                                prompt: '请输入正确的联系方式，固话（固话区号后请写-）或者手机号'
+                            }
+                        ]
+                    },
+                    Type: {
+                        identifier: 'Type',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入类型说明'
+                            }
+                        ]
+                    },
 
-            }
-        })
-        ;
-    });
-</script>
+                }
+            });
+        });
+    </script>
 }
-
-

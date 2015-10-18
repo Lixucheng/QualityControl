@@ -1,9 +1,10 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @using Newtonsoft.Json
+@using QualityControl.Db
+@using QualityControl.Enum
 @model QualityControl.Db.Product
 <div class="am-margin am-padding container ">
     <div class="verborder">
@@ -11,11 +12,11 @@
             <div class="am-cf">
                 <a class="ui red ribbon label zh  fw-normal-force">企业产品信息</a>
                 <span>@Model.Name</span>
-                @if (Model.Status == QualityControl.Enum.EnumStatus.Unchecked)
+                @if (Model.Status == EnumStatus.Unchecked)
                 {
                     <span class="ui type tag label teal am-fr">有更改在审核中</span>
                 }
-                else if (Model.Status == QualityControl.Enum.EnumStatus.FirstUncheked)
+                else if (Model.Status == EnumStatus.FirstUncheked)
                 {
                     <span class="ui type tag label teal am-fr">信息尚未通过</span>
                 }
@@ -52,9 +53,9 @@
         </div>
 
         <div class="am-margin"></div>
-        @if (Model.Status == QualityControl.Enum.EnumStatus.Unchecked)
-            {
-                var jsonData = JsonConvert.DeserializeObject<QualityControl.Db.Product>(Model.UpdateJson);
+        @if (Model.Status == EnumStatus.Unchecked)
+        {
+            var jsonData = JsonConvert.DeserializeObject<Product>(Model.UpdateJson);
 
             <div class="ui raised segment">
                 <div class="am-cf">

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using QualityControl.Db;
-using System.IO;
-using System.Text;
 using Newtonsoft.Json;
+using QualityControl.Db;
 using QualityControl.Enum;
 using QualityControl.Models;
 
@@ -20,7 +18,6 @@ namespace QualityControl.Controllers
         // GET: DetectionScheme
         public ActionResult BuildDetectionScheme(long tradeid)
         {
-            test(tradeid);
             var trade = Db.Trades.Find(tradeid);
             if (trade == null)
             {
@@ -37,20 +34,21 @@ namespace QualityControl.Controllers
             }
             else
             {
-                x = Db.DetectionSchemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存&&e.Trade.Id==tradeid);
+                x =
+                    Db.DetectionSchemes.FirstOrDefault(
+                        e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存 && e.Trade.Id == tradeid);
             }
             var tradeProduct = JsonConvert.DeserializeObject<ProductCopy>(trade.Product);
             var sgsprolist = Db.SgsProducts.Where(e => e.Product.Id == tradeProduct.Id);
             if (!sgsprolist.Any())
             {
-
                 ViewBag.ok = 1;
                 ViewBag.message = "没有检测机构可以检测此产品！";
                 return View();
             }
             ViewBag.sgslist = sgsprolist.Select(e => e.SGS).Distinct();
-          
-            if (x == null)            
+
+            if (x == null)
             {
                 //方案
                 x = new DetectionScheme
@@ -60,12 +58,12 @@ namespace QualityControl.Controllers
                     MaxTime = sgsprolist.Max(e => e.NeedeDay),
                     MinTime = sgsprolist.Min(e => e.NeedeDay),
                     Status = EnumDetectionSchemeStatus.未发送,
-                    Trade = trade,
+                    Trade = trade
                 };
                 Db.DetectionSchemes.Add(x);
-                trade.Status = (int)EnumTradeStatus.AlreadyApply;
+                trade.Status = (int) EnumTradeStatus.AlreadyApply;
                 Db.SaveChanges();
-             
+
 
                 var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
                 var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
@@ -98,21 +96,21 @@ namespace QualityControl.Controllers
                 return View();
             }
             var levelconvert = new ConvertLevel();
-          
+
             ViewBag.Level = levelconvert.GetLevelByCount(list.First().Count);
             ViewBag.tradeid = tradeid;
             return View();
         }
 
-        public JsonResult GetLevel(long tradeid, int  s2 )
+        public JsonResult GetLevel(long tradeid, int s2)
         {
             var trade = Db.Trades.Find(tradeid);
             var levelconvert = new ConvertLevel();
-            var l=levelconvert.GetLevel(trade.Batches.First().Count,s2);
+            var l = levelconvert.GetLevel(trade.Batches.First().Count, s2);
             return Json(l);
         }
 
-  
+
         public ActionResult SignContract(long tradeid)
         {
             var userid = User.Identity.GetUserId();
@@ -130,7 +128,7 @@ namespace QualityControl.Controllers
             {
                 return Redirect("SeeContract?tradeid=" + tradeid);
             }
-            
+
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
             if (x == null)
             {
@@ -149,35 +147,39 @@ namespace QualityControl.Controllers
                 ViewBag.company = company.Name;
                 var list = trade.Batches;
                 ViewBag.list = list;
-   
-               
+
+
                 var detectionscheme = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
                 if (detectionscheme == null)
                 {
                     throw new Exception("没有待确认合同！");
                 }
-                var haveAllreadysend = detectionscheme.Contracts.FirstOrDefault(e => e.UserId == userid && e.Status == EnumContractStatus.修改后未审核);
+                var haveAllreadysend =
+                    detectionscheme.Contracts.FirstOrDefault(
+                        e => e.UserId == userid && e.Status == EnumContractStatus.修改后未审核);
                 if (haveAllreadysend != null)
                 {
                     ViewBag.ok = 0;
                     ViewBag.message = "合同已经在修改中,等待管控中心再次制定方案！";
                 }
-                var have = detectionscheme.Contracts.FirstOrDefault(e => e.UserId==userid&& e.Status == EnumContractStatus.未签订);
+                var have =
+                    detectionscheme.Contracts.FirstOrDefault(
+                        e => e.UserId == userid && e.Status == EnumContractStatus.未签订);
                 if (have == null)
                 {
-                    
                     var user = UserManager.FindById(User.Identity.GetUserId());
                     double quote = 0;
                     quote = user.Type == (int) EnumUserType.User ? x.UserQuote : x.OrganQuote;
                     var c = new Contract
                     {
-                        DetectionScheme=detectionscheme,
+                        DetectionScheme = detectionscheme,
                         Level = x.Level,
                         Time = x.Time,
-                        Product = JsonConvert.DeserializeObject<ProductCopy>(detectionscheme.Trade.Product).ToProductDbOject(),
+                        Product =
+                            JsonConvert.DeserializeObject<ProductCopy>(detectionscheme.Trade.Product).ToProductDbOject(),
                         Quote = quote,
                         Status = EnumContractStatus.未签订,
-                        UserId = user.Id                        
+                        UserId = user.Id
                     };
                     Db.Contracts.Add(c);
                     Db.SaveChanges();
@@ -187,12 +189,12 @@ namespace QualityControl.Controllers
                 var l = JsonConvert.DeserializeObject<Level>(s);
                 ViewBag.l = l;
             }
-            ViewBag.disable = 0;//可编辑
+            ViewBag.disable = 0; //可编辑
             return View();
         }
 
         /// <summary>
-        /// 查看已经确定的
+        ///     查看已经确定的
         /// </summary>
         /// <param name="tradeid"></param>
         /// <returns></returns>
@@ -201,7 +203,7 @@ namespace QualityControl.Controllers
             var userid = User.Identity.GetUserId();
             var trade = Db.Trades.Find(tradeid);
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已确定);
-          
+
             var usernow = UserManager.FindById(userid);
             ViewBag.u = usernow.Type == (int) EnumUserType.User ? 0 : 1;
             ViewBag.model = x;
@@ -214,30 +216,32 @@ namespace QualityControl.Controllers
             var s = x.Level;
             var l = JsonConvert.DeserializeObject<Level>(s);
             ViewBag.l = l;
-            
-          
-            ViewBag.disable = 1;//不可编辑
+
+
+            ViewBag.disable = 1; //不可编辑
             return View("SignContract");
         }
 
         /// <summary>
-        /// 将合同发送给两方
+        ///     将合同发送给两方
+        ///     将合同发送给两方
         /// </summary>
         /// <param name="checknum"></param>
         /// <param name="quser"></param>
         /// <param name="qother"></param>
         /// <param name="time"></param>
         /// <returns></returns>
-        public JsonResult SendDetectionScheme(long tradeid,double quser,double qother,int time,int l1,int l2,string l3,long sgsid)
+        public JsonResult SendDetectionScheme(long tradeid, double quser, double qother, int time, int l1, int l2,
+            string l3, long sgsid)
         {
             var trade = Db.Trades.Find(tradeid);
             var sgsuserid = Db.SGSs.Find(sgsid).UserId;
-           
+
             trade.SgsUserId = sgsuserid;
             Db.SaveChanges();
 
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.未发送);
-            x.Level = JsonConvert.SerializeObject(new {l1=l1,l2=l2,l3=l3});
+            x.Level = JsonConvert.SerializeObject(new {l1, l2, l3});
             x.UserQuote = quser;
             x.OrganQuote = qother;
             x.Time = time;
@@ -252,7 +256,7 @@ namespace QualityControl.Controllers
 
 
         /// <summary>
-        /// 签合同
+        ///     签合同
         /// </summary>
         /// <param name="tradeid"></param>
         /// <returns></returns>
@@ -266,7 +270,7 @@ namespace QualityControl.Controllers
                 return false;
             }
             var userid = User.Identity.GetUserId();
-            var x = scheme.Contracts.FirstOrDefault(e =>e.UserId==userid&&e.Status == EnumContractStatus.未签订);
+            var x = scheme.Contracts.FirstOrDefault(e => e.UserId == userid && e.Status == EnumContractStatus.未签订);
             if (x == null)
             {
                 throw new Exception("无待签合同");
@@ -279,7 +283,7 @@ namespace QualityControl.Controllers
             if (c == 2)
             {
                 scheme.Status = EnumDetectionSchemeStatus.已确定;
-                scheme.Trade.Status = (int)EnumTradeStatus.Signed;
+                scheme.Trade.Status = (int) EnumTradeStatus.Signed;
                 Db.SaveChanges();
                 //发送站内信息
                 SendMessage(trade.UserId, "合同双方已签订，随后进入付款流程");
@@ -290,7 +294,7 @@ namespace QualityControl.Controllers
         }
 
         /// <summary>
-        /// 提出修改
+        ///     提出修改
         /// </summary>
         /// <param name="checknum"></param>
         /// <param name="modify"></param>
@@ -301,10 +305,10 @@ namespace QualityControl.Controllers
             var scheme = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
             if (scheme == null)
             {
-               throw new Exception("访问错误，请返回刷新!");
+                throw new Exception("访问错误，请返回刷新!");
             }
             var userid = User.Identity.GetUserId();
-            var x = scheme.Contracts.FirstOrDefault(e =>e.UserId== userid&&e.Status == EnumContractStatus.未签订);
+            var x = scheme.Contracts.FirstOrDefault(e => e.UserId == userid && e.Status == EnumContractStatus.未签订);
             x.Status = EnumContractStatus.修改后未审核;
             Db.SaveChanges();
             scheme.Status = EnumDetectionSchemeStatus.返回修改;
@@ -324,7 +328,7 @@ namespace QualityControl.Controllers
         }
 
         /// <summary>
-        /// 审查修改
+        ///     审查修改
         /// </summary>
         /// <param name="checknum"></param>
         /// <returns></returns>
@@ -352,13 +356,10 @@ namespace QualityControl.Controllers
                 {
                     var u = UserManager.FindById(e.UserId);
                     if (u.Type == (int) EnumUserType.User)
-                        return new ModifyWithName {Modify = e.Modify, User = "用户（"+u.UserName+")"};
-                    else
-                    {
-                        return new ModifyWithName { Modify = e.Modify, User = "检测中心（" + u.UserName + ")" };
-                    }
+                        return new ModifyWithName {Modify = e.Modify, User = "用户（" + u.UserName + ")"};
+                    return new ModifyWithName {Modify = e.Modify, User = "检测中心（" + u.UserName + ")"};
                 }).ToList();
-                
+
                 ViewBag.mlist = modify;
                 ViewBag.ok = 1;
             }
@@ -367,7 +368,7 @@ namespace QualityControl.Controllers
         }
 
         /// <summary>
-        /// 修改待再次发送给双方
+        ///     修改待再次发送给双方
         /// </summary>
         /// <param name="detectionid"></param>
         /// <param name="quser"></param>
@@ -381,7 +382,7 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
             var n = new DetectionScheme
             {
-                Trade=x.Trade,
+                Trade = x.Trade,
                 Level = x.Level,
                 MaxQuote = x.MaxQuote,
                 MaxTime = x.MaxTime,
@@ -390,7 +391,7 @@ namespace QualityControl.Controllers
                 OrganQuote = qother,
                 Time = time,
                 UserQuote = quser,
-                Status = EnumDetectionSchemeStatus.已发送待确定,                                
+                Status = EnumDetectionSchemeStatus.已发送待确定
             };
             Db.DetectionSchemes.Add(n);
             Db.SaveChanges();
@@ -401,25 +402,24 @@ namespace QualityControl.Controllers
         }
 
         /// <summary>
-        /// 协议内容，需签订
+        ///     协议内容，需签订
         /// </summary>
         [HttpGet]
         public ActionResult CompactSign(long tradeid)
         {
-
             var trade = Db.Trades.Find(tradeid);
             if (trade == null)
             {
                 throw new Exception("访问错误！");
             }
-            var userid=User.Identity.GetUserId();
+            var userid = User.Identity.GetUserId();
             if (userid != trade.UserId && userid != trade.SgsUserId)
             {
                 throw new Exception("无权限查看！");
             }
-            string s0 = "一、";
-            
-            string s2 = @"（以下简称检验方）接受委托方书面检验委托。委托检验申请单（以下简称委托单）作为本协议的附件。本协议以委托方代表人在委托单上签名盖章，检验方加盖受理骑缝章后生效。 
+            var s0 = "一、";
+
+            var s2 = @"（以下简称检验方）接受委托方书面检验委托。委托检验申请单（以下简称委托单）作为本协议的附件。本协议以委托方代表人在委托单上签名盖章，检验方加盖受理骑缝章后生效。 
                           <br />二、委托方应如实填写委托单，如有必要，还应根据检验方的要求提供必要的单据及相关资料。 
                           <br />三、检验方按委托方在委托单上填明的检验要求进行检验，并出具检验报告。 
                           <br />四、委托方必须注明要求使用的检验方法。 
@@ -432,29 +432,30 @@ namespace QualityControl.Controllers
                           <br />十一、检验报告通常采用中文书写。如需采用其他语种，委托方应在委托单“备注”栏内注明，并用相应语种填写有关内容。 
                           <br />十二、委托方如对检验结果有异议的，须在一个月内凭检验证书原件向检验方要求复检，检验方应于十日内安排复检。复检结果维持原检验结果的，委托方须按规定向检验方支付复检费。复检结果确认原检验结果有误的，检验方不再收取复检费。委托方对复检结果仍有异议，双方协商不成时，应与检验方书面协议，委托仲裁机构仲裁。 
                           <br />十五、委托方对本协议及委托单有不明之处，应在填写委托单时，向检验方工作人员咨询。协议自填单之日起生效。";
-            string s1= "";
+            var s1 = "";
             var sysid = trade.SgsUserId;
-            
+
             var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user.Type == (int)Enum.EnumUserType.User)
+            if (user.Type == (int) EnumUserType.User)
             {
                 ViewBag.FirstParty = user.UserName;
                 s1 = "管控中心";
-                ViewBag.SecondParty = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name; ;
-                ViewBag.user=1;
+                ViewBag.SecondParty = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name;
+                ;
+                ViewBag.user = 1;
             }
-            else if (user.Type == (int)Enum.EnumUserType.TestingOrg)
+            else if (user.Type == (int) EnumUserType.TestingOrg)
             {
                 ViewBag.FirstParty = "管控中心";
                 ViewBag.SecondParty = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name;
                 s1 = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name;
-                ViewBag.user=2;
+                ViewBag.user = 2;
             }
             else
             {
                 throw new Exception("无权查看！");
             }
-           
+
             ViewBag.time = DateTime.Today.ToShortDateString();
             ViewBag.Content = s0 + s1 + s2;
             ViewBag.checknum = trade.Id;
@@ -464,15 +465,14 @@ namespace QualityControl.Controllers
 
         public bool BoolCompactSign(long tradeid)
         {
-
             var trade = Db.Trades.Find(tradeid);
             if (trade == null)
             {
                 throw new Exception("访问错误！");
             }
-            string s0 = "一、";
+            var s0 = "一、";
 
-            string s2 = @"（以下简称检验方）接受委托方书面检验委托。委托检验申请单（以下简称委托单）作为本协议的附件。本协议以委托方代表人在委托单上签名盖章，检验方加盖受理骑缝章后生效。 
+            var s2 = @"（以下简称检验方）接受委托方书面检验委托。委托检验申请单（以下简称委托单）作为本协议的附件。本协议以委托方代表人在委托单上签名盖章，检验方加盖受理骑缝章后生效。 
                           <br />二、委托方应如实填写委托单，如有必要，还应根据检验方的要求提供必要的单据及相关资料。 
                           <br />三、检验方按委托方在委托单上填明的检验要求进行检验，并出具检验报告。 
                           <br />四、委托方必须注明要求使用的检验方法。 
@@ -485,29 +485,29 @@ namespace QualityControl.Controllers
                           <br />十一、检验报告通常采用中文书写。如需采用其他语种，委托方应在委托单“备注”栏内注明，并用相应语种填写有关内容。 
                           <br />十二、委托方如对检验结果有异议的，须在一个月内凭检验证书原件向检验方要求复检，检验方应于十日内安排复检。复检结果维持原检验结果的，委托方须按规定向检验方支付复检费。复检结果确认原检验结果有误的，检验方不再收取复检费。委托方对复检结果仍有异议，双方协商不成时，应与检验方书面协议，委托仲裁机构仲裁。 
                           <br />十五、委托方对本协议及委托单有不明之处，应在填写委托单时，向检验方工作人员咨询。协议自填单之日起生效。";
-            string s1 = "管控中心";
+            var s1 = "管控中心";
 
-            Sign(tradeid);//合同详细信息
+            Sign(tradeid); //合同详细信息
             var c = new Compact();
             var sysid = trade.SgsUserId;
 
             var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user.Type == (int)Enum.EnumUserType.User)
+            if (user.Type == (int) EnumUserType.User)
             {
                 c.FirstParty = user.UserName;
-                c.SecondParty = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name; ;            
+                c.SecondParty = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name;
+                ;
             }
-            else if (user.Type == (int)Enum.EnumUserType.TestingOrg)
+            else if (user.Type == (int) EnumUserType.TestingOrg)
             {
                 c.FirstParty = "管控中心";
                 c.SecondParty = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name;
- 
             }
             else
             {
                 throw new Exception("无权查看！");
             }
-            c.Content = s0 + s1 + s2;       
+            c.Content = s0 + s1 + s2;
             c.Time = DateTime.Now;
             Db.Compacts.Add(c);
             Db.SaveChanges();
@@ -516,7 +516,7 @@ namespace QualityControl.Controllers
             return true;
         }
 
-        public int CheckName(string name,long tradeid)
+        public int CheckName(string name, long tradeid)
         {
             var n = User.Identity.GetUserName();
             if (name == n)
@@ -527,15 +527,69 @@ namespace QualityControl.Controllers
             return 0;
         }
 
-        
+
+        public bool SendMessage(string userid, string content)
+        {
+            var m = new Message
+            {
+                Status = (int) EnumMeaasgeStatus.Unread,
+                Time = DateTime.Now,
+                Content = content,
+                UserId = userid
+            };
+            Db.Messages.Add(m);
+            Db.SaveChanges();
+            return true;
+        }
+
+
+        public void test(long id)
+        {
+            var x = Db.Trades.Find(id);
+            for (var i = 0; i < 3; i++)
+            {
+                var b = new ProductBatch();
+                b.BatchName = "2015-9-" + i + "批次";
+                b.Count = 5;
+                b.ProductId = JsonConvert.DeserializeObject<ProductCopy>(x.Product).Id;
+                b.Trade = x;
+                Db.ProductBatchs.Add(b);
+                Db.SaveChanges();
+            }
+        }
+
+        public int ConfirmPay(long tradeId, int type)
+        {
+            var trade = Db.Trades.Find(tradeId);
+            if (trade == null)
+            {
+                return 0;
+            }
+            if (trade.Status != (int) EnumTradeStatus.Signed)
+            {
+                return 0;
+            }
+            if (type == 0)
+            {
+                trade.Status = (int) EnumTradeStatus.MakeQrCode;
+            }
+            else
+            {
+                trade.SGSPaied = true;
+            }
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return 1;
+        }
 
 
         public class Level
         {
             public int l1;
+            public int l2;
+            public string l3;
 
             public string L1 => l1 == 0 ? "特殊检测等级" : "一般检查等级";
-            public int l2;
 
             public string L2
             {
@@ -557,74 +611,17 @@ namespace QualityControl.Controllers
                             return "Ⅱ";
                         case 13:
                             return "Ⅲ";
-                        default: return null;
+                        default:
+                            return null;
                     }
                 }
             }
-            public string l3;
         }
 
         public class ModifyWithName
         {
-            public string User;
             public string Modify;
-
-        }
-
-
-        public bool SendMessage(string userid,string content)
-        {
-            var m = new Message
-            {
-                Status = (int)EnumMeaasgeStatus.Unread,
-                Time = DateTime.Now,
-                Content = content,
-                UserId = userid
-            };          
-            Db.Messages.Add(m);
-            Db.SaveChanges();
-            return true;
-        }
-
-
-        public void test(long id)
-        {
-            var x = Db.Trades.Find(id);
-            for (int i = 0; i < 3; i++)
-            {
-                var b = new ProductBatch();
-                b.BatchName = "2015-9-" + i.ToString() + "批次";
-                b.Count = 5;
-                b.ProductId = JsonConvert.DeserializeObject<ProductCopy>(x.Product).Id;
-                b.Trade = x;
-                Db.ProductBatchs.Add(b);
-                Db.SaveChanges();
-            }
-          
-        }
-
-        public int ConfirmPay(long tradeId, int type)
-        {
-            var trade = Db.Trades.Find(tradeId); 
-            if (trade == null)
-            {
-                return 0;
-            }
-            if (trade.Status != (int)EnumTradeStatus.Signed)
-            {
-                return 0;
-            }
-            if (type == 0)
-            {
-                trade.Status = (int)EnumTradeStatus.MakeQrCode;
-            } else
-            {
-                trade.SGSPaied = true;
-            }
-            Db.Entry(trade).State = System.Data.Entity.EntityState.Modified;
-            Db.SaveChanges();
-            return 1;
-            
+            public string User;
         }
     }
 }

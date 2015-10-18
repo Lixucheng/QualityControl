@@ -22,7 +22,7 @@
                         <input placeholder="价格" name="Price" type="number" value='@(Model != null ? Model.Price.ToString() : "")'>
                     </div>
                 </div>
-                
+
                 @Html.Action("_ChooseType")
 
                 <div class="field">
@@ -50,82 +50,79 @@
 
 @section Scripts{
     <script>
-    $(function () {
-        $('.ui.form').form({
-            on: 'blur',
-            fields: {
-                Name: {
-                    identifier: 'Name',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入产品名称'
-                      }
-                    ]
-                },
-                Price: {
-                    identifier: 'Address',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入价格'
-                      },
-                      {
-                          type: 'decimal',
-                          prompt: '请输入价格'
-                      }
-                    ]
-                },
-                EstablishedTime: {
-                    identifier: 'EstablishedTime',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入企业成立时间'
-                      }
-                    ]
-                },
-                ProductionCertificateNo: {
-                    identifier: 'License',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入生产许可证编号'
-                      }
-                    ]
-                },
-                Standard: {
-                    identifier: 'CorporationName',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入执行标准'
-                      }
-                    ]
-                },
-                GetDate: {
-                    identifier: 'CorporationIdentity',
-                    rules: [
-                      {
-                          type: 'empty',
-                          prompt: '请输入正确的身份证号'
-                      }
-                    ]
-                },
-                ProductTypeId: {
-                    identifier: 'ProductTypeId',
-                    rules: [
-                        {
-                            type: 'empty',
-                            prompt: '请选择类型'
-                        }
-                    ]
+        $(function() {
+            $('.ui.form').form({
+                on: 'blur',
+                fields: {
+                    Name: {
+                        identifier: 'Name',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入产品名称'
+                            }
+                        ]
+                    },
+                    Price: {
+                        identifier: 'Address',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入价格'
+                            },
+                            {
+                                type: 'decimal',
+                                prompt: '请输入价格'
+                            }
+                        ]
+                    },
+                    EstablishedTime: {
+                        identifier: 'EstablishedTime',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入企业成立时间'
+                            }
+                        ]
+                    },
+                    ProductionCertificateNo: {
+                        identifier: 'License',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入生产许可证编号'
+                            }
+                        ]
+                    },
+                    Standard: {
+                        identifier: 'CorporationName',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入执行标准'
+                            }
+                        ]
+                    },
+                    GetDate: {
+                        identifier: 'CorporationIdentity',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入正确的身份证号'
+                            }
+                        ]
+                    },
+                    ProductTypeId: {
+                        identifier: 'ProductTypeId',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请选择类型'
+                            }
+                        ]
+                    }
                 }
-            }
-        })
-        ;
-    });
+            });
+        });
     </script>
 }
-
-

@@ -1,26 +1,23 @@
 ﻿<style>
-    select {
-        float: left;
-    }
+    select { float: left; }
 </style>
-
 
 
 <div class="field">
     <label>产品类别</label>
     <div class="ui mobile reversed equal width grid">
         <div class=" column">
-            <select name=""  class="A @ViewBag.id">
+            <select name="" class="A @ViewBag.id">
                 @{ Html.RenderAction("_Options", "Product", new {type = 1}); }
             </select>
         </div>
-        <div class="column" >
-            <select name=""  class="B @ViewBag.id">
+        <div class="column">
+            <select name="" class="B @ViewBag.id">
 
             </select>
         </div>
         <div class="column">
-            <select name="ProductTypeId" class="C @ViewBag.id" >
+            <select name="ProductTypeId" class="C @ViewBag.id">
 
             </select>
         </div>
@@ -41,7 +38,7 @@
             url: '/Product/GetType',
             data: { fatherid: v1, type: 2 },
 
-            success: function (data) {
+            success: function(data) {
                 var l = data.length;
                 var s = "";
                 for (var i = 0; i < l; i++) {
@@ -56,7 +53,7 @@
                         type: 'Get',
                         url: '/Product/GetType',
                         data: { fatherid: v2, type: 3 },
-                        success: function (data) {
+                        success: function(data) {
                             var l = data.length;
                             var s = "";
                             for (var i = 0; i < l; i++) {
@@ -72,13 +69,13 @@
             dataType: "json"
         });
     });
-    $(".B.@ViewBag.id").change(function () {
+    $(".B.@ViewBag.id").change(function() {
         var v2 = $(".B.@ViewBag.id").val();
         $.ajax({
             type: 'Get',
             url: '/Product/GetType',
             data: { fatherid: v2, type: 3 },
-            success: function (data) {
+            success: function(data) {
                 var l = data.length;
                 var s = "";
                 for (var i = 0; i < l; i++) {
@@ -113,7 +110,7 @@
                         type: 'Get',
                         url: '/Product/GetType',
                         data: { fatherid: v2, type: 3 },
-                        success: function (data) {
+                        success: function(data) {
                             var l = data.length;
                             var s = "";
                             for (var i = 0; i < l; i++) {
@@ -129,9 +126,6 @@
             dataType: "json"
         });
     }
-
-
-
 
 
 </script>

@@ -1,25 +1,22 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "ManageProducts";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 
 @section head{
-    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet"/>
 
     <style>
         .main-container {
             background-color: #FFFFFF;
-            margin: 0em auto;
             box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            margin: 0em auto;
             padding: 2em 2em 7em;
             z-index: 1;
         }
 
-        .mycontent {
-            margin-bottom: 30px;
-        }
+        .mycontent { margin-bottom: 30px; }
     </style>
 }
 
@@ -93,7 +90,6 @@
 
         @if (ViewBag.count == 0)
         {
-
         }
         else
         {
@@ -111,7 +107,7 @@
                         <div class="2  fluid ui">
                             <button class="ui green button" onclick="See(@Tempx.Id)">详细</button>
 
-                            <button class="ui blue button" onclick="Edit($(this),@Tempx.Id)">修改</button>
+                            <button class="ui blue button" onclick="Edit($(this), @Tempx.Id)">修改</button>
 
                             <button class="ui red button" onclick="Del(@Tempx.Id)">删除</button>
                         </div>
@@ -182,7 +178,7 @@
     <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('table').DataTable({
                 "language": {
                     "sProcessing": "处理中...",
@@ -228,7 +224,6 @@
                     $("#scpProductTypeId").val(data.tname);
 
 
-
                     $('#seecp').modal('show');
                 },
                 dataType: "json"
@@ -237,8 +232,7 @@
         };
 
 
-
-        function Edit(th,id) {
+        function Edit(th, id) {
             var price = th.parent().parent().parent().find(".price").html();
             var time = th.parent().parent().parent().find(".time").html();
             $("#editid").val(id);
@@ -280,9 +274,3 @@
 
     </script>
 }
-
-
-
-
-
-

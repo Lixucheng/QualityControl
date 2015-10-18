@@ -1,10 +1,8 @@
-﻿using QualityControl.Enum;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
+using QualityControl.Enum;
 
 namespace QualityControl.Db
 {
@@ -13,7 +11,6 @@ namespace QualityControl.Db
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        
         public long Id { get; set; }
 
         public string UserId { get; set; }
@@ -25,7 +22,7 @@ namespace QualityControl.Db
         public string UpdateJson { get; set; }
 
         public EnumStatus Status { get; set; }
-        
+
         [Required]
         public string Name { set; get; }
 
