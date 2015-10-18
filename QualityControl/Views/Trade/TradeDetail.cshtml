@@ -27,7 +27,8 @@
             }
             else if (Model.Status == (int) EnumTradeStatus.AlreadyApply)
             {
-                <span>制作方案已经制作完成，请去查看</span>
+                var x=Model.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存).Status;
+                <span>方案 @x</span> 
             }
             else if (Model.Status == (int) EnumTradeStatus.Signed)
             {

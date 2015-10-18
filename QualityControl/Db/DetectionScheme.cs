@@ -86,8 +86,8 @@ namespace QualityControl.Db
     public enum EnumDetectionSchemeStatus
     {
         未发送 = 0,
-        已发送待确定 = 1,
-        返回修改 = 2,
+        已发送待双方确定 = 1,
+        修改中 = 2,
         修改完成留档保存 = 3,
         已确定
     }

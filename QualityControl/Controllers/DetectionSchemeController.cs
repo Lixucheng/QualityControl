@@ -85,14 +85,14 @@ namespace QualityControl.Controllers
                 ViewBag.model = x;
                 ViewBag.list = trade.Batches;
             }
-            else if (x.Status == EnumDetectionSchemeStatus.返回修改)
+            else if (x.Status == EnumDetectionSchemeStatus.修改中)
             {
-                return Redirect("../DetectionScheme/CheckModify?checknum=" + trade.Id);
+                return Redirect("../DetectionScheme/CheckModify?tradeid=" + trade.Id);
             }
             else
             {
                 ViewBag.ok = 1;
-                ViewBag.message = "方案已发送待确定或者已确定，不支持编辑！";
+                ViewBag.message = "方案已发送待双方确定或者已确定，不支持编辑！";
                 return View();
             }
             var levelconvert = new ConvertLevel();
@@ -129,7 +129,7 @@ namespace QualityControl.Controllers
                 return Redirect("SeeContract?tradeid=" + tradeid);
             }
 
-            var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
+            var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待双方确定);
             if (x == null)
             {
                 ViewBag.ok = 0;
@@ -149,7 +149,7 @@ namespace QualityControl.Controllers
                 ViewBag.list = list;
 
 
-                var detectionscheme = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
+                var detectionscheme = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待双方确定);
                 if (detectionscheme == null)
                 {
                     throw new Exception("没有待确认合同！");
@@ -245,7 +245,7 @@ namespace QualityControl.Controllers
             x.UserQuote = quser;
             x.OrganQuote = qother;
             x.Time = time;
-            x.Status = EnumDetectionSchemeStatus.已发送待确定;
+            x.Status = EnumDetectionSchemeStatus.已发送待双方确定;
             Db.SaveChanges();
             //发送站内信息
             SendMessage(trade.UserId, "合同已发送，请查看！");
@@ -264,7 +264,7 @@ namespace QualityControl.Controllers
         {
             var trade = Db.Trades.Find(tradeid);
             //todo： 还有userid未使用
-            var scheme = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
+            var scheme = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待双方确定);
             if (scheme == null)
             {
                 return false;
@@ -302,7 +302,7 @@ namespace QualityControl.Controllers
         public JsonResult Modify(long tradeid, string modify)
         {
             var trade = Db.Trades.Find(tradeid);
-            var scheme = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待确定);
+            var scheme = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待双方确定);
             if (scheme == null)
             {
                 throw new Exception("访问错误，请返回刷新!");
@@ -311,7 +311,7 @@ namespace QualityControl.Controllers
             var x = scheme.Contracts.FirstOrDefault(e => e.UserId == userid && e.Status == EnumContractStatus.未签订);
             x.Status = EnumContractStatus.修改后未审核;
             Db.SaveChanges();
-            scheme.Status = EnumDetectionSchemeStatus.返回修改;
+            scheme.Status = EnumDetectionSchemeStatus.修改中;
             Db.SaveChanges();
 
             var mod = new ContractModification();
@@ -335,7 +335,7 @@ namespace QualityControl.Controllers
         public ActionResult CheckModify(long tradeid)
         {
             var trade = Db.Trades.Find(tradeid);
-            var dec = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.返回修改);
+            var dec = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.修改中);
             if (dec == null)
             {
                 throw new Exception("访问错误，请返回刷新!");
@@ -391,7 +391,7 @@ namespace QualityControl.Controllers
                 OrganQuote = qother,
                 Time = time,
                 UserQuote = quser,
-                Status = EnumDetectionSchemeStatus.已发送待确定
+                Status = EnumDetectionSchemeStatus.已发送待双方确定
             };
             Db.DetectionSchemes.Add(n);
             Db.SaveChanges();
