@@ -1240,6 +1240,7 @@
     <Content Include="Views\Trade\Report.cshtml" />
     <Content Include="Views\Trade\MakeReport.cshtml" />
     <Content Include="Views\Product\SecondTypeIndex.cshtml" />
+    <Content Include="Views\DetectionScheme\SeeDetectionScheme.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

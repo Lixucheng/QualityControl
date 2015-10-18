@@ -18,6 +18,7 @@ namespace QualityControl.Controllers
         // GET: DetectionScheme
         public ActionResult BuildDetectionScheme(long tradeid)
         {
+            ViewBag.see = 0;
             var trade = Db.Trades.Find(tradeid);
             if (trade == null)
             {
@@ -81,7 +82,7 @@ namespace QualityControl.Controllers
                 ViewBag.productname = pro.Name;
                 ViewBag.company = company.Name;
 
-
+                
                 ViewBag.model = x;
                 ViewBag.list = trade.Batches;
             }
@@ -91,8 +92,9 @@ namespace QualityControl.Controllers
             }
             else
             {
-                ViewBag.ok = 1;
-                ViewBag.message = "方案已发送待双方确定或者已确定，不支持编辑！";
+                //ViewBag.ok = 1;
+                //ViewBag.message = "方案已发送待双方确定或者已确定，不支持编辑！";
+                return Redirect("SeeDetectionScheme?tradeid=" + tradeid);
                 return View();
             }
             var levelconvert = new ConvertLevel();
@@ -102,6 +104,27 @@ namespace QualityControl.Controllers
             return View();
         }
 
+        public ActionResult SeeDetectionScheme(long tradeid)
+        {
+            ViewBag.see = 1;
+            var trade = Db.Trades.Find(tradeid);
+            var sgsname = Db.SGSs.FirstOrDefault(e => e.UserId == trade.SgsUserId).Name;
+            ViewBag.sgs = sgsname;
+            var x =
+                   trade.Schemes.FirstOrDefault(
+                       e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存);
+            var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
+            var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
+            ViewBag.productname = pro.Name;
+            ViewBag.company = company.Name;
+
+            var s = x.Level;
+            var l = JsonConvert.DeserializeObject<Level>(s);
+            ViewBag.l = l;
+            ViewBag.model = x;
+            ViewBag.list = trade.Batches;
+            return View();
+        }
         public JsonResult GetLevel(long tradeid, int s2)
         {
             var trade = Db.Trades.Find(tradeid);
