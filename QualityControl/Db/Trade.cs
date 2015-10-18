@@ -38,6 +38,8 @@ namespace QualityControl.Db
 
         public DateTime DetectingDate { get; set; }
 
+        public string SampleRecevied { get; set; }
+
         /// <summary>
         ///     协议内容
         /// </summary>
@@ -89,6 +91,8 @@ namespace QualityControl.Db
         ///     抽样开始
         /// </summary>
         SampleStart,
+
+        SampleReceived,
 
         /// <summary>
         ///     检查中

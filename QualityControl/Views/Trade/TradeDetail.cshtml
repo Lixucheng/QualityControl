@@ -27,8 +27,8 @@
             }
             else if (Model.Status == (int) EnumTradeStatus.AlreadyApply)
             {
-                var x=Model.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存).Status;
-                <span>方案 @x</span> 
+                var x = Model.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存).Status;
+                <span>方案 @x</span>
             }
             else if (Model.Status == (int) EnumTradeStatus.Signed)
             {
@@ -41,6 +41,10 @@
             else if (Model.Status == (int) EnumTradeStatus.SampleStart)
             {
                 <span>制码完成，开始进行抽样</span>
+            }
+            else if (Model.Status == (int) EnumTradeStatus.SampleReceived)
+            {
+                <span>待确认收到样品</span>
             }
             else if (Model.Status == (int) EnumTradeStatus.Testing)
             {
@@ -203,23 +207,22 @@
                     </div>
                 </div>
             </div>
-                            }
-                            if (user.Type == (int)EnumUserType.User && user.Type == (int)EnumUserType.TestingOrg)
-                            {
-                                <div class="ui segment">
-                                    <p class="am-cf">
-                                        <span>检测方案已经完成，请用户和检测机构前去确认</span>
-                                        <a href="/DetectionScheme/SignContract?tradeId=@Model.Id" class="am-fr primary ui button">查看</a>
-                                    </p>
-                                </div>
-                            }
+        }
+        if (user.Type == (int) EnumUserType.User || user.Type == (int) EnumUserType.TestingOrg)
+        {
+            <div class="ui segment">
+                <p class="am-cf">
+                    <span>检测方案已经完成，请用户和检测机构前去确认</span>
+                    <a href="/DetectionScheme/SignContract?tradeId=@Model.Id" class="am-fr primary ui button">查看</a>
+                </p>
+            </div>
+        }
+    }
 
-                        }
-
-                        if (Model.Status == (int)EnumTradeStatus.Signed)
-                        {
-                            if (user.Type == (int)EnumUserType.User)
-                            {
+    if (Model.Status == (int) EnumTradeStatus.Signed)
+    {
+        if (user.Type == (int) EnumUserType.User)
+        {
             <div class="ui segment">
                 <p class="am-cf">
                     <span>检测方案已经完成，您可以查看，请及时付款，并等待控制中心确认收到付款</span>
@@ -264,7 +267,7 @@
         <div class="ui segment">
             <p class="am-cf">
                 <span>用户已确认付款，开始制码流程</span>
-                @if (user.Type == (int)EnumUserType.Controller && Model.Status == (int)EnumTradeStatus.MakeQrCode)
+                @if (user.Type == (int) EnumUserType.Controller && Model.Status == (int) EnumTradeStatus.MakeQrCode)
                 {
                     <a href="/MakeQrCode/Index?tradeId=@Model.Id" class="am-fr ui button green">开始制码</a>
                     //  <a href="/Trade/MakeQrCodeFinish/@Model.Id" class="am-fr primary ui button">确认制码结束</a>
@@ -290,7 +293,7 @@
 
 
 
-@if (Model.Status >= (int) EnumTradeStatus.Testing)
+@if (Model.Status >= (int) EnumTradeStatus.SampleReceived)
 {
     <div>
         <table class="ui celled table">
@@ -318,6 +321,22 @@
     </div>
     <div class="ui segment">
         <p class="am-cf">
+            <span>待样品确认收到</span>
+            @if (user.Type == (int) EnumUserType.TestingOrg && (Model.SampleRecevied == null || Model.SampleRecevied[0] != '1'))
+            {
+                <a href="/Trade/SampleReceive/@Model.Id" class="am-fr primary ui button">确认收到</a>
+            }
+            @if (user.Type == (int)EnumUserType.Producer && (Model.SampleRecevied == null || Model.SampleRecevied[1] != '1'))
+            {
+                <a href="/Trade/SampleReceive/@Model.Id" class="am-fr primary ui button">确认收到</a>
+            }
+        </p>
+    </div>
+}
+@if (Model.Status >= (int) EnumTradeStatus.Testing)
+{
+    <div class="ui segment">
+        <p class="am-cf">
             <span>抽样完成，等待检测完成</span>
             @if (user.Type == (int) EnumUserType.TestingOrg)
             {
@@ -326,7 +345,6 @@
         </p>
     </div>
 }
-
 @if (user.Type != (int) EnumUserType.Producer)
 {
     if (Model.Status >= (int) EnumTradeStatus.Tested)

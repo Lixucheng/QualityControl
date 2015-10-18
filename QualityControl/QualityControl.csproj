@@ -357,6 +357,10 @@
     <Compile Include="Migrations\201510161532206_TradeRevert.Designer.cs">
       <DependentUpon>201510161532206_TradeRevert.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510181027151_TradeAddSampleReceived.cs" />
+    <Compile Include="Migrations\201510181027151_TradeAddSampleReceived.Designer.cs">
+      <DependentUpon>201510181027151_TradeAddSampleReceived.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\ConvertTradeStatus.cs" />
@@ -1364,6 +1368,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510161532206_TradeRevert.resx">
       <DependentUpon>201510161532206_TradeRevert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510181027151_TradeAddSampleReceived.resx">
+      <DependentUpon>201510181027151_TradeAddSampleReceived.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

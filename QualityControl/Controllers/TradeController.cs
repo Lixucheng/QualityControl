@@ -111,7 +111,7 @@ namespace QualityControl.Controllers
                     Db.Entry(b).State = EntityState.Modified;
                 }
             }
-            trade.Status = (int) EnumTradeStatus.Testing;
+            trade.Status = (int) EnumTradeStatus.SampleReceived;
             Db.Entry(trade).State = EntityState.Modified;
             Db.Messages.Add(new Message
             {
@@ -291,6 +291,39 @@ namespace QualityControl.Controllers
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
             return RedirectToAction("TradeDetail", new {id = tradeId});
+        }
+
+        public ActionResult SampleReceive(long id)
+        {
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return Content("错误操作");
+            }
+            var userId = User.Identity.GetUserId();
+            if (trade.ManufacturerId != userId && trade.SgsUserId != userId)
+            {
+                return Content("错误操作");
+            }
+            if (trade.SampleRecevied == null)
+            {
+                trade.SampleRecevied = "00";
+            }
+            if (trade.ManufacturerId == userId)
+            {
+                trade.SampleRecevied = trade.SampleRecevied[0] + "1";
+            }
+            if (trade.SgsUserId == userId)
+            {
+                trade.SampleRecevied = "1" + trade.SampleRecevied[1];
+            }
+            if (trade.SampleRecevied == "11")
+            {
+                trade.Status = (int) EnumTradeStatus.Testing;
+            }
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return RedirectToAction("TradeDetail", new { id = id });
         }
     }
 }
