@@ -11,7 +11,7 @@
         @foreach (var b in Model.Batches)
         {
             <div class="field">
-                <label>@b.BatchName</label>
+                <label>@b.BatchName（ 总数：@b.Count）</label>
                 <input type="number" placeholder="" data-id="@b.Id" required name="sampleCounts" max="@b.Count" min="0"/>
             </div>
         }
