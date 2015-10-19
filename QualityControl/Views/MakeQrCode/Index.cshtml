@@ -22,6 +22,11 @@
 
 
         <a class="ui button blue" href="..@ViewBag.zipurl">二维码打包下载</a>
+        @if (ViewBag.t == 1)
+        {
+            <a class="ui button green" href="/trade/GetQrCode/@ViewBag.tid">确认已经收到所有控制码</a>
+        }
+      
 
         <table class="ui celled table">
             <thead>

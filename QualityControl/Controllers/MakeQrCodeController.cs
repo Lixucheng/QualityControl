@@ -44,6 +44,14 @@ namespace QualityControl.Controllers
             var url = Request.Url.ToString();
             ViewBag.list = listdown;
             MakeQrCodeFinish(tradeid);
+
+            var userId = User.Identity.GetUserId();
+            var user = UserManager.FindById(userId);
+            if (user.Type == (int)EnumUserType.Producer)
+            {
+                ViewBag.t = 1;
+            }
+            ViewBag.tid = tradeid;
             return View();
         }
         
@@ -103,7 +111,7 @@ namespace QualityControl.Controllers
             }
             if (user.Type == (int)EnumUserType.Controller)
             {
-                trade.Status = (int)EnumTradeStatus.SampleStart;
+                trade.Status = (int)EnumTradeStatus.FinishMakeQrCode;
             }
             else
             {

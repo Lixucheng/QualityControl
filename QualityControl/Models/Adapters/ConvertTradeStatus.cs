@@ -34,12 +34,16 @@ namespace QualityControl.Models.Adapters
                 }
                 case (int)EnumTradeStatus.SampleStart:
                 {
-                    return "待抽样";
+                    return "等待抽样";
                 }
                 case (int)EnumTradeStatus.AlreadyApply:
                 {
                     return "合同确认中";
                 }
+                case (int)EnumTradeStatus.FinishMakeQrCode:
+                    {
+                        return "等待生产商接收控制码";
+                    }
             }
             return "";
         }

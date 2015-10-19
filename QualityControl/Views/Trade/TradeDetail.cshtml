@@ -276,8 +276,11 @@
         </div>
     }
 
-    if (Model.Status >= (int) EnumTradeStatus.SampleStart)
-    {
+     
+
+
+          if (Model.Status >= (int)EnumTradeStatus.SampleStart)
+          {
         <div class="ui segment">
             <p class="am-cf">
                 <span>制码完成，开始抽样</span>
@@ -289,8 +292,24 @@
         </div>
     }
 }
+   @if (Model.Status == (int)EnumTradeStatus.FinishMakeQrCode)
+    {
+    <div class="ui segment">
+        <p class="am-cf">
+            @{if (user.Type == (int)EnumUserType.Producer)
+                {
+                    <span>请查看并确认</span>
+                     <a href="/MakeQrCode/index?tradeid=@Model.Id" class="am-fr primary ui button">查看</a>
+                }
+                else
+                {
+                    <span>制码已结束，等待生产商确认接收</span>
+                }
+            }
 
-
+        </p>
+    </div>
+    }
 
 
 @if (Model.Status >= (int) EnumTradeStatus.SampleReceived)

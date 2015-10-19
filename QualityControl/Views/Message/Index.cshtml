@@ -38,6 +38,7 @@
         <tr>
             <th style="text-align: center">内容</th>
 
+            <th style="text-align: center">时间</th>
             @if (ViewBag.s == 0)
             {
                 <th>操作</th>
@@ -56,7 +57,7 @@
             {
                 <tr>
                     <td style="text-align: center">@Tempx.Content</td>
-
+                    <td style="text-align: center">@Tempx.Time</td>
                     @if (ViewBag.s == 0)
                     {
                         <td>

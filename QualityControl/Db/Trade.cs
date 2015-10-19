@@ -81,11 +81,12 @@ namespace QualityControl.Db
         /// </summary>
         MakeQrCode,
 
-        ///// <summary>
-        /////   结束制码
-        ///// </summary>
-        //FinishMakeQrCode,
+        /// <summary>
+        ///   结束制码
+        /// </summary>
+        FinishMakeQrCode,
 
+    
 
         /// <summary>
         ///     抽样开始

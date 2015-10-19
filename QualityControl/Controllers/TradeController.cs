@@ -325,5 +325,29 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
             return RedirectToAction("TradeDetail", new { id = id });
         }
+
+        public ActionResult GetQrCode(long id)
+        {
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return Content("错误操作");
+            }
+            var userId = User.Identity.GetUserId();
+            var user = UserManager.FindById(userId);
+            if (user.Type != (int)EnumUserType.Producer)
+            {
+
+                return Content("错误操作");
+            }
+            if(trade.Status!=(int)EnumTradeStatus.FinishMakeQrCode)
+            {
+                return Content("错误操作");
+            }
+            trade.Status = (int)EnumTradeStatus.SampleStart;
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return RedirectToAction("TradeDetail", new { id = id });
+        }
     }
 }
