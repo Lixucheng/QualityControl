@@ -62,6 +62,21 @@ namespace QualityControl.Db
         Create,
 
         /// <summary>
+        /// 产品信息完善完成
+        /// </summary>
+        ProductInfoChecked,
+        
+        /// <summary>
+        /// 产品信息审核完成
+        /// </summary>
+        ProductInfoConfirmed,
+
+        /// <summary>
+        /// 批次选择完毕
+        /// </summary>
+        BatchSelected,
+
+        /// <summary>
         ///     申请完成
         /// </summary>
         AlreadyApply,

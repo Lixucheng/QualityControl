@@ -7,7 +7,10 @@ using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using QualityControl.Db;
 using QualityControl.Enum;
+using QualityControl.Migrations;
+using QualityControl.Models;
 using QualityControl.Models.Adapters;
+using Trade = QualityControl.Db.Trade;
 
 namespace QualityControl.Controllers
 {
@@ -21,6 +24,162 @@ namespace QualityControl.Controllers
             return View();
         }
 
+        /// <summary>
+        ///     选择产品
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="ProductTypeId"></param>
+        /// <returns></returns>
+        public ActionResult ChooseProduct(string key = "", long ProductTypeId = 0)
+        {
+            var x = new List<Product>();
+            if (ProductTypeId != 0)
+            {
+                var t = Db.ThirdProductTypes.Find(ProductTypeId);
+                if (t == null)
+                {
+                    throw new Exception("访问错误");
+                }
+                x = t.Products;
+                ViewBag.list = x;
+                return View();
+            }
+            if (!string.IsNullOrEmpty(key))
+                x = Db.Products.Where(e => e.Name.Contains(key)).ToList();
+            x = Db.Products.Take(20).ToList();
+            ViewBag.list = x;
+            return View();
+        }
+
+        /// <summary>
+        /// 选择完产品
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult ProductChosen(long id)
+        {
+            var userid = User.Identity.GetUserId();
+            var p = Db.Products.Find(id);
+            var pStr = new ProductCopy(p);
+            var trade = new Trade
+            {
+                Product = JsonConvert.SerializeObject(pStr),
+                CeateTime = DateTime.Now,
+                FinishTime = DateTime.Now,
+                SamplingDate = DateTime.Now,
+                DetectingDate = DateTime.Now,
+                UserId = userid,
+                Status = (int)EnumTradeStatus.Create,
+                SGSPaied = false,
+                ManufacturerId = p.UserId
+            };
+            Db.Trades.Add(trade);
+            Db.SaveChanges();
+            return RedirectToAction("TradeDetail", new {id = trade.Id});
+        }
+
+
+        /// <summary>
+        /// 确认产品信息完善
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult ProductInfoChecked(long id)
+        {
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return Content("错误操作");
+            }
+            var userid = User.Identity.GetUserId();
+            if (trade.ManufacturerId != userid)
+            {
+                return Content("错误操作");
+            }
+            trade.Status = (int)EnumTradeStatus.ProductInfoChecked;
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return RedirectToAction("TradeDetail", new { id = trade.Id });
+        }
+
+        /// <summary>
+        /// 审核产品信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult ProductInfoConfirmed(long id)
+        {
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return Content("错误操作");
+            }
+            var userid = User.Identity.GetUserId();
+            var user = UserManager.FindById(userid);
+            if (user.Type != (int)EnumUserType.Controller)
+            {
+                return Content("错误操作");
+            }
+            trade.Status = (int)EnumTradeStatus.ProductInfoConfirmed;
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return RedirectToAction("TradeDetail", new { id = trade.Id });
+        }
+
+        /// <summary>
+        /// 选择批次
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult BatchSelect(long id)
+        {
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return Content("错误操作");
+            }
+            if (User.Identity.GetUserId() != trade.UserId)
+            {
+                return Content("错误操作");
+            }
+            var p = Db.Products.Find(JsonConvert.DeserializeObject<ProductCopy>(trade.Product).Id);
+            var list = p.BaseProductBatchs;
+            ViewBag.list = list;
+            ViewBag.p = p;
+            return View();
+        }
+
+
+        /// <summary>
+        /// 选择批次
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult BatchSelected(long id, List<long> batchIds)
+        {
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return Content("错误操作");
+            }
+            var userid = User.Identity.GetUserId();
+            var user = UserManager.FindById(userid);
+            if (user.Type != (int)EnumUserType.Controller)
+            {
+                return Content("错误操作");
+            }
+            trade.Status = (int)EnumTradeStatus.ProductInfoConfirmed;
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return RedirectToAction("TradeDetail", new { id = trade.Id });
+        }
+
+
+        /// <summary>
+        /// 交易列表
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Trades()
         {
             return View(Db.Trades.Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo
@@ -349,5 +508,7 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
             return RedirectToAction("TradeDetail", new { id = id });
         }
+
+        
     }
 }

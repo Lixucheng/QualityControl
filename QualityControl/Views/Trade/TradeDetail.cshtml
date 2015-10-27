@@ -23,7 +23,7 @@
             状态:
             @if (Model.Status == (int) EnumTradeStatus.Create)
             {
-                <span>成功添加订单，等待控制中心制作方案</span>
+                <span>等待生产商完善产品信息</span>
             }
             else if (Model.Status == (int) EnumTradeStatus.AlreadyApply)
             {
@@ -117,12 +117,25 @@
     {
         <div class="ui segment">
             <p class="am-cf">
+                <span>等待生产商完善产品信息</span>
+                @if (user.Id == Model.ManufacturerId)
+                {
+                    <a href="/Product/CompanyProductInfo/@product.Id" class="am-fr teal ui button">完善产品信息</a>
+                    <a href="/Trade/ProductInfoChecked/@Model.Id" class="am-fr primary ui button">确认产品信息完善</a>
+                }
+            </p>
+        </div>
+    }
+
+    if (Model.Status == (int) EnumTradeStatus.ProductInfoConfirmed)
+    {
+        <div class="ui segment">
+            <p class="am-cf">
                 <span>等待控制中心制作方案</span>
                 @if (user.Type == (int) EnumUserType.Controller)
                 {
                     <a href="/DetectionScheme/BuildDetectionScheme?tradeId=@Model.Id" class="am-fr primary ui button">制作检测方案</a>
                 }
-
             </p>
         </div>
     }
