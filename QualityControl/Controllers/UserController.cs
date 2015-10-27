@@ -39,14 +39,10 @@ namespace QualityControl.Controllers
                 ViewBag.list = x;
                 return View();
             }
-
             if (!string.IsNullOrEmpty(key))
                 x = Db.Products.Where(e => e.Name.Contains(key)).ToList();
-
             x = Db.Products.Take(20).ToList();
             ViewBag.list = x;
-
-
             return View();
         }
 
@@ -73,7 +69,6 @@ namespace QualityControl.Controllers
         public ActionResult Choose(long productId, List<long> batchIds)
         {
             var userid = User.Identity.GetUserId();
-            UserManager.FindById(userid);
             var p = Db.Products.Find(productId);
             if (p == null)
             {

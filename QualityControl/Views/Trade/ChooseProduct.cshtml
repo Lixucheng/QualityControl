@@ -143,7 +143,6 @@
                     <option value="0">停产</option>
                 </select>
             </div>
-
         </form>
 
     </div>
@@ -232,7 +231,7 @@
         function Choose(id) {
             var r = confirm("确认选择？");
             if (r == true) {
-                top.location = "../User/ChooseProductBatchs?pid=" + id;
+                top.location = "/Trade/ProductChosen/" + id;
             } else {
 
             }
