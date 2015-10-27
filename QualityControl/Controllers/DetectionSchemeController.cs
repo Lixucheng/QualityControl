@@ -125,6 +125,7 @@ namespace QualityControl.Controllers
             ViewBag.list = trade.Batches;
             return View();
         }
+
         public JsonResult GetLevel(long tradeid, int s2)
         {
             var trade = Db.Trades.Find(tradeid);
@@ -133,6 +134,16 @@ namespace QualityControl.Controllers
             return Json(l);
         }
 
+        public bool SetLevel(long id, int s2)
+        {
+            var r = Db.Trades.Find(id);
+            var b = r.Batches;
+            var levelconvert = new ConvertLevel();    
+            b.ForEach(e => {
+                e.Level = levelconvert.GetLevel(e.Count, s2);
+            });
+            return true;
+        }
 
         public ActionResult SignContract(long tradeid)
         {
@@ -255,7 +266,7 @@ namespace QualityControl.Controllers
         /// <param name="time"></param>
         /// <returns></returns>
         public JsonResult SendDetectionScheme(long tradeid, double quser, double qother, int time, int l1, int l2,
-            string l3, long sgsid)
+             long sgsid)
         {
             var trade = Db.Trades.Find(tradeid);
             var sgsuserid = Db.SGSs.Find(sgsid).UserId;
@@ -264,7 +275,7 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
 
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.未发送);
-            x.Level = JsonConvert.SerializeObject(new {l1, l2, l3});
+            x.Level = JsonConvert.SerializeObject(new {l1, l2});
             x.UserQuote = quser;
             x.OrganQuote = qother;
             x.Time = time;
@@ -277,6 +288,7 @@ namespace QualityControl.Controllers
             return Json(1);
         }
 
+     
 
         /// <summary>
         ///     签合同

@@ -77,9 +77,7 @@
                                 <option value='4'>S-4</option>"
                             </select>
                         </div>
-                        <div class="ui segment" align="center">
-                            <h1 id="s3">A</h1>
-                        </div>
+                       
                     </div>
                 </div>
 
@@ -164,7 +162,7 @@
             $.ajax({
                 url: '../DetectionScheme/SendDetectionScheme',
                 type: 'post',
-                data: { Tradeid: c, quser: q1, qother: q2, time: time, l1: $("#s1").val(), l2: $("#s2").val(), l3: $("#s3").html(), sgsid: $("#sgs").val() },
+                data: { Tradeid: c, quser: q1, qother: q2, time: time, l1: $("#s1").val(), l2: $("#s2").val(), sgsid: $("#sgs").val() },
 
                 error: function() {
                     alert('error');
@@ -193,7 +191,7 @@
             $("#s2").html(s);
         });
 
-        $("#s2").change(function() {
+        @*$("#s2").change(function() {
             var s2 = $(this).val();
 
             $.ajax({
@@ -208,6 +206,6 @@
                     $("#s3").html(data);
                 }
             });
-        });
+        });*@
     </script>
 }
