@@ -136,6 +136,10 @@ namespace QualityControl.Controllers
             {
                 throw new Exception("访问错误！");
             }
+            if(trade.Status!=(int)EnumTradeStatus.FinishMakeQrCode)
+            {
+                throw new Exception("访问错误！");
+            }
             var listdown = new List<ListB>();
             var list = trade.Batches;
             list.ForEach(e =>
