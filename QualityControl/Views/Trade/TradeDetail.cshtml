@@ -328,7 +328,7 @@
             @{if (user.Type == (int)EnumUserType.Producer)
                 {
                     <span>请查看并确认</span>
-                     <a href="/MakeQrCode/index?tradeid=@Model.Id" class="am-fr primary ui button">查看</a>
+                     <a href="/MakeQrCode/MakeNo/@Model.Id" class="am-fr primary ui button">查看</a>
                      <a href="/Upload/index?tradeid=@Model.Id" class="am-fr primary ui button">贴码完成确认</a>
                 }
                 else

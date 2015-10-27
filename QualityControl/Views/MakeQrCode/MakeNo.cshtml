@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "MakeNo";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="am-margin am-padding">
+    <div class="ui container">
+        <div class="row">
+            <div class="column">
+                <div class="ui message">
+                    <h1 class="ui header">下载控制码</h1>
+                    @{
+                        var l = Model + ".xls";
+                        <a download="" id="sub" href='/Excel/@l' class="ui teal button">下载</a>
+                    }
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
