@@ -40,6 +40,8 @@ namespace QualityControl.Db
 
         public string SampleRecevied { get; set; }
 
+        public string Files { get; set; }
+
         /// <summary>
         ///     协议内容
         /// </summary>
@@ -86,7 +88,10 @@ namespace QualityControl.Db
         /// </summary>
         FinishMakeQrCode,
 
-    
+        /// <summary>
+        /// 贴码结束
+        /// </summary>
+        Sticked,
 
         /// <summary>
         ///     抽样开始

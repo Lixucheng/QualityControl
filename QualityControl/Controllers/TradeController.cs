@@ -177,27 +177,7 @@ namespace QualityControl.Controllers
             return RedirectToAction("TradeDetail", new {id});
         }
 
-        public bool MakeQrCodeFinish(long id)
-        {
-            var userId = User.Identity.GetUserId();
-            var user = Db.Users.Find(userId);
-            var trade = Db.Trades.Find(id);
-            if (trade == null)
-            {
-                return false;
-            }
-            if (user.Type == (int) EnumUserType.Controller)
-            {
-                trade.Status = (int) EnumTradeStatus.SampleStart;
-            }
-            else
-            {
-                return false;
-            }
-            Db.Entry(trade).State = EntityState.Modified;
-            Db.SaveChanges();
-            return true;
-        }
+      
 
         public ActionResult TradeDetail(long id)
         {

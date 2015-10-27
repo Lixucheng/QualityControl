@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Uploader";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model QualityControl.Db.Trade
+@section head{
+  
+      
+    <link href="~/Scripts/bower_components/fex-webuploader/dist/webuploader.css" rel="stylesheet" />
+    <link href="~/Content/UpCss.css" rel="stylesheet" />
+      }
+<div class="am-margin am-padding">
+    <div class="ui container">
+        <div class="row">
+            <div class="column">
+                <div class="ui message">
+                    <h1 class="ui header">确认贴码完成以及文件上传</h1>
+
+
+                    <div id="uploader" class="wu-example">
+                        <!--用来存放文件信息-->
+                        <div id="thelist" class="uploader-list"></div>
+                        <div class="btns">
+                            <div id="picker">选择文件</div>
+                            <button id="ctlBtn" class="btn btn-default">开始上传</button>
+                        </div>
+                    </div>
+                 
+                    <a href="/Trade/SampleReceive/@Model.Id" class="ui teal button">确认</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script src="~/Scripts/bower_components/fex-webuploader/dist/webuploader.js"></script>
+<script src="~/Scripts/UpStart.js"></script>
+    }
