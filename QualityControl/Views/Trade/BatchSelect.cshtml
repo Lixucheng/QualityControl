@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "ChooseProductBatchs";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@section head{
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+
+
+    <style>
+        .main-container {
+            background-color: #FFFFFF;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            margin: 0em auto;
+            padding: 2em 2em 7em;
+            z-index: 1;
+        }
+    </style>
+}
+
+<div class="main-container">
+    <h2 class="ui dividing header">
+        产品批次选择：@ViewBag.p.Name
+        <a class="anchor" id="types"></a>
+    </h2>
+
+
+    <form method="post" action="">
+        <input type="hidden" value="@ViewBag.p.Id" name="productId" />
+        <table class="ui compact celled  table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>名称</th>
+                    <th>数量</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (ViewBag.count == 0)
+            {
+            }
+            else
+            {
+                foreach (var Tempx in ViewBag.list)
+                {
+                        <tr>
+                            <td class="collapsing">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" name="batchIds" value="@Tempx.Id">
+                                </div>
+                            </td>
+                            <td>@Tempx.BatchName</td>
+                            <td>@Tempx.Count</td>
+
+
+                        </tr>
+                    }
+                }
+
+            </tbody>
+            <tfoot class="full-width">
+                <tr>
+                    <th></th>
+                    <th colspan="4">
+                        <div class="ui right floated small primary labeled  button" onclick="sub()">
+                            确定选择
+                        </div>
+
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+    </form>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.ui.checkbox').checkbox();
+            $('table').DataTable({
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                    "sInfoEmpty": "共 0 项",
+
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+
+                },
+                "bLengthChange": false
+            });
+        });
+
+        function sub() {
+            var r = confirm("确认选择？");
+            if (r == true) {
+                $('form').submit();
+            }
+
+        }
+
+
+    </script>
+}

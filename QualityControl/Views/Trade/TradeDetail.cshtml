@@ -25,13 +25,13 @@
             {
                 <span>等待生产商完善产品信息</span>
             }
-            else if (Model.Status == (int)EnumTradeStatus.AlreadyApply)
+            else if (Model.Status == (int) EnumTradeStatus.AlreadyApply)
             {
                 var m = Model.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存);
                 var c = m.Contracts.Where(e => e.Status == EnumContractStatus.已签定).ToList();
-                if (m.Status == EnumDetectionSchemeStatus.已发送待双方确定&&c.Count==1)
+                if (m.Status == EnumDetectionSchemeStatus.已发送待双方确定 && c.Count == 1)
                 {
-                    if(c.First().UserId==m.Trade.UserId)
+                    if (c.First().UserId == m.Trade.UserId)
                     {
                         <span>方案合同已发送，等待检测中心签订</span>
                     }
@@ -46,7 +46,7 @@
                 }
 
             }
-            else if (Model.Status == (int)EnumTradeStatus.Signed)
+            else if (Model.Status == (int) EnumTradeStatus.Signed)
             {
                 <span>合同已经签订，等待制码</span>
             }
@@ -76,6 +76,7 @@
             }
         </div>
     </div>
+}
     <div class="verborder">
         <div class="ui raised segment">
             <div class="am-cf">
@@ -129,7 +130,7 @@
         </div>
     </div>
 
-    if (Model.Status == (int) EnumTradeStatus.Create)
+    @if (Model.Status == (int)EnumTradeStatus.Create)
     {
         <div class="ui segment">
             <p class="am-cf">
@@ -142,22 +143,52 @@
             </p>
         </div>
     }
-
-    if (Model.Status == (int) EnumTradeStatus.ProductInfoConfirmed)
+    @if (Model.Status == (int)EnumTradeStatus.ProductInfoChecked)
     {
         <div class="ui segment">
             <p class="am-cf">
-                <span>等待控制中心制作方案</span>
-                @if (user.Type == (int) EnumUserType.Controller)
+                <span>生产商已经完善产品信息，等待控制中心审核信息</span>
+                @if (user.Type == (int)EnumUserType.Controller)
                 {
-                    <a href="/DetectionScheme/BuildDetectionScheme?tradeId=@Model.Id" class="am-fr primary ui button">制作检测方案</a>
+                    <a href="/Admin/Check/CompanyProduct" class="am-fr teal ui button">去审核产品信息</a>
+                    <a href="/Trade/ProductInfoConfirmed/@Model.Id" class="am-fr primary ui button">确认产品信息完善</a>
                 }
             </p>
         </div>
     }
-    if (Model.Status >= (int) EnumTradeStatus.AlreadyApply)
+
+
+    @if (Model.Status == (int) EnumTradeStatus.ProductInfoConfirmed)
     {
-        if (user.Type == (int) EnumUserType.User || user.Type == (int) EnumUserType.Controller)
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>产品信息已经确定，等待用户选择批次信息</span>
+                @if (user.Id == Model.UserId)
+                {
+                    <a href="/Trade/BatchSelect?id=@Model.Id" class="am-fr primary ui button">选择批次信息</a>
+                }
+            </p>
+        </div>
+    }
+
+@if (user.Type != (int)EnumUserType.Producer)
+{
+
+    if (Model.Status == (int)EnumTradeStatus.BatchSelected)
+    {
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>批次信息已经选择，等待控制中心制作方案</span>
+                @if (user.Type == (int)EnumUserType.Controller)
+                {
+                    <a href="/DetectionScheme/BuildDetectionScheme?tradeid=@Model.Id" class="am-fr primary ui button">制作方案</a>
+                }
+            </p>
+        </div>
+    }
+    if (Model.Status >= (int)EnumTradeStatus.AlreadyApply)
+    {
+        if (user.Type == (int)EnumUserType.User || user.Type == (int)EnumUserType.Controller)
         {
             <div class="ui segments">
                 <div class="ui segment">
