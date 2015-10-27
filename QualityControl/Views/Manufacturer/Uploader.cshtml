@@ -27,7 +27,10 @@
                         </div>
                     </div>
                  
-                    <a href="/Trade/SampleReceive/@Model.Id" class="ui teal button">确认</a>
+                    <form id="form" action="/Manufacturer/Uploader" method="post" style="display:none"> 
+                      <input name="id" value="@Model.Id" type="hidden"/>
+                    </form>
+                    <button id="sub" class="ui teal button">确认</button>
                 </div>
             </div>
         </div>
@@ -37,4 +40,7 @@
 @section scripts{
 <script src="~/Scripts/bower_components/fex-webuploader/dist/webuploader.js"></script>
 <script src="~/Scripts/UpStart.js"></script>
+    <script>
+      
+    </script>
     }
