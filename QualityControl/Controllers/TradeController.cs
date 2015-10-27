@@ -156,20 +156,41 @@ namespace QualityControl.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult BatchSelected(long id, List<long> batchIds)
+        [HttpPost]
+        public ActionResult BatchSelect(long id, List<long> batchIds)
         {
             var trade = Db.Trades.Find(id);
-            if (trade == null)
+            var userid = User.Identity.GetUserId(); 
+            if (trade == null || trade.Status != (int)EnumTradeStatus.ProductInfoConfirmed || trade.UserId != userid)
             {
                 return Content("错误操作");
             }
-            var userid = User.Identity.GetUserId();
-            var user = UserManager.FindById(userid);
-            if (user.Type != (int)EnumUserType.Controller)
+            var p = Db.Products.Find(JsonConvert.DeserializeObject<ProductCopy>(trade.Product).Id);
+            if (p == null)
             {
-                return Content("错误操作");
+                throw new Exception("访问错误！");
             }
-            trade.Status = (int)EnumTradeStatus.ProductInfoConfirmed;
+            var batches = new List<ProductBatch>();
+            foreach (var item in batchIds)
+            {
+                var batch = p.BaseProductBatchs.FirstOrDefault(a => a.Id == item);
+                if (batch == null)
+                {
+                    throw new Exception("访问错误！");
+                }
+                var pb = new ProductBatch
+                {
+                    BatchName = batch.BatchName,
+                    Count = batch.Count,
+                    ProductId = batch.ProductId
+                };
+
+                batches.Add(pb);
+            }
+            var pStr = new ProductCopy(p);
+            trade.Product = JsonConvert.SerializeObject(pStr);
+            trade.Status = (int) EnumTradeStatus.BatchSelected;
+            trade.Batches = batches;
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
             return RedirectToAction("TradeDetail", new { id = trade.Id });
