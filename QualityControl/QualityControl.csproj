@@ -199,6 +199,7 @@
     <Compile Include="Controllers\ManufacturerController.cs" />
     <Compile Include="Controllers\SGSController.cs" />
     <Compile Include="Controllers\TradeController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Db\CheckLevel.cs" />
     <Compile Include="Db\Company.cs" />
@@ -361,6 +362,10 @@
     <Compile Include="Migrations\201510181027151_TradeAddSampleReceived.Designer.cs">
       <DependentUpon>201510181027151_TradeAddSampleReceived.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510270449561_file.cs" />
+    <Compile Include="Migrations\201510270449561_file.Designer.cs">
+      <DependentUpon>201510270449561_file.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\ConvertTradeStatus.cs" />
@@ -385,6 +390,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\common.css" />
     <Content Include="Content\layout.css" />
+    <Content Include="Content\UpCss.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -399,6 +405,81 @@
     <Content Include="Areas\Admin\Views\Check\SGS.cshtml" />
     <Content Include="Areas\Admin\Views\Check\CompanyProduct.cshtml" />
     <None Include="Properties\PublishProfiles\pub.pubxml" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\Uploader.swf" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.css" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.custom.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.custom.min.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.fis.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.flashonly.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.flashonly.min.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.html5only.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.html5only.min.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.min.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.noimage.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.noimage.min.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.nolog.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.nolog.min.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.withoutimage.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\webuploader.withoutimage.min.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\Gruntfile.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\base.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\dollar-builtin.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\dollar-third.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\dollar.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\file.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\lib\blob.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\lib\dnd.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\lib\file.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\lib\filepaste.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\lib\filepicker.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\lib\image.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\lib\md5.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\lib\transport.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\mediator.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\preset\all.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\preset\flashonly.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\preset\html5only.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\preset\withoutimage.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\promise-builtin.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\promise-third.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\promise.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\queue.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\client.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\compbase.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\flash\blob.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\flash\filepicker.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\flash\image.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\flash\md5.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\flash\runtime.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\flash\transport.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\androidpatch.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\blob.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\dnd.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\filepaste.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\filepicker.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\image.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\imagemeta.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\imagemeta\exif.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\jpegencoder.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\md5.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\runtime.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\transport.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\html5\util.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\runtime\runtime.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\uploader.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\webuploader.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\widgets\filednd.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\widgets\filepaste.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\widgets\filepicker.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\widgets\image.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\widgets\log.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\widgets\md5.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\widgets\queue.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\widgets\runtime.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\widgets\upload.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\widgets\validator.js" />
+    <Content Include="Scripts\bower_components\fex-webuploader\src\widgets\widget.js" />
     <Content Include="Scripts\bower_components\font-awesome\.bower.json" />
     <Content Include="Scripts\bower_components\font-awesome\.gitignore" />
     <Content Include="Scripts\bower_components\font-awesome\.npmignore" />
@@ -808,6 +889,12 @@
     <Content Include="Scripts\bower_components\way.js\bower.json" />
     <Content Include="Scripts\bower_components\way.js\package.json" />
     <Content Include="Scripts\bower_components\way.js\README.md" />
+    <Content Include="Scripts\bower_components\fex-webuploader\.bower.json" />
+    <Content Include="Scripts\bower_components\fex-webuploader\bower.json" />
+    <Content Include="Scripts\bower_components\fex-webuploader\dist\README.md" />
+    <Content Include="Scripts\bower_components\fex-webuploader\LICENSE" />
+    <Content Include="Scripts\bower_components\fex-webuploader\package.json" />
+    <Content Include="Scripts\bower_components\fex-webuploader\README.md" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bower_components\font-awesome\css\font-awesome.css" />
     <Content Include="Scripts\bower_components\font-awesome\css\font-awesome.min.css" />
@@ -1166,6 +1253,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\UpStart.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -1244,6 +1332,7 @@
     <Content Include="Views\Trade\MakeReport.cshtml" />
     <Content Include="Views\Product\SecondTypeIndex.cshtml" />
     <Content Include="Views\DetectionScheme\SeeDetectionScheme.cshtml" />
+    <Content Include="Views\Manufacturer\Uploader.cshtml" />
     <Content Include="Views\Trade\ChooseProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1254,6 +1343,7 @@
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\Upload\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -1371,6 +1461,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510181027151_TradeAddSampleReceived.resx">
       <DependentUpon>201510181027151_TradeAddSampleReceived.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510270449561_file.resx">
+      <DependentUpon>201510270449561_file.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

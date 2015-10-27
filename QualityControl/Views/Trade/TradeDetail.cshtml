@@ -25,12 +25,28 @@
             {
                 <span>等待生产商完善产品信息</span>
             }
-            else if (Model.Status == (int) EnumTradeStatus.AlreadyApply)
+            else if (Model.Status == (int)EnumTradeStatus.AlreadyApply)
             {
-                var x = Model.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存).Status;
-                <span>方案 @x</span>
+                var m = Model.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存);
+                var c = m.Contracts.Where(e => e.Status == EnumContractStatus.已签定).ToList();
+                if (m.Status == EnumDetectionSchemeStatus.已发送待双方确定&&c.Count==1)
+                {
+                    if(c.First().UserId==m.Trade.UserId)
+                    {
+                        <span>方案合同已发送，等待检测中心签订</span>
+                    }
+                    else if (c.First().UserId == m.Trade.SgsUserId)
+                    {
+                        <span>方案合同已发送，等待用户签订</span>
+                    }
+                }
+                else
+                {
+                    <span>方案合同 @m.Status</span>
+                }
+
             }
-            else if (Model.Status == (int) EnumTradeStatus.Signed)
+            else if (Model.Status == (int)EnumTradeStatus.Signed)
             {
                 <span>合同已经签订，等待制码</span>
             }
@@ -313,6 +329,7 @@
                 {
                     <span>请查看并确认</span>
                      <a href="/MakeQrCode/index?tradeid=@Model.Id" class="am-fr primary ui button">查看</a>
+                     <a href="/Upload/index?tradeid=@Model.Id" class="am-fr primary ui button">贴码完成确认</a>
                 }
                 else
                 {
