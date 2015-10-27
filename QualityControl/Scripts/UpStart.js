@@ -5,7 +5,7 @@ jQuery(function () {
         $btn = $('#ctlBtn'),
         state = 'pending',
         uploader;
-
+    var c = 0;
     uploader = WebUploader.create({
 
         // 不压缩image
@@ -48,8 +48,12 @@ jQuery(function () {
         $percent.css('width', percentage * 100 + '%');
     });
 
-    uploader.on('uploadSuccess', function (file) {
+    uploader.on('uploadSuccess', function (file, response) {
         $('#' + file.id).find('p.state').text('已上传');
+        c++;
+
+        $("#form").append("<input type='radio' name='list' value=" + response.file_path + " checked/>");
+      
     });
 
     uploader.on('uploadError', function (file) {
@@ -83,6 +87,14 @@ jQuery(function () {
             uploader.upload();
         }
     });
+
+    $("#sub").click(function () {
+        if(c==0)
+        {
+            alert("请上传文件!");
+        }
+        $("form").submit();
+    })
 });
 
 
