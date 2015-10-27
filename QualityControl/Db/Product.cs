@@ -122,6 +122,8 @@ namespace QualityControl.Db
         public int SampleCount { get; set; }
 
         public virtual Trade Trade { get; set; }
+        public string Level { get; set; } //检查级别for example abcd
+
 
         public string SamplaListJson { get; set; }
     }

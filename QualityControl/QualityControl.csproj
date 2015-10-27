@@ -370,6 +370,10 @@
     <Compile Include="Migrations\201510270449561_file.Designer.cs">
       <DependentUpon>201510270449561_file.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510270852016_level.cs" />
+    <Compile Include="Migrations\201510270852016_level.Designer.cs">
+      <DependentUpon>201510270852016_level.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\ConvertTradeStatus.cs" />
@@ -1470,6 +1474,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510270449561_file.resx">
       <DependentUpon>201510270449561_file.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510270852016_level.resx">
+      <DependentUpon>201510270852016_level.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
