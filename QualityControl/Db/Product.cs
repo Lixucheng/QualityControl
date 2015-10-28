@@ -17,7 +17,70 @@ namespace QualityControl.Db
         [Required]
         public string Name { get; set; }
 
-        [Required]
+        /// <summary>
+        /// 保质期
+        /// </summary>
+        public string ShelfLife { get; set; }
+
+        public string Brand { get; set; }
+
+        /// <summary>
+        /// 等级
+        /// </summary>
+        public string Grade { get; set; }
+
+        /// <summary>
+        /// 净含量
+        /// </summary>
+        public string Weight { get; set; }
+
+        /// <summary>
+        /// 配料表
+        /// </summary>
+        public string Ingredients { get; set; }
+
+
+
+        /// <summary>
+        /// 储存条件
+        /// </summary>
+        public string StorageCondition { get; set; }
+
+        /// <summary>
+        /// 包装说明
+        /// </summary>
+        public string Packing { get; set; }
+
+        /// <summary>
+        /// 包装材料
+        /// </summary>
+        public string PackingMaterial { get; set; }
+
+        /// <summary>
+        /// 许可类别
+        /// </summary>
+        public string PermissionType { get; set; }
+
+        /// <summary>
+        /// 材料
+        /// </summary>
+        public string Material { get; set; }
+
+        /// <summary>
+        /// 产品图片
+        /// </summary>
+        public string Image { get; set; }
+
+        /// <summary>
+        /// 上传材料
+        /// </summary>
+        public string File { get; set; }
+
+        /// <summary>
+        /// 授权企业
+        /// </summary>
+        public string EmpowerEnterprise { get; set; }
+
         public float Price { get; set; }
 
         public virtual ThirdProductType Type { get; set; }
@@ -32,7 +95,7 @@ namespace QualityControl.Db
         public string ProductionCertificateNo { get; set; } //生产许可证编号
 
         [Required]
-        public string GetDate { get; set; } //颁发日期
+        public string GetDate { get; set; } //到期日期
 
         [Required]
         public string Standard { get; set; } //执行标准
@@ -140,5 +203,7 @@ namespace QualityControl.Db
         public string BatchName { get; set; }
 
         public int Count { get; set; }
+
+        public string ProductionDate { get; set; }
     }
 }
