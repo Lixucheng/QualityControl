@@ -7,12 +7,13 @@ jQuery(function () {
         uploader;
     var c = 0;
     uploader = WebUploader.create({
+        auto: true,
 
         // 不压缩image
         resize: false,
 
         // swf文件路径
-        swf:"~/Scripts/bower_components/fex-webuploader/dist/Uploader.swf",
+        swf: "~/Scripts/bower_components/fex-webuploader/dist/Uploader.swf",
 
         // 文件接收服务端。
         server: '/Upload/Index',
@@ -50,10 +51,7 @@ jQuery(function () {
 
     uploader.on('uploadSuccess', function (file, response) {
         $('#' + file.id).find('p.state').text('已上传');
-        c++;
-
-        $("#form").append("<input type='radio' name='list' value=" + response.file_path + " checked/>");
-      
+        files.push(response.file_path);
     });
 
     uploader.on('uploadError', function (file) {
@@ -80,21 +78,15 @@ jQuery(function () {
         }
     });
 
-    $btn.on('click', function () {
-        if (state === 'uploading') {
-            uploader.stop();
-        } else {
-            uploader.upload();
-        }
-    });
+    //$btn.on('click', function () {
+    //    if (state === 'uploading') {
+    //        uploader.stop();
+    //    } else {
+    //        uploader.upload();
+    //    }
+    //});
 
-    $("#sub").click(function () {
-        if(c==0)
-        {
-            alert("请上传文件!");
-        }
-        $("form").submit();
-    })
+   
 });
 
 
@@ -119,11 +111,10 @@ jQuery(function () {
         auto: true,
 
         // swf文件路径
-        swf: + '/js/Uploader.swf',
+        swf: "~/Scripts/bower_components/fex-webuploader/dist/Uploader.swf",
 
         // 文件接收服务端。
-        server: 'http://webuploader.duapp.com/server/fileupload.php',
-
+        server: '/Upload/Index',
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
         pick: '#filePicker',
@@ -175,8 +166,9 @@ jQuery(function () {
     });
 
     // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-    uploader.on('uploadSuccess', function (file) {
+    uploader.on('uploadSuccess', function (file,response) {
         $('#' + file.id).addClass('upload-state-done');
+        images.push(response.file_path);
     });
 
     // 文件上传失败，现实上传出错。

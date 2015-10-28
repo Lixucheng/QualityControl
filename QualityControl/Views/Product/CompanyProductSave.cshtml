@@ -4,52 +4,193 @@
 @model QualityControl.Db.Product
 @section head{
     <title>企业产品信息</title>
+<link href="~/Scripts/bower_components/fex-webuploader/dist/webuploader.css" rel="stylesheet" />
+<link href="~/Content/UpCss.css" rel="stylesheet" />
 }
 
 <div class="am-margin-lg am-padding-lg ui center aligned container">
     <div class="am-padding-horizontal-lg">
         <div class="am-padding-horizontal-lg">
-            <form class="ui form segment" method="post" action="/Product/CompanyProductSaveAction">
+            <form id="form" class="ui form segment" method="post" action="/Product/CompanyProductSaveAction">
                 <input name="id" type="hidden" value="@(Model != null ? Model.Id.ToString() : "0")">
                 <h2>企业产品信息</h2>
                 <div class="two fields">
                     <div class="field">
                         <label>产品名称</label>
-                        <input placeholder="产品名称" name="Name" type="text" value="@(Model != null ? Model.Name : "")">
+                        <input required placeholder="产品名称" name="Name" type="text" value="@(Model != null ? Model.Name : "")">
                     </div>
                     <div class="field">
-                        <label>价格</label>
-                        <input placeholder="价格" name="Price" type="number" value='@(Model != null ? Model.Price.ToString() : "")'>
+                        <label>品牌</label>
+                        <input required placeholder="品牌" name="Brand" type="text" value='@(Model != null ? Model.Brand : "")'>
                     </div>
+                </div>
+
+                <div class="field">
+                    <label>授权企业</label>
+                    <input required placeholder="授权企业" name="EmpowerEnterprise" type="text" value="@(Model != null ? Model.EmpowerEnterprise : "")">
                 </div>
 
                 @Html.Action("_ChooseType")
 
                 <div class="field">
                     <label>生产许可证编号</label>
-                    <input placeholder="生产许可证编号" name="ProductionCertificateNo" type="text" value="@(Model != null ? Model.ProductionCertificateNo : "")">
+                    <input required placeholder="生产许可证编号" name="ProductionCertificateNo" type="text" value="@(Model != null ? Model.ProductionCertificateNo : "")">
                 </div>
                 <div class="two fields">
                     <div class="field">
-                        <label>执行标准</label>
-                        <input placeholder="执行标准" name="Standard" type="text" value="@(Model != null ? Model.Standard : "")">
+                        <label>许可类别</label>
+                        <input required placeholder="许可类别" name="PermissionType" type="text" value="@(Model != null ? Model.PermissionType : "")">
                     </div>
                     <div class="field">
-                        <label>颁发日期</label>
-                        <input placeholder="颁发日期" name="GetDate" type="date" value="@(Model != null ? Model.GetDate : "")">
+                        <label>生产许可到期日期</label>
+                        <input required placeholder="生产许可到期日期" name="GetDate" type="date" value="@(Model != null ? Model.GetDate : "")">
                     </div>
                 </div>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label>保质期</label>
+                        <input required placeholder="保质期" name="ShelfLife" type="text" value="@(Model != null ? Model.ShelfLife : "")">
+                    </div>
+                    <div class="field">
+                        <label>执行标准</label>
+                        <input required placeholder="执行标准" name="Standard" type="text" value="@(Model != null ? Model.Standard : "")">
+                    </div>
+                   
+                  
+                </div>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label>净含量</label>
+                        <input required placeholder="净含量" name="Weight" type="text" value="@(Model != null ? Model.Weight : "")">
+                    </div>
+                    <div class="field">
+                        <label>产品等级</label>
+                        <input required placeholder="产品等级" name="Grade" type="text" value="@(Model != null ? Model.Grade : "")">
+                    </div>
+                </div>
+
+            
+                <div class="field">
+                    <label>贮存条件</label>
+                    <input  required placeholder="贮存条件" name="StorageCondition" type="text" value="@(Model != null ? Model.StorageCondition : "")">
+                </div>
+                <div class="field">
+                    <label>包装说明</label>
+                    <input required placeholder="包装说明" name="Packing" type="text" value="@(Model != null ? Model.Packing : "")">
+                </div>
+                <div class="field">
+                    <label>配料表</label>
+                    <textarea placeholder="配料表" name="Ingredients" type="text" value="@(Model != null ? Model.Ingredients : "")"></textarea>
+                </div>
+                <div class="field">
+                    <label>主要原材料</label>
+                    <table class="ui celled table" id="t1">
+                        <thead>
+                            <tr>
+                                <th>材料</th>
+                                <th>提供单位</th>
+                                <th>生产许可编号</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr></tr>
+                        </tbody>
+                       
+                    </table>
+                    <button class="ui button" type="button" onclick="Add(1)">添加</button>
+                 
+                </div>
+
+                <div class="field">
+                    <label>包装材料</label>
+                    <table class="ui celled table" id="t2">
+                        <thead>
+                            <tr>
+                                <th>材料</th>
+                                <th>提供单位</th>
+                                <th>生产许可编号</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button class="ui button" type="button" onclick="Add(2)">添加</button>
+                </div>
+
+                <div class="field">
+                    <label>其他材料上传</label>
+                    <div id="uploader" class="wu-example">
+                        <!--用来存放文件信息-->
+                        <div id="thelist" class="uploader-list"></div>
+                        <div class="btns">
+                            <div id="picker">选择文件</div>
+                            @*<button id="ctlBtn" type="button" class="btn btn-default">开始上传</button>*@
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <label>产品图片上传（7张）</label>
+                    <div id="uploader-demo">
+                        <!--用来存放item-->
+                        <div id="fileList" class="uploader-list"></div>
+                        <div id="filePicker">选择图片</div>
+                    </div>
+                </div>
+
+
                 <div class="ui error message"></div>
                 <div class="ui red cancel button">取消</div>
-                <div class="ui blue submit button">保存</div>
+                <div class="ui blue submit button" id="submit">保存</div>
             </form>
         </div>
     </div>
 
 </div>
 
+
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        添加材料
+    </div>
+    <div class=" content">
+        <form class="ui form am-margin am-margin-horizontal-lg " id="formno">
+            <div class="field">
+                <label>材料</label>
+                <input type="text" name="d1" placeholder="" required>
+            </div>
+            <div class="field">
+                <label>提供单位</label>
+                <input type="text" name="d2" placeholder="" required>
+            </div>
+            <div class="field">
+                <label>生产许可证编号</label>
+                <input type="text" name="d3" placeholder="" required>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">否 </div>
+        <div class="ui positive right labeled icon button" id="addbtn">添加 <i class="checkmark icon"></i> </div>
+    </div>
+</div>
+
 @section Scripts{
+<script src="~/Scripts/bower_components/fex-webuploader/dist/webuploader.js"></script>
     <script>
+        var t = 1;
+        $("#submit").click(function () {
+            $('#form').submit();
+        });
+        function Add(id) {
+            $('.ui.modal').modal('show');
+            t = id;          
+        }
         $(function() {
             $('.ui.form').form({
                 on: 'blur',
@@ -123,6 +264,97 @@
                     }
                 }
             });
+          
+
+        });
+
+        $("#addbtn").click(function () {
+            $("#formno").submit();
+        });
+
+        var tableData1 = [];
+        var $table1 = $('#t1');
+
+        var tableData2 = [];
+        var $table2 = $('#t2');
+
+        var files = [];
+        var images = [];
+        
+        $("#formno").submit(function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            var $this = $(this);
+            if (!$(this).form('is valid')) {
+                return;
+            }
+            var data = $this.form('get values');
+            console.log(data);
+            var index = 0;
+
+            if (t == 1)
+            {
+
+                index = tableData1.length;
+                var tr = '' +
+               '<tr>' +
+               '<td>' + data.d1 + '</td>' +
+               '<td>' + data.d2 + '</td>' +
+               '<td>' + data.d3 + '</td>' +
+               '<td><span class="delete-btn ui button" data-id="' + index + '">删除</span></td>' +
+               '</tr>';
+                $table1.find('tbody').append(tr);
+                tableData1.push(data);
+            }
+            else {
+
+                index = tableData1.length;
+                var tr = '' +
+               '<tr>' +
+               '<td>' + data.d1 + '</td>' +
+               '<td>' + data.d2 + '</td>' +
+               '<td>' + data.d3 + '</td>' +
+               '<td><span class="delete-btn ui button" data-id="' + index + '">删除</span></td>' +
+               '</tr>';
+                $table2.find('tbody').append(tr);
+                tableData2.push(data);
+            }
+
+           
+            $this.form('reset');
+        });
+
+        $('table tbody').click(function (event) {
+            var $this = $(event.target);
+            if (!$this.is('.delete-btn')) {
+                return;
+            }
+            tableData1.splice(parseInt($this.data('id')), 1);
+            $this.parents('tr').remove();
+        });
+
+        $("#form").submit(function (event) {
+            var $this = $(this);
+            if (images.length < 7)
+            {
+                alert("产品图片不足7张！");
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+            }
+            if (tableData1.length == 0||tableData2.length==0) {
+                alert('请添加材料信息');
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+            }
+            $('<input type="hidden" name="Material" >').val(JSON.stringify(tableData1)).appendTo($this);
+            $('<input type="hidden" name="PackingMaterial" >').val(JSON.stringify(tableData2)).appendTo($this);
+            $('<input type="hidden" name="File" >').val(JSON.stringify(files)).appendTo($this);
+            $('<input type="hidden" name="Image" >').val(JSON.stringify(images)).appendTo($this);
+
         });
     </script>
+<script src="~/Scripts/ProductUp.js"></script>
+
 }
