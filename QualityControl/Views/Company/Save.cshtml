@@ -11,44 +11,152 @@
         <div class="am-padding-horizontal-lg">
             <form class="ui form segment" method="post">
                 <h2>企业信息</h2>
-
-                <div class="two fields">
-                    <div class="field">
-                        <label>企业名称</label>
-                        <input placeholder="企业名称" name="Name" type="text" value="@(Model != null ? Model.Name : "")">
-                    </div>
-                    <div class="field">
-                        <label>注册时间</label>
-                        <input placeholder="注册时间" name="EstablishedTime" type="date" value='@(Model != null ? Model.EstablishedTime.ToString("yyy-MM-dd") : "")'>
-                    </div>
+                <div class="field">
+                    <label>企业名称</label>
+                    <input placeholder="企业名称" name="Name" type="text" value="@(Model != null ? Model.Name : "")">
                 </div>
+
                 <div class="field">
                     <label>注册地址</label>
                     <input placeholder="注册地址" name="Address" type="text" value="@(Model != null ? Model.Address : "")">
                 </div>
+
+                <div class="field">
+                    <label>生产地址</label>
+                    <input placeholder="生产地址" name="FactoryAddress" type="text" value="@(Model != null ? Model.FactoryAddress : "")">
+                </div>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label>邮政编码</label>
+                        <input placeholder="邮政编码" name="Postcode" type="text" value="@(Model != null ? Model.Postcode : "")">
+                    </div>
+                    <div class="field">
+                        <label>电 话</label>
+                        <input placeholder="电    话" type="text" name="Tel" value="@(Model != null ? Model.Tel : "")">
+                    </div>
+                </div>
+
+                <div class="two fields">
+
+                    <div class="field">
+                        <label>组织机构代码</label>
+                        <input placeholder="组织机构代码" type="text" name="OrganizationCode" value="@(Model != null ? Model.OrganizationCode : "")">
+                    </div>
+                    <div class="field">
+                        <label>经济类型</label>
+                        <input placeholder="经济类型" name="EconomyType" type="text" value="@(Model != null ? Model.EconomyType : "")">
+                    </div>
+                </div>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label>工商登记机构</label>
+                        <input placeholder="工商登记机构" type="text" name="BRI" value="@(Model != null ? Model.BRI : "")">
+                    </div>
+                    <div class="field">
+                        <label>营业执照号</label>
+                        <input placeholder="营业执照号" name="License" type="text" value="@(Model != null ? Model.License : "")">
+                    </div>
+                </div>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label>传    真</label>
+                        <input placeholder="传    真" name="FAX" type="text" value="@(Model != null ? Model.FAX : "")">
+                    </div>
+                    <div class="field">
+                        <label>电子邮箱</label>
+                        <input placeholder="电子邮箱" type="text" name="Email" value="@(Model != null ? Model.Email : "")">
+                    </div>
+                </div>
+
+                <div class="two fields">
+
+                    <div class="field">
+                        <label>成立时间</label>
+                        <input placeholder="成立时间" name="EstablishedTime" type="date" value='@(Model?.EstablishedTime.ToString("yyy-MM-dd") ?? "")'>
+                    </div>
+
+                    <div class="field">
+                        <label>经营期限</label>
+                        <input placeholder="经营期限" name="OperationTerm" type="text" value='@(Model?.OperationTerm ?? "")'>
+                    </div>
+                </div>
+
+                <div class="two fields">
+
+                    <div class="field">
+                        <label>固定资产（万元）</label>
+                        <input placeholder="固定资产（万元）" name="FixedAsset" type="number" min="0" min="0" value='@(Model?.FixedAsset?? "")'>
+                    </div>
+
+                    <div class="field">
+                        <label>注册资金（万元）</label>
+                        <input placeholder="注册资金（万元）" name="RegisteredCapital" type="number" min="0" value='@(Model?.RegisteredCapital ?? "")'>
+                    </div>
+                </div>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label>年总产值</label>
+                        <input placeholder="年总产值" name="GDP" type="number" min="0" value='@(Model?.GDP ?? "")'>
+                    </div>
+
+                    <div class="field">
+                        <label>年销售额</label>
+                        <input placeholder="年销售额" name="AnnualSale" type="number" min="0" value='@(Model?.AnnualSale ?? "")'>
+                    </div>
+                </div>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label>年缴税金额</label>
+                        <input placeholder="年缴税金额" name="TaxPerYear" type="number" min="0" value='@(Model?.TaxPerYear?? "")'>
+                    </div>
+
+                    <div class="field">
+                        <label>年利润</label>
+                        <input placeholder="年利润" name="AnnualProfit" type="number" min="0" value='@(Model?.AnnualProfit ?? "")'>
+                    </div>
+                </div>
+
                 <div class="two fields">
                     <div class="field">
                         <label>法人姓名</label>
                         <input placeholder="法人姓名" name="CorporationName" type="text" value="@(Model != null ? Model.CorporationName : "")">
                     </div>
                     <div class="field">
-                        <label>法人身份证号</label>
-                        <input placeholder="法人身份证号" type="text" name="CorporationIdentity" value="@(Model != null ? Model.CorporationIdentity : "")">
+                        <label>企业负责人</label>
+                        <input placeholder="企业负责人" type="text" name="Superintendent" value="@(Model != null ? Model.Superintendent : "")">
                     </div>
                 </div>
+
                 <div class="two fields">
                     <div class="field">
-                        <label>营业执照号</label>
-                        <input placeholder="营业执照号" name="License" type="text" value="@(Model != null ? Model.License : "")">
+                        <label>质量保证负责人</label>
+                        <input placeholder="质量保证负责人" name="QA" type="text" value="@(Model != null ? Model.QA : "")">
                     </div>
                     <div class="field">
-                        <label>组织机构代码</label>
-                        <input placeholder="组织机构代码" type="text" name="OrganizationCode" value="@(Model != null ? Model.OrganizationCode : "")">
+                        <label>联系人</label>
+                        <input placeholder="联系人" type="text" name="ContactPerson" value="@(Model != null ? Model.ContactPerson : "")">
                     </div>
                 </div>
+
+                <div class="two fields">
+                    <div class="field">
+                        <label>从业人员总数</label>
+                        <input placeholder="从业人员总数" name="MemberCount" type="number" min="0" value="@(Model?.MemberCount ?? 0)">
+                    </div>
+                    <div class="field">
+                        <label>专业技术人员数</label>
+                        <input placeholder="专业技术人员数" type="number" min="0" name="TechnicianCount" value="@(Model?.TechnicianCount ?? 0)">
+                    </div>
+                </div>
+
                 <div class="field">
-                    <label>营业执照经营范围</label>
-                    <textarea rows="2" name="LicenseScope" placeholder="营业执照经营范围">@(Model != null ? Model.LicenseScope : "")</textarea>
+                    <label>其他需要说明的情况</label>
+                    <textarea rows="2" name="LicenseScope" placeholder="其他需要说明的情况">@(Model != null ? Model.Note : "")</textarea>
                 </div>
                 <div class="ui error message"></div>
                 <div class="ui red cancel button">取消</div>
@@ -80,6 +188,141 @@
                             {
                                 type: 'empty',
                                 prompt: '请输入企业地址'
+                            }
+                        ]
+                    },
+                    FactoryAddress: {
+                        identifier: 'FactoryAddress',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入上产地址'
+                            }
+                        ]
+                    },
+                    Postcode: {
+                        identifier: 'Postcode',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入邮政编码'
+                            }
+                        ]
+                    },
+                    Tel: {
+                        identifier: 'Tel',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入联系电话'
+                            }
+                        ]
+                    },
+                    FAX: {
+                        identifier: 'FAX',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入传真'
+                            }
+                        ]
+                    },
+                    Email: {
+                        identifier: 'Email',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入邮件'
+                            }
+                        ]
+                    },
+                    EconomyType: {
+                        identifier: 'EconomyType',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入经济类型'
+                            }
+                        ]
+                    },
+                    BRI: {
+                        identifier: 'BRI',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入工商登记机构'
+                            }
+                        ]
+                    },
+                    OperationTerm: {
+                        identifier: 'OperationTerm',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入经营期限'
+                            }
+                        ]
+                    },
+                    RegisteredCapital: {
+                        identifier: 'RegisteredCapital',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入注册资金'
+                            }
+                        ]
+                    },
+                    FixedAsset: {
+                        identifier: 'FixedAsset',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入固定资产'
+                            }
+                        ]
+                    },
+                    Superintendent: {
+                        identifier: 'Superintendent',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入企业负责人'
+                            }
+                        ]
+                    },
+                    QA: {
+                        identifier: 'QA',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入质量保证负责人'
+                            }
+                        ]
+                    },
+                    MemberCount: {
+                        identifier: 'MemberCount',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入从业人员总数'
+                            }
+                        ]
+                    },
+                    TechnicianCount: {
+                        identifier: 'TechnicianCount',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入专业技术人员数'
+                            }
+                        ]
+                    },
+                    ContactPerson: {
+                        identifier: 'ContactPerson',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入联系人'
                             }
                         ]
                     },
@@ -125,15 +368,6 @@
                             {
                                 type: 'empty',
                                 prompt: '请输入组织机构代码'
-                            }
-                        ]
-                    },
-                    LicenseScope: {
-                        identifier: 'LicenseScope',
-                        rules: [
-                            {
-                                type: 'empty',
-                                prompt: '请输入营业执照经营范围'
                             }
                         ]
                     },

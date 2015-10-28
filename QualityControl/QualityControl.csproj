@@ -374,6 +374,10 @@
     <Compile Include="Migrations\201510270852016_level.Designer.cs">
       <DependentUpon>201510270852016_level.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510280858330_SCSInfoChange.cs" />
+    <Compile Include="Migrations\201510280858330_SCSInfoChange.Designer.cs">
+      <DependentUpon>201510280858330_SCSInfoChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\ConvertTradeStatus.cs" />
@@ -1476,6 +1480,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510270852016_level.resx">
       <DependentUpon>201510270852016_level.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510280858330_SCSInfoChange.resx">
+      <DependentUpon>201510280858330_SCSInfoChange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
