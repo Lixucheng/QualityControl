@@ -26,9 +26,34 @@ jQuery(function () {
     // 当有文件添加进来的时候
     uploader.on('fileQueued', function (file) {
         $list.append('<div id="' + file.id + '" class="item">' +
-            '<h4 class="info">' + file.name + '</h4>' +
-            '<p class="state">等待上传...</p>' +
-        '</div>');
+           '<h4 class="info">' + file.name + '</h4>' + "<i class='fa fa-close right fa-2x' id='" + file.id + "'></i>" +
+           '<p class="state">等待上传...</p>' +
+       '</div>');
+        var f = new Object();
+        f.id = file.id;
+        f.name = file.name;
+        f.name2 = "";
+        files.push(f);
+        setTimeout(function () {
+            $(".right").click(function () {
+                var id = $(this).attr("id");
+                Delfile(id);
+
+                var name = uploader.getFile(id).name;
+                var the = $("#" + id);
+                the.remove();
+
+                ///从数组中删除
+                for (var i = 0; i < files.length; i++) {
+                    if (files[i].name == name) {
+                        files.splice(i, 1);                       
+                        break;
+                    }
+                }
+                ///从服务器删除
+            })
+
+        }, 0);
     });
 
     // 文件上传过程中创建进度条实时显示。
@@ -51,7 +76,13 @@ jQuery(function () {
 
     uploader.on('uploadSuccess', function (file, response) {
         $('#' + file.id).find('p.state').text('已上传');
-        files.push(response.file_path);
+        for (var i = 0; i < files.length; i++) {
+            if (files[i].id == file.id) {
+                files[i].name2 = response.file_path;
+                $("#filename").val(JSON.stringify(files));
+                break;
+            }
+        }
     });
 
     uploader.on('uploadError', function (file) {

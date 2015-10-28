@@ -2,8 +2,12 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @model QualityControl.Db.Product
+
+@using Newtonsoft.Json.Linq;
+@using Newtonsoft.Json;
 @section head{
     <title>企业产品信息</title>
+<link href="~/Scripts/bower_components/font-awesome/css/font-awesome.css" rel="stylesheet" />
 <link href="~/Scripts/bower_components/fex-webuploader/dist/webuploader.css" rel="stylesheet" />
 <link href="~/Content/UpCss.css" rel="stylesheet" />
 }
@@ -11,7 +15,7 @@
 <div class="am-margin-lg am-padding-lg ui center aligned container">
     <div class="am-padding-horizontal-lg">
         <div class="am-padding-horizontal-lg">
-            <form id="form" class="ui form segment" method="post" action="/Product/CompanyProductSaveAction">
+            <form id="formr" class="ui form segment" method="post" action="/Product/CompanyProductSaveAction">
                 <input name="id" type="hidden" value="@(Model != null ? Model.Id.ToString() : "0")">
                 <h2>企业产品信息</h2>
                 <div class="two fields">
@@ -82,7 +86,7 @@
                 </div>
                 <div class="field">
                     <label>配料表</label>
-                    <textarea placeholder="配料表" name="Ingredients" type="text" value="@(Model != null ? Model.Ingredients : "")"></textarea>
+                    <textarea placeholder="配料表" name="Ingredients" type="text" value="">@(Model != null ? Model.Ingredients : "")</textarea>
                 </div>
                 <div class="field">
                     <label>主要原材料</label>
@@ -100,7 +104,7 @@
                         </tbody>
                        
                     </table>
-                    <button class="ui button" type="button" onclick="Add(1)">添加</button>
+                    <div class="ui button" onclick="Add(1)">添加</div>
                  
                 </div>
 
@@ -117,14 +121,57 @@
                         </thead>
                         <tbody></tbody>
                     </table>
-                    <button class="ui button" type="button" onclick="Add(2)">添加</button>
+                    <div class="ui button"  onclick="Add(2)">添加</div>
                 </div>
 
                 <div class="field">
                     <label>其他材料上传</label>
                     <div id="uploader" class="wu-example">
                         <!--用来存放文件信息-->
-                        <div id="thelist" class="uploader-list"></div>
+                        <div id="thelist" class="uploader-list">
+                            @{
+                                if (Model.File != null)
+                                {
+                                    var jarray = (JArray)JsonConvert.DeserializeObject(Model.File);
+                                    foreach (var t in jarray)
+                                    {
+                                        <div id="' + @t["id"] + '" class="item myitem @t["id"]">
+                                            <h4 class="info">
+                                                @t["name"]
+                                                <i class='fa fa-close right fa-2x' id='" + @t["id"] + "' onclick="DelA('@t["id"]')"></i>
+                                            </h4>
+
+                                            <p class="state">已存在</p>
+                                            <input type="hidden" class="v1" value="@t["id"]" />
+                                            <input type="hidden" class="v2" value="@t["name"]" />
+                                            <input type="hidden" class="v3" value="@t["name2"]" />
+                                            <script>
+                                                       function DelA(id)
+                                                       {
+
+                                                           var the = $("." + id);
+                                                           the.remove();
+                                                           var n = "";
+                                                           ///从数组中删除
+                                                           for (var i = 0; i < files.length; i++) {
+                                                               if (files[i].id == id) {
+                                                                   n = files[i].name2;
+                                                                   files.splice(i, 1);
+
+                                                                
+                                                                   break;
+                                                               }
+                                                           }
+                                                           ///从服务器删除
+                                                           delname.push(n);
+                                                       }
+                                            </script>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+
                         <div class="btns">
                             <div id="picker">选择文件</div>
                             @*<button id="ctlBtn" type="button" class="btn btn-default">开始上传</button>*@
@@ -145,7 +192,7 @@
 
                 <div class="ui error message"></div>
                 <div class="ui red cancel button">取消</div>
-                <div class="ui blue submit button" id="submit">保存</div>
+                <div  class="ui blue  button"   id="submit">保存</div>
             </form>
         </div>
     </div>
@@ -159,7 +206,7 @@
         添加材料
     </div>
     <div class=" content">
-        <form class="ui form am-margin am-margin-horizontal-lg " id="formno">
+        <form class="ui form  " id="formno">
             <div class="field">
                 <label>材料</label>
                 <input type="text" name="d1" placeholder="" required>
@@ -172,21 +219,20 @@
                 <label>生产许可证编号</label>
                 <input type="text" name="d3" placeholder="" required>
             </div>
+            <div class="actions">
+                <div class="ui negative button">否 </div>
+                <div class="ui green icon button" id="addbtn">添加 <i class="checkmark icon"></i> </div>
+            </div>
         </form>
     </div>
-    <div class="actions">
-        <div class="ui negative button">否 </div>
-        <div class="ui positive right labeled icon button" id="addbtn">添加 <i class="checkmark icon"></i> </div>
-    </div>
+    
 </div>
 
 @section Scripts{
 <script src="~/Scripts/bower_components/fex-webuploader/dist/webuploader.js"></script>
     <script>
         var t = 1;
-        $("#submit").click(function () {
-            $('#form').submit();
-        });
+      
         function Add(id) {
             $('.ui.modal').modal('show');
             t = id;          
@@ -268,9 +314,7 @@
 
         });
 
-        $("#addbtn").click(function () {
-            $("#formno").submit();
-        });
+     
 
         var tableData1 = [];
         var $table1 = $('#t1');
@@ -279,8 +323,27 @@
         var $table2 = $('#t2');
 
         var files = [];
+        var delname = [];
         var images = [];
         
+        function filenameWrite() {
+            var list = $(".myitem");
+            list.each(function () {
+                var list2 = $(this).find("input");
+                var t1 = list2.eq(1).val();
+                var t0 = list2.eq(0).val();
+                var t2 = list2.eq(2).val();
+                var f = new Object();
+                f.id = t0;
+                f.name = t1;
+                f.name2 = t2;
+                files.push(f);
+            })
+
+
+        }
+        filenameWrite();
+
         $("#formno").submit(function (event) {
             event.preventDefault();
             event.stopPropagation();
@@ -320,7 +383,7 @@
                 tableData2.push(data);
             }
 
-           
+            $('.ui.modal').modal('hide');
             $this.form('reset');
         });
 
@@ -333,7 +396,7 @@
             $this.parents('tr').remove();
         });
 
-        $("#form").submit(function (event) {
+        $("#formr").submit(function (event) {
             var $this = $(this);
             if (images.length < 7)
             {
@@ -353,6 +416,24 @@
             $('<input type="hidden" name="File" >').val(JSON.stringify(files)).appendTo($this);
             $('<input type="hidden" name="Image" >').val(JSON.stringify(images)).appendTo($this);
 
+        });
+
+        $("#addbtn").click(function () {
+            $("#formno").submit();
+        });
+        $("#submit").click(function () {
+            for (var i = 0; i < delname.length; i++) {
+                $.ajax({
+
+                    type: 'GET',
+
+                    url: "/upload/del?name=" + delname[i],
+
+                    dataType: 'json'
+
+                });
+            }
+            $("#formr").submit();
         });
     </script>
 <script src="~/Scripts/ProductUp.js"></script>

@@ -43,6 +43,17 @@ namespace QualityControl.Controllers
             });
         }
 
-      
+        public string Del(string name)
+        {
+            string fullUrl = Path.Combine(Server.MapPath(@"~"));
+            var n = fullUrl + name;
+            if (System.IO.File.Exists(n))
+            {
+                System.IO.File.Delete(n);
+            }
+            return "";
+        }
+
+
     }
 }
