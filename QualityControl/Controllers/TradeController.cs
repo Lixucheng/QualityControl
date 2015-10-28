@@ -196,7 +196,6 @@ namespace QualityControl.Controllers
             return RedirectToAction("TradeDetail", new { id = trade.Id });
         }
 
-
         /// <summary>
         /// 交易列表
         /// </summary>
@@ -211,23 +210,13 @@ namespace QualityControl.Controllers
         }
 
 
-        public ActionResult SelectSample(long id)
-        {
-            var trade = Db.Trades.Find(id);
-            if (trade == null)
-            {
-                return Content("错误操作");
-            }
-            return View(trade);
-        }
-
         /// <summary>
         ///     抽样
         /// </summary>
         /// <param name="tradeId"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public ActionResult Sample(long tradeId, EnumSample type, string data)
+        public ActionResult Sample(long tradeId, EnumSample type)
         {
             var trade = Db.Trades.Find(tradeId);
             if (trade == null)
@@ -238,7 +227,6 @@ namespace QualityControl.Controllers
             {
                 return RedirectToAction("TradeDetail", new {id = tradeId});
             }
-            var countData = JsonConvert.DeserializeObject<List<ProductBatch>>(data);
 
             trade.SampleType = type;
             Db.Entry(trade).Property(a => a.SampleType).IsModified = true;
@@ -252,7 +240,7 @@ namespace QualityControl.Controllers
                 foreach (var b in batches)
                 {
                     var qrCodes = new List<string>();
-                    b.SampleCount = countData.FirstOrDefault(a => a.Id == b.Id).SampleCount;
+                    b.SampleCount = LevelCount(b.Level);
                     for (var i = 0; i < b.SampleCount; i ++)
                     {
                         string code;
@@ -273,13 +261,13 @@ namespace QualityControl.Controllers
             {
                 foreach (var b in batches)
                 {
-                    b.SampleCount = countData.FirstOrDefault(a => a.Id == b.Id).SampleCount;
+                    b.SampleCount = LevelCount(b.Level);
                     var qrCodes = new List<string>();
                     var divider = b.Count/b.SampleCount;
                     var num = random.Next(0, b.SampleCount);
                     for (var i = 0; i < b.SampleCount; i++)
                     {
-                        num += i*b.SampleCount;
+                        num += i* divider;
                         string code;
                         code = trade.Id.ToString("D15") + "_" +
                                b.ProductId.ToString("D10") + "_" +
@@ -357,8 +345,6 @@ namespace QualityControl.Controllers
             return RedirectToAction("TradeDetail", new {id});
         }
 
-      
-
         public ActionResult TradeDetail(long id)
         {
             var userId = User.Identity.GetUserId();
@@ -377,7 +363,6 @@ namespace QualityControl.Controllers
             }
             return View(trade);
         }
-
 
         public ActionResult Finish(long id)
         {
@@ -510,6 +495,44 @@ namespace QualityControl.Controllers
             return RedirectToAction("TradeDetail", new { id = id });
         }
 
-        
+        public int LevelCount(string level)
+        {
+            switch (level)
+            {
+                case "A":
+                    return 2;
+                case "B":
+                    return 3;
+                case "C":
+                    return 5;
+                case "D":
+                    return 8;
+                case "E":
+                    return 13;
+                case "F":
+                    return 20;
+                case "G":
+                    return 32;
+                case "H":
+                    return 50;
+                case "J":
+                    return 80;
+                case "K":
+                    return 125;
+                case "L":
+                    return 200;
+                case "M":
+                    return 315;
+                case "N":
+                    return 500;
+                case "P":
+                    return 800;
+                case "Q":
+                    return 1250;
+                case "R":
+                    return 2000;
+            }
+            return 0;
+        }
     }
 }

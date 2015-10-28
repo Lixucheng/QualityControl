@@ -1335,7 +1335,6 @@
     <Content Include="Views\Message\Index.cshtml" />
     <Content Include="Views\Trade\TradeDetail.cshtml" />
     <Content Include="Views\User\TradeList.cshtml" />
-    <Content Include="Views\Trade\SelectSample.cshtml" />
     <Content Include="Views\Trade\Report.cshtml" />
     <Content Include="Views\Trade\MakeReport.cshtml" />
     <Content Include="Views\Product\SecondTypeIndex.cshtml" />
