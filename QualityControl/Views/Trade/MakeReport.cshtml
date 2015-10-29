@@ -8,6 +8,14 @@
 @{
     var p = JsonConvert.DeserializeObject<ProductCopy>(Model.Product);
 }
+@section head{
+    <link href="~/Scripts/bower_components/fex-webuploader/dist/webuploader.css" rel="stylesheet" />
+    <style>
+        table tr td, tabe tr th {
+            text-align: center;
+        }
+    </style>
+}
 <div class="am-margin am-padding container">
     <h1 class="am-text-center">检测报告</h1>
     <h3 class="am-text-center">样品名称: @p.Name</h3>
@@ -25,199 +33,487 @@
     <p>7、 报告仅对来样负责，受检样品务必在收到本实验室报告一个月内领取，逾期不领者本实验室将自行处理。</p>
     <div class="ui divider"></div>
     <h2 class="am-text-center">检测报告明细</h2>
-    <form class="ui form am-margin am-margin-horizontal-lg">
-        <div class="field">
-            <label>测试项目</label>
-            <input type="text" name="Item" placeholder="" required>
+    <div class="ui raised segment">
+        <div class="am-cf">
+            <a class="ui red ribbon label zh  fw-normal-force">产品信息</a>
+            <span>@p.Name</span>
         </div>
-        <div class="field">
-            <label>标准要求</label>
-            <input type="text" name="Requirement" placeholder="" required>
+        <p class="ui divider"></p>
+        <div class="ui divided selection list">
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">价格</div>
+                @p.Price
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">生产许可证编号</div>
+                @p.ProductionCertificateNo
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">执行标准</div>
+                @p.Standard
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">颁发日期</div>
+                @p.GetDate
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">类型</div>
+                @{
+                    var type = Singleton.Self.Db.ThirdProductTypes.Find(p.TypeId);
+                }
+                @(type == null ? "" : type.Title)
+            </a>
         </div>
-        <div class="field">
-            <label>样品编号</label>
-            <input type="text" name="SampleNo" placeholder="" required>
-        </div>
-        <div class="field">
-            <label>测试结果</label>
-            <input type="text" name="Result" placeholder="" required>
-        </div>
-        <button class="ui button" type="submit">添加</button>
-    </form>
-    <table class="ui celled table">
-        <thead>
-        <tr>
-            <th>测试项目</th>
-            <th>测试要求</th>
-            <th>样品编号</th>
-            <th>测试结果</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>批次名</th>
+                    <th>数量</th>
+                    <th>样本数量</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in Model.Batches)
+                {
+                    <tr>
+                        <td>@b.BatchName</td>
+                        <td>@b.Count</td>
+                        <td>@b.SampleCount</td>
+                        <td>
+                            <div class="ui button make-btn" data-id="@b.Id">制作报告</div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-        </tbody>
-    </table>
-    <form class="ui form am-margin-vertical" method="post">
-        <input value="@Model.Id" name="tradeId" type="hidden"/>
-        <div class="two fields">
-            <div class="field">
-                <label>送样本时间</label>
-                <input name="SamplingDate" type="date" required/>
-            </div>
-            <div class="field">
-                <label>检测时间</label>
-                <input name="DetectingDate" type="date" required/>
-            </div>
-        </div>
-        <div class="field">
-            <label>结论</label>
-            <textarea name="Conclusion" required></textarea>
-        </div>
-        <div class="field">
-            <label>备注</label>
-            <textarea name="Comments" required></textarea>
-        </div>
-        <div class="am-text-center">
-            <button class="ui big primary button" type="submit">提交检测报告</button>
-        </div>
+        <form class="ui form main-form" method="post" id="main-form">
+            <input type="hidden" name="tradeId" value="@Model.Id" />
+            <input type="hidden" name="files" value="" />
+            <input type="hidden" name="batchreports" value="" />
+            <div id="upload-btn">上传文件</div>
+            <table class="ui celled table file-table">
+                <thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-    </form>
+                </tbody>
+            </table>
+            <div class="am-text-right">
+                <button class="ui button" form="main-form">提交</button>
+            </div>
+        </form>
+
+    </div>
 
 </div>
 
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        制作检测报告
+    </div>
+    <div class="content">
+        <form class="ui form">
+            <input name="BatchId" value="" type="hidden"/>
+            <div class="two fields">
+                <div class="field">
+                    <label>样品名称＊</label>
+                    <input type="text" name="SampleName" />
+                </div>
+                <div class="field">
+                    <label>规格＊</label>
+                    <input type="text" name="Specification" />
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>委托单位＊</label>
+                    <input type="text" name="Trustor" />
+                </div>
+                <div class="field">
+                    <label>商标＊</label>
+                    <input type="text" name="Brand" />
+                </div>
+            </div>
+            <div class="field">
+                <label>委托单位地址＊</label>
+                <input type="text" name="TrustorAddress" />
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>检验日期＊</label>
+                    <input type="date" name="CheckDate" />
+                </div>
+                <div class="field">
+                    <label>检验类别＊</label>
+                    <input type="text" name="TestType" />
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>生产单位/地址＊</label>
+                    <input type="text" name="ProducingAddress" />
+                </div>
+                <div class="field">
+                    <label>样品状况/等级＊</label>
+                    <input type="text" name="SampleRank" />
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>送样人＊</label>
+                    <input type="text" name="Deliverer" />
+                </div>
+                <div class="field">
+                    <label>送样日期＊</label>
+                    <input type="date" name="DeliveryDate" />
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>生产日期＊</label>
+                    <input type="date" name="ProducingDate" />
+                </div>
+                <div class="field">
+                    <label>主检人＊</label>
+                    <input type="text" name="Manager" />
+                </div>
+            </div>
+            <div class="field">
+                <label>检验项目＊</label>
+                <input type="text" name="ProjectName" />
+            </div>
+            <div class="field">
+                <label>检验依据/标准＊</label>
+                <input type="text" name="Standard" />
+            </div>
+            <div class="field">
+                <label>检验结论＊</label>
+                <input type="text" name="Conclusion" />
+            </div>
+            <div class="field">
+                <label>使用仪器设备及编号</label>
+                <input type="text" name="Equipment" />
+            </div>
+            <div class="field">
+                <label>备注＊</label>
+                <input type="text" name="Note" />
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui black deny button">
+            取消
+        </div>
+        <div class="ui positive right labeled icon button">
+            确定
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>
+
 @section scripts{
+<script src="~/Scripts/bower_components/fex-webuploader/dist/webuploader.nolog.min.js"></script>
+
     <script>
-        var $forms = $('.ui.form');
-        $forms.eq(0).form({
-            fields: {
-                Item: {
-                    identifier: 'Item',
-                    rules: [
-                        {
-                            type: 'empty',
-                            prompt: '请输入测试项目'
-                        }
-                    ]
-                },
-                Requirement: {
-                    identifier: 'Requirement',
-                    rules: [
-                        {
-                            type: 'empty',
-                            prompt: '请输入测试要求'
-                        }
-                    ]
-                },
-                SampleNo: {
-                    identifier: 'SampleNo',
-                    rules: [
-                        {
-                            type: 'empty',
-                            prompt: '请输入样本编号'
-                        }
-                    ]
-                },
-                Result: {
-                    identifier: 'Result',
-                    rules: [
-                        {
-                            type: 'empty',
-                            prompt: '请输入测试结果'
-                        }
-                    ]
-                },
-            }
-        });
+        $(function () {
 
-        $forms.eq(1).form({
-            fields: {
-                SamplingDate: {
-                    identifier: 'SamplingDate',
-                    rules: [
-                        {
-                            type: 'empty',
-                            prompt: '请输入送样本时间'
-                        }
-                    ]
+            var $modal = $('.modal'),
+                $form = $modal.find('form'),
+                $mainForm = $('.main-form')
+
+            var preventSubmit = 0;
+            var data = [];
+
+            var $currentTrTd;
+
+            $('.make-btn').click(function () {
+                var $this = $(this);
+                var id = $this.data('id');
+
+                $modal.modal('show');
+                $form.form('reset');
+                $form.form('set value', 'BatchId', id);
+                $currentTrTd = $this.parents('td');
+            });
+
+            $('.look-btn').click(function () {
+                var $this = $(this);
+                var id = $this.data('id');
+
+                $modal.modal('show');
+                $form.form('reset');
+                for(var i in data) {
+                    var item = data[i];
+                    if (item.BatchId == id) {
+                        $form.form('set values', item);
+                        break;
+                    }
+                }
+            });
+
+            $modal.modal({
+                onApprove: function () {
+                    if (!$form.form('is valid')) {
+                        return false;
+                    }
+                    var item = $form.form('get values');
+                    console.log(item);
+                    data.push(item);
+                    $currentTrTd.append('<i class="teal check icon"></i>')
+                }
+            })
+
+            $form.form({
+                fields: {
+                    SampleName: {
+                        identifier: 'SampleName',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入样品名称'
+                          }
+                        ]
+                    },
+                    Specification: {
+                        identifier: 'Specification',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入规格'
+                          }
+                        ]
+                    },
+                    Trustor: {
+                        identifier: 'Trustor',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入委托单位'
+                          }
+                        ]
+                    },
+                    Brand: {
+                        identifier: 'Brand',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入商标'
+                          }
+                        ]
+                    },
+                    TrustorAddress: {
+                        identifier: 'TrustorAddress',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入委托单位地址'
+                          }
+                        ]
+                    },
+                    TestType: {
+                        identifier: 'TestType',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入检验类别'
+                          }
+                        ]
+                    },
+                    ProducingAddress: {
+                        identifier: 'ProducingAddress',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入生产单位/地址'
+                          }
+                        ]
+                    },
+                    SampleRank: {
+                        identifier: 'SampleRank',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入样品状况/等级'
+                          }
+                        ]
+                    },
+                    Deliverer: {
+                        identifier: 'Deliverer',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入送样人'
+                          }
+                        ]
+                    },
+                    DeliveryDate: {
+                        identifier: 'DeliveryDate',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入送样日期'
+                          }
+                        ]
+                    },
+                    ProducingDate: {
+                        identifier: 'ProducingDate',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入ProducingDate'
+                          }
+                        ]
+                    },
+                    Manager: {
+                        identifier: 'Manager',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入主检人'
+                          }
+                        ]
+                    },
+                    CheckDate: {
+                        identifier: 'CheckDate',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入检验日期'
+                          }
+                        ]
+                    },
+                    ProjectName: {
+                        identifier: 'ProjectName',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入检验项目'
+                          }
+                        ]
+                    },
+                    Standard: {
+                        identifier: 'Standard',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入检验依据/标准'
+                          }
+                        ]
+                    },
+                    Conclusion: {
+                        identifier: 'Conclusion',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入检验结论'
+                          }
+                        ]
+                    },
+                    Note: {
+                        identifier: 'Note',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入Note'
+                          }
+                        ]
+                    }
+                }
+            });
+            var uploader= new WebUploader.Uploader({
+                swf: '/Scripts/bower_components/fex-webuploader/dist/Uploader.swf',
+                pick: {
+                    id: '#upload-btn',
+                    multiple: true
                 },
-                DetectingDate: {
-                    identifier: 'DetectingDate',
-                    rules: [
-                        {
-                            type: 'empty',
-                            prompt: '请输入检测时间'
+                server: '/Upload/Index',
+            });
+
+            var $fileTable = $('.file-table tbody');
+            var files = [];
+            $fileTable.click(function (event) {
+                var $ele = $(event.target);
+                if ($ele.is('i.trash.icon')) {
+                    var id = $ele.data('id');
+                    for (var i in files) {
+                        if (files[i].id == id) {
+                            uploader.removeFile(id);
+                            files.splice(i, 1);
+                            $ele.parents('tr').remove();
+                            
+                            break;
                         }
-                    ]
-                },
-                Conclusion: {
-                    identifier: 'Conclusion',
-                    rules: [
-                        {
-                            type: 'empty',
-                            prompt: '请输入结论'
+                    }
+                }
+            });
+
+            uploader.on('fileQueued', function (file) {
+                files.push(file);
+                $fileTable.append('<tr><td>' + file.name + '</td><td><i class="trash icon" data-id="' + file.id + '"></i></td></tr>');
+            });
+
+            uploader.on('uploadAccept', function (file, ret) {
+                for (var i in files) {
+                    if (files[i].id == file.id) {
+                        files[i].url = ret.file_path;
+                        break;
+                    }
+                }
+            });
+
+            window.f = files;
+
+            uploader.on('uploadFinished', function () {
+                preventSubmit = 2;
+                var f = [];
+                for (var i in files) {
+                    f.push({
+                        name: files[i].name,
+                        url: files[i].url
+                    });
+                }
+                $.ajax({
+                    url: '/Trade/MakeReport',
+                    data: {
+                        files: JSON.stringify(f),
+                        batchreports: data,
+                        tradeId: '@Model.Id'
+                    },
+                    type: 'post',
+                    success: function (ret) {
+                        if (ret == 'ok') {
+                            window.location = "/Trade/TradeDetail/@Model.Id";
                         }
-                    ]
-                },
-                Comments: {
-                    identifier: 'Comments',
-                    rules: [
-                        {
-                            type: 'empty',
-                            prompt: '请输入备注'
-                        }
-                    ]
-                },
-            }
-        });
-
-        $forms.eq(0).submit(function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            var $this = $(this);
-            if (!$(this).form('is valid')) {
-                return;
-            }
-            var data = $this.form('get values');
-            console.log(data);
-
-            var tr = '' +
-                '<tr>' +
-                '<td>' + data.Item + '</td>' +
-                '<td>' + data.Requirement + '</td>' +
-                '<td>' + data.SampleNo + '</td>' +
-                '<td>' + data.Result + '</td>' +
-                '<td><span class="delete-btn ui button" data-id="' + tableData.length + '">删除</span></td>' +
-                '</tr>';
-            $table.find('tbody').append(tr);
-            tableData.push(data);
-            $this.form('reset');
-        });
-
-        var $table = $('table');
-        var tableData = [];
-
-        $('table tbody').click(function(event) {
-            var $this = $(event.target);
-            if (!$this.is('.delete-btn')) {
-                return;
-            }
-            tableData.splice(parseInt($this.data('id')), 1);
-            $this.parents('tr').remove();
-        });
-
-        $forms.eq(1).submit(function(event) {
-            var $this = $(this);
-            if (tableData.length === 0) {
-                alert('请添加检测报告条目');
+                    },
+                    error: function () {
+                        alert('操作失败，请刷新重试');
+                    }
+                });
+            });
+            
+            $mainForm.submit(function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-                return;
-            }
-            $('<input type="hidden" name="dataList" >').val(JSON.stringify(tableData)).appendTo($this);
-
+                if (preventSubmit < 2) {
+                    
+                    if (data.length !== $('.make-btn').length) {
+                        alert('请为每个批次制作报告信息，有缺漏，请补充!');
+                        return;
+                    }
+                    if (preventSubmit === 1) {
+                        return;
+                    }
+                    preventSubmit = 1;
+                    uploader.upload();
+                }
+            });
         });
-
-
     </script>
 }

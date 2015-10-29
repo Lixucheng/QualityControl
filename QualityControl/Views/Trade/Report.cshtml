@@ -14,9 +14,6 @@
     <h3 class="am-text-center">样品名称: @p.Name</h3>
     <h3 class="am-text-center">生产机构: @ViewBag.Company.Name</h3>
     <h3 class="am-text-center">检测机构 : @ViewBag.SGS.Name</h3>
-    <h3 class="am-text-center">订单申请时间 : @Model.CeateTime.ToShortDateString()</h3>
-    <h3 class="am-text-center">送样本时间 : @Model.SamplingDate.ToShortDateString()</h3>
-    <h3 class="am-text-center">检测时间 : @Model.DetectingDate.ToShortDateString()</h3>
     <div class="ui divider"></div>
     <h2 class="am-text-center">注意事项</h2>
     <p> 1、 本报告无“检验报告专用章”或检验单位公章无效。</p>
@@ -28,39 +25,103 @@
     <p>7、 报告仅对来样负责，受检样品务必在收到本实验室报告一个月内领取，逾期不领者本实验室将自行处理。</p>
     <div class="ui divider"></div>
     <h2 class="am-text-center">检测报告明细</h2>
-    @{
-        var dataList = JsonConvert.DeserializeObject<List<DetectionReportDataItem>>(Model.Result.DataList);
+    
+    @foreach (var b in Model.Batches)
+    {
+        <div class="ui  segments">
+            <div class="ui secondary segment">
+                <p>批次: @b.BatchName</p>
+            </div>
+            <style>
+                .divided.segments row{
+                    border-bottom: 1px solid #d7d7d7;
+                }
+            </style>
+            <div class="ui segment divided">
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="four wide column">
+                            <span class="ui horizontal gray label">样品名称</span> @b.Report.SampleName
+                        </div>
+                        <div class="four wide column">
+                            <span class="ui horizontal gray label">规格</span> @b.Report.Specification
+                        </div>
+                        <div class="four wide column">
+                            <span class="ui horizontal gray label">检验类别</span> @b.Report.TestType
+                        </div>
+                        <div class="four wide column">
+                            <span class="ui horizontal gray label">样品状况/等级</span> @b.Report.SampleRank
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="four wide column">
+                            <span class="ui horizontal gray label">委托单位</span> @b.Report.Trustor
+                        </div>
+                        <div class="twelve wide column">
+                            <span class="ui horizontal gray label">委托单位地址</span> @b.Report.TrustorAddress
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="four wide column">
+                            <span class="ui horizontal gray label">商标</span> @b.Report.Brand
+                        </div>
+                        <div class="four wide column">
+                            <span class="ui horizontal gray label">送样人</span> @b.Report.Deliverer
+                        </div>
+                        <div class="four wide column">
+                            <span class="ui horizontal gray label">送样日期</span> @b.Report.DeliveryDate
+                        </div>
+                        <div class="four wide column">
+                            <span class="ui horizontal gray label">生产日期</span> @b.Report.ProducingDate
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="sixteen column">
+                            <span class="ui horizontal gray label">生产单位/地址</span> @b.Report.ProducingAddress
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="four wide column">
+                            <span class="ui horizontal gray label">主检人</span> @b.Report.Manager
+                        </div>
+                        <div class="four wide column">
+                            <span class="ui horizontal gray label">检验日期</span> @b.Report.CheckDate
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="sixteen column">
+                            <span class="ui horizontal gray label">检验项目</span> @b.Report.ProjectName
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="sixteen column">
+                            <span class="ui horizontal gray label">检验依据/标准</span> @b.Report.Standard
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="sixteen column">
+                            <span class="ui horizontal gray label">检验结论</span> @b.Report.Conclusion
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="sixteen column">
+                            <span class="ui horizontal gray label">使用仪器设备及编号</span> @b.Report.Equipment
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="sixteen column">
+                            <span class="ui horizontal gray label">备注</span> @b.Report.Note
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
-    <table class="ui celled table">
-        <thead>
-        <tr>
-            <th>测试项目</th>
-            <th>测试要求</th>
-            <th>样品编号</th>
-            <th>测试结果</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in dataList)
-        {
-            <tr>
-                <td>@item.Item</td>
-                <td>@item.Requirement</td>
-                <td>@item.SampleNo</td>
-                <td>@item.Result</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-    <div class="ui segment">
-        <h4 class="ui header">结论</h4>
-        <p>@Model.Result.Conclusion</p>
-    </div>
-    <div class="ui segment">
-        <h4 class="ui header">备注</h4>
-        <p>@Model.Result.Comments</p>
-    </div>
 
 </div>
 

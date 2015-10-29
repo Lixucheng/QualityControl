@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "交易详情";
+    ViewBag.Title = "质量检测详情";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @using Newtonsoft.Json
@@ -72,7 +72,7 @@
             }
             else if (Model.Status == (int) EnumTradeStatus.Finish)
             {
-                <span>交易完成</span>
+                <span>质量检测完成</span>
             }
         </div>
     </div>
@@ -376,7 +376,7 @@
 
 @if (Model.Status >= (int) EnumTradeStatus.SampleReceived)
 {
-    <div>
+    <div class="ui segment">
         <table class="ui celled table">
             <thead>
             <tr>
@@ -419,7 +419,7 @@
     <div class="ui segment">
         <p class="am-cf">
             <span>抽样完成，等待检测完成</span>
-            @if (user.Type == (int) EnumUserType.TestingOrg)
+            @if (user.Type == (int) EnumUserType.TestingOrg || Model.Status == (int)EnumTradeStatus.Testing)
             {
                 <a href="/Trade/MakeReport/@Model.Id" class="am-fr primary ui button">上传检测报告</a>
             }
@@ -433,7 +433,11 @@
         <div class="ui segment">
             <p class="am-cf">
                 <span>检测完成</span>
-                <a href="/Trade/Report/@Model.Id" class="am-fr primary ui button">查看检测报告</a>
+                @if (user.Type == (int)EnumUserType.Controller || user.Id == Model.UserId)
+                {
+                    <a href="/Trade/Report/@Model.Id" class="am-fr primary ui button">查看检测报告</a>
+                }
+                
                 @if (user.Type == (int) EnumUserType.Controller && Model.Status == (int) EnumTradeStatus.Tested)
                 {
                     <a href="/Trade/Finish/@Model.Id" class="am-fr primary ui button">通过检查报告</a>
@@ -447,7 +451,7 @@
     {
         <div class="ui segment">
             <p class="am-cf">
-                <span>交易完成</span>
+                <span>质量检测完成</span>
             </p>
         </div>
     }
