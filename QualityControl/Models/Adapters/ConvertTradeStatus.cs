@@ -10,7 +10,7 @@ namespace QualityControl.Models.Adapters
             {
                 case (int) EnumTradeStatus.Create:
                 {
-                    return "订单已创建, 待制作方案";
+                    return "订单已创建, 待生产商完善信息";
                 }
                 case (int) EnumTradeStatus.Finish:
                 {
@@ -43,6 +43,18 @@ namespace QualityControl.Models.Adapters
                 case (int)EnumTradeStatus.FinishMakeQrCode:
                     {
                         return "等待生产商接收控制码";
+                    }
+                case (int)EnumTradeStatus.BatchSelected:
+                    {
+                        return "批次已选择，待制作检测方案";
+                    }
+                case (int)EnumTradeStatus.ProductInfoChecked:
+                    {
+                        return "生产商已完善信息，等待控制中心审核";
+                    }
+                case (int)EnumTradeStatus.ProductInfoConfirmed:
+                    {
+                        return "控制中心审核完毕，等待用户选择批次";
                     }
             }
             return "";
