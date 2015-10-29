@@ -18,7 +18,7 @@
             <form id="formr" class="ui form segment" method="post" action="/Product/CompanyProductSaveAction">
                 <input name="id" type="hidden" value="@(Model != null ? Model.Id.ToString() : "0")">
                 <h2>企业产品信息</h2>
-                <div class="two fields">
+                <div class="two fields" >
                     <div class="field">
                         <label>产品名称</label>
                         <input required placeholder="产品名称" name="Name" type="text" value="@(Model != null ? Model.Name : "")">
@@ -100,7 +100,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr></tr>
+                           @{
+                               if (Model != null && Model.Material != null)
+                               {
+                                   int i = 0;
+                                   var jarray = (JArray)JsonConvert.DeserializeObject(Model.Material);
+                                   foreach (var t in jarray)
+                                   {
+                                       <tr class="tabledata1">
+                                           <td>@t["d1"]</td>
+                                           <td>@t["d2"]</td>
+                                           <td>@t["d3"]</td>
+                                           <td><span class="delete-btn ui button" data-id="' + i + '">删除</span></td>
+                                       </tr>
+                                       i++;
+                                   }
+                               }
+                            }
                         </tbody>
                        
                     </table>
@@ -119,7 +135,25 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                            @{
+                                if (Model != null && Model.PackingMaterial != null)
+                                {
+                                    int i = 0;
+                                    var jarray = (JArray)JsonConvert.DeserializeObject(Model.PackingMaterial);
+                                    foreach (var t in jarray)
+                                    {
+                                        <tr class="tabledata2">
+                                            <td>@t["d1"]</td>
+                                            <td>@t["d2"]</td>
+                                            <td>@t["d3"]</td>
+                                            <td><span class="delete-btn ui button" data-id="' + i + '">删除</span></td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            }
+                        </tbody>
                     </table>
                     <div class="ui button"  onclick="Add(2)">添加</div>
                 </div>
@@ -130,7 +164,7 @@
                         <!--用来存放文件信息-->
                         <div id="thelist" class="uploader-list">
                             @{
-                                if (Model.File != null)
+                                if (Model != null && Model.File != null)
                                 {
                                     var jarray = (JArray)JsonConvert.DeserializeObject(Model.File);
                                     foreach (var t in jarray)
@@ -200,6 +234,7 @@
 </div>
 
 
+
 <div class="ui modal">
     <i class="close icon"></i>
     <div class="header">
@@ -227,6 +262,17 @@
     </div>
     
 </div>
+
+@{
+    if (Model != null && Model.Image != null)
+    {
+        var jarray = (JArray)JsonConvert.DeserializeObject(Model.Image);
+        foreach (var t in jarray)
+        {
+            <input type="hidden" value="@t" class="images"/>
+        }
+    }
+}
 
 @section Scripts{
 <script src="~/Scripts/bower_components/fex-webuploader/dist/webuploader.js"></script>
@@ -344,6 +390,37 @@
         }
         filenameWrite();
 
+        function tableWrite()
+        {
+            var list = $(".tabledata1");
+            list.each(function () {
+                var list2 = $(this).find("td");
+                var t1 = list2.eq(1).html();
+                var t0 = list2.eq(0).html();
+                var t2 = list2.eq(2).html();
+                var f = new Object();
+                f.d1 = t0;
+                f.d2 = t1;
+                f.d3 = t2;
+                tableData1.push(f);
+            });
+            var listn = $(".tabledata2");
+            listn.each(function () {
+                var list2 = $(this).find("td");
+                var t1 = list2.eq(1).html();
+                var t0 = list2.eq(0).html();
+                var t2 = list2.eq(2).html();
+                var f = new Object();
+                f.d1 = t0;
+                f.d2 = t1;
+                f.d3 = t2;
+                tableData2.push(f);
+            });
+        }
+        tableWrite();
+
+       
+
         $("#formno").submit(function (event) {
             event.preventDefault();
             event.stopPropagation();
@@ -437,5 +514,17 @@
         });
     </script>
 <script src="~/Scripts/ProductUp.js"></script>
+    <script>
+        function filenameWrite() {
+            var list = $(".images");
+            
+            list.each(function () {               
+                var t1 = $(this).val();
+                images.push(t1);
+                windows.AddImage(images.length,t1);            
+            })
+        }
+        filenameWrite();
+    </script>
 
 }

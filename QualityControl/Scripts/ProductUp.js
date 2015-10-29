@@ -163,7 +163,7 @@ jQuery(function () {
         var $li = $(
                 '<div id="' + file.id + '" class="file-item thumbnail">' +
                     '<img>' +
-                    '<div class="info">' + file.name + '</div>' +
+                  
                 '</div>'
                 ),
             $img = $li.find('img');
@@ -219,4 +219,24 @@ jQuery(function () {
     uploader.on('uploadComplete', function (file) {
         $('#' + file.id).find('.progress').remove();
     });
+
+    window.AddImage = function (id,name) {
+        var $li = $(
+                '<div id="' + id + '" class="file-item thumbnail">' +
+                    '<img>' +
+                   
+                '</div>'
+                ),
+            $img = $li.find('img');
+
+        $list.append($li);
+        images.push(name);
+        $img.attr('src', name);
+        w = thumbnailWidth + 2;
+        h = thumbnailHeight + 2;
+        $img.attr('style','width:'+w+'px;height:'+h+'px')
+        // 创建缩略图
+       
+    }
+
 });
