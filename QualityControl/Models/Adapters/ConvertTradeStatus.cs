@@ -14,7 +14,7 @@ namespace QualityControl.Models.Adapters
                 }
                 case (int) EnumTradeStatus.Finish:
                 {
-                    return "交易完成";
+                    return "质量检测完成";
                 }
                 case (int) EnumTradeStatus.MakeQrCode:
                 {

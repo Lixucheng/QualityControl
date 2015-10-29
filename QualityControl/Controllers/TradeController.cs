@@ -197,7 +197,7 @@ namespace QualityControl.Controllers
         }
 
         /// <summary>
-        /// 交易列表
+        /// 质量检测列表
         /// </summary>
         /// <returns></returns>
         public ActionResult Trades()
@@ -416,25 +416,33 @@ namespace QualityControl.Controllers
         }
 
         [HttpPost]
-        public ActionResult MakeReport(long tradeId, DetectionReport report, DateTime SamplingDate,
-            DateTime DetectingDate)
+        public string MakeReport(long tradeId, string files, List<BatchReport> batchReports)
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("MakeReport", new {id = tradeId});
+                return "error";
             }
             var userId = User.Identity.GetUserId();
             var user = Db.Users.Find(userId);
             var trade = Db.Trades.Find(tradeId);
             if (trade == null || trade.SgsUserId != userId)
             {
-                return Content("错误操作");
+                return "error";
             }
-            trade.Result = report;
+            //trade.Result = report;
+            foreach(var b in trade.Batches)
+            {
+                b.Report = batchReports.FirstOrDefault(a => a.BatchId == b.Id);
+            }
+            trade.Result = new DetectionReport()
+            {
+                Files = files,
+                CreateTime = DateTime.Now
+            };
             trade.Status = (int) EnumTradeStatus.Tested;
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
-            return RedirectToAction("TradeDetail", new {id = tradeId});
+            return "ok";
         }
 
         public ActionResult SampleReceive(long id)

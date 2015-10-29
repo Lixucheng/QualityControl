@@ -16,17 +16,17 @@
     <div class="ui vertical text fluid accordion menu">
         <div class="item">
             <a class="title active">
-                <i class="dollar icon"></i><b>交易管理</b>
+                <i class="dollar icon"></i><b>质量检测管理</b>
             </a>
             <div class="content menu">
                 @if (user.Type == (int) EnumUserType.User)
                 {
-                    <a class="item" href="/User/ChooseProduct">新建交易</a>
+                    <a class="item" href="/Trade/ChooseProduct">新建质量检测</a>
                 }
-                <a class="item" href="/User/TradeList">交易列表</a>
+                <a class="item" href="/User/TradeList">质量检测列表</a>
                 @if (user.Type == (int) EnumUserType.Controller)
                 {
-                    <a class="item" href="/Trade/Trades">待制作方案交易列表</a>
+                    <a class="item" href="/Trade/Trades">待制作方案质量检测列表</a>
                 }
                 
             </div>
