@@ -172,7 +172,7 @@ namespace QualityControl.Controllers
             else
             {
                 var usernow = UserManager.FindById(userid);
-                ViewBag.u = usernow.Type == (int) EnumUserType.User ? 0 : 1;
+                ViewBag.u = usernow.Type == (int) EnumUserType.TestingOrg ? 1 : 0;
 
                 ViewBag.model = x;
                 var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
@@ -203,7 +203,7 @@ namespace QualityControl.Controllers
                 {
                     var user = UserManager.FindById(User.Identity.GetUserId());
                     double quote = 0;
-                    quote = user.Type == (int) EnumUserType.User ? x.UserQuote : x.OrganQuote;
+                    quote = user.Type == (int) EnumUserType.TestingOrg ? x.OrganQuote : x.UserQuote;
                     var c = new Contract
                     {
                         DetectionScheme = detectionscheme,
@@ -239,7 +239,7 @@ namespace QualityControl.Controllers
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已确定);
 
             var usernow = UserManager.FindById(userid);
-            ViewBag.u = usernow.Type == (int) EnumUserType.User ? 0 : 1;
+            ViewBag.u = usernow.Type == (int) EnumUserType.TestingOrg ? 1 : 0;
             ViewBag.model = x;
             var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
             var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
@@ -390,9 +390,10 @@ namespace QualityControl.Controllers
                 var modify = dec.Modifications.Select(e =>
                 {
                     var u = UserManager.FindById(e.UserId);
-                    if (u.Type == (int) EnumUserType.User)
-                        return new ModifyWithName {Modify = e.Modify, User = "用户（" + u.UserName + ")"};
-                    return new ModifyWithName {Modify = e.Modify, User = "检测中心（" + u.UserName + ")"};
+                    if (u.Type == (int) EnumUserType.TestingOrg)
+                        return new ModifyWithName { Modify = e.Modify, User = "检测中心（" + u.UserName + ")" };
+                    return new ModifyWithName {Modify = e.Modify, User = "用户（" + u.UserName + ")"};
+                  
                 }).ToList();
 
                 ViewBag.mlist = modify;
@@ -471,7 +472,7 @@ namespace QualityControl.Controllers
             var sysid = trade.SgsUserId;
 
             var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user.Type == (int) EnumUserType.User)
+            if (user.Id == trade.UserId)
             {
                 ViewBag.FirstParty = user.UserName;
                 s1 = "管控中心";
@@ -527,7 +528,7 @@ namespace QualityControl.Controllers
             var sysid = trade.SgsUserId;
 
             var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user.Type == (int) EnumUserType.User)
+            if (user.Id==trade.UserId)
             {
                 c.FirstParty = user.UserName;
                 c.SecondParty = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name;

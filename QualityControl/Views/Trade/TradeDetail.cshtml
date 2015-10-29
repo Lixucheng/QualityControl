@@ -188,7 +188,7 @@
     }
     if (Model.Status >= (int)EnumTradeStatus.AlreadyApply)
     {
-        if (user.Type == (int)EnumUserType.User || user.Type == (int)EnumUserType.Controller)
+        if (user.Id == Model.UserId || user.Type == (int)EnumUserType.Controller)
         {
             <div class="ui segments">
                 <div class="ui segment">
@@ -268,7 +268,7 @@
                 </div>
             </div>
         }
-        if (user.Type == (int) EnumUserType.User || user.Type == (int) EnumUserType.TestingOrg)
+        if (user.Id == Model.UserId || user.Type == (int) EnumUserType.TestingOrg)
         {
             <div class="ui segment">
                 <p class="am-cf">
@@ -281,7 +281,7 @@
 
     if (Model.Status == (int) EnumTradeStatus.Signed)
     {
-        if (user.Type == (int) EnumUserType.User)
+        if (user.Id==Model.UserId)
         {
             <div class="ui segment">
                 <p class="am-cf">

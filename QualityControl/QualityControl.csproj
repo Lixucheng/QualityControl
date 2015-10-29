@@ -386,6 +386,10 @@
     <Compile Include="Migrations\201510290511514_ReportChange.Designer.cs">
       <DependentUpon>201510290511514_ReportChange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510291047577_productiondate.cs" />
+    <Compile Include="Migrations\201510291047577_productiondate.Designer.cs">
+      <DependentUpon>201510291047577_productiondate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\ConvertTradeStatus.cs" />
@@ -1264,6 +1268,7 @@
     <Content Include="Scripts\bower_components\way.js\Gruntfile.js" />
     <Content Include="Scripts\bower_components\way.js\way.js" />
     <Content Include="Scripts\bower_components\way.js\way.min.js" />
+    <Content Include="Scripts\fuck.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -1499,6 +1504,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510290511514_ReportChange.resx">
       <DependentUpon>201510290511514_ReportChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510291047577_productiondate.resx">
+      <DependentUpon>201510291047577_productiondate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

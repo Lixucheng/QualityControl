@@ -26,9 +26,29 @@ jQuery(function () {
     // 当有文件添加进来的时候
     uploader.on('fileQueued', function (file) {
         $list.append('<div id="' + file.id + '" class="item">' +
-           '<h4 class="info">' + file.name + '</h4>' + "<i class='fa fa-close right fa-2x' id='" + file.id + "'></i>" +
+           '<h4 class="info">' + '<span style="float:left">' + file.name + '</span>'+'</h4>' +
            '<p class="state">等待上传...</p>' +
        '</div>');
+
+        function DelA(id) {
+
+            var the = $("." + id);
+            the.remove();
+            var n = "";
+            ///从数组中删除
+            for (var i = 0; i < files.length; i++) {
+                if (files[i].id == id) {
+                    n = files[i].name2;
+                    files.splice(i, 1);
+
+
+                    break;
+                }
+            }
+            ///从服务器删除
+            delname.push(n);
+        }
+
         var f = new Object();
         f.id = file.id;
         f.name = file.name;
@@ -54,6 +74,10 @@ jQuery(function () {
             })
 
         }, 0);
+
+
+        
+                                        
     });
 
     // 文件上传过程中创建进度条实时显示。
@@ -135,6 +159,7 @@ jQuery(function () {
         // Web Uploader实例
         uploader;
 
+
     // 初始化Web Uploader
     uploader = WebUploader.create({
 
@@ -161,9 +186,9 @@ jQuery(function () {
     // 当有文件添加进来的时候
     uploader.on('fileQueued', function (file) {
         var $li = $(
-                '<div id="' + file.id + '" class="file-item thumbnail">' +
+                '<div id="' + file.id + '" class="file-item thumbnail" style="margin-bottom:50px">' +
                     '<img>' +
-                    '<div class="info">' + file.name + '</div>' +
+                 '<button type="button"  class="d ui  button" id="d' + file.id + '">删除</button>' +
                 '</div>'
                 ),
             $img = $li.find('img');
@@ -219,4 +244,25 @@ jQuery(function () {
     uploader.on('uploadComplete', function (file) {
         $('#' + file.id).find('.progress').remove();
     });
+
+    window.AddImage = function (id,name) {
+        var $li = $(
+                '<div id="' + id + '" class="file-item thumbnail" style="margin-bottom:50px">' +
+                    '<img>' +
+                 '<button type="button"  class="d ui  button" id="d'+id+'">删除</button>' +
+                '</div>'
+                ),
+            $img = $li.find('img');
+
+        $list.append($li);
+        images.push(name);
+        $img.attr('src', name);
+        w = thumbnailWidth + 2;
+        h = thumbnailHeight + 2;
+        $img.attr('style','width:'+w+'px;height:'+h+'px')
+        // 创建缩略图
+       
+    }
+
 });
+

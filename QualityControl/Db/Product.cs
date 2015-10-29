@@ -176,6 +176,8 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
+        public DateTime ProductionDate { get; set; }
+
         public long ProductId { get; set; }
 
         public string BatchName { get; set; }
@@ -328,6 +330,6 @@ namespace QualityControl.Db
 
         public int Count { get; set; }
 
-        public string ProductionDate { get; set; }
+        public DateTime ProductionDate { get; set; }
     }
 }

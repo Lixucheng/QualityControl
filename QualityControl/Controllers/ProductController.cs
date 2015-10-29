@@ -517,7 +517,7 @@ namespace QualityControl.Controllers
             {
                 if (Util.Util.Equal(model, product, excepts: new List<string> {"CreateTime", "LastChangeTime", "Status"}))
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("CompanyProductInfo/" + model.Id);
                 }
                 if (product.Status == EnumStatus.FirstUncheked)
                 {
@@ -590,6 +590,7 @@ namespace QualityControl.Controllers
             var p = Db.BaseProductBatchs.Find(bpb.Id);
             p.BatchName = bpb.BatchName;
             p.Count = bpb.Count;
+            p.ProductionDate = bpb.ProductionDate;
             Db.SaveChanges();
             return Redirect("./BaseProductBatch?pid=" + pid);
         }
