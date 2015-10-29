@@ -1362,6 +1362,7 @@
     <Content Include="Views\Trade\ChooseProduct.cshtml" />
     <Content Include="Views\Trade\BatchSelect.cshtml" />
     <Content Include="Views\MakeQrCode\MakeNo.cshtml" />
+    <Content Include="Views\Product\ProductIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

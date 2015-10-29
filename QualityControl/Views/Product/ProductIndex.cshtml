@@ -1,0 +1,244 @@
+﻿
+@{
+    ViewBag.Title = "ProductIndex";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section head{
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+
+    <style>
+        .main-container {
+            background-color: #FFFFFF;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            margin: 0em auto;
+            padding: 2em 2em 7em;
+            z-index: 1;
+        }
+
+        .mycontent {
+            margin-bottom: 30px;
+        }
+    </style>
+}
+
+<div class="main-container">
+    <div>
+        <div class="ui form" style="float: left; margin-right: 3%; width: 20%;">
+            <div class="field">
+                <label>搜索方式</label>
+                <div class="ui mobile reversed equal width grid">
+                    <div class="column">
+                        <select id="sel">
+                            <option value="1">按产品种类搜索</option>
+                            <option value="2">按产品名称搜索</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="ui form type" style="float: left; width: 40%;" id="form" action="" method="get">
+            @{ Html.RenderAction("_ChooseType", "Product", new { name = "Choose" }); }
+
+        </form>
+        <form id="name" class="ui form" style="display: none; float: left; width: 20%;" action="" method="get">
+            <div class="field">
+                <label id="lable">按产品名称搜索</label>
+                <div class="ui mobile reversed equal width grid">
+                    <div class="column">
+                        <input name="key" />
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <div class="ui form" style="float: left; margin-left: 2%; width: 20%;">
+            <div class="field">
+                <label style="opacity: 0" hidden="hidden" id="lable0">1</label>
+                <div class="ui mobile reversed equal width grid">
+                    <div class="column">
+                        <button class="ui button blue" id="searchbtn">搜索</button>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <table class="ui  celled  table">
+        <thead class="">
+            <tr>
+                <th>名称</th>
+                <th>产品种类</th>
+                <th>生产厂家</th>
+                <th>许可证号</th>
+                <th>发证日期</th>
+                <th>生产标准</th>
+
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (ViewBag.count == 0)
+            {
+            }
+            else
+            {
+                foreach (var Tempx in ViewBag.list)
+                {
+                    <tr>
+                        <td>@Tempx.Name</td>
+                        <td>@Tempx.Type.Title</td>
+                        <td>@Tempx.Company.Name</td>
+                        <td>@Tempx.ProductionCertificateNo</td>
+                        <td>@Tempx.GetDate</td>
+                        <td>@Tempx.Standard</td>
+
+
+                        <td>
+                            <div class="2  fluid ui">
+                                <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
+
+                               
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+        <tfoot>
+            <tr></tr>
+        </tfoot>
+    </table>
+</div>
+<div class="ui  modal" id="seecp">
+    <i class="close icon"></i>
+    <div class="header" id="scpname">
+        标题
+    </div>
+    <div class=" content mycontent">
+
+        <form class="ui form" id="">
+            <div class="field">
+                <label>生产许可证号</label>
+                <input disabled type="text" name="ProductionCertificateNo" placeholder="生产许可证号" id="scpProductionCertificateNo">
+            </div>
+            <div class="field">
+                <label>颁发日期</label>
+                <input disabled type="date" name="GetDate" placeholder="颁发日期" id="scpgetdate">
+            </div>
+            <div class="field">
+                <label>生产标准</label>
+                <input disabled type="text" name="Standard" placeholder="生产标准" id="scpstandard">
+            </div>
+
+            <div class="field">
+                <label>产品状态</label>
+                <select disabled name="CompanyProductStatus" id="scpCompanyProductStatus">
+                    <option value="1">正在生产</option>
+                    <option value="0">停产</option>
+                </select>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('table').DataTable({
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                    "sInfoEmpty": "共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+
+                },
+                "bLengthChange": false
+            });
+            $("#form .field label").html("按产品种类搜索");
+        });
+
+        function See(x) {
+            $.ajax({
+                type: 'Get',
+                url: '/Product/GetCpInfo',
+                data: { id: x },
+                success: function(data) {
+                    $("#scpname").html(data.cp.Name);
+                    $("#scpid").val(data.cp.Id);
+                    $("#scpProductionCertificateNo").val(data.cp.ProductionCertificateNo);
+                    $("#scpgetdate").val(data.cp.GetDate);
+                    $("#scpstandard").val(data.cp.Standard);
+                    $("#scpProductTypeId").val(data.tname);
+
+
+                    $('#seecp').modal('show');
+                },
+                dataType: "json"
+            });
+
+        };
+
+        $("#sel").change(function() {
+            var x = $(this).val();
+            if (x == 1) {
+                $(".type").show();
+                $('#name').hide();
+            } else {
+                $('#name').show();
+                $(".type").hide();
+            }
+        });
+
+        $('#searchbtn').click(function() {
+
+            var x = $("#sel").val();
+            if (x == 1) {
+                $('#form').submit();
+            } else {
+                $('#name').submit();
+            }
+        });
+
+        function Choose(id) {
+            var r = confirm("确认选择？");
+            if (r == true) {
+                top.location = "/Trade/ProductChosen/" + id;
+            } else {
+
+            }
+
+        }
+    </script>
+}
+
