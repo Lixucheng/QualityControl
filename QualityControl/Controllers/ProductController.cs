@@ -590,6 +590,7 @@ namespace QualityControl.Controllers
             var p = Db.BaseProductBatchs.Find(bpb.Id);
             p.BatchName = bpb.BatchName;
             p.Count = bpb.Count;
+            p.ProductionDate = bpb.ProductionDate;
             Db.SaveChanges();
             return Redirect("./BaseProductBatch?pid=" + pid);
         }

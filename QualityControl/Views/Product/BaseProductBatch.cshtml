@@ -18,7 +18,7 @@
         }
     </style>
 }
-
+@model QualityControl.Db.BaseProductBatch
 <div class="main-container">
     <h2 class="ui dividing header">
         产品批次管理：@ViewBag.p.Name
@@ -33,6 +33,7 @@
         <tr>
             <th>名称</th>
             <th>数量</th>
+            <th>生产日期</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -49,6 +50,7 @@
 
                     <td>@Tempx.BatchName</td>
                     <td>@Tempx.Count</td>
+                    <td>@Tempx.ProductionDate</td>
 
                     <td>
                         <div class="2  fluid ui">
@@ -88,6 +90,10 @@
                 <label>数量</label>
                 <input type="number" name="Count" placeholder="数量" id="editcount">
             </div>
+            <div class="field">
+                <label>生产日期</label>
+                <input type="date" name="ProductionDate" placeholder="" id="editcount">
+            </div>
             <div class="ui error message"></div>
         </form>
 
@@ -114,6 +120,10 @@
             <div class="field">
                 <label>数量</label>
                 <input type="number" name="Count" placeholder="数量">
+            </div>
+            <div class="field">
+                <label>生产日期</label>
+                <input type="date" name="ProductionDate" placeholder="" id="editdate">
             </div>
             <div class="ui error message"></div>
         </form>
@@ -173,6 +183,7 @@
                     $("#editname").val(data.BatchName);
                     $("#editcount").val(data.Count);
                     $("#editid").val(data.Id);
+                    $("#editdate").val(data.ProductionDate);
                     $('#edit').modal('show');
                 },
                 dataType: "json"
