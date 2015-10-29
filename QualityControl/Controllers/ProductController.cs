@@ -627,5 +627,28 @@ namespace QualityControl.Controllers
         }
 
         #endregion
+
+
+
+        public ActionResult ProductIndex(string key = "", long ProductTypeId = 0)
+        {
+            var x = new List<Product>();
+            if (ProductTypeId != 0)
+            {
+                var t = Db.ThirdProductTypes.Find(ProductTypeId);
+                if (t == null)
+                {
+                    throw new Exception("访问错误");
+                }
+                x = t.Products;
+                ViewBag.list = x;
+                return View();
+            }
+            if (!string.IsNullOrEmpty(key))
+                x = Db.Products.Where(e => e.Name.Contains(key)).ToList();
+            x = Db.Products.Take(20).ToList();
+            ViewBag.list = x;
+            return View();
+        }
     }
 }

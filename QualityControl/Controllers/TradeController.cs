@@ -182,7 +182,9 @@ namespace QualityControl.Controllers
                 {
                     BatchName = batch.BatchName,
                     Count = batch.Count,
-                    ProductId = batch.ProductId
+                    ProductId = batch.ProductId,
+                    ProductionDate=batch.ProductionDate
+                    
                 };
 
                 batches.Add(pb);
