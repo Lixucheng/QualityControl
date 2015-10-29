@@ -48,6 +48,7 @@ namespace QualityControl.Db
         public virtual Compact Compact { get; set; }
 
         public virtual List<ProductBatch> Batches { get; set; }
+
     }
 
     public enum EnumSample

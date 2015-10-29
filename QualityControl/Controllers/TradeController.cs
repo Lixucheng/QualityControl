@@ -431,7 +431,6 @@ namespace QualityControl.Controllers
                 return Content("错误操作");
             }
             trade.Result = report;
-            trade.Result.CompanyName = Db.Companies.FirstOrDefault(a => a.UserId == trade.ManufacturerId).Name;
             trade.Status = (int) EnumTradeStatus.Tested;
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
