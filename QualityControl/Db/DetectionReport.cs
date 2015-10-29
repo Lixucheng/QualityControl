@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QualityControl.Db
@@ -11,20 +12,11 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public string CompanyName { get; set; }
-
-        public string Title { get; set; }
-
-        [Required]
-        public string DataList { get; set; }
-
-        [Required]
-        public string Conclusion { get; set; }
-
-        [Required]
-        public string Comments { get; set; }
-
         public int Status { get; set; }
+
+        public string Files { get; set; }
+
+        public DateTime CreateTime { get; set; }
     }
 
     public class DetectionReportDataItem

@@ -185,10 +185,134 @@ namespace QualityControl.Db
         public int SampleCount { get; set; }
 
         public virtual Trade Trade { get; set; }
+
         public string Level { get; set; } //检查级别for example abcd
 
-
         public string SamplaListJson { get; set; }
+
+        public virtual BatchReport Report { get; set; }
+    }
+
+    [Table("GxBatchReport")]
+    public class BatchReport
+    {
+        [Key]
+        // 自增
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
+
+        [Required]
+        public long BatchId { get; set; }
+
+        /// <summary>
+        /// 样品名称
+        /// </summary>
+        [Required]
+        public string SampleName { get; set; }
+
+        /// <summary>
+        /// 规格
+        /// </summary>
+        [Required]
+        public string Specification { get; set; }
+
+        /// <summary>
+        /// 委托单位
+        /// </summary>
+        [Required]
+        public string Trustor { get; set; }
+
+        /// <summary>
+        /// 商标
+        /// </summary>
+        [Required]
+        public string Brand { get; set; }
+
+        /// <summary>
+        /// 委托单位地址
+        /// </summary>
+        [Required]
+        public string TrustorAddress { get; set; }
+
+        /// <summary>
+        /// 检验类别
+        /// </summary>
+        [Required]
+        public string TestType { get; set; }
+
+        /// <summary>
+        /// 生产单位/地址
+        /// </summary>
+        [Required]
+        public string ProducingAddress { get; set; }
+
+        /// <summary>
+        /// 样品状况/等级
+        /// </summary>
+        [Required]
+        public string SampleRank { get; set; }
+
+
+        /// <summary>
+        /// 送样人
+        /// </summary>
+        [Required]
+        public string Deliverer { get; set; }
+
+        /// <summary>
+        /// 送样日期
+        /// </summary>
+        [Required]
+        public string DeliveryDate { get; set; }
+
+        /// <summary>
+        /// 生产日期
+        /// </summary>
+        [Required]
+        public string ProducingDate { get; set; }
+
+        /// <summary>
+        /// 主检人
+        /// </summary>
+        [Required]
+        public string Manager { get; set; }
+
+        /// <summary>
+        /// 检验日期
+        /// </summary>
+        [Required]
+        public string CheckDate { get; set; }
+
+
+        /// <summary>
+        /// 检验项目
+        /// </summary>
+        [Required]
+        public string ProjectName { get; set; }
+
+        /// <summary>
+        /// 检验依据/标准
+        /// </summary>
+        [Required]
+        public string Standard { get; set; }
+
+        /// <summary>
+        /// 检验结论
+        /// </summary>
+        [Required]
+        public string Conclusion { get; set; }
+
+        /// <summary>
+        /// 使用仪器设备及编号
+        /// </summary>
+        public string Equipment { get; set; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        [Required]
+        public string Note { get; set; }
+
     }
 
     [Table("GxBaseProductBatch")]
