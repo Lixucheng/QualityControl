@@ -1263,6 +1263,7 @@
     <Content Include="Scripts\bower_components\way.js\Gruntfile.js" />
     <Content Include="Scripts\bower_components\way.js\way.js" />
     <Content Include="Scripts\bower_components\way.js\way.min.js" />
+    <Content Include="Scripts\fuck.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />

@@ -517,7 +517,7 @@ namespace QualityControl.Controllers
             {
                 if (Util.Util.Equal(model, product, excepts: new List<string> {"CreateTime", "LastChangeTime", "Status"}))
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction("CompanyProductInfo/" + model.Id);
                 }
                 if (product.Status == EnumStatus.FirstUncheked)
                 {

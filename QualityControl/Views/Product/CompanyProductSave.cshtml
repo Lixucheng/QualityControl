@@ -10,6 +10,19 @@
 <link href="~/Scripts/bower_components/font-awesome/css/font-awesome.css" rel="stylesheet" />
 <link href="~/Scripts/bower_components/fex-webuploader/dist/webuploader.css" rel="stylesheet" />
 <link href="~/Content/UpCss.css" rel="stylesheet" />
+    <style>
+    div.file-panel {
+    position: absolute;
+    height: 0;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#80000000', endColorstr='#80000000')\0;
+    background: rgba( 0, 0, 0, 0.5 );
+    width: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 300;
+}
+    </style>
 }
 
 <div class="am-margin-lg am-padding-lg ui center aligned container">
@@ -163,6 +176,7 @@
                     <div id="uploader" class="wu-example">
                         <!--用来存放文件信息-->
                         <div id="thelist" class="uploader-list">
+                          
                             @{
                                 if (Model != null && Model.File != null)
                                 {
@@ -171,11 +185,11 @@
                                     {
                                         <div id="' + @t["id"] + '" class="item myitem @t["id"]">
                                             <h4 class="info">
-                                                @t["name"]
-                                                <i class='fa fa-close right fa-2x' id='" + @t["id"] + "' onclick="DelA('@t["id"]')"></i>
+                                                <span style="float:left">@t["name"]</span>
+                                                <i style="float:right" class='fa fa-close right fa-2x' id='" + @t["id"] + "' onclick="DelA('@t["id"]')"></i>
                                             </h4>
 
-                                            <p class="state">已存在</p>
+                                           
                                             <input type="hidden" class="v1" value="@t["id"]" />
                                             <input type="hidden" class="v2" value="@t["name"]" />
                                             <input type="hidden" class="v3" value="@t["name2"]" />
@@ -204,6 +218,7 @@
                                     }
                                 }
                             }
+                            <br />
                         </div>
 
                         <div class="btns">
@@ -214,7 +229,7 @@
                 </div>
 
 
-                <div class="field">
+                <div class="field" id="uploader">
                     <label>产品图片上传（7张）</label>
                     <div id="uploader-demo">
                         <!--用来存放item-->
@@ -230,7 +245,19 @@
             </form>
         </div>
     </div>
-
+    @{
+        if (Model != null && Model.Image != null)
+        {
+            int i = 0;
+            var jarray = (JArray)JsonConvert.DeserializeObject(Model.Image);
+            foreach (var t in jarray)
+            {
+                var s = "p" + i;
+                <input type="hidden" value="@t" class="images" />               
+                i++;
+            }
+        }
+    }
 </div>
 
 
@@ -263,20 +290,13 @@
     
 </div>
 
-@{
-    if (Model != null && Model.Image != null)
-    {
-        var jarray = (JArray)JsonConvert.DeserializeObject(Model.Image);
-        foreach (var t in jarray)
-        {
-            <input type="hidden" value="@t" class="images"/>
-        }
-    }
-}
+
 
 @section Scripts{
 <script src="~/Scripts/bower_components/fex-webuploader/dist/webuploader.js"></script>
     <script>
+        $(".field").eq(3).hide();
+
         var t = 1;
       
         function Add(id) {
@@ -515,16 +535,24 @@
     </script>
 <script src="~/Scripts/ProductUp.js"></script>
     <script>
-        function filenameWrite() {
-            var list = $(".images");
+        jQuery(function () {
+            function filenameWrite() {
+                var list = $(".images");
             
-            list.each(function () {               
-                var t1 = $(this).val();
-                images.push(t1);
-                windows.AddImage(images.length,t1);            
-            })
-        }
-        filenameWrite();
+                list.each(function () {               
+                    var t1 = $(this).val();
+                    window.AddImage(images.length,t1);                            
+                })
+            }
+            filenameWrite();
+    
+            $(".d").click(function () {
+                var id= $(this).parent().attr("id");               
+                $(this).parent().remove();
+                images.splice(id, 1);
+
+            });
+        });
     </script>
 
 }
