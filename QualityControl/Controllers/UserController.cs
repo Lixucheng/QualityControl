@@ -41,6 +41,7 @@ namespace QualityControl.Controllers
             else if (type == (int) EnumUserType.Producer)
             {
                 list = Db.Trades.Where(e => e.ManufacturerId == userId).ToList();
+                list.AddRange(Db.Trades.Where(e=>e.UserId==userId).ToList());
             }
             else
             {
@@ -58,7 +59,7 @@ namespace QualityControl.Controllers
         {
             var userid = User.Identity.GetUserId();
             var user = UserManager.FindById(userid);
-            if (user.Type != (int) EnumUserType.User)
+            if (user.Type != (int) EnumUserType.User&& user.Type != (int)EnumUserType.Producer)
             {
                 throw new Exception("您不是用户，无权限查看！");
             }
