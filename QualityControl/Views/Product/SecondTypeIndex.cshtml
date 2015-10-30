@@ -129,8 +129,9 @@
     </div>
     <div class=" content">
 
-        <form class="ui form" action="/Product/SecondAdd" id="addform">
-            <input name="Id" style="display: none">
+        <form class="ui form"  action="/Product/SecondAdd" id="addform">
+            <input name="Id"  style="display: none">
+            <input name="fid" value="@ViewBag.id" style="display: none">
             <div class="field">
                 <label>名称</label>
                 <input type="text" name="Title" placeholder="名称">
