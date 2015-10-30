@@ -13,12 +13,22 @@
     <link href="~/Scripts/bower_components/semantic/dist/semantic.css" rel="stylesheet" />
 
     <link href="~/Content/homepage.css" rel="stylesheet" />
+    <style>
+        .ui.inverted.segment, .ui.primary.inverted.segment{
+            background-color: #cf4646;
+        }
+        .ui.secondary.inverted.pointing.menu{
+            border: none;
+        }
+        .zh{
+            font-family: "Microsoft YaHei", "华文细黑";
+        }
+    </style>
     <script src="~/Scripts/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="~/Scripts/bower_components/semantic/dist/semantic.min.js"></script>
     <script>
   $(document)
     .ready(function() {
-
       // fix menu when passed
       $('.masthead')
         .visibility({
@@ -29,16 +39,13 @@
           onBottomPassedReverse: function() {
             $('.fixed.menu').transition('fade out');
           }
-        })
-      ;
+        });
 
       // create sidebar and attach to menu open
       $('.ui.sidebar')
-        .sidebar('attach events', '.toc.item')
-      ;
+        .sidebar('attach events', '.toc.item');
 
-    })
-  ;
+    });
     </script>
 </head>
 <body>
@@ -84,14 +91,25 @@
         </div>
         <div class="ui vertical stripe segment">
             <div class="ui text container">
-                <h3 class="ui header">产品查询</h3>
-                <a class="ui large button" href="/Product/ProductIndex">产品查询</a>
+                @*<h3 class="ui header">产品查询</h3>*@
+                <div style="text-align:center">
+                    <a class="ui teal massive button" href="/Product/ProductIndex">产品查询</a>
+                </div>
+                
                 <h4 class="ui horizontal header divider">
-                    <a href="#">Case Studies</a>
+                    <a href="#">热门产品</a>
                 </h4>
-                <h3 class="ui header">Did We Tell You About Our Bananas?</h3>
-                <p>Yes I know you probably disregarded the earlier boasts as non-sequitor filler content, but its really true. It took years of gene splicing and combinatory DNA research, but our bananas can really dance.</p>
-                <a class="ui large button">I'm Still Quite Interested</a>
+                <h3 class="ui header ">【茶叶及相关制品】安溪铁观音</h3>
+                <p class="">铁观音含有较高的氨基酸、维生素、矿物质、茶多酚和生物碱，有多种营养和药效成分，具有养生保健的功能。于民国八年自福建安溪引进木栅区试种，分“红心铁观音”及“青心铁观音”两种，主要产区在文山期树属横张型，枝干粗硬，叶较稀松，芽少叶厚，产量不高，但制包种茶品质高，产期较青心乌龙晚。其树形稍，叶呈椭圆形，叶厚肉多。叶片平坦展开。</p>
+                <a class="ui large button">查看详情</a>
+
+                <h3 class="ui header ">【糕点】稻香村月饼</h3>
+                <p class="">月饼是久负盛名的汉族传统小吃，深受中国人民喜爱。月饼圆又圆，又是合家分吃，象征着团圆和睦，在中秋节这一天是必食之品。古代月饼被作为祭品于中秋节所食。据说中秋节吃月饼的习俗于唐朝开始。北宋之时，在宫廷内流行，但也流传到民间，当时俗称“小饼”和“月团”。发展至明朝则成为全民共同的饮食习俗。时至今日，品种更加繁多，风味因地各异。其中广式、京式、苏式、潮式，滇式等月饼被中国南北各地的人们所喜爱。</p>
+                <a class="ui large button">查看详情</a>
+
+                <h3 class="ui header ">【酒类】茅台</h3>
+                <p class="">茅台酒独产于中国的贵州省遵义市仁怀市茅台镇，是汉民族的特产酒，与苏格兰威士忌、法国科涅克白兰地齐名的三大蒸馏酒之一。1915年至今，贵州茅台酒共获得15次国际金奖，连续五次蝉联中国国家名酒称号，与遵义董酒并称贵州省仅有的两大国家名酒，是大曲酱香型白酒的鼻祖，有“国酒”之称，是中国最高端白酒之一。</p>
+                <a class="ui large button">查看详情</a>
             </div>
         </div>
 

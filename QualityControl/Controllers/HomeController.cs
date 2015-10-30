@@ -1,4 +1,6 @@
 ﻿using System.Web.Mvc;
+using System.Linq;
+using System;
 
 namespace QualityControl.Controllers
 {
@@ -6,7 +8,10 @@ namespace QualityControl.Controllers
     {
         public ActionResult Index()
         {
-            var a = 123.ToString("D15");
+            //ViewBag.Products = Db.Products
+            //    .OrderBy(a => Guid.NewGuid())
+            //    .Take(5)
+            //    .ToList();
             return View();
         }
 
