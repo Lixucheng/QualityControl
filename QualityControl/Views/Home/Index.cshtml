@@ -2,118 +2,210 @@
     Layout = null;
 }
 <!DOCTYPE html>
-<html>
+<html lang="zh">
+
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Standard Meta -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="image_src" type="image/jpeg" href="/Content/homepage/logo.png">
     <!-- Site Properities -->
-    <title>Homepage - Semantic</title>
-    <link href="~/Scripts/bower_components/semantic/dist/semantic.css" rel="stylesheet" />
-
-    <link href="~/Content/homepage.css" rel="stylesheet" />
+    <meta name="generator" content="DocPad v6.78.1">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" class="ui" href="/Content/homepage/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="/Content/homepage/docs.css">
+    <link rel="stylesheet" type="text/css" href="/Content/homepage/rtl.css">
+    <link rel="stylesheet" type="text/css" href="/Content/homepage/home.css">
+    <link rel="stylesheet/less" type="text/css" href="/Content/homepage/button.less">
     <style>
-        .ui.inverted.segment, .ui.primary.inverted.segment{
-            background-color: #cf4646;
+        .carbonad {
+            background-color: #393939;
+            border: 2px solid #E8E8E8;
+            height: 215px;
+            line-height: 1.2;
+            width: 150px;
         }
-        .ui.secondary.inverted.pointing.menu{
-            border: none;
+
+        .carbonad-img {
+            float: left;
+            height: 100px;
+            margin-left: 11px;
+            margin-top: 11px;
+            width: 130px;
         }
-        .zh{
-            font-family: "Microsoft YaHei", "华文细黑";
+
+        .carbonad-text {
+            color: #8A8A8A;
+            float: left;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            height: 50px;
+            margin-left: 15px;
+            margin-top: 9px;
+            width: 119px;
         }
+
+            .carbonad-text a {
+                color: #FFF;
+                text-decoration: none;
+                text-transform: none;
+            }
+
+        .carbonad-tag {
+            color: #6A6A6A;
+            float: left;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            margin-left: 17px;
+            margin-top: 13px;
+            text-align: center;
+        }
+
+            .carbonad-tag a {
+                color: #6A6A6A;
+                text-decoration: none;
+                font-weight: 700;
+            }
     </style>
-    <script src="~/Scripts/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="~/Scripts/bower_components/semantic/dist/semantic.min.js"></script>
-    <script>
-  $(document)
-    .ready(function() {
-      // fix menu when passed
-      $('.masthead')
-        .visibility({
-          once: false,
-          onBottomPassed: function() {
-            $('.fixed.menu').transition('fade in');
-          },
-          onBottomPassedReverse: function() {
-            $('.fixed.menu').transition('fade out');
-          }
-        });
-
-      // create sidebar and attach to menu open
-      $('.ui.sidebar')
-        .sidebar('attach events', '.toc.item');
-
-    });
-    </script>
 </head>
-<body>
-    <!-- Following Menu -->
-    <div class="ui large top fixed hidden menu">
-        <div class="ui container">
-            <a class="active item" href="/User/TradeList">质量检测列表</a>
-            <div class="right menu">
-                <div class="item">
-                    <a class="ui button" href="/Account/Login">登录</a>
-                </div>
-                <div class="item">
-                    <a class="ui primary button" href="/Account/Register">注册</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Sidebar Menu -->
-    <div class="ui vertical inverted sidebar menu">
-        <a class="active item" href="/User/TradeList">质量检测列表</a>
-    </div>
 
-    <!-- Page Contents -->
+<body id="example" class="index pushable" ontouchstart="">
     <div class="pusher">
-        <div class="ui inverted vertical masthead center aligned segment">
-            <div class="ui container">
-                <div class="ui large secondary inverted pointing menu">
-                    <a class="toc item">
-                        <i class="sidebar icon"></i>
-                    </a>
-                    <a class="active item" href="/User/TradeList">质量检测列表</a>
-                    <a class=" item" href="/Account/Login">登录</a>
-                    <a class=" item" href="/Account/Register">注册</a>
+        <div class="full height">
+            <div class="following bar">
+                <div class="ui container">
+                    <div class="ui large inverted secondary network menu">
+                        <div class="item">
+                            <div class="ui logo shape">
+                                <div class="sides">
+                                    <div class="active ui side">
+                                        <img class="ui image" src="/Content/homepage/images/backgrounds/logo.jpg">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="view-ui item" href="#">质量检测平台 </a>
+                        <div class="right menu">
+                            <div class="item">
+                                <span class="">登录</span>
+                            </div>
+                            <div class="item">
+                                <span class="">注册</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="ui text container">
-                <h1 class="ui inverted header">
-                    质控平台
-                </h1>
-                <h2>更加方便的质量检测控制平台.</h2>
-                <a class="ui huge primary button" href="/Trade/ChooseProduct">开始质控之旅<i class="right arrow icon"></i></a>
-            </div>
-        </div>
-        <div class="ui vertical stripe segment">
-            <div class="ui text container">
-                @*<h3 class="ui header">产品查询</h3>*@
-                <div style="text-align:center">
-                    <a class="ui teal massive button" href="/Product/ProductIndex">产品查询</a>
+            <div class="masthead segment bg7">
+                <div class="ui container">
+                    <div class="introduction">
+                        <h1 class="ui inverted header">
+                            <span class="library">质量检测平台</span>
+                            <span class="tagline">更放心更便捷的质量检测</span>
+                        </h1>
+                        <div class="ui hidden divider"></div>
+                        <a href="" class="ui huge inverted download button">开启质控之旅</a>
+                    </div>
                 </div>
-                
-                <h4 class="ui horizontal header divider">
-                    <a href="#">热门产品</a>
-                </h4>
-                <h3 class="ui header ">【茶叶及相关制品】安溪铁观音</h3>
-                <p class="">铁观音含有较高的氨基酸、维生素、矿物质、茶多酚和生物碱，有多种营养和药效成分，具有养生保健的功能。于民国八年自福建安溪引进木栅区试种，分“红心铁观音”及“青心铁观音”两种，主要产区在文山期树属横张型，枝干粗硬，叶较稀松，芽少叶厚，产量不高，但制包种茶品质高，产期较青心乌龙晚。其树形稍，叶呈椭圆形，叶厚肉多。叶片平坦展开。</p>
-                <a class="ui large button">查看详情</a>
-
-                <h3 class="ui header ">【糕点】稻香村月饼</h3>
-                <p class="">月饼是久负盛名的汉族传统小吃，深受中国人民喜爱。月饼圆又圆，又是合家分吃，象征着团圆和睦，在中秋节这一天是必食之品。古代月饼被作为祭品于中秋节所食。据说中秋节吃月饼的习俗于唐朝开始。北宋之时，在宫廷内流行，但也流传到民间，当时俗称“小饼”和“月团”。发展至明朝则成为全民共同的饮食习俗。时至今日，品种更加繁多，风味因地各异。其中广式、京式、苏式、潮式，滇式等月饼被中国南北各地的人们所喜爱。</p>
-                <a class="ui large button">查看详情</a>
-
-                <h3 class="ui header ">【酒类】茅台</h3>
-                <p class="">茅台酒独产于中国的贵州省遵义市仁怀市茅台镇，是汉民族的特产酒，与苏格兰威士忌、法国科涅克白兰地齐名的三大蒸馏酒之一。1915年至今，贵州茅台酒共获得15次国际金奖，连续五次蝉联中国国家名酒称号，与遵义董酒并称贵州省仅有的两大国家名酒，是大曲酱香型白酒的鼻祖，有“国酒”之称，是中国最高端白酒之一。</p>
-                <a class="ui large button">查看详情</a>
+            </div>
+            <div class="ui vertical stripe intro segment">
+                <div style="margin: 0 40px;">
+                    <div class="ui fluid demo tabular menu">
+                        <a class="active item">糕点 </a>
+                        <a class="item">肉制品 </a>
+                        <a class=" item">食用油 </a>
+                        <a class="item">调味品 </a>
+                        <a class=" item">乳制品 </a>
+                        <a class="item">饮料 </a>
+                    </div>
+                    <div class="feature alternate ui stripe vertical segment">
+                        <div class="ui three column center aligned divided relaxed stackable grid container">
+                            <div class="row">
+                                <div class="column">
+                                    <h2 class="ui icon header"><img class="ui icon image" src="/Content/homepage/images/gd.jpg">【糕点】稻香村月饼</h2>
+                                    <p>月饼是久负盛名的汉族传统小吃，深受中国人民喜爱。</em>.</p>
+                                    <a class="ui large button" href="http://semantic-ui.cn/usage/theming.html">查看详情</a>
+                                </div>
+                                <div class="column">
+                                    <h2 class="ui icon header"><img class="ui icon image" src="/Content/homepage/images/tgy.jpg">【茶叶及相关制品】安溪铁观音</h2>
+                                    <p>铁观音含有较高的氨基酸、维生素、矿物质、茶多酚和生物碱，有多种营养和药效成分，具有养生保健的功能。</p>
+                                    <div class="ui primary view-ui large button">查看详情</div>
+                                </div>
+                                <div class="column">
+                                    <h2 class="ui icon header"><img class="ui icon image" src="/Content/homepage/images/mt.jpg">【酒类】茅台</h2>
+                                    <p>茅台酒独产于中国的贵州省遵义市仁怀市茅台镇，是汉民族的特产酒，与苏格兰威士忌、法国科涅克白兰地齐名的三大蒸馏酒之一。</p>
+                                    <a href="https://github.com/Semantic-Org/Semantic-UI/issues" class="ui large button">查看详情</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui email alternate stripe vertical segment" style="margin-top: -40px; !important">
+                <div class="ui center aligned grid container">
+                    <div class="column">
+                        <h3 class="ui header" style="font-size:32px;">方便系统的产品管理</h3>
+                        <form class="ui form" method="post" action="https://semantic-ui.clients.ubivox.com/handlers/post/">
+                            <input type="hidden" name="action" value="subscribe">
+                            <input type="hidden" name="lists" value="29450">
+                            <div class="field">
+                                <div class="ui large input">
+                                    <input type="text" name="email_address">
+                                </div>
+                                <button type="submit" class="ui large teal submit button">产品查询</button>
+                                <button type="submit" class="ui large primary submit button">产品在线验证</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="ui alternate stripe vertical segment">
+                <div class="ui stackable center aligned grid container">
+                    <div class="fourteen wide column">
+                        <h1 class="ui icon header"><img class="ui inline icon image" src="/Content/homepage/rocket.png"> 高效方便的质量检测控制平台</h1>
+                        <div class="ui stackable center aligned vertically padded grid">
+                            <div class="eight wide column">
+                                <p>由用户提出管控申请，经生产商和控制中心确认产品信息以及用户选择批次后，申请完成。接着，由控制中心制作检测方案，用户可以提出修改意见。一致同意监测方案后，用户付款确认后，由控制中心开始制码，并通知生产商和检测机构。控制中心选择抽样方式后，检测机构开始检测并完成检测报告，用户查阅检测报告，申请完成。</p>
+                                <a class="ui large right labeled primary icon button" href="http://semantic-ui.cn/introduction/getting-started.html"><i class="right chevron icon"></i> 马上开始 </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-
+        <div class="ui black inverted vertical footer segment">
+            <div class="ui center aligned container">
+                <div class="ui stackable inverted grid">
+                    <div class="six wide column">
+                        <h4 class="ui inverted header">质量检测控制平台 @ 大连工业大学</h4>
+                    </div>
+                    <div class="seven wide right floated column">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="/Content/homepage/jquery.min.js"></script>
+    <script src="/Content/homepage/highlight.min.js"></script>
+    <script src="/Content/homepage/easing.min.js"></script>
+    <script src="/Content/homepage/semantic.min.js"></script>
+    <script src="/Content/homepage/docs.js"></script>
+    <script src="/Content/homepage/home.js"></script>
+    <script>
+    window.less = {
+        async: true,
+        environment: 'production',
+        fileAsync: false,
+        onReady: false,
+        useFileCache: true
+    };
+    </script>
+    <script src="/Content/homepage/less.min.js"></script>
 </body>
+
 </html>
+
