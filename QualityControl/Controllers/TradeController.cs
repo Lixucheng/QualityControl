@@ -7,7 +7,6 @@ using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using QualityControl.Db;
 using QualityControl.Enum;
-using QualityControl.Migrations;
 using QualityControl.Models;
 using QualityControl.Models.Adapters;
 using Trade = QualityControl.Db.Trade;
