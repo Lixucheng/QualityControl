@@ -62,7 +62,7 @@ namespace QualityControl.Controllers
                     Trade = trade
                 };
                 Db.DetectionSchemes.Add(x);
-                trade.Status = (int) EnumTradeStatus.AlreadyApply;
+                
                 Db.SaveChanges();
 
 
@@ -95,7 +95,6 @@ namespace QualityControl.Controllers
                 //ViewBag.ok = 1;
                 //ViewBag.message = "方案已发送待双方确定或者已确定，不支持编辑！";
                 return Redirect("SeeDetectionScheme?tradeid=" + tradeid);
-                return View();
             }
             var levelconvert = new ConvertLevel();
 
@@ -261,17 +260,18 @@ namespace QualityControl.Controllers
         ///     将合同发送给两方
         ///     将合同发送给两方
         /// </summary>
-        /// <param name="checknum"></param>
+        /// <param name="tradeid"></param>
         /// <param name="quser"></param>
         /// <param name="qother"></param>
         /// <param name="time"></param>
+        /// <param name="sgsid"></param>
         /// <returns></returns>
         public JsonResult SendDetectionScheme(long tradeid, double quser, double qother, int time, int l1, int l2,
              long sgsid)
         {
             var trade = Db.Trades.Find(tradeid);
             var sgsuserid = Db.SGSs.Find(sgsid).UserId;
-
+            trade.Status = (int)EnumTradeStatus.AlreadyApply;
             trade.SgsUserId = sgsuserid;
             Db.SaveChanges();
 

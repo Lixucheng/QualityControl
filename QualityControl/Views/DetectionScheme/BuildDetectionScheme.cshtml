@@ -16,145 +16,124 @@
 }
 <div class="bigestdiv">
 
-    @{
-        if (ViewBag.ok == 1)
-        {
-            <div class="ui orange inverted segment" align="center">
-                <h1 class="ui  header ">@ViewBag.message！</h1>
-            </div>
-        }
-        else
-        {
-            <div class="ui segments">
-                <div class="ui segment">
-                    <p style="font-size: 30px; text-align: center;">检测方案</p>
-                </div>
-
-                <div class="ui segment">
-                    <p class="title">检测产品：</p>
-                    <p>@ViewBag.productname</p>
-                </div>
-                <div class="ui segment">
-                    <p class="title">生产商：</p>
-                    <p>@ViewBag.company</p>
-                </div>
-
-                <div class="ui segment">
-                    <p class="">批次数量信息：</p>
-                </div>
-
-                <div class="ui segments">
-                    @foreach (var temp in ViewBag.list)
-                    {
-                        <div class="ui segment">
-                            <p class="title">@temp.BatchName：</p>
-                            <p>@temp.Count</p>
-                        </div>
-                    }
-
-
-
-                </div>
-
-
-                <div class="ui segment">
-                    <p>检查级别：</p>
-
-                </div>
-                <div class="ui segments form">
-                    <div class="ui horizontal segments">
-                        <div class="ui segment">
-                            <select id="s1">
-                                <option value="0">特殊检测级别</option>
-                                <option value="1">一般检测级别</option>
-                            </select>
-                        </div>
-                        <div class="ui segment">
-                            <select id="s2">
-                                <option value='1'>S-1</option>"
-                                <option value='2'>S-2</option>"
-                                <option value='3'>S-3</option>"
-                                <option value='4'>S-4</option>"
-                            </select>
-                        </div>
-                       
-                    </div>
-                </div>
-
-
-                <div class="ui segment">
-                    <p class="title">检测时间范围：</p>
-                    <p class="title">@ViewBag.model.MinTime 天</p>
-                    <p class="title">~</p>
-                    <p>@ViewBag.model.MaxTime 天</p>
-
-                </div>
-
-                <div class="ui segment form">
-
-                    <div class="inline field">
-                        <label>确定检测时间：</label>
-                        <input id="time" type="text" placeholder="" value="">
-                        
-                    </div>
-                </div>
-
-                <div class="ui segment">
-                    <p class="title">检测报价范围：</p>
-                    <p class="title">@ViewBag.model.MinQuote</p>
-                    <p class="title">~</p>
-                    <p>@ViewBag.model.MaxQuote</p>
-
-                </div>
-
-
-                <div class="ui segment form">
-                    <div class="inline field">
-                        <label>用户检测报价：</label>
-                        <input id="q1"  type="text" name="" placeholder="" value="">
-
-                    </div>
-                </div>
-
-                <div class="ui segment form">
-                    <div class="two fields">
-                        <div class="inline field">
-                            <label>检测机构报价：</label>
-                            <input id="q2"  type="text" name="shipping[first-name]" placeholder="" value="">
-                        </div>
-                        <div class="inline field">
-                            <label>选择检测机构：</label>
-                            <select id="sgs"  padding: 0">
-                                @{
-                                    foreach (var t in ViewBag.sgslist)
-                                    {
-                                        <option value="@t.Id">@t.Name</option>
-                                    }
-                                }
-
-                            </select>
-
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="ui segment" align="center">
-                    <button class="ui button green" id="btn" style="margin: 0 auto; width: 30%">发送</button>
-                </div>
-            </div>
-            <input id="checknum" style="display: none" value="@ViewBag.model.Trade.Id"/>
-            <input id="tradeid" style="display: none" value="@ViewBag.tradeid"/>
-        }
+    @if (ViewBag.ok == 1)
+    {
+        <div class="ui orange inverted segment" align="center">
+            <h1 class="ui  header ">@ViewBag.message！</h1>
+        </div>
     }
+    else
+    {
+        <div class="ui segments">
+            <div class="ui segment">
+                <p style="font-size: 30px; text-align: center;">检测方案</p>
+            </div>
 
+            <div class="ui segment">
+                <p class="title">检测产品：</p>
+                <p>@ViewBag.productname</p>
+            </div>
+            <div class="ui segment">
+                <p class="title">生产商：</p>
+                <p>@ViewBag.company</p>
+            </div>
+
+            <div class="ui segment">
+                <p class="">批次数量信息：</p>
+            </div>
+
+            <div class="ui segments">
+                @foreach (var temp in ViewBag.list)
+                {
+                    <div class="ui segment">
+                        <p class="title">@temp.BatchName：</p>
+                        <p>@temp.Count</p>
+                    </div>
+                }
+            </div>
+            <div class="ui segment">
+                <p>检查级别：</p>
+            </div>
+            <div class="ui segments form">
+                <div class="ui horizontal segments">
+                    <div class="ui segment">
+                        <select id="s1">
+                            <option value="0">特殊检测级别</option>
+                            <option value="1">一般检测级别</option>
+                        </select>
+                    </div>
+                    <div class="ui segment">
+                        <select id="s2">
+                            <option value='1'>S-1</option>"
+                            <option value='2'>S-2</option>"
+                            <option value='3'>S-3</option>"
+                            <option value='4'>S-4</option>"
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <div class="ui segment">
+                <p class="title">检测时间范围：</p>
+                <p class="title">@ViewBag.model.MinTime 天</p>
+                <p class="title">~</p>
+                <p>@ViewBag.model.MaxTime 天</p>
+            </div>
+
+            <div class="ui segment form">
+
+                <div class="inline field">
+                    <label>确定检测时间：</label>
+                    <input id="time" type="text" placeholder="" value="">
+
+                </div>
+            </div>
+
+            <div class="ui segment">
+                <p class="title">检测报价范围：</p>
+                <p class="title">@ViewBag.model.MinQuote</p>
+                <p class="title">~</p>
+                <p>@ViewBag.model.MaxQuote</p>
+            </div>
+
+
+            <div class="ui segment form">
+                <div class="inline field">
+                    <label>用户检测报价：</label>
+                    <input id="q1" type="text" name="" placeholder="" value="">
+                </div>
+            </div>
+
+            <div class="ui segment form">
+                <div class="two fields">
+                    <div class="inline field">
+                        <label>检测机构报价：</label>
+                        <input id="q2" type="text" name="shipping[first-name]" placeholder="" value="">
+                    </div>
+                    <div class="inline field">
+                        <label>选择检测机构：</label>
+                        <select id="sgs">
+                            @foreach (var t in ViewBag.sgslist)
+                            {
+                                <option value="@t.Id">@t.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="ui segment" align="center">
+                <button class="ui button green" id="btn" style="margin: 0 auto; width: 30%">发送</button>
+            </div>
+        </div>
+        <input id="checknum" style="display: none" value="@ViewBag.model.Trade.Id"/>
+        <input id="tradeid" style="display: none" value="@ViewBag.tradeid"/>
+    }
 </div>
 
 @section scripts{
     <script>
         $("#btn").click(function() {
-
             var q1 = $("#q1").val();
             var q2 = $("#q2").val();
             var time = $("#time").val();
@@ -190,22 +169,5 @@
             }
             $("#s2").html(s);
         });
-
-        @*$("#s2").change(function() {
-            var s2 = $(this).val();
-
-            $.ajax({
-                url: '../DetectionScheme/GetLevel',
-                type: 'post',
-                data: { tradeid: @ViewBag.tradeid, s2: s2 },
-
-                error: function() {
-                    alert('error');
-                },
-                success: function(data) {
-                    $("#s3").html(data);
-                }
-            });
-        });*@
     </script>
 }
