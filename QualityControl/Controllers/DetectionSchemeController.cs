@@ -142,6 +142,7 @@ namespace QualityControl.Controllers
             b.ForEach(e => {
                 e.Level = levelconvert.GetLevel(e.Count, s2);
             });
+            Db.SaveChanges();
             return true;
         }
 
@@ -281,6 +282,9 @@ namespace QualityControl.Controllers
             x.Time = time;
             x.Status = EnumDetectionSchemeStatus.已发送待双方确定;
             Db.SaveChanges();
+
+            
+            SetLevel(tradeid, l2);
             //发送站内信息
             SendMessage(trade.UserId, "合同已发送，请查看！");
             SendMessage(trade.SgsUserId, "合同已发送，请查看！");
@@ -399,7 +403,9 @@ namespace QualityControl.Controllers
                 ViewBag.mlist = modify;
                 ViewBag.ok = 1;
             }
-
+            var s = dec.Level;
+            var l = JsonConvert.DeserializeObject<Level>(s);
+            ViewBag.l = l;
             return View();
         }
 

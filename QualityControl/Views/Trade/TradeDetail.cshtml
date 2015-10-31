@@ -48,11 +48,11 @@
             }
             else if (Model.Status == (int) EnumTradeStatus.Signed)
             {
-                <span>合同已经签订，等待制码</span>
+                <span>合同已经签订，等待用户付款</span>
             }
             else if (Model.Status == (int) EnumTradeStatus.MakeQrCode)
             {
-                <span>制码开始，请去查看</span>
+                <span>制码开始</span>
             }
             else if (Model.Status == (int) EnumTradeStatus.SampleStart)
             {
@@ -70,7 +70,11 @@
             {
                 <span>测试已经完成，请查看检测报告</span>
             }
-            else if (Model.Status == (int) EnumTradeStatus.Finish)
+            else if (Model.Status == (int)EnumTradeStatus.FinishMakeQrCode)
+            {
+                <span>制码已结束，等待生产商确认接收</span>
+            }
+            else if (Model.Status == (int)EnumTradeStatus.Finish)
             {
                 <span>质量检测完成</span>
             }
@@ -373,7 +377,7 @@
                 {
                     <span>请查看并确认</span>
                      <a href="/MakeQrCode/MakeNo/@Model.Id" class="am-fr primary ui button">查看</a>
-                     <a href="/Upload/index?tradeid=@Model.Id" class="am-fr primary ui button">贴码完成确认</a>
+                     <a href="/Manufacturer/Uploader/@Model.Id" class="am-fr primary ui button">贴码完成确认</a>
                 }
                 else
                 {
