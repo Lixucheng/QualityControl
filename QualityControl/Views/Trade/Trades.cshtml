@@ -26,7 +26,7 @@
                     <td>@item.User.Email</td>
                     <td>@item.Trade.CeateTime.ToShortDateString()</td>
                     <td>
-                        @{var s = item.Trade.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存);
+                        @{var s = item.Trade.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存&&e.Status!=EnumDetectionSchemeStatus.未发送);
                             if (s == null)
                             {
                                 <a href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button detail-btn">制作方案</a>

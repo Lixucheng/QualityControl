@@ -350,8 +350,9 @@ namespace QualityControl.Controllers
         }
 
 
-        public ActionResult _Options(int type, long fatherid = 0)
+        public ActionResult _Options(int type, long fatherid = 0,long type1id=-1)
         {
+            ViewBag.tid = type1id;
             switch (type)
             {
                 case 1:
@@ -383,14 +384,25 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        public ActionResult _ChooseType(string name = "s")
+        public ActionResult _ChooseType(string name = "s", long typeid = -1)
         {
             ViewBag.id = name;
+            if (typeid != -1)
+            { 
+            var t3 = Db.ThirdProductTypes.Find(typeid);
+            var t2 = t3.SecondType;
+            var t1 = t2.FirstType;
+            ViewBag.t1 = t1.Id;
+            ViewBag.t2 = t2.Id;
+            ViewBag.t3 = t3.Id;
+           }
+            ViewBag.typeid = typeid;
             return View();
         }
 
         public JsonResult GetType(int type, long fatherid)
         {
+           
             switch (type)
             {
                 case 2:
@@ -481,6 +493,12 @@ namespace QualityControl.Controllers
             {
                 return Content("错误操作");
             }
+            if(id!=0)
+            {
+                var t3 = product.Type;              
+                ViewBag.t3 = t3.Id;               
+            }
+           
             return View(product);
         }
 

@@ -46,8 +46,8 @@
                     <label>授权企业</label>
                     <input required placeholder="授权企业" name="EmpowerEnterprise" type="text" value="@(Model != null ? Model.EmpowerEnterprise : "")">
                 </div>
-
-                @Html.Action("_ChooseType")
+                @{ Html.RenderAction("_ChooseType", "Product", new {  typeid = ViewBag.t3 }); }
+            
 
                 <div class="field">
                     <label>生产许可证编号</label>
@@ -290,13 +290,25 @@
     
 </div>
 
+@{
+    if (Model != null)
+    {<input name="isedit" value="1" id="isedit"/> }
+    else
+    {<input name="isedit" value="0" id="isedit" /> }
+}
+
 
 
 @section Scripts{
 <script src="~/Scripts/bower_components/fex-webuploader/dist/webuploader.js"></script>
     <script>
-        $(".field").eq(3).hide();
 
+        if($("#isedit").val()=="1")
+        {
+            var v1 = $(".C.s").val();
+
+        }
+     
         var t = 1;
       
         function Add(id) {
