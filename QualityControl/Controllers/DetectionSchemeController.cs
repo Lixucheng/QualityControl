@@ -98,7 +98,7 @@ namespace QualityControl.Controllers
             }
             var levelconvert = new ConvertLevel();
 
-            ViewBag.Level = levelconvert.GetLevelByCount(list.First().Count);
+            //ViewBag.Level = levelconvert.GetLevelByCount(list.First().Count);
             ViewBag.tradeid = tradeid;
             return View();
         }

@@ -203,7 +203,8 @@ namespace QualityControl.Controllers
         /// <returns></returns>
         public ActionResult Trades()
         {
-            return View(Db.Trades.Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo
+            return View(Db.Trades
+                .Where(a => a.Status >= (int)EnumTradeStatus.BatchSelected).Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo
             {
                 Trade = trade,
                 User = user

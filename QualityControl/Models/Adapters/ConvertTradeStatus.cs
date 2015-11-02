@@ -56,6 +56,10 @@ namespace QualityControl.Models.Adapters
                     {
                         return "控制中心审核完毕，等待用户选择批次";
                     }
+                case (int)EnumTradeStatus.SampleReceived:
+                    {
+                        return "抽样已经完成";
+                    }
             }
             return "";
         }

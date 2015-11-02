@@ -435,7 +435,7 @@
     <div class="ui segment">
         <p class="am-cf">
             <span>抽样完成，等待检测完成</span>
-            @if (user.Type == (int) EnumUserType.TestingOrg || Model.Status == (int)EnumTradeStatus.Testing)
+            @if (user.Type == (int) EnumUserType.TestingOrg && Model.Status == (int)EnumTradeStatus.Testing)
             {
                 <a href="/Trade/MakeReport/@Model.Id" class="am-fr primary ui button">上传检测报告</a>
             }
