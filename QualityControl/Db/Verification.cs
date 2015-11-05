@@ -15,7 +15,7 @@ namespace QualityControl.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public virtual List<QrCodeInfo> Num { get; set; }
+        public virtual QrCodeInfo QrCodeInfo { get; set; }
 
         public long TradeId { get; set; }
 

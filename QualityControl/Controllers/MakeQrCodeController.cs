@@ -88,6 +88,7 @@ namespace QualityControl.Controllers
             var qr = new QrCodeInfo();
             qr.IdCode = guid;
             qr.QrName = tradeid + "_" + productid + "_" + batch + "_" + num;
+            qr.TradeId = tradeid;
             Db.QrCodeInfos.Add(qr);
             Db.SaveChanges();
 

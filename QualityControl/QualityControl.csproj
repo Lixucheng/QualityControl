@@ -239,6 +239,10 @@
     <Compile Include="Migrations\201511051459597_Verification11.Designer.cs">
       <DependentUpon>201511051459597_Verification11.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511051523200_Verification1111.cs" />
+    <Compile Include="Migrations\201511051523200_Verification1111.Designer.cs">
+      <DependentUpon>201511051523200_Verification1111.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\ConvertTradeStatus.cs" />
@@ -1476,6 +1480,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511051459597_Verification11.resx">
       <DependentUpon>201511051459597_Verification11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511051523200_Verification1111.resx">
+      <DependentUpon>201511051523200_Verification1111.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
