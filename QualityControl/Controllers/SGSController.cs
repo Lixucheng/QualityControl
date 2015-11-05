@@ -140,5 +140,11 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
             return Redirect("./ManageProducts");
         }
+
+        public ActionResult Verification()
+        {
+
+            return View();
+        }
     }
 }

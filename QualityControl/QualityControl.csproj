@@ -216,6 +216,7 @@
     <Compile Include="Db\RegisterApply.cs" />
     <Compile Include="Db\SGS.cs" />
     <Compile Include="Db\Trade.cs" />
+    <Compile Include="Db\Verification.cs" />
     <Compile Include="Enum\EnumStatus.cs" />
     <Compile Include="Enum\EnumUserStatus.cs" />
     <Compile Include="Enum\EnumUserType.cs" />
@@ -225,6 +226,10 @@
     <Compile Include="Migrations\201510300223384_Init.cs" />
     <Compile Include="Migrations\201510300223384_Init.Designer.cs">
       <DependentUpon>201510300223384_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511051416159_Verification.cs" />
+    <Compile Include="Migrations\201511051416159_Verification.Designer.cs">
+      <DependentUpon>201511051416159_Verification.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1453,6 +1458,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201510300223384_Init.resx">
       <DependentUpon>201510300223384_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511051416159_Verification.resx">
+      <DependentUpon>201511051416159_Verification.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

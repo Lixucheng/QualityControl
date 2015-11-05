@@ -73,6 +73,8 @@ namespace QualityControl.Models
 
         public DbSet<BatchReport> BatchReports { get; set; }
 
+        public DbSet<Verification> Verifications { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
