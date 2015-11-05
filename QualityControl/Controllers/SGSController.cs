@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using QualityControl.Db;
 using QualityControl.Enum;
+using QualityControl.Models;
 
 namespace QualityControl.Controllers
 {
@@ -155,12 +156,15 @@ namespace QualityControl.Controllers
         public List<string> GetNum(long id)
         {
             var list = new List<string>();
-            Db.Trades.Find(id).Batches.ForEach(e =>
+            var t = Db.Trades.Find(id);
+            var tp = JsonConvert.DeserializeObject<ProductCopy>(t.Product);
+            t.Batches.ForEach(e =>
             {
                 for (long i = 1; i <= e.Count; i++)
                 {
                     string s = "";
                     s += id.ToString();
+                    s += "_" + tp.Id;
                     s += "_" + e.BatchName;
                     s += "_" + i.ToString();
 

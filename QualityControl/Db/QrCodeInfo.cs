@@ -13,5 +13,7 @@ namespace QualityControl.Db
         public string QrName { get; set; } //产品信息
 
         public string IdCode { get; set; } //验证码信息
+
+        public long TradeId { get; set; }
     }
 }
