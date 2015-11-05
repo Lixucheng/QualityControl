@@ -231,6 +231,10 @@
     <Compile Include="Migrations\201511051416159_Verification.Designer.cs">
       <DependentUpon>201511051416159_Verification.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511051422560_Verification1.cs" />
+    <Compile Include="Migrations\201511051422560_Verification1.Designer.cs">
+      <DependentUpon>201511051422560_Verification1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\ConvertTradeStatus.cs" />
@@ -1436,6 +1440,7 @@
     <Content Include="Views\Trade\BatchSelect.cshtml" />
     <Content Include="Views\MakeQrCode\MakeNo.cshtml" />
     <Content Include="Views\Product\ProductIndex.cshtml" />
+    <Content Include="Views\SGS\Verification.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1461,6 +1466,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511051416159_Verification.resx">
       <DependentUpon>201511051416159_Verification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511051422560_Verification1.resx">
+      <DependentUpon>201511051422560_Verification1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

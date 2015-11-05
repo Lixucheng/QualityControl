@@ -16,7 +16,8 @@ namespace QualityControl.Db
         public long Id { get; set; }
 
         public virtual List<QrCodeInfo> Num { get; set; }
-     
+
+        public long TradeId { get; set; }
 
         public EnumVerificationStatus Status { get; set; } 
     }

@@ -141,10 +141,32 @@ namespace QualityControl.Controllers
             return Redirect("./ManageProducts");
         }
 
-        public ActionResult Verification()
-        {
+        /// <summary>
+        /// 验证样品
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Verification(long id)
+        {        
+            var list = Db.Verifications.Where(e => e.TradeId == id).ToList();
+            return View(list);
+        }
 
-            return View();
+        public List<string> GetNum(long id)
+        {
+            var list = new List<string>();
+            Db.Trades.Find(id).Batches.ForEach(e =>
+            {
+                for (long i = 1; i <= e.Count; i++)
+                {
+                    string s = "";
+                    s += id.ToString();
+                    s += "_" + e.BatchName;
+                    s += "_" + i.ToString();
+
+                }
+            });
+            return list;
         }
     }
 }
