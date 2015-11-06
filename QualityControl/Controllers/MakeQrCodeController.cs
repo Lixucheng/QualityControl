@@ -63,7 +63,7 @@ namespace QualityControl.Controllers
         
         public string MakeQrCode(long tradeid, long num, string batch, long productid)
         {
-            var guid = Guid.NewGuid().ToString();
+            var guid = getString(4);
             var name = tradeid + "_" + productid + "_" + batch + "_" + num + ".jpg";
             var url = HttpRuntime.AppDomainAppPath;
             var path = url + "\\Image\\" + tradeid + "\\" + batch;
