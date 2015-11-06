@@ -115,7 +115,7 @@ namespace QualityControl.Controllers
         }
         public string MakeBatchQrCode(long tradeid, long batchid)
         {
-            var guid = Guid.NewGuid().ToString();
+            var guid = getString(4);
             var name = batchid + ".jpg";
             var url = HttpRuntime.AppDomainAppPath;
             var path = url + "\\Image\\" + tradeid + "\\" + "批次二维码";
@@ -148,6 +148,36 @@ namespace QualityControl.Controllers
             var down = "/Image/" + tradeid + "/" + "批次二维码" + "/" + name;
             return down;
         }
+
+        /// <summary>
+        /// 随机字符串
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public string getString(int count)
+        {
+            int number;
+            string checkCode = String.Empty;     //存放随机码的字符串   
+
+            System.Random random = new Random();
+
+            for (int i = 0; i < count; i++) //产生4位校验码   
+            {
+                number = random.Next();
+                number = number % 36;
+                if (number < 10)
+                {
+                    number += 48;    //数字0-9编码在48-57   
+                }
+                else
+                {
+                    number += 55;    //字母A-Z编码在65-90   
+                }
+
+                checkCode += ((char)number).ToString();
+            }
+            return checkCode;
+       }
 
         public bool Zip(string zipfile, string zipname)
         {
