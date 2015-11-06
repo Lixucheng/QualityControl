@@ -116,7 +116,7 @@ namespace QualityControl.Controllers
         public string MakeBatchQrCode(long tradeid, long batchid)
         {
             var guid = Guid.NewGuid().ToString();
-            var name = batchid ;
+            var name = batchid + ".jpg";
             var url = HttpRuntime.AppDomainAppPath;
             var path = url + "\\Image\\" + tradeid + "\\" + "批次二维码";
             if (System.IO.File.Exists(path + "\\" + name))
@@ -129,7 +129,7 @@ namespace QualityControl.Controllers
             encoder.QRCodeScale = 4; //大小
             encoder.QRCodeVersion = 0; //版本
             encoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.M;
-            var qrdata = Server.MapPath("~")+"/Trade/GetBatchStatus/" +batchid;
+            var qrdata = Request.Url.GetLeftPart(UriPartial.Authority).ToString()+"/Trade/GetBatchStatus/" +batchid;
             var bp = encoder.Encode(qrdata, Encoding.UTF8);
             Image image = bp;
 
