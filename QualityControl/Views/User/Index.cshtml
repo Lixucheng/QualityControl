@@ -3,8 +3,49 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+@section head{
+    <style>
+        .sm-col {
+            width: 64px;
+        }
+
+        .op-col {
+            width: 128px;
+        }
+
+        .table-parent {
+            overflow: auto;
+        }
+
+            .table-parent table {
+                min-width: 800px !important;
+            }
+    </style>
+}
+
+
 <div class="am-margin am-padding">
-    <div class="ui container">
+
+
+        <div class=" six wide field">
+            <div class="am-text-center ui segment">
+                <a href="/Event/Current?type=0" class="ui red statistic">
+                    <div class="value"><i class="at icon"></i> 1</div>
+                    <div class="label">已完成管控</div>
+                </a>
+                <a href="/Event/Current?type=1" class="ui orange statistic">
+                    <div class="value"><i class="spinner icon"></i> 1</div>
+                    <div class="label">正在进行中的合同</div>
+                </a>
+
+            </div>
+        </div>
+
+  
+
+   
+
+        <div class="ui container">
         <div class="row">
             <div class="column">
                 <div class="ui message">
@@ -16,4 +57,42 @@
             </div>
         </div>
     </div>
+
+
+    <div class="ui four cards">
+        <div class="card">
+            <div class="image">
+                <img src="../assets/images/wireframe/image.png">
+            </div>
+            <div class="extra center aligned">
+                <p>123</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="image">
+                <img src="../assets/images/wireframe/image.png">
+            </div>
+            <div class="extra center aligned">
+                <div data-rating="2" class="ui star rating"><i class="icon active"></i><i class="icon active"></i><i class="icon"></i><i class="icon"></i></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="image">
+                <img src="../assets/images/wireframe/image.png">
+            </div>
+            <div class="extra center aligned">
+                <div data-rating="3" class="ui star rating"><i class="icon active"></i><i class="icon active"></i><i class="icon active"></i><i class="icon"></i></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="image">
+                <img src="../assets/images/wireframe/image.png">
+            </div>
+            <div class="extra center aligned">
+                <div data-rating="4" class="ui star rating"><i class="icon active"></i><i class="icon active"></i><i class="icon active"></i><i class="icon active"></i></div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
