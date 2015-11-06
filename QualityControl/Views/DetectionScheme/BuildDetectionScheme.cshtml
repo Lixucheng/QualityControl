@@ -52,6 +52,30 @@
                 }
             </div>
 
+       
+            <div class="ui segment">
+                <p>检查级别：</p>
+            </div>
+            <div class="ui segments form">
+                <div class="ui horizontal segments">
+                    <div class="ui segment">
+                        <select id="s1">
+                            <option value="0">特殊检测级别</option>
+                            <option value="1">一般检测级别</option>
+                        </select>
+                    </div>
+                    <div class="ui segment">
+                        <select id="s2">
+                            <option value='1'>S-1</option>"
+                            <option value='2'>S-2</option>"
+                            <option value='3'>S-3</option>"
+                            <option value='4'>S-4</option>"
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+          
             <table class="ui celled table ">
                 <thead>
                     <tr>
@@ -76,37 +100,14 @@
                         <td>3</td>
                         <td>57</td>
                     </tr>
+                    <tr>
+                        <td>价钱总计</td>
+                        <td></td>
+                        <td>96</td>
+                    </tr>
+
                 </tbody>
             </table>
-            <div class="ui segment">
-                <p>检查级别：</p>
-            </div>
-            <div class="ui segments form">
-                <div class="ui horizontal segments">
-                    <div class="ui segment">
-                        <select id="s1">
-                            <option value="0">特殊检测级别</option>
-                            <option value="1">一般检测级别</option>
-                        </select>
-                    </div>
-                    <div class="ui segment">
-                        <select id="s2">
-                            <option value='1'>S-1</option>"
-                            <option value='2'>S-2</option>"
-                            <option value='3'>S-3</option>"
-                            <option value='4'>S-4</option>"
-                        </select>
-                    </div>
-
-                </div>
-            </div>
-            <div class="ui segment">
-                <p class="title">检测时间范围：</p>
-                <p class="title">@ViewBag.model.MinTime 天</p>
-                <p class="title">~</p>
-                <p>@ViewBag.model.MaxTime 天</p>
-            </div>
-
             <div class="ui segment form">
 
                 <div class="inline field">
@@ -116,12 +117,7 @@
                 </div>
             </div>
 
-            <div class="ui segment">
-                <p class="title">检测报价范围：</p>
-                <p class="title">@ViewBag.model.MinQuote</p>
-                <p class="title">~</p>
-                <p>@ViewBag.model.MaxQuote</p>
-            </div>
+          
 
 
             <div class="ui segment form">

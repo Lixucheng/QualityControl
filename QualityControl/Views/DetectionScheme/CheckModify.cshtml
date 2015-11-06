@@ -74,13 +74,41 @@
                 </div>
 
 
-                <div class="ui segment">
-                    <p class="title">检测时间范围：</p>
-                    <p class="title">@ViewBag.model.MinTime 天</p>
-                    <p class="title">~</p>
-                    <p>@ViewBag.model.MaxTime 天</p>
-
                 </div>
+
+
+                <table class="ui celled table ">
+                    <thead>
+                        <tr>
+                            <th>检测项目</th>
+                            <th>天数</th>
+                            <th>价格</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>酒精度</td>
+                            <td>2</td>
+                            <td>21</td>
+                        </tr>
+                        <tr>
+                            <td>蛋白质</td>
+                            <td>2</td>
+                            <td>18</td>
+                        </tr>
+                        <tr>
+                            <td>含糖量</td>
+                            <td>3</td>
+                            <td>57</td>
+                        </tr>
+                        <tr>
+                            <td>价钱总计</td>
+                            <td></td>
+                            <td>96</td>
+                        </tr>
+
+                    </tbody>
+                </table>
 
                 <div class="ui segment form">
 
@@ -99,13 +127,7 @@
 
                 </div>
 
-                <div class="ui segment">
-                    <p class="title">检测报价范围：</p>
-                    <p class="title">@ViewBag.model.MinQuote</p>
-                    <p class="title">~</p>
-                    <p>@ViewBag.model.MaxQuote</p>
-
-                </div>
+           
 
 
                 <div class="ui segment form">
