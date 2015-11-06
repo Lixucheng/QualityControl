@@ -34,8 +34,8 @@
 
                 <div class="  inline field">
                     <label>输入验证码</label>
-                    <input style="width:50%"  type="text" placeholder="验证码">
-                    <div class="ui button green"> 确定</div>
+                    <input style="width:50%" id="inp"  type="text" placeholder="验证码">
+                    <div class="ui button green" id="btn"> 确定</div>
                 </div>
                 
 
@@ -45,11 +45,11 @@
 
     </div>
 
-    <table class="ui  celled  table">
+    <table class="ui  celled  table" style="margin-top:30px">
         <thead class="">
             <tr>
-                <th >样品</th>
-                <th width="200px" >验证结果</th>
+                <th >验证码</th>
+                <th  width="200px" >验证结果</th>
                
             </tr>
         </thead>
@@ -64,7 +64,7 @@
                 {
                     
                     <tr>
-                        <td>@Tempx.QrCodeInfo.QrName</td>
+                        <td>@Tempx.QrCodeInfo.IdCode</td>
                         <td>@Tempx.Status</td>
                     </tr>
                 }
@@ -107,10 +107,50 @@
 
                 },
                 "bLengthChange": false,
-                "search":false
+                searching: false,
                 
             });
            
         });
+
+        $("#btn").click(function () {
+
+            $(".dataTables_empty").remove();
+
+            var v = $("#inp").val();
+            if(v=="")
+            {
+                alert("请输入验证码");
+            }
+            else {
+                $.ajax({
+
+                    type: 'POST',
+
+                    url: "/SGS/Check",
+
+                    data: {id:@ViewBag.tid,idcode:v},
+
+                    success: function(res){
+                        var s="";
+                        if(res=="True")
+                        {
+                           s="<td>通过</td>"
+                        }
+                        else{
+                            s="<td>错误</td>"
+                        }
+                        var y="<td>"+v+"</td>";
+                        var content="<tr>"+y+s+"</tr>";
+                        $("tbody").append(content);
+                    },
+
+                    dataType: "text"
+
+                });
+            }
+        });
     </script>
+
+
     }

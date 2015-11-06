@@ -150,6 +150,7 @@ namespace QualityControl.Controllers
         public ActionResult Verification(long id)
         {        
             var list = Db.Verifications.Where(e => e.TradeId == id).ToList();
+            ViewBag.tid = id;
             return View(list);
         }
 
@@ -163,6 +164,16 @@ namespace QualityControl.Controllers
         {
             var l = GetNum(id);
             var r = l.Any(e => e == idcode);
+            if(r==true)
+            {
+                var x = new Verification();
+                x.TradeId = id;
+                x.Status = EnumVerificationStatus.通过;
+                x.QrCodeInfo = Db.QrCodeInfos.FirstOrDefault(e => e.IdCode == idcode&&e.TradeId==id);
+                Db.Verifications.Add(x);
+                Db.SaveChanges();
+            }
+          
             return r;
         }
     }
