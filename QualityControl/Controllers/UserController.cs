@@ -16,6 +16,11 @@ namespace QualityControl.Controllers
     {
         public ActionResult Index()
         {
+            var userid = User.Identity.GetUserId();
+            var already = Db.Trades.Count(e => (e.UserId == userid || e.SgsUserId == userid)&&e.Status==(int)EnumTradeStatus.Finish);
+            var ing= Db.Trades.Count(e => (e.UserId == userid || e.SgsUserId == userid) && e.Status != (int)EnumTradeStatus.Finish);
+
+            var tuijian=Db.Products
             return View();
         }
 
