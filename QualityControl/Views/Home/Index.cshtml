@@ -1,4 +1,5 @@
-﻿@{ 
+﻿@using QualityControl.Db
+@{ 
     Layout = null;
 }
 <!DOCTYPE html>
@@ -91,10 +92,10 @@
                         <a class="view-ui item" href="#">质量检测平台 </a>
                         <div class="right menu">
                             <div class="item">
-                                <span class="">登录</span>
+                                <a href="/Account/Login" class="">登录</a>
                             </div>
                             <div class="item">
-                                <span class="">注册</span>
+                                <a href="/Account/Register" class="">注册</a>
                             </div>
                         </div>
                     </div>
@@ -108,38 +109,45 @@
                             <span class="tagline">更放心更便捷的质量检测</span>
                         </h1>
                         <div class="ui hidden divider"></div>
-                        <a href="" class="ui huge inverted download button">开启质控之旅</a>
+                        <a href="/Trade/ChooseProduct" class="ui huge inverted download button">开启质控之旅</a>
                     </div>
                 </div>
             </div>
             <div class="ui vertical stripe intro segment">
                 <div style="margin: 0 40px;">
-                    <div class="ui fluid demo tabular menu">
-                        <a class="active item">糕点 </a>
-                        <a class="item">肉制品 </a>
-                        <a class=" item">食用油 </a>
-                        <a class="item">调味品 </a>
-                        <a class=" item">乳制品 </a>
-                        <a class="item">饮料 </a>
+
+                    <div style="text-align: center; margin: 20px 0;">
+                        @foreach (ThirdProductType item in ViewBag.Types)
+                        {
+                            <div class="ui huge label">@item.Title</div>
+                        }
                     </div>
                     <div class="feature alternate ui stripe vertical segment">
                         <div class="ui three column center aligned divided relaxed stackable grid container">
                             <div class="row">
-                                <div class="column">
-                                    <h2 class="ui icon header"><img class="ui icon image" src="/Content/homepage/images/gd.jpg">【糕点】稻香村月饼</h2>
-                                    <p>月饼是久负盛名的汉族传统小吃，深受中国人民喜爱。</em>.</p>
-                                    <a class="ui large button" href="http://semantic-ui.cn/usage/theming.html">查看详情</a>
-                                </div>
-                                <div class="column">
-                                    <h2 class="ui icon header"><img class="ui icon image" src="/Content/homepage/images/tgy.jpg">【茶叶及相关制品】安溪铁观音</h2>
-                                    <p>铁观音含有较高的氨基酸、维生素、矿物质、茶多酚和生物碱，有多种营养和药效成分，具有养生保健的功能。</p>
-                                    <div class="ui primary view-ui large button">查看详情</div>
-                                </div>
-                                <div class="column">
-                                    <h2 class="ui icon header"><img class="ui icon image" src="/Content/homepage/images/mt.jpg">【酒类】茅台</h2>
-                                    <p>茅台酒独产于中国的贵州省遵义市仁怀市茅台镇，是汉民族的特产酒，与苏格兰威士忌、法国科涅克白兰地齐名的三大蒸馏酒之一。</p>
-                                    <a href="https://github.com/Semantic-Org/Semantic-UI/issues" class="ui large button">查看详情</a>
-                                </div>
+                                @foreach (Product item in ViewBag.Products)
+                                {
+                                    <div class="column">
+                                        <h2 class="ui icon header">
+                                            <img class="ui icon image" src="/Content/homepage/images/gd.jpg">【@item.Type.Title】@item.Name
+                                        </h2>
+@*                                        <p>@item.StorageCondition</p>*@
+@*                                        <a class="ui large button" href="">查看详情</a>*@
+                                    </div>
+                                }
+                                
+@*                                <div class="column">*@
+@*                                    <h2 class="ui icon header"><img class="ui icon image" src="/Content/homepage/images/tgy.jpg">【茶叶及相关制品】安溪铁观音*@
+@*                                    </h2>*@
+@*                                    <p>铁观音含有较高的氨基酸、维生素、矿物质、茶多酚和生物碱，有多种营养和药效成分，具有养生保健的功能。</p>*@
+@*                                    <div class="ui primary view-ui large button">查看详情</div>*@
+@*                                </div>*@
+@*                                <div class="column">*@
+@*                                    <h2 class="ui icon header"><img class="ui icon image" src="/Content/homepage/images/mt.jpg">【酒类】茅台*@
+@*                                    </h2>*@
+@*                                    <p>茅台酒独产于中国的贵州省遵义市仁怀市茅台镇，是汉民族的特产酒，与苏格兰威士忌、法国科涅克白兰地齐名的三大蒸馏酒之一。</p>*@
+@*                                    <a href="" class="ui large button">查看详情</a>*@
+@*                                </div>*@
                             </div>
                         </div>
                     </div>
@@ -149,7 +157,7 @@
                 <div class="ui center aligned grid container">
                     <div class="column">
                         <h3 class="ui header" style="font-size:32px;">方便系统的产品管理</h3>
-                        <form class="ui form" method="post" action="https://semantic-ui.clients.ubivox.com/handlers/post/">
+                        <form class="ui form" method="post" action="">
                             <input type="hidden" name="action" value="subscribe">
                             <input type="hidden" name="lists" value="29450">
                             <div class="field">
@@ -170,7 +178,7 @@
                         <div class="ui stackable center aligned vertically padded grid">
                             <div class="eight wide column">
                                 <p>由用户提出管控申请，经生产商和控制中心确认产品信息以及用户选择批次后，申请完成。接着，由控制中心制作检测方案，用户可以提出修改意见。一致同意监测方案后，用户付款确认后，由控制中心开始制码，并通知生产商和检测机构。控制中心选择抽样方式后，检测机构开始检测并完成检测报告，用户查阅检测报告，申请完成。</p>
-                                <a class="ui large right labeled primary icon button" href="http://semantic-ui.cn/introduction/getting-started.html"><i class="right chevron icon"></i> 马上开始 </a>
+                                <a class="ui large right labeled primary icon button" href="/Trade/ChooseProduct"><i class="right chevron icon"></i> 马上开始 </a>
                             </div>
                         </div>
                     </div>

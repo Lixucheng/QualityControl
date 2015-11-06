@@ -8,10 +8,11 @@ namespace QualityControl.Controllers
     {
         public ActionResult Index()
         {
-            //ViewBag.Products = Db.Products
-            //    .OrderBy(a => Guid.NewGuid())
-            //    .Take(5)
-            //    .ToList();
+            ViewBag.Products = Db.Products
+                .OrderBy(a => Guid.NewGuid())
+                .Take(3)
+                .ToList();
+            ViewBag.Types = Db.ThirdProductTypes.ToList();
             return View();
         }
 
