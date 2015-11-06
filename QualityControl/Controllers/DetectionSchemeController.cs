@@ -80,9 +80,7 @@ namespace QualityControl.Controllers
                 var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
                 var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
                 ViewBag.productname = pro.Name;
-                ViewBag.company = company.Name;
-
-                
+                ViewBag.company = company.Name; 
                 ViewBag.model = x;
                 ViewBag.list = trade.Batches;
             }
