@@ -1449,6 +1449,7 @@
     <Content Include="Views\MakeQrCode\MakeNo.cshtml" />
     <Content Include="Views\Product\ProductIndex.cshtml" />
     <Content Include="Views\SGS\Verification.cshtml" />
+    <Content Include="Views\Manufacturer\Index.cshtml" />
     <Content Include="Views\Trade\GetBatchStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
