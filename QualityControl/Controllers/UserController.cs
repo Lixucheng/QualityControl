@@ -33,7 +33,7 @@ namespace QualityControl.Controllers
         }
 
         /// <summary>
-        ///     订单列表
+        ///     管控合同列表
         /// </summary>
         /// <returns></returns>
         public ActionResult TradeList()

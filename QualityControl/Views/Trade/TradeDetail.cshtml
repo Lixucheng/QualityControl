@@ -60,7 +60,7 @@
             }
             else if (Model.Status == (int) EnumTradeStatus.SampleReceived)
             {
-                <span>待确认收到样品</span>
+                <span>抽样完成,等待生产商贴码</span>
             }
             else if (Model.Status == (int) EnumTradeStatus.Testing)
             {
@@ -143,7 +143,7 @@
 
             </tbody>
         </table>
-        @if (Model.Status < (int)EnumTradeStatus.ProductInfoConfirmed)
+        @if (Model.Status < (int)EnumTradeStatus.ProductInfoConfirmed && (user.Id == Model.ManufacturerId || user.Type == (int)EnumUserType.Controller))
         {
             <form class="ui form item-form">
                 <div class="two fields">
@@ -162,37 +162,39 @@
                 </div>
                 <button class="ui button">添加</button>
             </form>
-            <table class="ui celled table item-table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>检测项目</th>
-                        <th>范围</th>
-                        <th>否决项</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>酒精度</td>
-                        <td>21</td>
-                        <td>否</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>蛋白质</td>
-                        <td>1% ~100%</td>
-                        <td>否</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>含糖量</td>
-                        <td>5% - 6%</td>
-                        <td>否</td>
-                    </tr>
-                </tbody>
-            </table>
+            
         }
+
+        <table class="ui celled table item-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>检测项目</th>
+                    <th>范围</th>
+                    <th>否决项</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" /></td>
+                    <td>酒精度</td>
+                    <td>21</td>
+                    <td>否</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" /></td>
+                    <td>蛋白质</td>
+                    <td>1% ~100%</td>
+                    <td>否</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" /></td>
+                    <td>含糖量</td>
+                    <td>5% - 6%</td>
+                    <td>否</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -469,7 +471,8 @@
     </div>
     <div class="ui segment">
         <p class="am-cf">
-            <span>待样品确认收到</span>
+           
+            <span>抽样结束,等待生产商发送样品和检测中心接收</span>
             @if (user.Type == (int) EnumUserType.TestingOrg && (Model.SampleRecevied == null || Model.SampleRecevied[0] != '1'))
             {
                 <a href="/Trade/SampleReceive/@Model.Id" class="am-fr primary ui button">确认收到</a>
