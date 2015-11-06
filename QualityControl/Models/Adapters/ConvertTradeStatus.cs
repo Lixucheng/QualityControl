@@ -10,7 +10,7 @@ namespace QualityControl.Models.Adapters
             {
                 case (int) EnumTradeStatus.Create:
                 {
-                    return "订单已创建, 待生产商完善信息";
+                    return "合同已创建, 待生产商完善信息";
                 }
                 case (int) EnumTradeStatus.Finish:
                 {
@@ -55,6 +55,10 @@ namespace QualityControl.Models.Adapters
                 case (int)EnumTradeStatus.ProductInfoConfirmed:
                     {
                         return "控制中心审核完毕，等待用户选择批次";
+                    }
+                case (int)EnumTradeStatus.SampleReceived:
+                    {
+                        return "抽样已经完成";
                     }
             }
             return "";

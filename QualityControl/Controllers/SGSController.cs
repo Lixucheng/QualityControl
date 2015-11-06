@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using QualityControl.Db;
 using QualityControl.Enum;
+using QualityControl.Models;
 
 namespace QualityControl.Controllers
 {
@@ -139,6 +140,41 @@ namespace QualityControl.Controllers
             sgsp.NeedeDay = days;
             Db.SaveChanges();
             return Redirect("./ManageProducts");
+        }
+
+        /// <summary>
+        /// 验证样品
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Verification(long id)
+        {        
+            var list = Db.Verifications.Where(e => e.TradeId == id).ToList();
+            ViewBag.tid = id;
+            return View(list);
+        }
+
+        public List<string> GetNum(long id)
+        {
+            var l = Db.QrCodeInfos.Where(e => e.TradeId == id).Select(a=>a.IdCode).ToList();
+            return l;
+        }
+
+        public bool Check(long id,string idcode)
+        {
+            var l = GetNum(id);
+            var r = l.Any(e => e == idcode);
+            if(r==true)
+            {
+                var x = new Verification();
+                x.TradeId = id;
+                x.Status = EnumVerificationStatus.通过;
+                x.QrCodeInfo = Db.QrCodeInfos.FirstOrDefault(e => e.IdCode == idcode&&e.TradeId==id);
+                Db.Verifications.Add(x);
+                Db.SaveChanges();
+            }
+          
+            return r;
         }
     }
 }

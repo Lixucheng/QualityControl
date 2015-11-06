@@ -121,6 +121,11 @@ namespace QualityControl.Controllers
 
         public ActionResult FirstTypeIndex()
         {
+            var uid = User.Identity.GetUserId();
+            if (UserManager.FindById(uid).Type!=(int)EnumUserType.Controller)
+            {
+                throw new Exception("无权限");
+            }
             var list = Db.FirstProductTypes.ToList();
             list.ForEach(e =>
             {
@@ -134,6 +139,11 @@ namespace QualityControl.Controllers
 
         public ActionResult FirstEdit(FirstProductType newone)
         {
+            var uid = User.Identity.GetUserId();
+            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            {
+                throw new Exception("无权限");
+            }
             if (!CheckNewProduct(newone))
             {
                 throw new Exception("存在重复或有字段为空，请检查后再输入");
@@ -154,6 +164,11 @@ namespace QualityControl.Controllers
 
         public ActionResult FirstAdd(FirstProductType newone)
         {
+            var uid = User.Identity.GetUserId();
+            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            {
+                throw new Exception("无权限");
+            }
             if (!CheckNewProduct(newone))
             {
                 throw new Exception("存在重复或有字段为空，请检查后再输入");
@@ -169,6 +184,11 @@ namespace QualityControl.Controllers
 
         public ActionResult SecondTypeIndex(long id)
         {
+            var uid = User.Identity.GetUserId();
+            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            {
+                throw new Exception("无权限");
+            }
             var list = Db.FirstProductTypes.Find(id).SecondProductTypes;
             list.ForEach(e =>
             {
@@ -183,6 +203,11 @@ namespace QualityControl.Controllers
 
         public ActionResult SecondEdit(SecondProductType newone)
         {
+            var uid = User.Identity.GetUserId();
+            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            {
+                throw new Exception("无权限");
+            }
             if (!CheckNewProduct(newone))
             {
                 throw new Exception("存在重复或有字段为空，请检查后再输入");
@@ -204,6 +229,11 @@ namespace QualityControl.Controllers
 
         public ActionResult SecondAdd(SecondProductType newone, long fid)
         {
+            var uid = User.Identity.GetUserId();
+            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            {
+                throw new Exception("无权限");
+            }
             if (!CheckNewProduct(newone))
             {
                 throw new Exception("存在重复或有字段为空，请检查后再输入");
@@ -225,6 +255,11 @@ namespace QualityControl.Controllers
         /// <returns></returns>
         public ActionResult TypeIndex(long id)
         {
+            var uid = User.Identity.GetUserId();
+            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            {
+                throw new Exception("无权限");
+            }
             ViewBag.id = id;
             var list = Db.SecondProductTypes.Find(id).Productypes;
             list.ForEach(e =>
@@ -239,6 +274,11 @@ namespace QualityControl.Controllers
 
         public ActionResult Edit(ThirdProductType newone)
         {
+            var uid = User.Identity.GetUserId();
+            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            {
+                throw new Exception("无权限");
+            }
             if (!CheckNewProduct(newone))
             {
                 throw new Exception("存在重复或有字段为空，请检查后再输入");
@@ -259,6 +299,11 @@ namespace QualityControl.Controllers
 
         public ActionResult Add(ThirdProductType newone, long fid)
         {
+            var uid = User.Identity.GetUserId();
+            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            {
+                throw new Exception("无权限");
+            }
             if (!CheckNewProduct(newone))
             {
                 throw new Exception("存在重复或有字段为空，请检查后再输入");
@@ -350,8 +395,9 @@ namespace QualityControl.Controllers
         }
 
 
-        public ActionResult _Options(int type, long fatherid = 0)
+        public ActionResult _Options(int type, long fatherid = 0,long type1id=-1)
         {
+            ViewBag.tid = type1id;
             switch (type)
             {
                 case 1:
@@ -383,14 +429,28 @@ namespace QualityControl.Controllers
             return View();
         }
 
-        public ActionResult _ChooseType(string name = "s")
+        public ActionResult _ChooseType(string name = "s", long typeid = -1)
         {
             ViewBag.id = name;
+            if (typeid != -1)
+            { 
+            var t3 = Db.ThirdProductTypes.Find(typeid);
+            var t2 = t3.SecondType;
+            var t1 = t2.FirstType;
+            ViewBag.t1 = t1.Id;
+            ViewBag.t2 = t2.Id;
+            ViewBag.t3 = t3.Id;
+           }
+            ViewBag.typeid = typeid;
+            ViewBag.t1 = 0;
+            ViewBag.t2 = 0;
+            ViewBag.t3 = 0;
             return View();
         }
 
         public JsonResult GetType(int type, long fatherid)
         {
+           
             switch (type)
             {
                 case 2:
@@ -481,6 +541,12 @@ namespace QualityControl.Controllers
             {
                 return Content("错误操作");
             }
+            if(id!=0)
+            {
+                var t3 = product.Type;              
+                ViewBag.t3 = t3.Id;               
+            }
+           
             return View(product);
         }
 

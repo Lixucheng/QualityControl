@@ -8,7 +8,7 @@
     <div class="ui mobile reversed equal width grid">
         <div class=" column">
             <select name="" class="A @ViewBag.id">
-                @{ Html.RenderAction("_Options", "Product", new {type = 1}); }
+                @{ Html.RenderAction("_Options", "Product", new {type = 1, type1id =ViewBag.t1}); }
             </select>
         </div>
         <div class="column">
@@ -29,7 +29,9 @@
 <script>
 
 
-    get2();
+    set2();
+
+
 
     $(".A.@ViewBag.id").change(function() {
         var v1 = $(".A.@ViewBag.id").val();
@@ -127,5 +129,66 @@
         });
     }
 
+    function set2() {
+        var v1 = $(".A.@ViewBag.id").val();
+        $.ajax({
+            type: 'Get',
+            url: '/Product/GetType',
+            data: { fatherid: v1, type: 2 },
 
+            success: function (data) {
+                var l = data.length;
+                var s = "";
+                for (var i = 0; i < l; i++) {
+                    if(@ViewBag.typeid==-1)
+                    {s += "<option value=" + data[i].id + ">" + data[i].name + "</option>";}
+                    else
+                    {
+                        if(@ViewBag.t2==data[i].id)
+                        {
+                            s += "<option selected = 'selected' value=" + data[i].id + ">" + data[i].name + "</option>";
+                        }
+                        else
+                        {
+                            s += "<option value=" + data[i].id + ">" + data[i].name + "</option>";
+                        }
+                    }
+                }
+                $(".B.@ViewBag.id").html(s);
+                if (l == 0) {
+                    $(".C.@ViewBag.id").html("");
+                } else {
+                    var v2 = $(".B.@ViewBag.id").val();
+                    $.ajax({
+                        type: 'Get',
+                        url: '/Product/GetType',
+                        data: { fatherid: v2, type: 3 },
+                        success: function (data) {
+                            var l = data.length;
+                            var s = "";
+                            for (var i = 0; i < l; i++) {
+                                if(@ViewBag.typeid==-1)
+                                {s += "<option value=" + data[i].id + ">" + data[i].name + "</option>";}
+                                else
+                                {
+                                    if(@ViewBag.t3==data[i].id)
+                                    {
+                                        s += "<option selected = 'selected' value=" + data[i].id + ">" + data[i].name + "</option>";
+                                    }
+                                    else
+                                    {
+                                        s += "<option value=" + data[i].id + ">" + data[i].name + "</option>";
+                                    }
+                                }
+                            }
+                            $(".C.@ViewBag.id").html(s);
+
+                        },
+                        dataType: "json"
+                    });
+                }
+            },
+            dataType: "json"
+        });
+    }
 </script>

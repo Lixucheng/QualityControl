@@ -23,7 +23,7 @@ namespace QualityControl.Controllers
             if (trade == null)
             {
                 ViewBag.ok = 1;
-                ViewBag.message = "访问错误，订单不存在！";
+                ViewBag.message = "访问错误，合同不存在！";
             }
 
             var x = new DetectionScheme();
@@ -96,7 +96,7 @@ namespace QualityControl.Controllers
             }
             var levelconvert = new ConvertLevel();
 
-            ViewBag.Level = levelconvert.GetLevelByCount(list.First().Count);
+            //ViewBag.Level = levelconvert.GetLevelByCount(list.First().Count);
             ViewBag.tradeid = tradeid;
             return View();
         }

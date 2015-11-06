@@ -1,0 +1,156 @@
+﻿
+@{
+    ViewBag.Title = "Verification";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model IEnumerable<QualityControl.Db.Verification>
+
+@section head{
+<link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <style>
+    .main-container {
+        background-color: #FFFFFF;
+        box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+        margin: 0em auto;
+        padding: 2em 2em 7em;
+        z-index: 1;
+    }
+    th{
+        text-align:center;
+    }
+    .mycontent {
+        margin-bottom: 30px;
+    }
+</style>}
+<div class="main-container">
+
+    <h2 class="ui dividing header">
+        样品信息验证
+        <a class="anchor" id="types"></a>
+    </h2>
+
+    <div align="center">
+        <div class="ui form" >
+
+                <div class="  inline field">
+                    <label>输入验证码</label>
+                    <input style="width:50%" id="inp"  type="text" placeholder="验证码">
+                    <div class="ui button green" id="btn"> 确定</div>
+                </div>
+                
+
+          
+          </div>
+    
+
+    </div>
+
+    <table class="ui  celled  table" style="margin-top:30px">
+        <thead class="">
+            <tr>
+                <th >验证码</th>
+                <th  width="200px" >验证结果</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model.Count() == 0)
+            {
+            }
+            else
+            {
+                foreach (var Tempx in Model)
+                {
+                    
+                    <tr>
+                        <td>@Tempx.QrCodeInfo.IdCode</td>
+                        <td>@Tempx.Status</td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+        <tfoot>
+            <tr></tr>
+        </tfoot>
+    </table>
+</div>
+@section scripts{
+<script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('table').DataTable({
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                    "sInfoEmpty": "共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+
+                },
+                "bLengthChange": false,
+                searching: false,
+                
+            });
+           
+        });
+
+        $("#btn").click(function () {
+
+            $(".dataTables_empty").remove();
+
+            var v = $("#inp").val();
+            if(v=="")
+            {
+                alert("请输入验证码");
+            }
+            else {
+                $.ajax({
+
+                    type: 'POST',
+
+                    url: "/SGS/Check",
+
+                    data: {id:@ViewBag.tid,idcode:v},
+
+                    success: function(res){
+                        var s="";
+                        if(res=="True")
+                        {
+                           s="<td>通过</td>"
+                        }
+                        else{
+                            s="<td>错误</td>"
+                        }
+                        var y="<td>"+v+"</td>";
+                        var content="<tr>"+y+s+"</tr>";
+                        $("tbody").append(content);
+                    },
+
+                    dataType: "text"
+
+                });
+            }
+        });
+    </script>
+
+
+    }

@@ -1,4 +1,13 @@
 ﻿@foreach (var temp in ViewBag.thislist)
 {
-    <option value="@temp.Id">@temp.Title</option>
+    if (ViewBag.tid == -1)
+    { <option value="@temp.Id">@temp.Title</option>}
+    else {
+        if (ViewBag.tid == temp.Id)
+        {
+            <option selected = "selected" value = "@temp.Id" > @temp.Title </option >
+        }
+        else
+        {<option value = "@temp.Id" > @temp.Title </option >}
+    }
 }
