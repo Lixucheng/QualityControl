@@ -1449,6 +1449,7 @@
     <Content Include="Views\MakeQrCode\MakeNo.cshtml" />
     <Content Include="Views\Product\ProductIndex.cshtml" />
     <Content Include="Views\SGS\Verification.cshtml" />
+    <Content Include="Views\Manufacturer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

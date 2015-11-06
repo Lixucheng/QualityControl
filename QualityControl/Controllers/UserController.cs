@@ -9,6 +9,8 @@ using QualityControl.Enum;
 using QualityControl.Models;
 using QualityControl.Util;
 
+
+
 namespace QualityControl.Controllers
 {
     [Authorize]
@@ -20,8 +22,14 @@ namespace QualityControl.Controllers
             var already = Db.Trades.Count(e => (e.UserId == userid || e.SgsUserId == userid)&&e.Status==(int)EnumTradeStatus.Finish);
             var ing= Db.Trades.Count(e => (e.UserId == userid || e.SgsUserId == userid) && e.Status != (int)EnumTradeStatus.Finish);
 
-            var tuijian=Db.Products
-            return View();
+            ViewBag.a = already;
+            ViewBag.i = ing;
+            var list = Db.Products
+                .OrderBy(a => Guid.NewGuid())
+                .Take(3)
+                .ToList();
+            ViewBag.list = list;
+            return View(list);
         }
 
         /// <summary>

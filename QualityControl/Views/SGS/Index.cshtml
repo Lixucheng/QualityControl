@@ -6,7 +6,13 @@
 @using QualityControl.Db
 @using QualityControl.Enum
 @model QualityControl.Db.SGS
+@using Newtonsoft.Json.Linq;
+@using Newtonsoft.Json;
+@using System.Linq;
+
 <div class="am-margin am-padding container ">
+
+
     <div class="verborder">
         @if (Model != null)
         {
@@ -103,5 +109,73 @@
             </div>
         }
 
+    </div>
+
+    <br />
+    <div class=" six wide field">
+        <div class="am-text-center ui segment">
+            <a href="/Event/Current?type=0" class="ui red statistic">
+                <div class="value"><i class="at icon"></i> @ViewBag.a</div>
+                <div class="label">已完成管控</div>
+            </a>
+            <a href="/Event/Current?type=1" class="ui orange statistic">
+                <div class="value"><i class="spinner icon"></i> @ViewBag.i</div>
+                <div class="label">正在进行中的合同</div>
+            </a>
+
+        </div>
+    </div>
+
+
+
+    <br />
+    <div class="ui container">
+        <div class="row">
+            <div class="column">
+                <div class="ui message">
+                    <h1 class="ui header">推荐商品</h1>
+                    <div class="ui three cards">
+                        <div class="card">
+                            <div class="image">
+                                @{
+                                    var list = ViewBag.list as List<Product>;
+                                    var jarray = (JArray)JsonConvert.DeserializeObject(list.ElementAt(0).Image);
+                                    string ja1a = jarray[0].ToString();
+                                }
+                                <img src="@ja1a">
+                            </div>
+                            <div class="extra center aligned">
+                                <p>@list.ElementAt(0).Name</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="image">
+                                @{
+                                    var jarray1 = (JArray)JsonConvert.DeserializeObject(list.ElementAt(1).Image);
+                                    string ja1a1 = jarray[0].ToString();
+                                }
+                                <img src="@ja1a1">
+                            </div>
+                            <div class="extra center aligned">
+                                <p>@list.ElementAt(1).Name</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="image">
+                                @{
+                                    var jarray2 = (JArray)JsonConvert.DeserializeObject(list.ElementAt(1).Image);
+                                    string ja1a2 = jarray[0].ToString();
+                                }
+                                <img src="@ja1a2">
+                            </div>
+                            <div class="extra center aligned">
+                                <p>@list.ElementAt(2).Name</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

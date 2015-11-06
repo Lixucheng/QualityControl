@@ -19,6 +19,18 @@ namespace QualityControl.Controllers
         {
             var userId = User.Identity.GetUserId();
             var sgs = Db.SGSs.FirstOrDefault(a => a.UserId == userId);
+
+            var userid = User.Identity.GetUserId();
+            var already = Db.Trades.Count(e => (e.UserId == userid || e.SgsUserId == userid) && e.Status == (int)EnumTradeStatus.Finish);
+            var ing = Db.Trades.Count(e => (e.UserId == userid || e.SgsUserId == userid) && e.Status != (int)EnumTradeStatus.Finish);
+
+            ViewBag.a = already;
+            ViewBag.i = ing;
+            var list = Db.Products
+                .OrderBy(a => Guid.NewGuid())
+                .Take(3)
+                .ToList();
+            ViewBag.list = list;
             return View(sgs);
         }
 

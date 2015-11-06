@@ -6,11 +6,16 @@ using QualityControl.Enum;
 using System.Data.Entity;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Linq;
+using QualityControl.Models;
 
 namespace QualityControl.Controllers
 {
     public class ManufacturerController : BaseController
     {
+
+
+      
         public ManufacturerController()
         {
         }

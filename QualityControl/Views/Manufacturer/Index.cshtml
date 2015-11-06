@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "用户中心";
+﻿
+@{
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -31,36 +32,23 @@
 <div class="am-margin am-padding">
 
 
-        <div class=" six wide field">
-            <div class="am-text-center ui segment">
-                <a href="/Event/Current?type=0" class="ui red statistic">
-                    <div class="value"><i class="at icon"></i> @ViewBag.a</div>
-                    <div class="label">已完成管控</div>
-                </a>
-                <a href="/Event/Current?type=1" class="ui orange statistic">
-                    <div class="value"><i class="spinner icon"></i> @ViewBag.i</div>
-                    <div class="label">正在进行中的合同</div>
-                </a>
+    <div class=" six wide field">
+        <div class="am-text-center ui segment">
+            <a href="/Event/Current?type=0" class="ui red statistic">
+                <div class="value"><i class="at icon"></i> @ViewBag.a</div>
+                <div class="label">已完成管控</div>
+            </a>
+            <a href="/Event/Current?type=1" class="ui orange statistic">
+                <div class="value"><i class="spinner icon"></i> @ViewBag.i</div>
+                <div class="label">正在进行中的合同</div>
+            </a>
 
-            </div>
-        </div>
-
-  
-
-   
-    <br />
-        <div class="ui container">
-        <div class="row">
-            <div class="column">
-                <div class="ui message">
-                    <h1 class="ui header">质量检测管理</h1>
-                    <p></p>
-                    <a href="/User/TradeList" class="ui blue button">查看合同列表</a>
-                    <a href="/Trade/ChooseProduct" class="ui teal button">新建质量检测</a>
-                </div>
-            </div>
         </div>
     </div>
+
+
+
+
 
     <br />
     <div class="ui container">
@@ -111,8 +99,9 @@
             </div>
         </div>
     </div>
-   
+
 
 
 
 </div>
+
