@@ -32,6 +32,8 @@
             <thead>
             <tr>
                 <th>序号</th>
+                <th>序列码</th>
+                <th>验证码</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -43,10 +45,12 @@
                 {
                     <tr>
                         <td>
-                            <a href="..@temp">第 @i 个二维码图片</a>
+                            <a href="..@temp.url"> @i </a>
                         </td>
+                        <td>@temp.name</td>
+                        <td>@temp.code</td>
                         <td style="text-align: center; width: 150px">
-                            <a href="..@temp" class="ui button" download="">下载</a>
+                            <a href="..@temp.url" class="ui button" download="">下载</a>
                         </td>
 
                     </tr>

@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 using QualityControl.Enum;
 using System.Data.Entity;
 using org.in2bits.MyXls;
+using System.Linq;
 
 namespace QualityControl.Controllers
 {
@@ -20,12 +21,13 @@ namespace QualityControl.Controllers
         // GET: MakeQrCode
         public ActionResult Index(long tradeid)
         {
+           
             var trade = Db.Trades.Find(tradeid);
             if (trade == null)
             {
                 throw new Exception("访问错误！");
             }
-            var listdown = new List<string>();
+            var listdown = new List<Qr>();
             var list = trade.Batches;
             list.ForEach(e =>
             {
@@ -61,7 +63,7 @@ namespace QualityControl.Controllers
             return View();
         }
         
-        public string MakeQrCode(long tradeid, long num, string batch, long productid)
+        public Qr MakeQrCode(long tradeid, long num, string batch, long productid)
         {
             var guid = getString(4);
             var name = tradeid + "_" + productid + "_" + batch + "_" + num + ".jpg";
@@ -69,7 +71,11 @@ namespace QualityControl.Controllers
             var path = url + "\\Image\\" + tradeid + "\\" + batch;
             if(System.IO.File.Exists(path + "\\" + name))
             {
-                return "/Image/" + tradeid + "/" + batch + "/" + name;
+                var r = new Qr();
+                r.name = tradeid + "_" + productid + "_" + batch + "_" + num;
+                r.url = "/Image/" + tradeid + "/" + batch + "/" + name; ;
+                r.code = Db.QrCodeInfos.FirstOrDefault(e=>e.TradeId==tradeid&&e.QrName== tradeid + "_" + productid + "_" + batch + "_" + num).IdCode;
+                return r;
             }
            
             var encoder = new QRCodeEncoder();
@@ -99,7 +105,12 @@ namespace QualityControl.Controllers
 
 
             var down = "/Image/" + tradeid + "/" + batch + "/" + name;
-            return down;
+
+            var ret = new Qr();
+            ret.name = tradeid + "_" + productid + "_" + batch + "_" + num;
+            ret.url = down;
+            ret.code = guid;
+            return ret;
         }
 
 
@@ -280,7 +291,7 @@ namespace QualityControl.Controllers
             //创建列
             Cells cells = sheet.Cells; //获得指定工作页列集合
                                        //列操作基本
-            Cell cell = cells.Add(1, 1, "控制码", cellXF);//添加标题列返回一个列  参数：行 列 名称 样式对象
+            Cell cell = cells.Add(1, 1, "序列码", cellXF);//添加标题列返回一个列  参数：行 列 名称 样式对象
                                                                     //设置XY居中
             cell.HorizontalAlignment = HorizontalAlignments.Centered;
             cell.VerticalAlignment = VerticalAlignments.Centered;
@@ -319,6 +330,13 @@ namespace QualityControl.Controllers
         {
             public string BName;
             public List<string> Value;
+        }
+
+        public class Qr
+        {
+            public string name;
+            public string code;
+            public string url;
         }
     }
 }

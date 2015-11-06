@@ -42,7 +42,7 @@ namespace QualityControl.Models.Adapters
                 }
                 case (int)EnumTradeStatus.FinishMakeQrCode:
                     {
-                        return "等待生产商接收控制码";
+                        return "等待生产商接收序列码";
                     }
                 case (int)EnumTradeStatus.BatchSelected:
                     {
