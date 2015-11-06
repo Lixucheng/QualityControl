@@ -198,7 +198,7 @@ namespace QualityControl.Controllers
         }
 
         /// <summary>
-        /// 质量检测列表
+        /// 管控合同列表
         /// </summary>
         /// <returns></returns>
         public ActionResult Trades()

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "质量检测详情";
+    ViewBag.Title = "管控合同详情";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @using Newtonsoft.Json
@@ -76,7 +76,7 @@
             }
             else if (Model.Status == (int)EnumTradeStatus.Finish)
             {
-                <span>质量检测完成</span>
+                <span>管控合同完成</span>
             }
             else if (Model.Status == (int)EnumTradeStatus.BatchSelected)
             {
@@ -489,7 +489,7 @@
     {
         <div class="ui segment">
             <p class="am-cf">
-                <span>质量检测完成</span>
+                <span>管控合同完成</span>
             </p>
         </div>
     }
