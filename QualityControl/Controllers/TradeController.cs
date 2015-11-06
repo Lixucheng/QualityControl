@@ -322,7 +322,7 @@ namespace QualityControl.Controllers
         }
 
 
-
+        [AllowAnonymous]
         public ActionResult GetBatchStatus(long id)
         {
             var b = Db.ProductBatchs.Find(id);
