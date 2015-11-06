@@ -198,7 +198,7 @@ namespace QualityControl.Controllers
         }
 
         /// <summary>
-        /// 质量检测列表
+        /// 管控合同列表
         /// </summary>
         /// <returns></returns>
         public ActionResult Trades()
@@ -322,9 +322,22 @@ namespace QualityControl.Controllers
         }
 
 
-
+        [AllowAnonymous]
         public ActionResult GetBatchStatus(long id)
         {
+            var b = Db.ProductBatchs.Find(id);
+            if (b == null)
+            {
+                ViewBag.Text = "该编号不无效";
+            }
+            if (b.Trade.Status == (int) EnumTradeStatus.Finish)
+            {
+                ViewBag.Text = "已经通过检测";
+            }
+            else
+            {
+                ViewBag.Text = "正在检测该产品";
+            }
             return View();
         }
 

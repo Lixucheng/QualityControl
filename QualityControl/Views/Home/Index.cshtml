@@ -1,4 +1,5 @@
-﻿@using QualityControl.Db
+﻿@using Newtonsoft.Json
+@using QualityControl.Db
 @{ 
     Layout = null;
 }
@@ -89,7 +90,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="view-ui item" href="#">质量检测平台 </a>
+                        <a class="view-ui item" href="#">管控合同平台 </a>
                         <div class="right menu">
                             <div class="item">
                                 <a href="/Account/Login" class="">登录</a>
@@ -105,8 +106,8 @@
                 <div class="ui container">
                     <div class="introduction">
                         <h1 class="ui inverted header">
-                            <span class="library">质量检测平台</span>
-                            <span class="tagline">更放心更便捷的质量检测</span>
+                            <span class="library">管控合同平台</span>
+                            <span class="tagline">更放心更便捷的管控合同</span>
                         </h1>
                         <div class="ui hidden divider"></div>
                         <a href="/Trade/ChooseProduct" class="ui huge inverted download button">开启质控之旅</a>
@@ -129,7 +130,7 @@
                                 {
                                     <div class="column">
                                         <h2 class="ui icon header">
-                                            <img class="ui icon image" src="/Content/homepage/images/gd.jpg">【@item.Type.Title】@item.Name
+                                            <img class="ui icon image" src="@(JsonConvert.DeserializeObject<List<string>>(item.Image).FirstOrDefault())">【@item.Type.Title】@item.Name
                                         </h2>
 @*                                        <p>@item.StorageCondition</p>*@
 @*                                        <a class="ui large button" href="">查看详情</a>*@
@@ -174,7 +175,7 @@
             <div class="ui alternate stripe vertical segment">
                 <div class="ui stackable center aligned grid container">
                     <div class="fourteen wide column">
-                        <h1 class="ui icon header"><img class="ui inline icon image" src="/Content/homepage/rocket.png"> 高效方便的质量检测控制平台</h1>
+                        <h1 class="ui icon header"><img class="ui inline icon image" src="/Content/homepage/rocket.png"> 高效方便的管控合同控制平台</h1>
                         <div class="ui stackable center aligned vertically padded grid">
                             <div class="eight wide column">
                                 <p>由用户提出管控申请，经生产商和控制中心确认产品信息以及用户选择批次后，申请完成。接着，由控制中心制作检测方案，用户可以提出修改意见。一致同意监测方案后，用户付款确认后，由控制中心开始制码，并通知生产商和检测机构。控制中心选择抽样方式后，检测机构开始检测并完成检测报告，用户查阅检测报告，申请完成。</p>
@@ -189,7 +190,7 @@
             <div class="ui center aligned container">
                 <div class="ui stackable inverted grid">
                     <div class="six wide column">
-                        <h4 class="ui inverted header">质量检测控制平台 大连工业大学</h4>
+                        <h4 class="ui inverted header">管控合同控制平台 大连工业大学</h4>
                     </div>
                     <div class="seven wide right floated column">
                     </div>

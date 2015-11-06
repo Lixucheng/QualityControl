@@ -46,7 +46,7 @@ namespace QualityControl.Controllers
             var trade = Db.Trades.Find(id);
             if(trade==null)
             {
-                throw new Exception("质量检测不存在！");
+                throw new Exception("管控合同不存在！");
             }
             if(trade.Status!=(int)EnumTradeStatus.FinishMakeQrCode)
             {
@@ -68,7 +68,7 @@ namespace QualityControl.Controllers
             var trade = Db.Trades.Find(id);
             if (trade == null)
             {
-                throw new Exception("质量检测不存在！");
+                throw new Exception("管控合同不存在！");
             }
 
             var files = JsonConvert.SerializeObject(list);
