@@ -143,54 +143,56 @@
 
             </tbody>
         </table>
-        <form class="ui form item-form">
-            <div class="two fields">
-                <div class="field">
-                    <label>检测项目</label>
-                    <input type="text" name="name"/>
+        @if (Model.Status < (int)EnumTradeStatus.ProductInfoConfirmed)
+        {
+            <form class="ui form item-form">
+                <div class="two fields">
+                    <div class="field">
+                        <label>检测项目</label>
+                        <input type="text" name="name" />
+                    </div>
+                    <div class="field">
+                        <label>范围</label>
+                        <input type="text" name="range" />
+                    </div>
                 </div>
                 <div class="field">
-                    <label>范围</label>
-                    <input type="text" name="range"/>
+                    <label>否决项（是/否）</label>
+                    <input type="checkbox" name="deney" />
                 </div>
-
-            </div>
-            <div class="field">
-                <label>否决项（是/否）</label>
-                <input type="checkbox" name="deney"/>
-            </div>
-            <button class="ui button">添加</button>
-        </form>
-        <table class="ui celled table item-table">
-            <thead>
-            <tr>
-                <th></th>
-                <th>检测项目</th>
-                <th>范围</th>
-                <th>否决项</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td><input type="checkbox" /></td>
-                <td>酒精度</td>
-                <td>21</td>
-                <td>否</td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"/></td>
-                <td>蛋白质</td>
-                <td>1% ~100%</td>
-                <td>否</td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"/></td>
-                <td>含糖量</td>
-                <td>5% - 6%</td>
-                <td>否</td>
-            </tr>
-            </tbody>
-        </table>
+                <button class="ui button">添加</button>
+            </form>
+            <table class="ui celled table item-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>检测项目</th>
+                        <th>范围</th>
+                        <th>否决项</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>酒精度</td>
+                        <td>21</td>
+                        <td>否</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>蛋白质</td>
+                        <td>1% ~100%</td>
+                        <td>否</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>含糖量</td>
+                        <td>5% - 6%</td>
+                        <td>否</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
     </div>
 </div>
 
