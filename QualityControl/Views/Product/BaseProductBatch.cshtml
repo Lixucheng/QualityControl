@@ -83,8 +83,8 @@
             <input name="Id" style="display: none" id="editid">
             <input name="pid" value="@ViewBag.p.Id" style="display: none">
             <div class="field">
-                <label>名称</label>
-                <input type="text" name="BatchName" placeholder="名称" id="editname">
+                <label>名称(只能输入数字,字母或下划线)</label>
+                <input type="text" onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" name="BatchName" placeholder="名称" id="editname">
             </div>
             <div class="field">
                 <label>数量</label>
@@ -114,8 +114,8 @@
         <form class="ui form" action="/Product/BaseProductBatchAdd" id="addform">
             <input name="pid" value="@ViewBag.p.Id" style="display: none">
             <div class="field">
-                <label>名称</label>
-                <input type="text" name="BatchName" placeholder="名称">
+                <label>名称(只能输入数字,字母或下划线)</label>
+                <input type="text" onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" name="BatchName" placeholder="名称">
             </div>
             <div class="field">
                 <label>数量</label>

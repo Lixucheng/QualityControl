@@ -35,6 +35,8 @@ namespace QualityControl.Controllers
                 }
             });
 
+            BatchQrcode(tradeid);
+
             //压缩
             var urlz = HttpRuntime.AppDomainAppPath;
             var zipfile = urlz + "Image\\" + tradeid;
@@ -45,6 +47,9 @@ namespace QualityControl.Controllers
             var url = Request.Url.ToString();
             ViewBag.list = listdown;
             MakeQrCodeFinish(tradeid);
+
+         
+            
 
             var userId = User.Identity.GetUserId();
             var user = UserManager.FindById(userId);
@@ -58,7 +63,7 @@ namespace QualityControl.Controllers
         
         public string MakeQrCode(long tradeid, long num, string batch, long productid)
         {
-            var guid = Guid.NewGuid().ToString();
+            var guid = getString(4);
             var name = tradeid + "_" + productid + "_" + batch + "_" + num + ".jpg";
             var url = HttpRuntime.AppDomainAppPath;
             var path = url + "\\Image\\" + tradeid + "\\" + batch;
@@ -96,6 +101,83 @@ namespace QualityControl.Controllers
             var down = "/Image/" + tradeid + "/" + batch + "/" + name;
             return down;
         }
+
+
+        public bool BatchQrcode(long id)
+        {
+            var trade = Db.Trades.Find(id);
+            var bs = trade.Batches;
+            bs.ForEach(e =>
+            {
+              MakeBatchQrCode(id,e.Id);
+            });         
+            return true;
+        }
+        public string MakeBatchQrCode(long tradeid, long batchid)
+        {
+            var guid = getString(4);
+            var name = batchid + ".jpg";
+            var url = HttpRuntime.AppDomainAppPath;
+            var path = url + "\\Image\\" + tradeid + "\\" + "批次二维码";
+            if (System.IO.File.Exists(path + "\\" + name))
+            {
+                return "/Image/" + tradeid + "/" + "批次二维码" + "/" + name;
+            }
+
+            var encoder = new QRCodeEncoder();
+            encoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE; //编码方法
+            encoder.QRCodeScale = 4; //大小
+            encoder.QRCodeVersion = 0; //版本
+            encoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.M;
+            var qrdata = Request.Url.GetLeftPart(UriPartial.Authority).ToString()+"/Trade/GetBatchStatus/" +batchid;
+            var bp = encoder.Encode(qrdata, Encoding.UTF8);
+            Image image = bp;
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+
+            image.Save(path + "\\" + name, ImageFormat.Jpeg);
+
+
+          
+
+
+            var down = "/Image/" + tradeid + "/" + "批次二维码" + "/" + name;
+            return down;
+        }
+
+        /// <summary>
+        /// 随机字符串
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public string getString(int count)
+        {
+            int number;
+            string checkCode = String.Empty;     //存放随机码的字符串   
+
+            System.Random random = new Random();
+
+            for (int i = 0; i < count; i++) //产生4位校验码   
+            {
+                number = random.Next();
+                number = number % 36;
+                if (number < 10)
+                {
+                    number += 48;    //数字0-9编码在48-57   
+                }
+                else
+                {
+                    number += 55;    //字母A-Z编码在65-90   
+                }
+
+                checkCode += ((char)number).ToString();
+            }
+            return checkCode;
+       }
 
         public bool Zip(string zipfile, string zipname)
         {

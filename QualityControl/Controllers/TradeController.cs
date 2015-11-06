@@ -274,7 +274,7 @@ namespace QualityControl.Controllers
                         code = trade.Id.ToString("D15") + "_" +
                                b.ProductId.ToString("D10") + "_" +
                                b.BatchName + "_" +
-                               num;
+                               num+":"+Db.QrCodeInfos.Find(b.Id).IdCode;
                         qrCodes.Add(code);
                     }
                     b.SamplaListJson = JsonConvert.SerializeObject(qrCodes);
@@ -319,6 +319,13 @@ namespace QualityControl.Controllers
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
             return null;
+        }
+
+
+
+        public ActionResult GetBatchStatus(long id)
+        {
+            return View();
         }
 
         public ActionResult ComfirmPay(long id)
