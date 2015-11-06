@@ -35,6 +35,8 @@ namespace QualityControl.Controllers
                 }
             });
 
+            BatchQrcode(tradeid);
+
             //压缩
             var urlz = HttpRuntime.AppDomainAppPath;
             var zipfile = urlz + "Image\\" + tradeid;
@@ -45,6 +47,9 @@ namespace QualityControl.Controllers
             var url = Request.Url.ToString();
             ViewBag.list = listdown;
             MakeQrCodeFinish(tradeid);
+
+         
+            
 
             var userId = User.Identity.GetUserId();
             var user = UserManager.FindById(userId);
@@ -94,6 +99,53 @@ namespace QualityControl.Controllers
 
 
             var down = "/Image/" + tradeid + "/" + batch + "/" + name;
+            return down;
+        }
+
+
+        public bool BatchQrcode(long id)
+        {
+            var trade = Db.Trades.Find(id);
+            var bs = trade.Batches;
+            bs.ForEach(e =>
+            {
+              MakeBatchQrCode(id,e.Id);
+            });         
+            return true;
+        }
+        public string MakeBatchQrCode(long tradeid, long batchid)
+        {
+            var guid = Guid.NewGuid().ToString();
+            var name = batchid ;
+            var url = HttpRuntime.AppDomainAppPath;
+            var path = url + "\\Image\\" + tradeid + "\\" + "批次二维码";
+            if (System.IO.File.Exists(path + "\\" + name))
+            {
+                return "/Image/" + tradeid + "/" + "批次二维码" + "/" + name;
+            }
+
+            var encoder = new QRCodeEncoder();
+            encoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE; //编码方法
+            encoder.QRCodeScale = 4; //大小
+            encoder.QRCodeVersion = 0; //版本
+            encoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.M;
+            var qrdata = Server.MapPath("~")+"/Trade/GetBatchStatus/" +batchid;
+            var bp = encoder.Encode(qrdata, Encoding.UTF8);
+            Image image = bp;
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+
+            image.Save(path + "\\" + name, ImageFormat.Jpeg);
+
+
+          
+
+
+            var down = "/Image/" + tradeid + "/" + "批次二维码" + "/" + name;
             return down;
         }
 

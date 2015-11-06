@@ -321,6 +321,13 @@ namespace QualityControl.Controllers
             return null;
         }
 
+
+
+        public ActionResult GetBatchStatus(long id)
+        {
+            return View();
+        }
+
         public ActionResult ComfirmPay(long id)
         {
             var userId = User.Identity.GetUserId();
