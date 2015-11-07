@@ -172,21 +172,34 @@ namespace QualityControl.Controllers
             return l;
         }
 
-        public bool Check(long id,string idcode)
+        public JsonResult Check(long id,string idcode)
         {
+
+         
             var l = GetNum(id);
             var r = l.Any(e => e == idcode);
-            if(r==true)
+          
+            if (r==true)
             {
+                var info= Db.QrCodeInfos.FirstOrDefault(e => e.IdCode == idcode && e.TradeId == id);
+                var a = Db.Verifications.FirstOrDefault(e => e.QrCodeInfo.Id == info.Id);
+                if(a!=null)
+                {
+                    return Json(3);
+                }
                 var x = new Verification();
                 x.TradeId = id;
                 x.Status = EnumVerificationStatus.通过;
-                x.QrCodeInfo = Db.QrCodeInfos.FirstOrDefault(e => e.IdCode == idcode&&e.TradeId==id);
+                x.QrCodeInfo = info;
                 Db.Verifications.Add(x);
                 Db.SaveChanges();
+                //var ret = new { b = 1, num =x.QrCodeInfo.QrName };
+                return Json(1);
             }
-          
-            return r;
+
+
+            //var ret1 = new { b = 0};
+            return Json(0);
         }
     }
 }

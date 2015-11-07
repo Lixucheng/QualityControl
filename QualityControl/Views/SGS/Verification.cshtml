@@ -48,6 +48,7 @@
     <table class="ui  celled  table" style="margin-top:30px">
         <thead class="">
             <tr>
+                <th>序列码</th>
                 <th >验证码</th>
                 <th  width="200px" >验证结果</th>
                
@@ -64,6 +65,7 @@
                 {
                     
                     <tr>
+                        <td>@Tempx.QrCodeInfo.QrName</td>
                         <td>@Tempx.QrCodeInfo.IdCode</td>
                         <td>@Tempx.Status</td>
                     </tr>
@@ -132,17 +134,28 @@
                     data: {id:@ViewBag.tid,idcode:v},
 
                     success: function(res){
-                        var s="";
-                        if(res=="True")
+                     
+                        if(res==3)
                         {
-                           s="<td>通过</td>"
+                            alert("此样品验证已通过!请在下面表格中查看!");
                         }
                         else{
-                            s="<td>错误</td>"
+                            var s="";
+                            if(res==1)
+                            {
+                                location.reload();
+                                //s="<td>通过</td>"
+                                //var id="<td>"+res.num+"</td>";
+                                //var y="<td>"+v+"</td>";
+                                //var content="<tr>"+id+y+s+"</tr>";
+                                //$("tbody").append(content);
+                            }
+                            else{
+                                alert("验证码错误!");
+                            }
                         }
-                        var y="<td>"+v+"</td>";
-                        var content="<tr>"+y+s+"</tr>";
-                        $("tbody").append(content);
+                       
+                      
                     },
 
                     dataType: "text"
