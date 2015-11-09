@@ -266,16 +266,16 @@ namespace QualityControl.Controllers
                     b.SampleCount = LevelCount(b.Level);
                     var qrCodes = new List<string>();
                     var divider = b.Count/b.SampleCount;
-                    var num = random.Next(1, b.SampleCount);
+                    var num = random.Next(1, divider);
                     for (var i = 0; i < b.SampleCount; i++)
-                    {
-                        num += i* divider;
+                    {                      
                         string code;
                         code = trade.Id.ToString() + "_" +
                                b.ProductId.ToString() + "_" +
                                b.BatchName + "_" +
                                num+":"+Db.QrCodeInfos.Find(b.Id).IdCode;
                         qrCodes.Add(code);
+                        num += divider;
                     }
                     b.SamplaListJson = JsonConvert.SerializeObject(qrCodes);
                     Db.Entry(b).State = EntityState.Modified;
