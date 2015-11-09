@@ -176,7 +176,8 @@ namespace QualityControl.Controllers
                 var codelist =(JArray)JsonConvert.DeserializeObject(e.SamplaListJson);
                 foreach(var temp in codelist)
                 {
-                   l.Add( Db.QrCodeInfos.FirstOrDefault(a => a.TradeId == id && a.QrName == temp.ToString().Split(':')[0]).IdCode);
+                    var name = temp.ToString().Split(':')[0];
+                   l.Add( Db.QrCodeInfos.FirstOrDefault(a => a.TradeId == id && a.QrName ==name ).IdCode);
                 }
             });          
             return l;
