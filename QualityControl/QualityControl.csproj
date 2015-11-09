@@ -466,6 +466,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Image\photo0.jpg" />
     <Content Include="References\ThoughtWorks.QRCode.dll" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\angular.simple-datatables.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

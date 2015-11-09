@@ -34,10 +34,18 @@
         @if (user.Type == (int) EnumUserType.TestingOrg)
         {
             <div class="item active">
-                <a class="active title" href="/SGS/Index">
+                <a class="title" href="/SGS/Index">
                     <i class="icon copyright"></i><b>机构信息</b>
                 </a>
+
             </div>
+            <div class="item active">
+                <a class="title" href="/SGS/Items">
+                    <i class="icon list"></i><b>检测项目管理</b>
+                </a>
+
+            </div>
+            
         }
         @if (user.Type == (int) EnumUserType.Producer)
         {

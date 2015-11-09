@@ -206,7 +206,82 @@ namespace QualityControl.Controllers
 
         public ActionResult Items()
         {
+            var userId = User.Identity.GetUserId();
+            var sgs = Db.SGSs.FirstOrDefault(a => a.UserId == userId);
+            if (sgs == null)
+            {
+                return Content("错误操作");
+            }
             return View();
+        }
+
+        public string AllItems()
+        {
+            var userId = User.Identity.GetUserId();
+            var sgs = Db.SGSs.FirstOrDefault(a => a.UserId == userId);
+            if (sgs == null)
+            {
+                return null;
+            }
+            return JsonConvert.SerializeObject(sgs.DectectionItems);
+        }
+
+        public long SaveItem(DectectionItem item)
+        {
+            if (!ModelState.IsValid)
+            {
+                return 0;
+            }
+            var userId = User.Identity.GetUserId();
+            var sgs = Db.SGSs.FirstOrDefault(a => a.UserId == userId);
+            if (sgs == null)
+            {
+                return 0;
+            }
+            if (item.Id == 0)
+            {
+                sgs.DectectionItems.Add(item);
+            }
+            else
+            {
+                var it = sgs.DectectionItems.FirstOrDefault(a => a.Id == item.Id);
+                if (it == null)
+                {
+                    return 0;
+                }
+                Util.Dumper.Dump(item, it);
+                Db.Entry(it).State = EntityState.Modified;
+            }
+            sgs.DectectionItemString = "";
+            var items = sgs.DectectionItems.Select(a => a.Name).OrderBy(a => a).ToList();
+            foreach (var i in items)
+            {
+                sgs.DectectionItemString += "," +  i;
+            }
+            Db.Entry(sgs).State = EntityState.Modified;
+            Db.SaveChanges();
+            return item.Id;
+        }
+
+        public int RemoveItem(DectectionItem item)
+        {
+            var userId = User.Identity.GetUserId();
+            var sgs = Db.SGSs.FirstOrDefault(a => a.UserId == userId);
+            var it = sgs?.DectectionItems.FirstOrDefault(a => a.Id == item.Id);
+            if (it == null)
+            {
+                return 0;
+            }
+            sgs.DectectionItems.Remove(it);
+            var items = sgs.DectectionItems.Select(a => a.Name).OrderBy(a => a).ToList();
+            foreach (var i in items)
+            {
+                sgs.DectectionItemString += "," +  i;
+            }
+            Db.Entry(sgs).State = EntityState.Modified;
+            Db.SaveChanges();
+            Db.SaveChanges();
+            return 1;
         }
         #endregion
     }
