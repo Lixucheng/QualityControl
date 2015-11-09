@@ -60,7 +60,7 @@
             }
             else if (Model.Status == (int) EnumTradeStatus.SampleReceived)
             {
-                <span>抽样完成,等待生产商贴码</span>
+                <span>抽样完成,等待生产商接收</span>
             }
             else if (Model.Status == (int) EnumTradeStatus.Testing)
             {
@@ -472,15 +472,32 @@
     <div class="ui segment">
         <p class="am-cf">
            
-            <span>抽样结束,等待生产商发送样品和检测中心接收</span>
-            @if (user.Type == (int) EnumUserType.TestingOrg && (Model.SampleRecevied == null || Model.SampleRecevied[0] != '1'))
+            <span>抽样结束,等待生产商接收样品信息</span>
+            @if (user.Type == (int)EnumUserType.TestingOrg && (Model.SampleRecevied == null || Model.SampleRecevied[0] != '1'))
             {
+               
                 <a href="/Trade/SampleReceive/@Model.Id" class="am-fr primary ui button">确认收到</a>
             }
             @if (user.Type == (int) EnumUserType.Producer && (Model.SampleRecevied == null || Model.SampleRecevied[1] != '1'))
             {
                 <a href="/Trade/SampleReceive/@Model.Id" class="am-fr primary ui button">确认收到</a>
             }
+        </p>
+    </div>
+}
+@if (Model.Status == (int)EnumTradeStatus.SgsReceivedSample)
+{
+    <div class="ui segment">
+        <p class="am-cf">
+
+            <span>生产商已收到抽样信息,等待检测中心接收样品</span>
+            @if (user.Type == (int)EnumUserType.TestingOrg)
+            {
+                <a href="/SGS/Verification/@Model.Id" class="am-fr green ui button">样品验证</a>
+                <a href="/Trade/SgsSampleReceive/@Model.Id" class="am-fr primary ui button">确认收到</a>
+            }
+         
+         
         </p>
     </div>
 }

@@ -116,6 +116,12 @@ namespace QualityControl.Db
 
         SampleReceived,
 
+
+        /// <summary>
+        /// 等待检测中心收到样品
+        /// </summary>
+        /// 
+        SgsReceivedSample,
         /// <summary>
         ///     检查中
         /// </summary>

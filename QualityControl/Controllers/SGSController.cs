@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using QualityControl.Db;
 using QualityControl.Enum;
 using QualityControl.Models;
+using Newtonsoft.Json.Linq;
 
 namespace QualityControl.Controllers
 {
@@ -168,7 +169,16 @@ namespace QualityControl.Controllers
 
         public List<string> GetNum(long id)
         {
-            var l = Db.QrCodeInfos.Where(e => e.TradeId == id).Select(a=>a.IdCode).ToList();
+            var l = new List<string>();
+            var t = Db.Trades.Find(id);
+            var bs = t.Batches;
+            bs.ForEach(e=> {
+                var codelist =(JArray)JsonConvert.DeserializeObject(e.SamplaListJson);
+                foreach(var temp in codelist)
+                {
+                   l.Add( Db.QrCodeInfos.FirstOrDefault(a => a.TradeId == id && a.QrName == temp.ToString().Split(':')[0]).IdCode);
+                }
+            });          
             return l;
         }
 
