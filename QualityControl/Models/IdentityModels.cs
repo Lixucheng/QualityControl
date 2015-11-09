@@ -75,6 +75,8 @@ namespace QualityControl.Models
 
         public DbSet<Verification> Verifications { get; set; }
 
+        public DbSet<DectectionItem> DectectionItems { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

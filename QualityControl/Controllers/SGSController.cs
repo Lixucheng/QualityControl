@@ -201,5 +201,13 @@ namespace QualityControl.Controllers
             //var ret1 = new { b = 0};
             return Json(0);
         }
+
+        #region 检测项目
+
+        public ActionResult Items()
+        {
+            return View();
+        }
+        #endregion
     }
 }

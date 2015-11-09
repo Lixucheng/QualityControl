@@ -1,0 +1,909 @@
+﻿
+@{
+    ViewBag.Title = "Items";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="am-margin">
+
+    <div simple-datatable ng-model="data.servers" sdt-perpage-box-init="perPageBoxInit" sdt-row-id="name" sdt-action-col="fullActionColFactory" sdt-on="sdtOn">
+        <div class="am-cf">
+            <div class="ui floating labeled icon button server-sdt-perpage">
+                <i class="filter icon"></i>
+                <span class="text zh">10</span>
+                <div class="menu">
+                    <div class="header">
+                        <i class="tags icon zh"></i>
+                        每页显示
+                    </div>
+                    <div class="divider"></div>
+                    <div class="item active">
+                        10
+                    </div>
+                    <div class="item">
+                        25
+                    </div>
+                    <div class="item">
+                        50
+                    </div>
+                    <div class="item">
+                        100
+                    </div>
+                    <div class="item" data-value="all">
+                        全部
+                    </div>
+                </div>
+            </div>
+            <button class="large ui compact icon button" ng-click="add()">
+                <i class="plus icon"></i>
+            </button>
+            <div class="ui action input am-fr">
+                <input type="search" placeholder="Search..." sdt-search-input>
+                <button class="ui icon button" sdt-search-btn>
+                    <i class="search icon"></i>
+                </button>
+            </div>
+        </div>
+        <table class="ui selectable celled striped table">
+            <thead>
+                <tr>
+                    <th class="zh" data-sdt-col="name">群组名</th>
+                    <th class="zh" data-sdt-col="addrs.length" sdt-sort-type="number">服务器数量</th>
+                    <th class="zh" style="width: 100px;"></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="am-cf am-text-center">
+            <div class="ui label am-fl">
+                共<div class="detail" sdt-total-label></div>
+            </div>
+            <div class="ui mini action input">
+                <input type="text" style="width: 98px;" sdt-page-input min="1">
+                <button class="ui right labeled icon button" sdt-page-btn><i class="right arrow icon"></i> <span sdt-total-page></span></button>
+            </div>
+            <div class="am-fr">
+                <button class="ui small left labeled icon button" sdt-prev-btn><i class="left arrow icon"></i>Prev</button>
+                <button class="ui small right labeled icon button" sdt-next-btn><i class="right arrow icon"></i>Next</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui modal" id="server-modal" ng-controller="ServerModalCtrl">
+        <i class="close icon"></i>
+        <div class="header zh">
+            {{addMode ? "添加服务群组": "编辑服务群组"}}
+        </div>
+        <div class="content">
+            <div class="pos-rel">
+                <div class="ui labeled input modal-name">
+                    <div class="ui label zh">群组名</div>
+                    <input type="text" placeholder="群组名不可空且不可重复" ng-model="data.name">
+                </div>
+                <div ng-hide="nameInputValid">
+                    <div class="ui popup transition hidden">群组名不可空且不可重复</div>
+                </div>
+            </div>
+            <div class="ui divider"></div>
+            <div class="am-text-right">
+
+            </div>
+            <div simple-datatable ng-model="data.addrs" sdt-action-col="removeOnlyActionColFactory">
+                <div class="am-cf">
+                    <div class="pos-rel am-fl">
+                        <div class="ui action input server-modal-addr">
+                            <input type="text" placeholder="添加addr" ng-model="addrInput">
+                            <button class="ui icon button" ng-click="add()" ng-disabled="!addInputValid">
+                                <i class="plus icon"></i>
+                            </button>
+
+                        </div>
+                        <div ng-hide="addInputValid">
+                            <div class="ui popup transition hidden">格式不正确或者内容存在重复</div>
+                        </div>
+
+                    </div>
+
+                    <div class="ui action input am-fr" ng-show="data.addrs.length != 0">
+                        <input type="search" placeholder="Search..." sdt-search-input>
+                        <button class="ui icon button" sdt-search-btn>
+                            <i class="search icon"></i>
+                        </button>
+                    </div>
+                </div>
+                <table class="ui selectable celled striped table" ng-show="data.addrs.length != 0">
+                    <thead>
+                        <tr>
+                            <th class="zh" data-sdt-col="$this">address</th>
+                            <th class="zh" style="width: 60px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <div class="am-cf am-text-center" ng-show="data.addrs.length != 0">
+                    <div class="ui label am-fl">
+                        共<div class="detail" sdt-total-label></div>
+                    </div>
+                    <div class="ui mini action input">
+                        <input type="text" style="width: 98px;" sdt-page-input min="1">
+                        <button class="ui right labeled icon button" sdt-page-btn><i class="right arrow icon"></i> <span sdt-total-page></span></button>
+                    </div>
+                    <div class="am-fr">
+                        <button class="ui small left labeled icon button" sdt-prev-btn><i class="left arrow icon"></i>Prev</button>
+                        <button class="ui small right labeled icon button" sdt-next-btn><i class="right arrow icon"></i>Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <div class="ui black deny button" ng-click="reset()">
+                取消
+            </div>
+            <div class="ui positive right labeled icon button" ng-click="save($event)">
+                保存更改
+                <i class="checkmark icon"></i>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/angular.simple-datatables.js"></script>
+    <script>
+        (function () {
+            $(function () {
+                $('.menu .item').tab();
+                $('.dropdown').dropdown();
+                var $serverName = $('.modal-name');
+                $serverName.each(function (index, ele) {
+                    var $this = $(ele);
+                    $this.popup({
+                        popup: $this.parent().find('.ui.popup'),
+                        on: 'hover',
+                        position: 'right center'
+                    });
+                });
+                var $serverAddr = $('.server-modal-addr');
+                $serverAddr.popup({
+                    popup: $serverAddr.parent().find('.ui.popup'),
+                    on: 'hover',
+                    position: 'top left'
+                });
+            });
+        }());
+
+        (function () {
+            var app = angular.module('app', ['simpleDatatable'/*, 'ngRoute'*/]);
+
+            var existsInArray = function (arr, ele, property) {
+                for (var i in arr) {
+                    var item = arr[i];
+                    if (property) {
+                        item = item[property];
+                    }
+                    if (item === ele) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+
+            var find = function (collection, filter) {
+                for (var i in collection) {
+                    var item = collection[i];
+                    if (filter(item)) {
+                        return {
+                            item: item,
+                            index: i
+                        };
+                    }
+                }
+            };
+
+            var token = function () {
+                return Date.now().toString() + parseInt(Math.random() * 1000000).toString();
+            };
+
+            var BridgeCtrlFactory = function (scope, eventName, sdtPerPageSelector) {
+
+                if (sdtPerPageSelector) {
+                    scope.perPageBoxInit = function (setter) {
+                        $(function () {
+                            $(sdtPerPageSelector).addClass('dropdown').dropdown({
+                                onChange: function (value) {
+                                    setter(value);
+                                }
+                            });
+                        });
+                    };
+                }
+
+                scope.add = function () {
+                    scope.$broadcast(eventName, {
+                        type: 'add'
+                    });
+                };
+
+                scope.sdtOn = function (event, item) {
+                    if (event === 'edit') {
+                        scope.$broadcast(eventName, {
+                            type: 'edit',
+                            data: item
+                        })
+                    }
+                };
+            };
+
+            app.controller('AppCtrl', ['$scope', '$http', function (scope, $http) {
+                scope.data = {
+                    servers: [
+                    ],
+                    services: [
+
+                    ]
+                };
+
+                $http
+                    .get('/config.json')
+                    .success(function (ret) {
+                        var data = {
+                            servers: [
+                            ],
+                            services: [
+
+                            ]
+                        };
+                        for (var prop in ret.servers) {
+                            var item = ret.servers[prop];
+                            var addrs = [];
+                            for (var obj in item) {
+                                addrs.push(item[obj].addr);
+                            }
+                            data.servers.push({
+                                name: prop,
+                                addrs: addrs
+                            });
+                        }
+                        for (var prop in ret.services) {
+                            var service = ret.services[prop];
+                            var service = {
+                                old: ret.services[prop],
+                                'new': []
+                            };
+                            for (var i in service.old) {
+                                var strategies = [];
+                                var item = service.old[i];
+                                for (var obj in item.strategies) {
+                                    var strategy = item.strategies[obj];
+                                    strategies.push({
+                                        id: token(),
+                                        models: strategy.models || [],
+                                        traffic: strategy.traffic || '',
+                                        copy: strategy.copy || '',
+                                        timeout: strategy.timeout || 0
+                                    });
+                                }
+                                var filter = []
+                                for (var i in item.filter) {
+                                    filter.push({
+                                        key: i,
+                                        value: item.filter[i]
+                                    })
+                                }
+                                service.new.push({
+                                    id: token(),
+                                    filter: filter,
+                                    strategies: strategies
+                                });
+                            }
+                            data.services.push({
+                                name: prop,
+                                list: service.new
+                            });
+                        }
+                        scope.data = data;
+                        scope.$applyAsync();
+                    })
+                    .error(function () {
+                        alert('获取数据失败，请检查网络');
+                    });
+
+                scope.fullActionColFactory = "" +
+                    "<td class='' action-col>" +
+                        '<div class="ui icon buttons">' +
+                            '<button class="ui button" sdt-row-edit><i class="edit icon"></i></button>' +
+                            '<button class="ui button" sdt-row-remove><i class="trash icon"></i></button>' +
+                        '</div>' +
+                    "</td>";
+
+                scope.removeOnlyActionColFactory = "" +
+                    "<td class='' action-col>" +
+                        '<div class="ui icon buttons">' +
+                            '<button class="ui button" sdt-row-remove><i class="trash icon"></i></button>' +
+                        '</div>' +
+                    "</td>";
+
+                scope.preview = function () {
+                    scope.output = JSON.stringify(scope.export(), null, 4);
+                    modalEle().modal('show');
+                };
+
+                window.s = scope;
+
+                scope.export = function () {
+                    var dest = {
+                        servers: {},
+                        services: {}
+                    };
+                    var src = scope.data;
+                    for (var i in src.servers) {
+                        var server = src.servers[i];
+                        dest.servers[server.name] = [];
+                        for (var ii in server.addrs) {
+                            dest.servers[server.name].push({
+                                addr: server.addrs[i]
+                            });
+                        }
+                    }
+                    for (var i in src.services) {
+                        var service = src.services[i];
+                        dest.services[service.name] = [];
+                        for (var iii in service.list) {
+                            var item = service.list[iii];
+                            var serviceItem = {
+                                filter: {},
+                                strategies: []
+                            };
+                            for (var ii in item.filter) {
+                                var filter = item.filter[ii];
+                                serviceItem.filter[filter.key] = filter.value;
+                            }
+                            for (var ii in item.strategies) {
+                                var strategy = {
+                                    old: item.strategies[ii],
+                                    'new': {
+                                        models: []
+                                    }
+                                };
+                                if (strategy.old.traffic) {
+                                    strategy.new.traffic = strategy.old.traffic;
+                                }
+                                if (strategy.old.copy) {
+                                    strategy.new.copy = strategy.old.copy;
+                                }
+                                strategy.new.models = strategy.old.models;
+                                strategy.new.timeout = strategy.old.timeout;
+                                serviceItem.strategies.push(strategy.new);
+                            }
+                            dest.services[service.name].push(serviceItem);
+                        }
+                    }
+                    return dest;
+                };
+
+                scope.submit = function () {
+                    jQuery.ajax({
+                        url: '/index/config',
+                        data: {
+                            data: scope.output
+                        },
+                        type: 'post',
+                        success: function (ret) {
+                            if (ret == 'success') {
+                                alert('上传成功');
+                            } else {
+                                alert('【上传失败】' + ret);
+                            }
+                        },
+                        error: function () {
+                            alert('上传失败');
+                        }
+                    });
+                };
+
+                scope.output = '';
+
+                scope.$watch('output', function (newVal, oldVal) {
+                    if (newVal === oldVal) {
+                        return;
+                    }
+                    codeMirror().setValue(newVal);
+                });
+
+                var _modelEle;
+                var modalEle = function () {
+                    if (!_modelEle) {
+                        _modelEle = angular.element('#preview-modal');
+                        _modelEle.modal({
+                            closable: false
+                        });
+                    }
+                    return _modelEle;
+                };
+
+                var _codeMirror = undefined;
+                var codeMirror = function () {
+                    if (!_codeMirror) {
+                        _codeMirror = CodeMirror(modalEle().find('#code-mirror')[0], {
+                            lineNumbers: true,
+                            value: scope.output,
+                            mode: 'javascript',
+                            foldGutter: true,
+                            lineWrapping: true,
+                            //theme: '',
+                            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+                        });
+                    }
+                    return _codeMirror;
+                };
+                window.c = codeMirror;
+            }]);
+
+            app.controller('ServerCtrl', ['$scope', function (scope) {
+
+                BridgeCtrlFactory(scope, 'modal', '.server-sdt-perpage');
+
+            }]);
+
+            app.controller('ServerModalCtrl', ['$scope', function (scope) {
+
+                scope.$on('modal', function (event, data) {
+
+                    if (data.type === 'add') {
+                        scope.addMode = true;
+                        scope.reset();
+                        modalEle().modal('show');
+                    } else {
+                        scope.addMode = false;
+                        data = data.data;
+                        scope.nameCopy = data.name;
+                        scope.data = data;
+                        scope.nameInputValid = true;
+                        scope.addInputValid = false;
+                        modalEle().modal('show');
+                    }
+
+                });
+
+                scope.addMode = true;
+                scope.data = {
+                    name: '',
+                    addrs: []
+                };
+                scope.nameInputEle = angular.element('.modal-name input').eq(0);
+                scope.nameCopy = undefined;
+                scope.nameInputValid = false;
+                scope.addInputValid = false;
+                var addrInputReg = /^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9]):([1-9]|[1-9]\d{1,3}|[1-6][0-5][0-5][0-3][0-5])$/;
+
+
+                scope.reset = function () {
+                    scope.data = {
+                        name: '',
+                        addrs: []
+                    };
+                    scope.nameCopy = undefined;
+                    scope.addInputValid = false;
+                    scope.nameInputValid = false;
+
+                };
+
+                scope.add = function () {
+                    if (scope.addInputValid) {
+                        scope.data.addrs.push(scope.addrInput);
+                        scope.addrInput = '';
+                        scope.addInputValid = false;
+                    }
+                };
+
+
+                scope.save = function ($event) {
+                    if (!scope.nameInputValid) {
+                        $event.stopPropagation();
+                        scope.nameInputEle.focus();
+                        return;
+                    }
+                    var parentScope = scope.$parent;
+                    if (scope.addMode) {
+                        parentScope.data.servers.push(scope.data);
+                    } else {
+                        var item = find(parentScope.data.servers, function (item) {
+                            return scope.nameCopy === item['name'];
+                        });
+                        parentScope.data.servers[item.index] = scope.data;
+                    }
+                    //parentScope.$applyAsync();
+                    scope.reset();
+                };
+
+                scope.$watch('addrInput', function (newVal, oldVal) {
+                    if (oldVal === newVal) {
+                        return;
+                    }
+                    var valid = addrInputReg.test(newVal);
+                    if (valid) {
+                        valid = !existsInArray(scope.data.addrs, newVal);
+                    }
+                    scope.addInputValid = valid;
+
+                });
+
+                scope.$watch('data.name', function (newVal, oldVal) {
+                    if (oldVal === newVal) {
+                        return;
+                    }
+                    var parentScope = scope.$parent;
+                    scope.nameInputValid = newVal.length === 0 ? false :
+                        (scope.addMode ? !existsInArray(parentScope.data.servers, newVal, "name") :
+                            (newVal === scope.nameCopy || !existsInArray(parentScope.data.servers, newVal, "name")));
+                });
+
+                var _modelEle;
+                var modalEle = function () {
+                    if (!_modelEle) {
+                        _modelEle = angular.element('#server-modal');
+                        _modelEle.modal({
+                            closable: false
+                        })
+                    }
+                    return _modelEle;
+                };
+
+            }]);
+
+            app.controller('ServiceCtrl', ['$scope', '$timeout', function (scope, $timeout) {
+
+                BridgeCtrlFactory(scope, 'modal', '.service-sdt-perpage');
+
+            }]);
+
+            app.controller('ServiceModalCtrl', ['$scope', function (scope) {
+
+                BridgeCtrlFactory(scope, 'service-modal', '.service-modal-sdt-perpage');
+
+                scope.$on('modal', function (event, data) {
+
+                    if (data.type === 'add') {
+                        scope.addMode = true;
+                        scope.reset();
+                        modalEle().modal('show');
+                    } else {
+                        scope.addMode = false;
+                        data = data.data;
+                        scope.nameCopy = data.name;
+                        scope.item = data;
+                        scope.nameInputValid = true;
+                        scope.addInputValid = false;
+                        modalEle().modal('show');
+                    }
+
+                });
+
+                scope.$on('service-modal-save', function (event, data) {
+                    modalEle().modal('show');
+                });
+
+                scope.$on('strategy-modal', function () {
+                    modalEle().modal('show');
+                });
+
+                scope.addMode = true;
+                //scope.item = {
+                //    name: '',
+                //    filter: [
+                //    ],
+                //    strategies: [
+                //    ]
+                //};
+                scope.item = {
+                    name: '',
+                    list: [
+                    ]
+                };
+                scope.nameInputEle = angular.element('.modal-name input').eq(1);
+                scope.nameCopy = undefined;
+                scope.nameInputValid = false;
+
+                scope.reset = function () {
+                    scope.item = {
+                        name: '',
+                        list: [
+                        ]
+                    };
+                    scope.nameCopy = undefined;
+                    scope.nameInputValid = false;
+                };
+
+                scope.save = function ($event) {
+                    if (!scope.nameInputValid) {
+                        $event.stopPropagation();
+                        scope.nameInputEle.focus();
+                        return;
+                    }
+                    if (scope.addMode) {
+                        scope.data.services.push(scope.item);
+                    } else {
+                        var item = find(scope.data.services, function (item) {
+                            return scope.nameCopy === item['name'];
+                        });
+                        scope.data.services[item.index] = scope.item;
+                    }
+                    scope.reset();
+                };
+
+
+                scope.$watch('item.name', function (newVal, oldVal) {
+                    if (oldVal === newVal) {
+                        return;
+                    }
+                    scope.nameInputValid = newVal.length === 0 ? false :
+                        (scope.addMode ? !existsInArray(scope.data.services, newVal, "name") :
+                            (newVal === scope.nameCopy || !existsInArray(scope.data.services, newVal, "name")));
+                });
+
+                var _modelEle;
+                var modalEle = function () {
+                    if (!_modelEle) {
+                        _modelEle = angular.element('#service-modal');
+                        _modelEle.modal({
+                            closable: false
+                        })
+                    }
+                    return _modelEle;
+                };
+
+            }]);
+
+            app.controller('ServiceItemModalCtrl', ['$scope', function (scope) {
+                scope.$on('service-modal', function (event, data) {
+
+                    if (data.type === 'add') {
+                        scope.addMode = true;
+                        scope.reset();
+                        modalEle().modal('show');
+                    } else {
+                        scope.addMode = false;
+                        data = data.data;
+                        scope.nameCopy = data.name;
+                        scope.item = data;
+                        scope.nameInputValid = true;
+                        scope.addInputValid = false;
+                        modalEle().modal('show');
+                    }
+
+                });
+
+                scope.$on('strategy-modal-save', function () {
+                    modalEle().modal('show');
+                });
+
+                scope.addMode = true;
+                scope.item = {
+                    id: '',
+                    filter: [
+                    ],
+                    strategies: [
+                    ]
+                };
+
+                scope.reset = function () {
+                    scope.item = {
+                        id: '',
+                        filter: [
+                        ],
+                        strategies: [
+                        ]
+                    };
+                    scope.nameCopy = undefined;
+                    scope.nameInputValid = false;
+                };
+
+                scope.cancel = function () {
+                    scope.reset();
+                    scope.$emit('service-modal-save');
+                }
+
+                scope.save = function ($event) {
+                    if (scope.addMode) {
+                        scope.item.id = token();
+                        scope.$parent.item.list.push(scope.item);
+                    } else {
+                        var item = find(scope.$parent.item.list, function (item) {
+                            return scope.item.id === item['id'];
+                        });
+                        scope.$parent.item.list[item.index] = scope.item;
+                    }
+                    scope.$emit('service-modal-save');
+                    scope.reset();
+                };
+
+                var _modelEle;
+                var modalEle = function () {
+                    if (!_modelEle) {
+                        _modelEle = angular.element('#service-item-modal');
+                        _modelEle.modal({
+                            closable: false
+                        })
+                    }
+                    return _modelEle;
+                };
+            }]);
+
+            app.controller('ServiceStrategyCtrl', ['$scope', '$timeout', function (scope, $timeout) {
+
+                BridgeCtrlFactory(scope, 'strategy-modal');
+
+            }]);
+
+            app.controller('ServiceStrategyModalCtrl', ['$scope', '$timeout', function (scope, $timeout) {
+
+                scope.$on('strategy-modal', function (event, data) {
+                    if (data.type === 'add') {
+                        scope.addMode = true;
+                        $timeout(function () {
+                            scope.reset();
+                        }, 0);
+                        modalEle().modal('show');
+                    } else {
+                        scope.addMode = false;
+                        data = data.data;
+                        scope.item = data;
+
+                        $timeout(function () {
+                            form().form('set values', {
+                                id: data.id,
+                                traffic: data.traffic,
+                                copy: data.copy,
+                                models: data.models,
+                                timeout: data.timeout
+                            });
+                        }, 0);
+                        modalEle().modal('show');
+                    }
+                });
+
+                scope.addMode = true;
+                scope.item = {
+                    id: 0,
+                    traffic: 0,
+                    models: [],
+                    copy: '',
+                    timeout: 0
+                };
+
+                scope.reset = function () {
+                    scope.item = {
+                        id: 0,
+                        traffic: 0,
+                        models: [],
+                        copy: '',
+                        timeout: 0
+                    };
+                    form().form('reset');
+                };
+
+                scope.cancel = function () {
+                    scope.reset();
+                    scope.$emit('strategy-modal-save');
+                };
+
+                scope.save = function () {
+                    if (!form().form('is valid')) {
+                        $event.stopPropagation();
+                        form().form('validate form');
+                        return;
+                    }
+                    if (scope.addMode) {
+                        scope.item.id = token();
+                        scope.$parent.item.strategies.push(scope.item);
+                    } else {
+
+                        var item = find(scope.$parent.item.strategies, function (item) {
+                            return scope.item.id === item['id'];
+                        });
+                        scope.$parent.item.strategies[item.index] = scope.item;
+
+                    }
+                    $timeout(function () {
+                        scope.reset();
+                    }, 0);
+
+                    scope.$emit('strategy-modal-save', {});
+                };
+
+                var _modalEle = undefined;
+                var modalEle = scope.modalEle = function () {
+                    if (!_modalEle) {
+                        _modalEle = angular.element('#service-strategy-modal');
+                        _modalEle.modal({
+                            closable: false
+                        })
+                    }
+                    return _modalEle;
+                };
+
+                var $dopdowns = modalEle().find('.dropdown');
+                scope.$watchCollection('data.servers', function (newVal, oldVal) {
+                    $dopdowns.each(function () {
+                        $(this).dropdown();
+                    });
+                });
+
+                var _form = undefined;
+                var form = function () {
+                    if (!_form) {
+                        _form = modalEle().find('form');
+                        _form.form(
+                            {
+                                fields: {
+                                    traffic: {
+                                        identifier: 'traffic',
+                                        rules: [
+                                            {
+                                                type: 'number',
+                                                prompt: '请输入数字'
+                                            }
+                                        ]
+                                    },
+                                    timeout: {
+                                        identifier: 'timeout',
+                                        rules: [
+                                            {
+                                                type: 'number',
+                                                prompt: '请输入数字'
+                                            },
+                                            {
+                                                type: 'empty',
+                                                prompt: '请输入数字'
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        );
+                        _form.submit(function (event) {
+
+                            event.stopPropagation();
+                        });
+                    }
+                    return _form;
+                };
+
+            }]);
+
+            app.controller('ServiceFilterCtrl', ['$scope', function (scope) {
+
+                scope.addError = true;
+
+                scope.add = function () {
+                    if (!scope.addError) {
+                        scope.item.filter.push({
+                            key: scope.keyInput,
+                            value: scope.valueInput
+                        });
+                        scope.keyInput = '';
+                        scope.valueInput = '';
+                        scope.addError = true;
+                    }
+                };
+
+                scope.$watch('[keyInput, valueInput]', function (newVal, oldVal) {
+                    if (typeof newVal === 'undefined' || typeof oldVal === 'undefined') {
+                        return;
+                    }
+                    var valid = typeof newVal[0] !== 'undefined' && newVal[0].length !== 0 && typeof newVal[1] !== 'undefined' && newVal[1].length !== 0;
+                    if (valid) {
+                        valid = !existsInArray(scope.item.filter, newVal, 'key');
+                    }
+                    scope.addError = !valid;
+                });
+            }]);
+
+            angular.bootstrap(document.documentElement, ['app']);
+
+        }());
+
+    </script>
+}

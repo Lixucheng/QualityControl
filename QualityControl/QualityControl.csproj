@@ -207,6 +207,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Db\CheckLevel.cs" />
     <Compile Include="Db\Company.cs" />
+    <Compile Include="Db\DectectionItem.cs" />
     <Compile Include="Db\DetectionReport.cs" />
     <Compile Include="Db\DetectionScheme.cs" />
     <Compile Include="Db\Dict.cs" />
@@ -242,6 +243,10 @@
     <Compile Include="Migrations\201511051523200_Verification1111.cs" />
     <Compile Include="Migrations\201511051523200_Verification1111.Designer.cs">
       <DependentUpon>201511051523200_Verification1111.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511090553419_DectectionItem.cs" />
+    <Compile Include="Migrations\201511090553419_DectectionItem.Designer.cs">
+      <DependentUpon>201511090553419_DectectionItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -461,6 +466,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Image\photo0.jpg" />
     <Content Include="References\ThoughtWorks.QRCode.dll" />
+    <Content Include="Scripts\angular.simple-datatables.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bower.json" />
@@ -1451,6 +1457,7 @@
     <Content Include="Views\SGS\Verification.cshtml" />
     <Content Include="Views\Manufacturer\Index.cshtml" />
     <Content Include="Views\Trade\GetBatchStatus.cshtml" />
+    <Content Include="Views\SGS\Items.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1485,6 +1492,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511051523200_Verification1111.resx">
       <DependentUpon>201511051523200_Verification1111.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511090553419_DectectionItem.resx">
+      <DependentUpon>201511090553419_DectectionItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
