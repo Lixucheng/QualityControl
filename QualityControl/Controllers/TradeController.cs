@@ -10,6 +10,7 @@ using QualityControl.Enum;
 using QualityControl.Models;
 using QualityControl.Models.Adapters;
 using Trade = QualityControl.Db.Trade;
+using Newtonsoft.Json.Linq;
 
 namespace QualityControl.Controllers
 {
@@ -579,6 +580,14 @@ namespace QualityControl.Controllers
                     return 2000;
             }
             return 0;
+        }
+
+
+        public ActionResult GetFiles(long id)
+        {
+            var list = (JArray)JsonConvert.DeserializeObject(Db.Trades.Find(id).Files);
+            ViewBag.list = list;
+            return View();
         }
     }
 }

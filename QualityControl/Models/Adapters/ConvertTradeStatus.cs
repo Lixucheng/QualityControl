@@ -60,6 +60,13 @@ namespace QualityControl.Models.Adapters
                     {
                         return "抽样已经完成";
                     }
+                case (int)EnumTradeStatus.SgsReceivedSample:
+                    {
+                        return "等待检测中心接受样品";
+                    }
+
+
+
             }
             return "";
         }

@@ -82,7 +82,11 @@
             {
                 <span>批次信息已经选择，等待控制中心制作方案</span>
             }
-            else if (Model.Status == (int) EnumTradeStatus.ProductInfoChecked)
+            else if (Model.Status == (int)EnumTradeStatus.SgsReceivedSample)
+            {
+                <span>等待检测中心接收样品</span>
+            }
+            else if (Model.Status == (int)EnumTradeStatus.ProductInfoChecked)
             {
                 <span>生产商已经完善产品信息，等待控制中心审核信息</span>
             }
@@ -429,6 +433,7 @@
               {
                   <span>请查看并确认</span>
                   <a href="/MakeQrCode/MakeNo/@Model.Id" class="am-fr primary ui button">查看</a>
+                  <a href="/Trade/GetFiles/@Model.Id" class="am-fr green ui button">贴码确认文件下载</a>
                   <a href="/Manufacturer/Uploader/@Model.Id" class="am-fr primary ui button">贴码完成确认</a>
               }
               else
