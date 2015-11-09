@@ -105,10 +105,6 @@
         </div>
         <p class="ui divider"></p>
         <div class="ui divided selection list">
-            @*<a class="item">
-                    <div class="ui horizontal grey label zh fw-normal-force">价格</div>
-                    @product.Price
-                </a>*@
             <a class="item">
                 <div class="ui horizontal grey label zh fw-normal-force">生产许可证编号</div>
                 @product.ProductionCertificateNo
@@ -147,58 +143,7 @@
 
             </tbody>
         </table>
-        @if (Model.Status < (int)EnumTradeStatus.ProductInfoConfirmed && (user.Id == Model.ManufacturerId || user.Type == (int)EnumUserType.Controller))
-        {
-            <form class="ui form item-form">
-                <div class="two fields">
-                    <div class="field">
-                        <label>检测项目</label>
-                        <input type="text" name="name" />
-                    </div>
-                    <div class="field">
-                        <label>范围</label>
-                        <input type="text" name="range" />
-                    </div>
-                </div>
-                <div class="field">
-                    <label>否决项（是/否）</label>
-                    <input type="checkbox" name="deney" />
-                </div>
-                <button class="ui button">添加</button>
-            </form>
-            
-        }
 
-        <table class="ui celled table item-table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>检测项目</th>
-                    <th>范围</th>
-                    <th>否决项</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input type="checkbox" /></td>
-                    <td>酒精度</td>
-                    <td>21</td>
-                    <td>否</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" /></td>
-                    <td>蛋白质</td>
-                    <td>1% ~100%</td>
-                    <td>否</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" /></td>
-                    <td>含糖量</td>
-                    <td>5% - 6%</td>
-                    <td>否</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 </div>
 
@@ -210,6 +155,7 @@
             @if (user.Id == Model.ManufacturerId)
             {
                 <a href="/Product/CompanyProductInfo/@product.Id" class="am-fr teal ui button">完善产品信息</a>
+                <a href="/Trade/DectectionItem/@Model.Id" class="am-fr teal ui button">去完善检测项目</a>
                 <a href="/Trade/ProductInfoChecked/@Model.Id" class="am-fr primary ui button">确认产品信息完善</a>
             }
         </p>
@@ -223,6 +169,7 @@
             @if (user.Type == (int) EnumUserType.Controller)
             {
                 <a href="/Admin/Check/CompanyProduct" class="am-fr teal ui button">去审核产品信息</a>
+                <a href="/Trade/DectectionItem/@Model.Id" class="am-fr teal ui button">去完善检测项目</a>
                 <a href="/Trade/ProductInfoConfirmed/@Model.Id" class="am-fr primary ui button">确认产品信息完善</a>
             }
         </p>

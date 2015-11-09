@@ -248,9 +248,14 @@
     <Compile Include="Migrations\201511090553419_DectectionItem.Designer.cs">
       <DependentUpon>201511090553419_DectectionItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511091429086_TradeDectectionItem.cs" />
+    <Compile Include="Migrations\201511091429086_TradeDectectionItem.Designer.cs">
+      <DependentUpon>201511091429086_TradeDectectionItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\ConvertTradeStatus.cs" />
+    <Compile Include="Models\Adapters\DectectionItemModel.cs" />
     <Compile Include="Models\Adapters\TradeInfo.cs" />
     <Compile Include="Models\Adapters\CompanyInfo.cs" />
     <Compile Include="Models\Adapters\SGSInfo.cs" />
@@ -1460,6 +1465,7 @@
     <Content Include="Views\Trade\GetBatchStatus.cshtml" />
     <Content Include="Views\SGS\Items.cshtml" />
     <Content Include="Views\Trade\GetFiles.cshtml" />
+    <Content Include="Views\Trade\DectectionItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1497,6 +1503,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511090553419_DectectionItem.resx">
       <DependentUpon>201511090553419_DectectionItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511091429086_TradeDectectionItem.resx">
+      <DependentUpon>201511091429086_TradeDectectionItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

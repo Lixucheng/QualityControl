@@ -542,6 +542,47 @@ namespace QualityControl.Controllers
             return RedirectToAction("TradeDetail", new { id = id });
         }
 
+        [HttpGet]
+        public ActionResult DectectionItem(long id)
+        {
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return Content("错误操作");
+            }
+            var userId = User.Identity.GetUserId();
+            var user = UserManager.FindById(userId);
+            if (!(trade.Status == (int)EnumTradeStatus.Create && trade.ManufacturerId == userId)
+                && !(trade.Status == (int)EnumTradeStatus.ProductInfoChecked && user.Type == (int)EnumUserType.Controller))
+            {
+                return Content("错误操作");
+            }
+            ViewBag.Id = id;
+            var items = trade.DetectionItems != null ? JsonConvert.DeserializeObject<List<DectectionItemModel>>(trade.DetectionItems) : new List<DectectionItemModel>();
+            return View(items);
+        }
+
+        [HttpPost]
+        public string DectectionItem(long id, List<DectectionItemModel> items)
+        {
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return null;
+            }
+            var userId = User.Identity.GetUserId();
+            var user = UserManager.FindById(userId);
+            if (!(trade.Status == (int)EnumTradeStatus.Create && trade.ManufacturerId == userId)
+                && !(trade.Status == (int)EnumTradeStatus.ProductInfoChecked && user.Type == (int)EnumUserType.Controller))
+            {
+                return null;
+            }
+            trade.DetectionItems = JsonConvert.SerializeObject(items);
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return "ok";
+        }
+
         public int LevelCount(string level)
         {
             switch (level)
