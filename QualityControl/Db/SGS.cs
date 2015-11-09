@@ -41,6 +41,10 @@ namespace QualityControl.Db
         public string Type { get; set; }
 
         public virtual List<SgsProduct> Products { get; set; }
+
+        public virtual List<DectectionItem> DectectionItems { get; set; } 
+
+        public string DectectionItemString { get; set; }
     }
 
     [Table("GxSgsProduct")]
