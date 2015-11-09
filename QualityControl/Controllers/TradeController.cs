@@ -10,6 +10,7 @@ using QualityControl.Enum;
 using QualityControl.Models;
 using QualityControl.Models.Adapters;
 using Trade = QualityControl.Db.Trade;
+using Newtonsoft.Json.Linq;
 
 namespace QualityControl.Controllers
 {
@@ -248,10 +249,10 @@ namespace QualityControl.Controllers
                         string code;
                         do
                         {
-                            code = trade.Id.ToString("D15") + "_" +
-                                   b.ProductId.ToString("D10") + "_" +
+                            code = trade.Id.ToString() + "_" +
+                                   b.ProductId.ToString() + "_" +
                                    b.BatchName + "_" +
-                                   random.Next(0, b.Count);
+                                   random.Next(1, b.Count) + ":" + Db.QrCodeInfos.Find(b.Id).IdCode; ;
                         } while (qrCodes.Contains(code));
                         qrCodes.Add(code);
                     }
@@ -266,16 +267,16 @@ namespace QualityControl.Controllers
                     b.SampleCount = LevelCount(b.Level);
                     var qrCodes = new List<string>();
                     var divider = b.Count/b.SampleCount;
-                    var num = random.Next(0, b.SampleCount);
+                    var num = random.Next(1, divider);
                     for (var i = 0; i < b.SampleCount; i++)
-                    {
-                        num += i* divider;
+                    {                      
                         string code;
-                        code = trade.Id.ToString("D15") + "_" +
-                               b.ProductId.ToString("D10") + "_" +
+                        code = trade.Id.ToString() + "_" +
+                               b.ProductId.ToString() + "_" +
                                b.BatchName + "_" +
                                num+":"+Db.QrCodeInfos.Find(b.Id).IdCode;
                         qrCodes.Add(code);
+                        num += divider;
                     }
                     b.SamplaListJson = JsonConvert.SerializeObject(qrCodes);
                     Db.Entry(b).State = EntityState.Modified;
@@ -493,9 +494,26 @@ namespace QualityControl.Controllers
             }
             if (trade.SampleRecevied == "11")
             {
-                trade.Status = (int) EnumTradeStatus.Testing;
+                trade.Status = (int) EnumTradeStatus.SgsReceivedSample;
             }
             Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return RedirectToAction("TradeDetail", new { id = id });
+        }
+
+        public ActionResult SgsSampleReceive(long id)
+        {
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return Content("错误操作");
+            }
+            var userId = User.Identity.GetUserId();
+            if (trade.SgsUserId != userId)
+            {
+                return Content("错误操作");
+            }
+            trade.Status = (int)EnumTradeStatus.Testing;
             Db.SaveChanges();
             return RedirectToAction("TradeDetail", new { id = id });
         }
@@ -562,6 +580,14 @@ namespace QualityControl.Controllers
                     return 2000;
             }
             return 0;
+        }
+
+
+        public ActionResult GetFiles(long id)
+        {
+            var list = (JArray)JsonConvert.DeserializeObject(Db.Trades.Find(id).Files);
+            ViewBag.list = list;
+            return View();
         }
     }
 }

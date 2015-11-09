@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "GetFiles";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="am-margin am-padding">
+    <div class="ui container">
+        <div class="row">
+            <div class="column">
+                <div class="ui message">
+                    <h1 class="ui header">文件下载</h1>
+                    <div class="ui relaxed divided list">
+
+                        @foreach (var x in ViewBag.list)
+                        {
+                            var name = x.ToString().Split('/')[2];                          
+                            <div class="item">
+                                <i class="folder icon"></i>
+                                <div class="content">
+                                    <a download="@name" href="@x">@name</a>
+                                </div>
+                            </div>
+                        }
+                       
+                    </div>
+
+
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+

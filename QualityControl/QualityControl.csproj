@@ -1459,6 +1459,7 @@
     <Content Include="Views\Manufacturer\Index.cshtml" />
     <Content Include="Views\Trade\GetBatchStatus.cshtml" />
     <Content Include="Views\SGS\Items.cshtml" />
+    <Content Include="Views\Trade\GetFiles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
