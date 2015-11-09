@@ -213,13 +213,35 @@ namespace QualityControl.Controllers
         }
 
 
+
         /// <summary>
         ///     抽样
         /// </summary>
         /// <param name="tradeId"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public ActionResult Sample(long tradeId, EnumSample type)
+        [HttpGet]
+        public ActionResult Sample(long tradeId)
+        {
+            var trade = Db.Trades.Find(tradeId);
+            if (trade == null)
+            {
+                return Content("警告：错误操作!");
+            }
+            if (trade.Status != (int)EnumTradeStatus.SampleStart)
+            {
+                return RedirectToAction("TradeDetail", new { id = tradeId });
+            }
+            var batches = trade.Batches;
+            foreach (var b in batches)
+            {
+                b.SampleCount = LevelCount(b.Level);
+            }
+            return View(trade);
+        }
+
+        [HttpPost]
+        public ActionResult Sample(long tradeId, EnumSample type, string data)
         {
             var trade = Db.Trades.Find(tradeId);
             if (trade == null)
@@ -230,6 +252,8 @@ namespace QualityControl.Controllers
             {
                 return RedirectToAction("TradeDetail", new {id = tradeId});
             }
+
+            var countData = JsonConvert.DeserializeObject<List<ProductBatch>>(data);
 
             trade.SampleType = type;
             Db.Entry(trade).Property(a => a.SampleType).IsModified = true;
@@ -243,7 +267,7 @@ namespace QualityControl.Controllers
                 foreach (var b in batches)
                 {
                     var qrCodes = new List<string>();
-                    b.SampleCount = LevelCount(b.Level);
+                    b.SampleCount = countData.FirstOrDefault(a => a.Id == b.Id).SampleCount;
                     for (var i = 0; i < b.SampleCount; i ++)
                     {
                         string code;
@@ -264,7 +288,7 @@ namespace QualityControl.Controllers
             {
                 foreach (var b in batches)
                 {
-                    b.SampleCount = LevelCount(b.Level);
+                    b.SampleCount = countData.FirstOrDefault(a => a.Id == b.Id).SampleCount;
                     var qrCodes = new List<string>();
                     var divider = b.Count/b.SampleCount;
                     var num = random.Next(1, divider);
@@ -299,6 +323,7 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
             return RedirectToAction("TradeDetail", new {id = tradeId});
         }
+
 
         /// <summary>
         ///     处理合格与不合格

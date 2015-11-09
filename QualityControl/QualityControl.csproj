@@ -1466,6 +1466,7 @@
     <Content Include="Views\SGS\Items.cshtml" />
     <Content Include="Views\Trade\GetFiles.cshtml" />
     <Content Include="Views\Trade\DectectionItem.cshtml" />
+    <Content Include="Views\Trade\Sample.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
