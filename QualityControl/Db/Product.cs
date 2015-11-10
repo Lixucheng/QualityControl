@@ -317,6 +317,7 @@ namespace QualityControl.Db
 
         public string DectectionItems { get; set; }
 
+        public bool DectectionItemResults { get; set; }
     }
 
     [Table("GxBaseProductBatch")]

@@ -3,7 +3,9 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 @using QualityControl.Db
+@using QualityControl.Enum
 @using QualityControl.Models
 @model QualityControl.Db.Trade
 @{
@@ -119,36 +121,105 @@
                         </div>
                     </div>
                 </div>
-
+                @{
+                    var arr = JsonConvert.DeserializeObject<JObject>(b.Report.DectectionItems);
+                }
                 <table class="ui celled table">
                     <thead>
-                        <tr>
-                            <th>检测项目</th>
-                            <th>结果</th>
-                        </tr>
+                    <tr>
+                        <th>检测项目</th>
+                        <th>结果</th>
+                        @if (Model.Status == (int)EnumTradeStatus.Finish)
+                        {
+                            <th>是否合格</th>
+                        }
+                    </tr>
                     </thead>
                     <tbody>
+                    @foreach (var item in arr)
+                    {
                         <tr>
-                            <td>酒精度</td>
-                            <td>合格</td>
+                            <td>@item.Key</td>
+                            <td>@item.Value</td>
+                            @if (Model.Status == (int)EnumTradeStatus.Finish)
+                            {
+                                <td>@(b.Report.DectectionItemResults ? "是" : "否")</td>
+                            }
                         </tr>
-                        <tr>
-                            <td>蛋白质</td>
-                            <td>合格</td>
-                        </tr>
-                        <tr>
-                            <td>含糖量</td>
-                            <td>合格</td>
-                        </tr>
+                    }
                     </tbody>
                 </table>
 
+                @if (ViewBag.User.Type == (int) EnumUserType.Controller && Model.Status != (int)EnumTradeStatus.Finish)
+                {
+                    <div class="ui form check-form">
+                        <div class="inline fields">
+                            <label style="color: #ff0000;">该批次是否通过审核</label>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="CheckResult-@b.Id" data-id="@b.Id" value="true">
+                                    <label>合格</label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="CheckResult" data-id="@b.Id"  value="false">
+                                    <label>不合格</label>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+                }
+                
             </div>
         </div>
+    }
+
+    @if(ViewBag.User.Type == (int)EnumUserType.Controller && Model.Status != (int)EnumTradeStatus.Finish)
+    {
+        <button class="ui primary button submit-btn">提交审核</button>
     }
 
 </div>
 
 @section scripts{
+    <script>
+        $(function() {
+            var $forms = $('.check-form');
 
+            $('.submit-btn').click(function() {
+                var data = {};
+                var flag = true;
+                $forms.each(function() {
+                    var $this = $(this);
+                    var $i = $this.find('input[type=radio]:checked');
+                    var val = $i.val();
+                    if (val == undefined) {
+                        flag = false;
+                        return false;
+                    }
+                    data[$i.data('id')] = val;
+                });
+                if (!flag) {
+                    alert('请审核每个批次');
+                    return;
+                }
+                $.ajax({
+                    url: '/Trade/Report',
+                    type: 'post',
+                    data: {
+                        id: '@Model.Id',
+                        data: JSON.stringify(data)
+                    },
+                    success: function() {
+                        window.location = "/Trade/tradeDetail/@Model.Id";
+                    },
+                    error: function() {
+                        alert('操作失败，请刷新重试');
+                    }
+                });
+            });
+        });
+    </script>
 }

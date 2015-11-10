@@ -256,6 +256,14 @@
     <Compile Include="Migrations\201511100217539_ReportDectectionItems.Designer.cs">
       <DependentUpon>201511100217539_ReportDectectionItems.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511100247461_ReportDectectionResults.cs" />
+    <Compile Include="Migrations\201511100247461_ReportDectectionResults.Designer.cs">
+      <DependentUpon>201511100247461_ReportDectectionResults.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511100356265_ReportDectectionResultsChange.cs" />
+    <Compile Include="Migrations\201511100356265_ReportDectectionResultsChange.Designer.cs">
+      <DependentUpon>201511100356265_ReportDectectionResultsChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\ConvertTradeStatus.cs" />
@@ -1514,6 +1522,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511100217539_ReportDectectionItems.resx">
       <DependentUpon>201511100217539_ReportDectectionItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511100247461_ReportDectectionResults.resx">
+      <DependentUpon>201511100247461_ReportDectectionResults.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511100356265_ReportDectectionResultsChange.resx">
+      <DependentUpon>201511100356265_ReportDectectionResultsChange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

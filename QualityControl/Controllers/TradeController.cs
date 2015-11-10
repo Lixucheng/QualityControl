@@ -428,6 +428,7 @@ namespace QualityControl.Controllers
             return RedirectToAction("TradeDetail", new {id});
         }
 
+        [HttpGet]
         public ActionResult Report(long id)
         {
             var userId = User.Identity.GetUserId();
@@ -445,6 +446,39 @@ namespace QualityControl.Controllers
                 return Content("错误操作");
             }
             return View(trade);
+        }
+
+        [HttpPost]
+        public string Report(long id, string data)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = Db.Users.Find(userId);
+            ViewBag.User = user;
+            var trade = Db.Trades.Find(id);
+            ViewBag.SGS = Db.SGSs.FirstOrDefault(a => a.UserId == trade.SgsUserId);
+            ViewBag.Company = Db.Companies.FirstOrDefault(a => a.UserId == trade.ManufacturerId);
+            if (trade == null)
+            {
+                return null;
+            }
+            if (user.Type != (int)EnumUserType.Controller)
+            {
+                return null;
+            }
+            var items = JsonConvert.DeserializeObject<JObject>(data);
+            foreach(var i in items)
+            {
+                var b = trade.Batches.FirstOrDefault(a => a.Id.ToString() == i.Key);
+                if (b == null)
+                {
+                    return null;
+                }
+                b.Report.DectectionItemResults = Convert.ToBoolean(i.Value);
+            }
+            trade.Status = (int) EnumTradeStatus.Finish;
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return "ok";
         }
 
         [HttpGet]
