@@ -454,12 +454,13 @@ namespace QualityControl.Controllers
             var user = Db.Users.Find(userId);
             ViewBag.User = user;
             var trade = Db.Trades.Find(id);
-            ViewBag.SGS = Db.SGSs.FirstOrDefault(a => a.UserId == trade.SgsUserId);
-            ViewBag.Company = Db.Companies.FirstOrDefault(a => a.UserId == trade.ManufacturerId);
             if (trade == null || trade.SgsUserId != userId)
             {
                 return Content("错误操作");
             }
+            ViewBag.SGS = Db.SGSs.FirstOrDefault(a => a.UserId == trade.SgsUserId);
+            ViewBag.Items = JsonConvert.DeserializeObject<List<DectectionItemModel>>(trade.DetectionItems);
+            ViewBag.Company = Db.Companies.FirstOrDefault(a => a.UserId == trade.ManufacturerId);
             return View(trade);
         }
 
@@ -471,7 +472,6 @@ namespace QualityControl.Controllers
                 return "error";
             }
             var userId = User.Identity.GetUserId();
-            var user = Db.Users.Find(userId);
             var trade = Db.Trades.Find(tradeId);
             if (trade == null || trade.SgsUserId != userId)
             {

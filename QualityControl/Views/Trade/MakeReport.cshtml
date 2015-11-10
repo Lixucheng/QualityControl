@@ -4,6 +4,7 @@
 }
 @using Newtonsoft.Json
 @using QualityControl.Models
+@using QualityControl.Models.Adapters
 @model QualityControl.Db.Trade
 @{
     var p = JsonConvert.DeserializeObject<ProductCopy>(Model.Product);
@@ -93,6 +94,9 @@
             <input type="hidden" name="files" value="" />
             <input type="hidden" name="batchreports" value="" />
             <div id="upload-btn">上传文件</div>
+
+            
+
             <table class="ui celled table file-table">
                 <thead>
                     <tr>
@@ -185,22 +189,6 @@
                     <input type="text" name="Manager"/>
                 </div>
             </div>
-            <div class="two fields">
-                <div class="field">
-                    <label>含糖量</label>
-                    <input type="text" name="saccharinity"/>
-                </div>
-                <div class="field">
-                    <label>蛋白质</label>
-                    <input type="text" name="protein"/>
-                </div>
-            </div>
-            <div class="two fields">
-                <div class="field">
-                    <label>生产日期＊</label>
-                    <input type="date" name="saccharinity" />
-                </div>
-            </div>
             <div class="field">
                 <label>检验项目＊</label>
                 <input type="text" name="ProjectName" />
@@ -219,8 +207,17 @@
             </div>
             <div class="field">
                 <label>备注＊</label>
-                <input type="text" name="Note" />
+                <input type="text" name="Note"/>
             </div>
+            <div class="ui divider"></div>
+
+            @foreach (DectectionItemModel item in ViewBag.Items)
+            {
+                <div class="field">
+                    <label>@item.Name＊</label>
+                    <input type="text" name="DectectionItems" data-name="@item.Name" placeholder="检测结果"/>
+                </div>
+            }
         </form>
     </div>
     <div class="actions">
@@ -242,12 +239,20 @@
 
             var $modal = $('.modal'),
                 $form = $modal.find('form'),
-                $mainForm = $('.main-form')
+                $mainForm = $('.main-form');
 
             var preventSubmit = 0;
             var data = [];
 
             var $currentTrTd;
+
+            var formSet = function(values) {
+                $form.form('set values', values);
+                $form.find('[name=DectectionItems]').each(function () {
+                    var $this = $(this);
+                    $this.val(values.DectectionItems[$this.data('name')]);
+                });
+            };
 
             $('.make-btn').click(function () {
                 var $this = $(this);
@@ -255,9 +260,19 @@
 
                 $modal.modal('show');
                 $form.form('reset');
+                for (var i in data) {
+                    var item = data[i];
+                    if (item.BatchId == id) {
+                        formSet(item);
+                        $currentTrTd = $this.parents('td');
+                        return;
+                    }
+                }
                 $form.form('set value', 'BatchId', id);
                 $currentTrTd = $this.parents('td');
             });
+
+            
 
             $('.look-btn').click(function () {
                 var $this = $(this);
@@ -275,16 +290,21 @@
             });
 
             $modal.modal({
-                onApprove: function () {
+                onApprove: function() {
                     if (!$form.form('is valid')) {
                         return false;
                     }
                     var item = $form.form('get values');
-                    console.log(item);
+                    
+                    item.DectectionItems = {};
+                    $form.find('[name=DectectionItems]').each(function() {
+                        var $this = $(this);
+                        item.DectectionItems[$this.data('name')] = $this.val();
+                    });
                     data.push(item);
-                    $currentTrTd.append('<i class="teal check icon"></i>')
+                    $currentTrTd.append('<i class="teal check icon"></i>');
                 }
-            })
+            });
 
             $form.form({
                 fields: {
@@ -437,7 +457,16 @@
                         rules: [
                           {
                               type: 'empty',
-                              prompt: '请输入Note'
+                              prompt: '请输入备注'
+                          }
+                        ]
+                    },
+                    DetectionItems: {
+                        identifier: 'DetectionItems',
+                        rules: [
+                          {
+                              type: 'empty',
+                              prompt: '请输入内容'
                           }
                         ]
                     }
@@ -494,6 +523,9 @@
                         name: files[i].name,
                         url: files[i].url
                     });
+                }
+                for (var i in data) {
+                    data[i].DectectionItems = JSON.stringify(data[i].DectectionItems);
                 }
                 $.ajax({
                     url: '/Trade/MakeReport',

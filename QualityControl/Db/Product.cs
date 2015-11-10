@@ -315,6 +315,8 @@ namespace QualityControl.Db
         [Required]
         public string Note { get; set; }
 
+        public string DectectionItems { get; set; }
+
     }
 
     [Table("GxBaseProductBatch")]
