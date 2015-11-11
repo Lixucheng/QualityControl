@@ -74,40 +74,65 @@
                 </div>
 
 
-                </div>
+       
 
-
-                <table class="ui celled table ">
+                <table class="ui segments celled table ">
                     <thead>
                         <tr>
-                            <th>检测项目</th>
-                            <th>天数</th>
-                            <th>价格</th>
+                            <th>参考项目</th>
+                            <th>范围</th>
+                            <th>否决项</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>酒精度</td>
-                            <td>2</td>
-                            <td>21</td>
-                        </tr>
-                        <tr>
-                            <td>蛋白质</td>
-                            <td>2</td>
-                            <td>18</td>
-                        </tr>
-                        <tr>
-                            <td>含糖量</td>
-                            <td>3</td>
-                            <td>57</td>
-                        </tr>
-                        <tr>
-                            <td>价钱总计</td>
-                            <td></td>
-                            <td>96</td>
-                        </tr>
+                        @foreach (var t in ViewBag.detectionlist)
+                        {
+                            <tr>
+                                <td>@t.Name</td>
+                                <td>@t.Range</td>
+                                <td>@(t.Denney ? "是" : "否")</td>
+                            </tr>
+                        }
 
                     </tbody>
+                </table>
+
+                <table class="ui segments celled table ">
+                    <thead>
+                        <tr>
+                            <th>检测项目 </th>
+                            <th>时间</th>
+                            <th>价钱</th>
+                          
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        @{ 
+                            foreach(var schemetemp in ViewBag.schemelist)
+                            {
+                                <tr>
+                                    <td class="scheme">@schemetemp</td>
+                                    <td></td>
+                                    <td></td>
+                                  
+
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                    @*<tfoot class="full-width">
+                        <tr>
+
+                            <th colspan="4">
+                                <div class="ui blue button" onclick="Add()">添加新项</div>
+
+
+                            </th>
+
+                        </tr>
+
+                    </tfoot>*@
                 </table>
 
                 <div class="ui segment form">
@@ -197,6 +222,59 @@
 
 @section scripts{
     <script>
+        var namelist = [];
+        function WriteList()
+        {
+            var list = $(".scheme");
+            $.each(list,function () {
+                namelist.push($(this).html());
+            })
+        }
+        WriteList();
+
+        function GetSGSInfo() {
+            var id = @ViewBag.sgsid;
+            $.ajax({
+                type: 'Get',
+                url: '/DetectionScheme/GetSgsInfo/' + id,
+                success: function (data) {
+                    if (data.length == 0) {
+                        alert("检测中心信息错误,请更换检测中心或联系管理员!");
+                    }
+                    else {
+                        var trlist = $("#tbody").find("tr");
+                        trlist.each(function (i) {
+                            var td1 = $(this).find("td").eq(0).html();
+                            var td2 = $(this).find("td").eq(1);
+                            var td3 = $(this).find("td").eq(2);
+                          
+                            $.each(data, function (index, item) {
+                                if (item.Name == td1) {
+                                    td2.html(item.Days);
+                                    td3.html(item.Price);
+                                }
+                            });
+                           
+                        });
+                    }
+                },
+                dataType: "json"
+            });
+        }
+        GetSGSInfo();
+
+        var $tbody = $('table tbody');
+        $tbody.click(function (event) {
+            var $t = $(event.target);
+            if ($t.is('.icon.ttt')) {
+                var v = $t.parents('tr').find("td").eq(0).html();
+                var index = $.inArray(v, namelist);
+               
+                namelist.splice(index, 1);             
+                $t.parents('tr').remove();
+            }
+        });
+
         $("#btn").click(function() {
 
             var r = confirm("确定修改？");
