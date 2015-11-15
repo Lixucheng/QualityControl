@@ -51,8 +51,7 @@ jQuery(function () {
     uploader.on('uploadSuccess', function (file, response) {
         $('#' + file.id).find('p.state').text('已上传');
         c++;
-
-        $("#form").append("<input type='radio' name='list' value=" + response.file_path + " checked/>");
+        $("#form").append("<input style='display:none' class='l' type='radio' name='list' value=" + response.file_path + " checked/>");
       
     });
 
@@ -93,7 +92,10 @@ jQuery(function () {
         {
             alert("请上传文件!");
         }
-        $("form").submit();
+        else {
+            $("form").submit();
+        }
+       
     })
 });
 

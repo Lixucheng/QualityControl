@@ -1,12 +1,4 @@
 ﻿
-body {
-    margin-top: 50px;
-    font-size: 16px;
-    font-family: "Myriad Pro", "Hiragino Sans GB","Microsoft YaHei","寰蒋闆呴粦", Calibri, Helvetica, tahoma,arial,simsun,"瀹嬩綋", sans-serif;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-}
-
 .jumbotron {
     background: transparent url(../images/banner.jpg) repeat-x 50% 0%;
     color: #fff;

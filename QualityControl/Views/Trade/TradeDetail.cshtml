@@ -362,9 +362,10 @@
     {
         <div class="ui segment">
             <p class="am-cf">
-                <span>制码完成，开始抽样</span>
-                @if (user.Type == (int) EnumUserType.Controller && Model.Status == (int) EnumTradeStatus.SampleStart)
+                <span>生产商贴码完成完成，开始抽样</span>
+                @if (user.Type == (int)EnumUserType.Controller && Model.Status == (int)EnumTradeStatus.SampleStart)
                 {
+                    <a href="/Trade/GetFiles/@Model.Id" class="am-fr green ui button">贴码确认文件下载</a>
                     <a href="/Trade/Sample?tradeId=@Model.Id" class="am-fr primary ui button">抽样</a>
                 }
             </p>
@@ -379,7 +380,7 @@
               {
                   <span>请查看并确认</span>
                   <a href="/MakeQrCode/MakeNo/@Model.Id" class="am-fr primary ui button">查看</a>
-                  <a href="/Trade/GetFiles/@Model.Id" class="am-fr green ui button">贴码确认文件下载</a>
+                  
                   <a href="/Manufacturer/Uploader/@Model.Id" class="am-fr primary ui button">贴码完成确认</a>
               }
               else
