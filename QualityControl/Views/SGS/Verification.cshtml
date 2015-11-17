@@ -3,7 +3,7 @@
     ViewBag.Title = "Verification";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-@model IEnumerable<QualityControl.Db.Verification>
+@model IEnumerable<QualityControl.Controllers.SGSController.v>
 
 @section head{
 <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
@@ -49,7 +49,7 @@
         <thead class="">
             <tr>
                 <th>序列码</th>
-                <th >验证码</th>
+                <th>验证码</th>
                 <th  width="200px" >验证结果</th>
                
             </tr>
@@ -65,9 +65,9 @@
                 {
                     
                     <tr>
-                        <td>@Tempx.QrCodeInfo.QrName</td>
-                        <td>@Tempx.QrCodeInfo.IdCode</td>
-                        <td>@Tempx.Status</td>
+                        <td>@Tempx.Info.QrName</td>
+                        <td>@Tempx.Info.IdCode</td>
+                        <td>@Tempx.pass</td>
                     </tr>
                 }
             }

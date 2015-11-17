@@ -164,8 +164,33 @@ namespace QualityControl.Controllers
         {        
             var list = Db.Verifications.Where(e => e.TradeId == id).ToList();
             ViewBag.tid = id;
-            return View(list);
+            var All = new List<v>();
+            var trade = Db.Trades.Find(id);
+            list.ForEach(e=> {
+                All.Add(new v { Info = e.QrCodeInfo, pass = "通过" });
+            });
+            trade.Batches.ForEach(e=> {
+                var no = JsonConvert.DeserializeObject<List<string>>(e.SamplaListJson);
+                no.ForEach(n=>
+                {
+                    var info = Db.QrCodeInfos.FirstOrDefault(a => a.QrName == n && a.TradeId == id);
+                    var isin = All.Count(a => a.Info.Id == info.Id);
+                    if (isin == 0)
+                    {
+                        All.Add(new v { Info = info, pass = "未验证" });
+                    }
+                });
+            
+            });
+            return View(All);
         }
+
+        public class v
+        {
+            public QrCodeInfo Info;
+            public string pass;           
+        }
+
 
         public List<string> GetNum(long id)
         {

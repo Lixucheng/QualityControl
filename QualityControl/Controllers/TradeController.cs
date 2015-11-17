@@ -277,7 +277,7 @@ namespace QualityControl.Controllers
                                    b.ProductId.ToString() + "_" +
                                    b.BatchName + "_" +
                                    random.Next(1, b.Count);
-                            code=code+":" + Db.QrCodeInfos.FirstOrDefault(e => e.QrName==code&&e.TradeId==trade.Id).IdCode; 
+                           // code=code+":" + Db.QrCodeInfos.FirstOrDefault(e => e.QrName==code&&e.TradeId==trade.Id).IdCode; 
                         } while (qrCodes.Contains(code));
                         qrCodes.Add(code);
                     }
@@ -300,7 +300,7 @@ namespace QualityControl.Controllers
                                b.ProductId.ToString() + "_" +
                                b.BatchName + "_" +
                                num;
-                        code = code + ":" + Db.QrCodeInfos.FirstOrDefault(e => e.QrName == code && e.TradeId == trade.Id).IdCode;
+                        // code = code + ":" + Db.QrCodeInfos.FirstOrDefault(e => e.QrName == code && e.TradeId == trade.Id).IdCode;
                         qrCodes.Add(code);
                         num += divider;
                     }
