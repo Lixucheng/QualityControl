@@ -17,9 +17,9 @@ namespace QualityControl
         public async Task SendAsync(IdentityMessage message)
         {
             // Credentials:
-            var credentialUserName = "572362732@qq.com";
-            var sentFrom = "572362732@qq.com";
-            var pwd = "cxm123";
+            var credentialUserName = "1610965611@qq.com";
+            var sentFrom = "1610965611@qq.com";
+            var pwd = "WSE1305wse";
 
             // Configure the client:smtp-mail.outlook.com
             var client =
