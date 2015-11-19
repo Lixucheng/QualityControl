@@ -13,6 +13,9 @@ using QualityControl.Enum;
 using System.Data.Entity;
 using org.in2bits.MyXls;
 using System.Linq;
+using ZXing;
+using ZXing.QrCode.Internal;
+using ZXing.Common;
 
 namespace QualityControl.Controllers
 {
@@ -95,6 +98,7 @@ namespace QualityControl.Controllers
 
             image.Save(path + "\\" + name, ImageFormat.Jpeg);
 
+           
 
             var qr = new QrCodeInfo();
             qr.IdCode = guid;
@@ -103,6 +107,8 @@ namespace QualityControl.Controllers
             Db.QrCodeInfos.Add(qr);
             Db.SaveChanges();
 
+            //条形码
+            MakeBarCode(guid, url + "\\Image\\" + tradeid + "\\BarCode" + batch, tradeid + "_" + productid + "_" + batch + "_" + num);
 
             var down = "/Image/" + tradeid + "/" + batch + "/" + name;
 
@@ -129,10 +135,10 @@ namespace QualityControl.Controllers
             var guid = getString(4);
             var name = batchid + ".jpg";
             var url = HttpRuntime.AppDomainAppPath;
-            var path = url + "\\Image\\" + tradeid + "\\" + "批次二维码";
+            var path = url + "Image\\" + tradeid + "\\" + "BatchsQrcode";
             if (System.IO.File.Exists(path + "\\" + name))
             {
-                return "/Image/" + tradeid + "/" + "批次二维码" + "/" + name;
+                return "/Image/" + tradeid + "/" + "BatchsQrcode" + "/" + name;
             }
 
             var encoder = new QRCodeEncoder();
@@ -153,10 +159,9 @@ namespace QualityControl.Controllers
             image.Save(path + "\\" + name, ImageFormat.Jpeg);
 
 
-          
 
 
-            var down = "/Image/" + tradeid + "/" + "批次二维码" + "/" + name;
+            var down = "/Image/" + tradeid + "/" + "BatchsQrcode" + "/" + name;
             return down;
         }
 
@@ -167,28 +172,10 @@ namespace QualityControl.Controllers
         /// <returns></returns>
         public string getString(int count)
         {
-            int number;
-            string checkCode = String.Empty;     //存放随机码的字符串   
-
-            System.Random random = new Random();
-
-            for (int i = 0; i < count; i++) //产生4位校验码   
-            {
-                number = random.Next();
-                number = number % 36;
-                if (number < 10)
-                {
-                    number += 48;    //数字0-9编码在48-57   
-                }
-                else
-                {
-                    number += 55;    //字母A-Z编码在65-90   
-                }
-
-                checkCode += ((char)number).ToString();
-            }
-            return checkCode;
-       }
+            Random rad = new Random();//实例化随机数产生器rad；
+            int value = rad.Next(1000, 10000);//用rad生成大于等于1000，小于等于9999的随机数；
+            return value.ToString();
+        }
 
         public bool Zip(string zipfile, string zipname)
         {
@@ -248,6 +235,31 @@ namespace QualityControl.Controllers
             Out(id, listdown);
             return View(id);
         }
+
+
+        public void MakeBarCode(string s,string dic,string name)
+        {
+            EncodingOptions op = new EncodingOptions();
+            op.Width = 400;
+            op.Height = 200;
+            BarcodeWriter writer = new BarcodeWriter();
+            writer.Options = op;
+            writer.Format = BarcodeFormat.CODE_39;
+
+            Bitmap img = writer.Write(s);
+
+            //自动保存图片到当前目录
+            string fullUrl = dic+"\\";
+            if (Directory.Exists(fullUrl) == false)
+            {
+                Directory.CreateDirectory(fullUrl); //如果文件夹不存在，直接创建文件夹。
+            }
+            var filename = fullUrl + name+ ".jpg";
+            img.Save(filename, ImageFormat.Jpeg);
+
+        }
+
+
 
 
         public void Out(long id,List<ListB> list)

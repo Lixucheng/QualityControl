@@ -8,6 +8,9 @@ using Newtonsoft.Json;
 using QualityControl.Db;
 using QualityControl.Enum;
 using QualityControl.Models;
+using QualityControl.Models.Adapters;
+using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
 
 namespace QualityControl.Controllers
 {
@@ -40,24 +43,24 @@ namespace QualityControl.Controllers
                         e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存 && e.Trade.Id == tradeid);
             }
             var tradeProduct = JsonConvert.DeserializeObject<ProductCopy>(trade.Product);
-            var sgsprolist = Db.SgsProducts.Where(e => e.Product.Id == tradeProduct.Id);
-            if (!sgsprolist.Any())
-            {
-                ViewBag.ok = 1;
-                ViewBag.message = "没有检测机构可以检测此产品！";
-                return View();
-            }
-            ViewBag.sgslist = sgsprolist.Select(e => e.SGS).Distinct();
+            //var sgsprolist = Db.SgsProducts.Where(e => e.Product.Id == tradeProduct.Id);
+            //if (!sgsprolist.Any())
+            //{
+            //    ViewBag.ok = 1;
+            //    ViewBag.message = "没有检测机构可以检测此产品！";
+            //    return View();
+            //}
+            //ViewBag.sgslist = sgsprolist.Select(e => e.SGS).Distinct();
 
             if (x == null)
             {
                 //方案
                 x = new DetectionScheme
                 {
-                    MaxQuote = sgsprolist.Max(e => e.Price),
-                    MinQuote = sgsprolist.Min(e => e.Price),
-                    MaxTime = sgsprolist.Max(e => e.NeedeDay),
-                    MinTime = sgsprolist.Min(e => e.NeedeDay),
+                    MaxQuote = 0,
+                    MinQuote = 0,
+                    MaxTime =0,
+                    MinTime =0,
                     Status = EnumDetectionSchemeStatus.未发送,
                     Trade = trade
                 };
@@ -74,6 +77,8 @@ namespace QualityControl.Controllers
 
                 ViewBag.model = x;
                 ViewBag.list = list;
+
+                ViewBag.detectionlist= JsonConvert.DeserializeObject<List<DectectionItemModel>>(trade.DetectionItems);
             }
             else if (x.Status == EnumDetectionSchemeStatus.未发送)
             {
@@ -83,6 +88,7 @@ namespace QualityControl.Controllers
                 ViewBag.company = company.Name; 
                 ViewBag.model = x;
                 ViewBag.list = trade.Batches;
+                ViewBag.detectionlist = JsonConvert.DeserializeObject<List<DectectionItemModel>>(trade.DetectionItems);
             }
             else if (x.Status == EnumDetectionSchemeStatus.修改中)
             {
@@ -101,12 +107,49 @@ namespace QualityControl.Controllers
             return View();
         }
 
+        public JsonResult GetSgsList(string l)
+        {
+            var llist = JsonConvert.DeserializeObject<List<string>>(l);
+            var orderlist = llist.OrderBy(a => a).ToList();
+            var sgslist = new List<sgsmodel>();
+            var s = "";
+            orderlist.ForEach(e => {
+                s += ".*";
+                s += e;
+            });
+            s += ".*";
+            var r =new  Regex(s);
+            var list = Db.SGSs.ToList();
+            list.ForEach(e =>
+            {
+                if(r.IsMatch(e.DectectionItemString))
+                {
+                    sgslist.Add(new sgsmodel { id=e.Id,name=e.Name});
+                }
+            });
+
+            return Json(sgslist, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 获取能检测的项目信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult GetSgsInfo(long id)
+        {
+            var x = Db.SGSs.Find(id);
+            var list = x.DectectionItems;
+            return Json(list, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult SeeDetectionScheme(long tradeid)
         {
             ViewBag.see = 1;
             var trade = Db.Trades.Find(tradeid);
             var sgsname = Db.SGSs.FirstOrDefault(e => e.UserId == trade.SgsUserId).Name;
             ViewBag.sgs = sgsname;
+            ViewBag.sgsid = Db.SGSs.FirstOrDefault(e => e.UserId == trade.SgsUserId).Id;
             var x =
                    trade.Schemes.FirstOrDefault(
                        e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存);
@@ -114,7 +157,7 @@ namespace QualityControl.Controllers
             var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
             ViewBag.productname = pro.Name;
             ViewBag.company = company.Name;
-
+            ViewBag.schemelist =JsonConvert.DeserializeObject<List<string>>(trade.RealDetectionTtems);
             var s = x.Level;
             var l = JsonConvert.DeserializeObject<Level>(s);
             ViewBag.l = l;
@@ -180,7 +223,7 @@ namespace QualityControl.Controllers
                 var list = trade.Batches;
                 ViewBag.list = list;
 
-
+                ViewBag.schemelist = JsonConvert.DeserializeObject<List<string>>(trade.RealDetectionTtems);
                 var detectionscheme = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待双方确定);
                 if (detectionscheme == null)
                 {
@@ -265,12 +308,14 @@ namespace QualityControl.Controllers
         /// <param name="sgsid"></param>
         /// <returns></returns>
         public JsonResult SendDetectionScheme(long tradeid, double quser, double qother, int time, int l1, int l2,
-             long sgsid)
+             long sgsid, string sgsitems)
         {
+           
             var trade = Db.Trades.Find(tradeid);
             var sgsuserid = Db.SGSs.Find(sgsid).UserId;
             trade.Status = (int)EnumTradeStatus.AlreadyApply;
             trade.SgsUserId = sgsuserid;
+            trade.RealDetectionTtems = sgsitems;
             Db.SaveChanges();
 
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.未发送);
@@ -382,13 +427,14 @@ namespace QualityControl.Controllers
                 var pro = JsonConvert.DeserializeObject<ProductCopy>(dec.Trade.Product);
 
                 var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
-
+                ViewBag.sgsid = Db.SGSs.FirstOrDefault(e => e.UserId == trade.SgsUserId).Id;
                 ViewBag.productname = pro.Name;
                 ViewBag.company = company.Name;
                 var list = trade.Batches;
                 ViewBag.model = dec;
                 ViewBag.list = list;
-
+                ViewBag.schemelist = JsonConvert.DeserializeObject<List<string>>(trade.RealDetectionTtems);
+                ViewBag.detectionlist = JsonConvert.DeserializeObject<List<DectectionItemModel>>(trade.DetectionItems);
                 var modify = dec.Modifications.Select(e =>
                 {
                     var u = UserManager.FindById(e.UserId);
@@ -663,5 +709,13 @@ namespace QualityControl.Controllers
             public string Modify;
             public string User;
         }
+
+        public class sgsmodel
+        {
+            public long id;
+            public string name;
+        }
+
+        
     }
 }

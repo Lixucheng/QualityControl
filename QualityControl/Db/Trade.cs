@@ -50,6 +50,8 @@ namespace QualityControl.Db
         public virtual List<ProductBatch> Batches { get; set; }
 
         public string DetectionItems { get; set; }
+
+        public string RealDetectionTtems { get; set; }
     }
 
     public enum EnumSample

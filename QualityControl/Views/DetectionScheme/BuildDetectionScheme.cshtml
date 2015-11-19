@@ -10,6 +10,9 @@
             margin-right: 5%;
             margin-top: 50px;
         }
+        .nob{
+            border:none !important;
+        }
 
         .title { float: left; }
     </style>
@@ -76,38 +79,73 @@
                 </div>
             </div>
           
-            <table class="ui celled table ">
+           
+            <table class="ui segments celled table ">
                 <thead>
                     <tr>
-                        <th>检测项目</th>
-                        <th>天数</th>
-                        <th>价格</th>
+                        <th>参考项目</th>
+                        <th>范围</th>
+                        <th>否决项</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach (var t in ViewBag.detectionlist)
+                    {
                     <tr>
-                        <td>酒精度</td>
-                        <td>2</td>
-                        <td>21</td>
-                    </tr>
-                    <tr>
-                        <td>蛋白质</td>
-                        <td>2</td>
-                        <td>18</td>
-                    </tr>
-                    <tr>
-                        <td>含糖量</td>
-                        <td>3</td>
-                        <td>57</td>
-                    </tr>
-                    <tr>
-                        <td>价钱总计</td>
-                        <td></td>
-                        <td>96</td>
-                    </tr>
+                        <td>@t.Name</td>
+                        <td>@t.Range</td>
+                        <td>@(t.Denney ? "是" : "否")</td>
+                      </tr>
+                    }
 
                 </tbody>
             </table>
+
+            <table class="ui segments celled table ">
+                <thead>
+                    <tr>
+                        <th>检测项目 </th>
+                        <th>时间</th>
+                        <th>价钱</th>
+                        <th>删除</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                 
+                   
+                </tbody>
+                <tfoot class="full-width">
+                    <tr >
+  
+                        <th colspan="4" >
+                            <div class="ui blue button" onclick="Add()">添加新项</div>
+
+                           
+                        </th>
+
+                    </tr>
+                    
+                </tfoot>
+            </table>
+            <div class="ui segment form">
+                <div class="two fields">
+                    <div class="inline field"  >
+                        <label>选择检测机构：</label>
+                        <select id="sgs" style="width:180px" onchange="GetSGSInfo()">
+                           
+                        </select>
+                    </div>
+                    <div class="inline field" >
+                        <div class="ui blue button" onclick="FindSGS()">检索检测机构</div>
+                    </div>
+                </div>
+               
+
+
+
+            </div>
+
+
             <div class="ui segment form">
 
                 <div class="inline field">
@@ -133,15 +171,7 @@
                         <label>检测机构报价：</label>
                         <input id="q2" type="text" name="shipping[first-name]" placeholder="" value="">
                     </div>
-                    <div class="inline field">
-                        <label>选择检测机构：</label>
-                        <select id="sgs">
-                            @foreach (var t in ViewBag.sgslist)
-                            {
-                                <option value="@t.Id">@t.Name</option>
-                            }
-                        </select>
-                    </div>
+                   
                 </div>
 
             </div>
@@ -154,8 +184,134 @@
     }
 </div>
 
+
+<div class="ui  modal" id="AddModel">
+    <i class="close icon"></i>
+    <div class="header" id="addtypetitle">
+        检测项目添加
+    </div>
+    <div class=" content ui ">  
+        <form class="ui form">
+            <div class="field">
+                <label>项目名称</label>
+                <input type="text" id="name" placeholder="名称">
+            </div>
+        </form>         
+    </div>
+    <div class="actions">
+        <button class="ui green button" onclick="Addsub()">提交</button>
+    </div>
+
+</div>
+
 @section scripts{
     <script>
+
+        var namelist = [];
+        function Add() {
+        $('#AddModel').modal('show');
+        }
+        function Addsub()
+        {
+            var v = $("#name").val();           
+            var i=$.inArray(v,namelist);
+            if (v == "")
+                alert("请输入正确的项目名称!");
+            else if(i!=-1)
+            {
+                alert("重复添加!");
+                $("#name").val("");
+
+                $('#AddModel').modal('hide');
+            }
+            else {
+                //下拉菜单清空
+                $("#sgs").html("");
+
+                namelist.push(v);
+                var tr = '<tr>';
+                tr += '<td>' + v + '</td>';
+                tr += '<td>' + "-" + '</td>';
+                tr += '<td>' + "-" + '</td>';
+                tr += '<td><button class="ui  icon ttt button">' +
+                    '<i class="trash icon"></i>' +
+                    '</button></td>';
+                tr += '</tr>';
+
+                $("#tbody").append(tr);
+                $("#name").val("");
+
+                $('#AddModel').modal('hide');
+            }
+         
+        }
+        var $tbody = $('table tbody');
+        $tbody.click(function (event) {
+            var $t = $(event.target);
+            if ($t.is('.icon.ttt')) {
+                var v = $t.parents('tr').find("td").eq(0).html();
+                var index = $.inArray(v, namelist);
+               
+                namelist.splice(index, 1);             
+                $t.parents('tr').remove();
+            }
+        });
+
+        function　FindSGS()
+        {
+
+            $.ajax({
+                type: 'Get',
+                url: '/DetectionScheme/GetSgsList',
+                data: { l: JSON.stringify(namelist) },
+                success: function (data) {
+                    if (data.length == 0)
+                    {
+                        alert("没有检测中心可以检测这些项目,请修改检测项目!");
+                    }
+                    var s = "";
+                    $.each(data, function (imdex, item) {
+                        s+=" <option value='"+item.id +"'>"+item.name +"</option>";
+                    });
+                    $("#sgs").html(s);
+                    GetSGSInfo();
+                },
+                dataType: "json"
+            });
+
+        }
+
+        function  GetSGSInfo()
+        {
+            var id = $("#sgs").val();
+            $.ajax({
+                type: 'Get',
+                url: '/DetectionScheme/GetSgsInfo/'+id,
+                success: function (data) {
+                    if (data.length == 0) {
+                        alert("检测中心信息错误,请更换检测中心或联系管理员!");
+                    }
+                    else {
+                        var trlist = $("#tbody").find("tr");
+                        trlist.each(function (i) {
+                            var td1 = $(this).find("td").eq(0).html();
+                            var td2 = $(this).find("td").eq(1);
+                            var td3 = $(this).find("td").eq(2);
+                            $.each(data,function (index, item) {
+                                if(item.Name==td1)
+                                {
+                                    td2.html(item.Days);
+                                    td3.html(item.Price);
+                                }
+                            });
+                        });
+                    }
+                },
+                dataType: "json"
+            });
+        }
+
+
         $("#btn").click(function() {
             var q1 = $("#q1").val();
             var q2 = $("#q2").val();
@@ -164,7 +320,7 @@
             $.ajax({
                 url: '../DetectionScheme/SendDetectionScheme',
                 type: 'post',
-                data: { Tradeid: c, quser: q1, qother: q2, time: time, l1: $("#s1").val(), l2: $("#s2").val(), sgsid: $("#sgs").val() },
+                data: { Tradeid: c, quser: q1, qother: q2, time: time, l1: $("#s1").val(), l2: $("#s2").val(), sgsid: $("#sgs").val(), sgsitems: JSON.stringify(namelist)},
 
                 error: function() {
                     alert('error');

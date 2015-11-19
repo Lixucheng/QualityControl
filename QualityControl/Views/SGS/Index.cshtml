@@ -152,7 +152,7 @@
                             <div class="image">
                                 @{
                                     var jarray1 = (JArray)JsonConvert.DeserializeObject(list.ElementAt(1).Image);
-                                    string ja1a1 = jarray[0].ToString();
+                                    string ja1a1 = jarray1[0].ToString();
                                 }
                                 <img src="@ja1a1">
                             </div>
@@ -163,8 +163,8 @@
                         <div class="card">
                             <div class="image">
                                 @{
-                                    var jarray2 = (JArray)JsonConvert.DeserializeObject(list.ElementAt(1).Image);
-                                    string ja1a2 = jarray[0].ToString();
+                                    var jarray2 = (JArray)JsonConvert.DeserializeObject(list.ElementAt(2).Image);
+                                    string ja1a2 = jarray2[0].ToString();
                                 }
                                 <img src="@ja1a2">
                             </div>
