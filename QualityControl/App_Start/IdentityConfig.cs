@@ -19,7 +19,7 @@ namespace QualityControl
             // Credentials:
             var credentialUserName = "1610965611@qq.com";
             var sentFrom = "1610965611@qq.com";
-            var pwd = "WSE1305wse";
+            var pwd = "zuohzpfkongbcdhj";
 
             // Configure the client:smtp-mail.outlook.com
             var client =

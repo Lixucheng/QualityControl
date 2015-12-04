@@ -36,7 +36,7 @@ namespace QualityControl.Controllers
         {
             var list =
                 UserManager.Users.Where(
-                    e => e.Status == (int) EnumUserStatus.UnRecognized && e.Type == (int) EnumUserType.User).ToList();
+                    e => e.Status == (int) EnumUserStatus.UnRecognized ).ToList();
             ViewBag.list = list;
             ViewBag.count = list.Count;
             return View();
@@ -48,14 +48,7 @@ namespace QualityControl.Controllers
             user.Status = (int) EnumUserStatus.Normal;
             await UserManager.UpdateAsync(user);
             //todo status
-            Db.Messages.Add(new Message
-            {
-                Content = "恭喜您，您的注册申请已经通过审核！",
-                UserId = user.Id,
-                Status = 0,
-                Time = DateTime.Now
-            });
-            Db.SaveChanges();
+           
             return 1;
         }
 

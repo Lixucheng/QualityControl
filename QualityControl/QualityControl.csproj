@@ -520,6 +520,7 @@
     <Content Include="Content\homepage\themes\default\assets\fonts\icons.ttf" />
     <Content Include="Content\homepage\themes\default\assets\fonts\icons.woff" />
     <Content Include="Content\homepage\themes\default\assets\fonts\icons.woff2" />
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\pub.pubxml" />
     <Content Include="Scripts\bower_components\datatables\license.txt" />
     <Content Include="Scripts\bower_components\datatables\media\css\dataTables.bootstrap.css" />
