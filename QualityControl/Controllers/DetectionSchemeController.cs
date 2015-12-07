@@ -119,7 +119,7 @@ namespace QualityControl.Controllers
             });
             s += ".*";
             var r =new  Regex(s);
-            var list = Db.SGSs.ToList();
+            var list = Db.SGSs.Where(e=>e.Status!=EnumStatus.Del).ToList();
             list.ForEach(e =>
             {
                 if(r.IsMatch(e.DectectionItemString))

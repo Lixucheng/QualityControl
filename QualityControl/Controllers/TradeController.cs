@@ -46,7 +46,7 @@ namespace QualityControl.Controllers
             }
             if (!string.IsNullOrEmpty(key))
                 x = Db.Products.Where(e => e.Name.Contains(key)).ToList();
-            x = Db.Products.Take(20).ToList();
+            x = Db.Products.Where(e=>e.Status!=EnumStatus.Del).ToList();
             ViewBag.list = x;
             return View();
         }
