@@ -113,8 +113,8 @@ namespace QualityControl.Db
 
     public enum EnumProductStatus
     {
-        正在生产 = 1,
-        停产 = 0
+        正常 = 1,
+        删除 = 0
     }
 
     [Table("GxFirstProductType")]

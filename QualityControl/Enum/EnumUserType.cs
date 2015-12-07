@@ -20,6 +20,9 @@
         /// <summary>
         ///     控制中心
         /// </summary>
-        Controller
+        Controller,
+
+        SuperAdmin=100
+
     }
 }

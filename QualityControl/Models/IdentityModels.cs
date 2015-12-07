@@ -13,6 +13,8 @@ namespace QualityControl.Models
         public int Type { get; set; }
         public int Status { get; set; }
 
+        public int Del { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // 请注意，authenticationType 必须与 CookieAuthenticationOptions.AuthenticationType 中定义的相应项匹配
@@ -22,6 +24,7 @@ namespace QualityControl.Models
             userIdentity.AddClaim(new Claim("Type", Type.ToString()));
             userIdentity.AddClaim(new Claim("Status", Status.ToString()));
             userIdentity.AddClaim(new Claim("Email", Email));
+            userIdentity.AddClaim(new Claim("Del", Del.ToString()));
             return userIdentity;
         }
     }

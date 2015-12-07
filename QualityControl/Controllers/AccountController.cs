@@ -44,6 +44,7 @@ namespace QualityControl.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -58,6 +59,11 @@ namespace QualityControl.Controllers
             {
                 case SignInStatus.Success:
                     var user = UserManager.FindByEmail(model.Email);
+                    if (user.Del == 1)
+                    {
+                        model.Message = "用户不存在";
+                        return View(model);
+                    }
                     if (user.Type == 0)
                     {
                         return RedirectToLocal("/User/Index");
@@ -82,6 +88,7 @@ namespace QualityControl.Controllers
                 //    return RedirectToAction("SendCode", new { RememberMe = model.RememberMe });
                 default:
                     ModelState.AddModelError("", "无效的登录尝试。");
+                    model.Message = "用户信息错误";
                     return View(model);
             }
         }
@@ -96,7 +103,7 @@ namespace QualityControl.Controllers
             {
                 return View("Error");
             }
-            return View(new VerifyCodeViewModel {Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe});
+            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
         //
@@ -156,14 +163,15 @@ namespace QualityControl.Controllers
             {
                 UserName = model.Name,
                 Email = model.Email,
-                Type = (int) model.Type,
-                Status = (int) EnumUserStatus.UnRecognized,
+                Type = (int)model.Type,
+                Status = (int)EnumUserStatus.UnRecognized,
                 PhoneNumber = model.Phone
             };
             var result = await UserManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {
-                return View("RegisterError", result);
+                ViewBag.m = "用户名已存在";
+                return View("Register");
             }
             //AddCache("Register_" + user.Id, user, DateTime.Now.AddHours(1));
             await SignInManager.SignInAsync(user, false, false);
@@ -180,7 +188,7 @@ namespace QualityControl.Controllers
             catch (Exception)
             {
             }
-            return RedirectToAction("GotoEmail", new {email = model.Email});
+            return RedirectToAction("GotoEmail", new { email = model.Email });
         }
 
 
@@ -234,7 +242,7 @@ namespace QualityControl.Controllers
                 // 有关如何启用帐户确认和密码重置的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=320771
                 // 发送包含此链接的电子邮件
                 var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new {userId = user.Id, code},
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code },
                     Request.Url.Scheme);
                 await UserManager.SendEmailAsync(user.Id, "重置密码", "请通过单击 <a href=\"" + callbackUrl + "\">此处</a>来重置你的密码");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
@@ -305,7 +313,7 @@ namespace QualityControl.Controllers
         {
             // 请求重定向到外部登录提供程序
             return new ChallengeResult(provider,
-                Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = returnUrl}));
+                Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
         //
@@ -320,9 +328,9 @@ namespace QualityControl.Controllers
             }
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
             var factorOptions =
-                userFactors.Select(purpose => new SelectListItem {Text = purpose, Value = purpose}).ToList();
+                userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
             return
-                View(new SendCodeViewModel {Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe});
+                View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
         //
@@ -343,7 +351,7 @@ namespace QualityControl.Controllers
                 return View("Error");
             }
             return RedirectToAction("VerifyCode",
-                new {Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe});
+                new { Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe });
         }
 
         //
@@ -366,14 +374,14 @@ namespace QualityControl.Controllers
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new {ReturnUrl = returnUrl, RememberMe = false});
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
                 default:
                     // 如果用户没有帐户，则提示该用户创建帐户
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     return View("ExternalLoginConfirmation",
-                        new ExternalLoginConfirmationViewModel {Email = loginInfo.Email});
+                        new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
 
@@ -398,7 +406,7 @@ namespace QualityControl.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -495,7 +503,7 @@ namespace QualityControl.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
-                var properties = new AuthenticationProperties {RedirectUri = RedirectUri};
+                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
                 if (UserId != null)
                 {
                     properties.Dictionary[XsrfKey] = UserId;

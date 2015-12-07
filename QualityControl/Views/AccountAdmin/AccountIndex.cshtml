@@ -1,0 +1,191 @@
+﻿ 
+@{
+    ViewBag.Title = "AccountIndex";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using QualityControl.Models
+@model List<ApplicationUser>
+@section head{
+  <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+
+    <style>
+        form {
+            margin-top: 1%;
+        }
+
+        .ui.submit.button {
+            display: inline-block;
+            text-align: center;
+            margin: 1.0em 40%;
+        }
+
+        .padding-lg {
+            padding-top: 80px;
+            padding-bottom: 80px;
+        }
+
+        .padding-top-s {
+            padding-top: 30px;
+        }
+
+        .margin-left {
+            margin-left: 40px;
+        }
+
+        .hid-den {
+            display: none;
+        }
+
+        .sm-col {
+            width: 64px !important;
+        }
+
+        .op-col {
+            width: 128px !important;
+        }
+
+        table tr td, table tr th {
+            text-align: center !important;
+        }
+
+        .table-parent {
+            overflow: auto;
+            padding-bottom: 80px;
+        }
+
+            .table-parent > div {
+                min-width: 360px;
+            }
+
+            .table-parent table {
+                min-width: 800px !important;
+            }
+
+        .power-col {
+            width: 90px !important;
+        }
+        .table.dataTable.no-footer{
+            border-bottom:1px solid rgba(34,36,38,.15) !important;
+        }
+    </style>
+
+}
+<div class="ui grid jiange" style="margin: 20px 0;">
+    <div class="row">
+        <div class="one wide column"></div>
+        <div class="fourteen wide column table-parent">
+            <table class="ui compact celled table" id="example1">
+                <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>邮箱</th>
+                        <th>联系电话</th>                     
+                        <th class="op-col">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+
+                      
+                            <tr>
+                                <td>@user.UserName</td>
+                                <td>@user.Email</td>
+                                <td>@user.PhoneNumber</td>
+                                <td>
+                                    <div class="ui button b-t-n" data-id="@user.Id">
+                                        <i class="remove icon"></i>删除
+                                    </div>
+                                </td>
+                            </tr>
+                     
+
+                    }
+
+
+                </tbody>
+                <tfoot class="full-width">
+
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+  <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+
+    <script>
+        $('.ui.modal')
+        .modal()
+        ;
+        $(document).ready(function () {
+            $('table').DataTable({
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                    "sInfoEmpty": "共 0 项",
+
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+
+                },
+                "bLengthChange": false
+            });
+        });
+
+        $(function () {
+            $('.dropdown').dropdown();
+        });
+        //删除选中项
+        $(document).ready(function () {
+            var table = $('#example1').DataTable();
+
+            $('.b-t-n').click(function () {
+                var tr = $(this).parents('tr');
+                $.ajax({
+                    url: '/Accountadmin/Del',
+                    data: {
+                        id: $(this).data('id')
+                    },
+                    success: function (e) {
+                        if (e == 1)
+                        {
+                            table.row(tr).remove().draw();
+                        }
+                        else  {
+                            alert("该用户有订单正在进行,不允许删除!");
+                        }
+                       
+                    },
+                    error: function () {
+                        alert("删除失败，请刷新重试");
+                    }
+                });
+
+            });
+        });
+    </script>
+}
+
+
+
+
+    

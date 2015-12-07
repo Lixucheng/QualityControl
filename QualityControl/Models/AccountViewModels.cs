@@ -64,6 +64,8 @@ namespace QualityControl.Models
         [Display(Name = "记住我?")]
         public bool RememberMe { get; set; }
 
+        public string Message { get; set; }
+
         [Required]
         [Display(Name = "类型")]
         public EnumUserType Type { get; set; }

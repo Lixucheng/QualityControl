@@ -101,13 +101,16 @@
                 </div>
                 <div class="ui fluid large teal submit button">注册</div>
             </div>
-
-            <div class="ui error message"></div>
-
+            @if (ViewBag.m != null)
+            {
+            <div class="ui error message" style="display:block !important">
+                <ul class="list"><li>@ViewBag.m</li></ul>
+            </div>
+            }
         </form>
 
         <div class="ui message">
-            已有账号? <a href="#">登陆</a>
+            已有账号? <a href="~/Account/login">登陆</a>
         </div>
     </div>
 </div>
