@@ -76,6 +76,19 @@
                 </div>
             </div>
         }
+
+        @if (user.Type == (int)EnumUserType.SuperAdmin)
+        {
+            <div class="item">
+                <a class="title active">
+                    <i class="sitemap icon"></i><b>人员管理</b>
+                </a>
+                <div class="content menu">
+                    <a class="item" href="/AccountAdmin/accountindex">账户列表</a>
+                   
+                </div>
+            </div>
+        }
         <div class="item">
             <a class="title active">
                 <i class="icon inbox"></i><b>消息管理</b>

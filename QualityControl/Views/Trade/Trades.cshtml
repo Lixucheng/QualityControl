@@ -29,11 +29,11 @@
                         @{var s = item.Trade.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存&&e.Status!=EnumDetectionSchemeStatus.未发送);
                             if (s == null)
                             {
-                                <a href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button detail-btn">制作方案</a>
+                                <a target="_blank" href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button detail-btn">制作方案</a>
                             }
                             else if (s.Status == EnumDetectionSchemeStatus.修改中)
                             {
-                                <a href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button red">审查修改</a>
+                                <a target="_blank" href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button red">审查修改</a>
                             }
                             @*else if (s.Status == EnumDetectionSchemeStatus.已确定)
                             {
@@ -41,7 +41,7 @@
                             }*@
                             else
                             {
-                                <a href="/DetectionScheme/SeeDetectionScheme?tradeId=@item.Trade.Id" class="ui button blue">查看方案</a>
+                                <a target="_blank" href="/DetectionScheme/SeeDetectionScheme?tradeId=@item.Trade.Id" class="ui button blue">查看方案</a>
                             }
                         }
                     </td>

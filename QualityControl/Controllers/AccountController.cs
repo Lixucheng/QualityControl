@@ -80,6 +80,10 @@ namespace QualityControl.Controllers
                     {
                         return RedirectToLocal("/Trade/Trades");
                     }
+                    if(user.Type==100)
+                    {
+                        return RedirectToLocal("/accountadmin/accountindex");
+                    }
 
                     return RedirectToLocal("/Home/Redirect");
                 case SignInStatus.LockedOut:

@@ -77,7 +77,10 @@ namespace QualityControl.Controllers
 
                 ViewBag.model = x;
                 ViewBag.list = list;
-
+                if(trade.DetectionItems==null)
+                {
+                    trade.DetectionItems = "[]";
+                }
                 ViewBag.detectionlist= JsonConvert.DeserializeObject<List<DectectionItemModel>>(trade.DetectionItems);
             }
             else if (x.Status == EnumDetectionSchemeStatus.未发送)
@@ -291,7 +294,7 @@ namespace QualityControl.Controllers
             var s = x.Level;
             var l = JsonConvert.DeserializeObject<Level>(s);
             ViewBag.l = l;
-
+            ViewBag.schemelist = JsonConvert.DeserializeObject<List<string>>(trade.RealDetectionTtems);
 
             ViewBag.disable = 1; //不可编辑
             return View("SignContract");
