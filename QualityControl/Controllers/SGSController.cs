@@ -288,6 +288,7 @@ namespace QualityControl.Controllers
                 Util.Dumper.Dump(item, it);
                 Db.Entry(it).State = EntityState.Modified;
             }
+            Db.SaveChanges();
             sgs.DectectionItemString = "";
             var items = sgs.DectectionItems.Select(a => a.Name).OrderBy(a => a).ToList();
             foreach (var i in items)
@@ -309,6 +310,7 @@ namespace QualityControl.Controllers
                 return 0;
             }
             sgs.DectectionItems.Remove(it);
+            Db.SaveChanges();
             var items = sgs.DectectionItems.Select(a => a.Name).OrderBy(a => a).ToList();
             foreach (var i in items)
             {

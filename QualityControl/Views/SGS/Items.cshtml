@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <div class="am-margin" ng-controller="AppCtrl">
-        <div simple-datatable ng-model="data" sdt-perpage-box-init="perPageBoxInit" sdt-row-id="name" sdt-action-col="fullActionColFactory" sdt-on="sdtOn">
+        <div simple-datatable ng-model="data" sdt-perpage-box-init="perPageBoxInit" sdt-row-id="Id" sdt-action-col="fullActionColFactory" sdt-on="sdtOn">
             <div class="am-cf">
                 <div class="ui floating labeled icon button server-sdt-perpage">
                     <i class="filter icon"></i>
@@ -164,8 +164,6 @@
             };
 
             var BridgeCtrlFactory = function (scope, eventName, sdtPerPageSelector) {
-
-                
             };
 
             app.controller('AppCtrl', ['$scope', '$http', function (scope, $http) {
@@ -201,7 +199,7 @@
                             .error(function () {
                                 alert('操作失败，请刷新重试');
                             });
-                        
+
                     }
                 };
 
