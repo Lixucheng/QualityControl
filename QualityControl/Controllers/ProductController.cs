@@ -440,11 +440,15 @@ namespace QualityControl.Controllers
             ViewBag.t1 = t1.Id;
             ViewBag.t2 = t2.Id;
             ViewBag.t3 = t3.Id;
-           }
+            }
+            else
+            {
+               
+                ViewBag.t1 = 0;
+                ViewBag.t2 = 0;
+                ViewBag.t3 = 0;
+            }
             ViewBag.typeid = typeid;
-            ViewBag.t1 = 0;
-            ViewBag.t2 = 0;
-            ViewBag.t3 = 0;
             return View();
         }
 

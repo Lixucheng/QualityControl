@@ -269,12 +269,15 @@
                     {
                         alert("没有检测中心可以检测这些项目,请修改检测项目!");
                     }
-                    var s = "";
-                    $.each(data, function (imdex, item) {
-                        s+=" <option value='"+item.id +"'>"+item.name +"</option>";
-                    });
-                    $("#sgs").html(s);
-                    GetSGSInfo();
+                    else {
+                        var s = "";
+                        $.each(data, function (imdex, item) {
+                            s += " <option value='" + item.id + "'>" + item.name + "</option>";
+                        });
+                        $("#sgs").html(s);
+                        GetSGSInfo();
+                    }
+                   
                 },
                 dataType: "json"
             });

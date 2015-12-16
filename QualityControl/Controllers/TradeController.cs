@@ -205,13 +205,23 @@ namespace QualityControl.Controllers
         public ActionResult Trades()
         {
             return View(Db.Trades
-                .Where(a => a.Status >= (int)EnumTradeStatus.BatchSelected).Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo
+                .Where(a => a.Status == (int)EnumTradeStatus.EnsureContract).Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo
             {
                 Trade = trade,
                 User = user
             }).ToList());
         }
 
+
+        public ActionResult TradesOK()
+        {
+            return View("Trades",Db.Trades
+                .Where(a => a.Status > (int)EnumTradeStatus.EnsureContract).Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo
+                {
+                    Trade = trade,
+                    User = user
+                }).ToList());
+        }
 
 
         /// <summary>

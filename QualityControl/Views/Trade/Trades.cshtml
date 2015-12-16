@@ -4,11 +4,35 @@
 }
 @model List<QualityControl.Models.Adapters.TradeInfo>
 @using QualityControl.Db
+
+
+@section head{
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+
+    <style>
+        .main-container {
+            background-color: #FFFFFF;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            margin: 0em auto;
+            padding: 2em 2em 7em;
+            z-index: 1;
+        }
+
+        .mycontent {
+            margin-bottom: 30px;
+        }
+
+        table.dataTable.no-footer {
+            border-bottom: 1px solid rgba(34,36,38,.15) !important;
+        }
+    </style>
+}
+
+
 <div class="container ui am-padding">
-    @if (Model.Count != 0)
-    {
-        <table class="ui compact celled table">
-            <thead>
+
+    <table class="ui compact celled table">
+        <thead>
             <tr>
                 <th>合同号</th>
                 <th>用户名</th>
@@ -16,8 +40,8 @@
                 <th>申请时间</th>
                 <th>操作</th>
             </tr>
-            </thead>
-            <tbody>
+        </thead>
+        <tbody>
             @foreach (var item in Model)
             {
                 <tr>
@@ -29,27 +53,66 @@
                         @{var s = item.Trade.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存&&e.Status!=EnumDetectionSchemeStatus.未发送);
                             if (s == null)
                             {
-                                <a target="_blank" href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button detail-btn">制作方案</a>
+                        <a target="_blank" href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button detail-btn">制作方案</a>
                             }
                             else if (s.Status == EnumDetectionSchemeStatus.修改中)
                             {
-                                <a target="_blank" href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button red">审查修改</a>
+                        <a target="_blank" href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button red">审查修改</a>
                             }
-                            @*else if (s.Status == EnumDetectionSchemeStatus.已确定)
+                        @*else if (s.Status == EnumDetectionSchemeStatus.已确定)
                             {
                                 <a href="/MakeQrCode/Index?tradeId=@item.Trade.Id" class="ui button green">制二维码</a>
                             }*@
                             else
                             {
-                                <a target="_blank" href="/DetectionScheme/SeeDetectionScheme?tradeId=@item.Trade.Id" class="ui button blue">查看方案</a>
+                        <a target="_blank" href="/DetectionScheme/SeeDetectionScheme?tradeId=@item.Trade.Id" class="ui button blue">查看方案</a>
                             }
                         }
                     </td>
                 </tr>
-            }
-            </tbody>
+                            }
+        </tbody>
 
-        </table>
-    }
+    </table>
+
 
 </div>
+
+@section scripts{
+    <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('table').DataTable({
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                    "sInfoEmpty": "共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+
+                },
+                "bLengthChange": false
+            });
+            $("#form .field label").html("按产品种类搜索");
+        });
+
+
+    </script>}

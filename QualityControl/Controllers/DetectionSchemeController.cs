@@ -112,6 +112,7 @@ namespace QualityControl.Controllers
 
         public JsonResult GetSgsList(string l)
         {
+
             var llist = JsonConvert.DeserializeObject<List<string>>(l);
             var orderlist = llist.OrderBy(a => a).ToList();
             var sgslist = new List<sgsmodel>();
@@ -206,6 +207,7 @@ namespace QualityControl.Controllers
             {
                 return Redirect("SeeContract?tradeid=" + tradeid);
             }
+            
 
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待双方确定);
             if (x == null)
@@ -215,6 +217,14 @@ namespace QualityControl.Controllers
             }
             else
             {
+
+                ///判断自己是否签过
+                var cc = x.Contracts.Count(e => e.Status == EnumContractStatus.已签定 && e.UserId == userid);
+                if (cc > 0)
+                {
+                    return Redirect("SeeContract?tradeid=" + tradeid);
+                }
+
                 var usernow = UserManager.FindById(userid);
                 ViewBag.u = usernow.Type == (int) EnumUserType.TestingOrg ? 1 : 0;
 
@@ -232,6 +242,8 @@ namespace QualityControl.Controllers
                 {
                     throw new Exception("没有待确认合同！");
                 }
+               
+
                 var haveAllreadysend =
                     detectionscheme.Contracts.FirstOrDefault(
                         e => e.UserId == userid && e.Status == EnumContractStatus.修改后未审核);
@@ -280,7 +292,7 @@ namespace QualityControl.Controllers
         {
             var userid = User.Identity.GetUserId();
             var trade = Db.Trades.Find(tradeid);
-            var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已确定);
+            var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已确定|| e.Status == EnumDetectionSchemeStatus.已发送待双方确定);
 
             var usernow = UserManager.FindById(userid);
             ViewBag.u = usernow.Type == (int) EnumUserType.TestingOrg ? 1 : 0;
