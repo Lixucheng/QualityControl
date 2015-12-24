@@ -1,11 +1,49 @@
 ﻿
-@{
-    ViewBag.Title = "GetBatchStatus";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+@section head{
+<link href="~/Scripts/bower_components/semantic/dist/semantic.min.css" rel="stylesheet" />
+
+    <style>
+        .message{
+            margin-top:200px !important;
+        }
+        body{
+            background-image:url("/Image/Android-L-Wallpapers.jpg") !important;
+        }
+    </style>
 }
 
-<div class="am-margin am-padding">
-    <div class="ui segment">
-        @ViewBag.Text
-    </div>
-</div>
+<body>
+
+    @*<button class="ui labeled icon green button"><i class="checkmark icon"></i> @ViewBag.Text </button>*@
+
+    @if (ViewBag.s == 1)
+    {
+        <div class="ui icon success message" style="text-align:center;background-color: rgba(255, 255, 255 ,0.6);">
+            <i class="checkmark icon"></i>
+            <div class="content success">
+                <p>@ViewBag.Text</p>
+            </div>
+        </div>
+    }
+    else if (ViewBag.s == 0)
+    {
+        <div class="ui icon negative  message" style="text-align:center;background-color: rgba(255, 255, 255 ,0.6);">
+            <i class="remove icon"></i>
+            <div class="content negative">
+                <p>@ViewBag.Text</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="ui icon yellow  message" style="text-align:center;background-color: rgba(255, 255, 255 ,0.6);">
+            <i class="notched circle loading icon"></i>
+            <div class="content yellow">
+                <p>@ViewBag.Text</p>
+            </div>
+        </div>
+    }
+
+    <script src="~/Scripts/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="~/Scripts/bower_components/semantic/dist/semantic.min.js"></script>
+</body>

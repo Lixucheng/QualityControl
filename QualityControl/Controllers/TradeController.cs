@@ -366,15 +366,18 @@ namespace QualityControl.Controllers
             var b = Db.ProductBatchs.Find(id);
             if (b == null)
             {
-                ViewBag.Text = "该编号不无效";
+                ViewBag.Text = "该编号无效";
+                ViewBag.s = 0;
             }
-            if (b.Trade.Status == (int) EnumTradeStatus.Finish)
+            else if (b.Trade.Status == (int) EnumTradeStatus.Finish)
             {
                 ViewBag.Text = "已经通过检测";
+                ViewBag.s = 1;
             }
             else
             {
                 ViewBag.Text = "正在检测该产品";
+                ViewBag.s = 2;
             }
             return View();
         }

@@ -611,8 +611,28 @@ namespace QualityControl.Controllers
                     model.Type.SecondType.FirstType = new FirstProductType();
                     Util.Util.Dump(type.SecondType.FirstType, model.Type.SecondType.FirstType, false);
                     product.LastChangeTime = DateTime.Now;
-                    product.Status = EnumStatus.Unchecked;
-                    product.UpdateJson = JsonConvert.SerializeObject(model);
+                    //product.Status = EnumStatus.Unchecked;
+                    //product.UpdateJson = JsonConvert.SerializeObject(model);
+                    product.Weight = model.Weight;
+                    product.Type = model.Type;
+                    product.StorageCondition = model.StorageCondition;
+                    product.Standard = model.Standard;
+                    product.ShelfLife = model.ShelfLife;
+                    product.ProductionCertificateNo = model.ProductionCertificateNo;
+                    product.Price = model.Price;
+                    product.PermissionType = model.PermissionType;
+                    product.PackingMaterial = model.PackingMaterial;
+                    product.Packing = model.Packing;
+                    product.Name = model.Name;
+                    product.Material = model.Material;
+                    product.Ingredients = model.Ingredients;
+                    product.Image = model.Image;
+                    product.Grade = model.Grade;
+                    product.GetDate = model.GetDate;
+                    product.File = model.File;
+                    product.EmpowerEnterprise = model.EmpowerEnterprise;
+                    product.Brand = model.Brand;
+                    
                 }
                 Db.Entry(product).State = EntityState.Modified;
             }

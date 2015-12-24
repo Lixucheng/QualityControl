@@ -497,6 +497,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Image\Android-L-Wallpapers.jpg" />
     <Content Include="Image\photo0.jpg" />
     <Content Include="References\ThoughtWorks.QRCode.dll" />
     <Content Include="Scripts\angular.min.js" />
