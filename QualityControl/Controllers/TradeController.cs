@@ -56,7 +56,7 @@ namespace QualityControl.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult ProductChosen(long id)
+        public ActionResult ProductChosen(long id,long count)
         {
             var userid = User.Identity.GetUserId();
             var p = Db.Products.Find(id);
@@ -64,6 +64,7 @@ namespace QualityControl.Controllers
             var trade = new Trade
             {
                 Product = JsonConvert.SerializeObject(pStr),
+                Count=count,
                 CeateTime = DateTime.Now,
                 FinishTime = DateTime.Now,
                 SamplingDate = DateTime.Now,
@@ -197,6 +198,27 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
             return RedirectToAction("TradeDetail", new { id = trade.Id });
         }
+
+        /// <summary>
+        /// 生产商确定批次
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult BatchSelected(long id)
+        {
+            var trade = Db.Trades.Find(id);
+            var userid = User.Identity.GetUserId();
+            if (trade == null || trade.Status != (int)EnumTradeStatus.ProductInfoConfirmed || trade.ManufacturerId != userid)
+            {
+                return Content("错误操作");
+            }
+               
+            trade.Status = (int)EnumTradeStatus.BatchSelected;
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return RedirectToAction("TradeDetail", new { id = trade.Id });
+        }
+
 
         /// <summary>
         /// 管控合同列表

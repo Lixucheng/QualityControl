@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using QualityControl.Db;
 using QualityControl.Enum;
+using QualityControl.Models;
 
 namespace QualityControl.Controllers
 {
@@ -695,6 +696,51 @@ namespace QualityControl.Controllers
 
 
         /// <summary>
+        ///     生产商产品批次 new
+        /// </summary>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public ActionResult ProductBatch(long pid)
+        {
+            ViewBag.tid = pid;
+            var p = Db.Trades.Find(pid);
+            var list = p.Batches;
+            ViewBag.count = p.Count;
+            ViewBag.list = list;
+            ViewBag.p = JsonConvert.DeserializeObject<ProductCopy>(p.Product);
+            return View();
+        }
+
+        public ActionResult ProductBatchAdd(ProductBatch bpb, long pid)
+        {
+            var p = Db.Trades.Find(pid);
+            p.Batches.Add(bpb);
+            Db.SaveChanges();
+            return Redirect("./ProductBatch?pid=" + pid);
+        }
+
+        public ActionResult ProductBatchEdit(ProductBatch bpb, long pid)
+        {
+            var p = Db.ProductBatchs.Find(bpb.Id);
+            p.BatchName = bpb.BatchName;
+            p.Count = bpb.Count;
+            p.ProductionDate = bpb.ProductionDate;
+            Db.SaveChanges();
+            return Redirect("./ProductBatch?pid=" + pid);
+        }
+
+        public ActionResult ProductBatchDel(long id, long pid)
+        {
+            var p = Db.ProductBatchs.Find(id);
+            Db.ProductBatchs.Remove(p);
+            Db.SaveChanges();
+            return Redirect("./BaseProductBatch?pid=" + pid);
+        }
+
+
+
+
+        /// <summary>
         ///     获取BaseProductBatch信息
         /// </summary>
         /// <param name="id"></param>
@@ -705,6 +751,14 @@ namespace QualityControl.Controllers
 
 
             return Json(e, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetBPInfo(long id)
+        {
+            var e = Db.ProductBatchs.Find(id);
+            var json = new {BatchName=e.BatchName,Count=e.Count,Id=e.Id, ProductionDate=e.ProductionDate.ToString("yyyy-MM-dd") };
+
+            return Json(json, JsonRequestBehavior.AllowGet);
         }
 
         private Company MyCompany

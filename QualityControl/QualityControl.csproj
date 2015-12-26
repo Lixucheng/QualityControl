@@ -280,6 +280,10 @@
     <Compile Include="Migrations\201512070719161_del.Designer.cs">
       <DependentUpon>201512070719161_del.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512260800526_count.cs" />
+    <Compile Include="Migrations\201512260800526_count.Designer.cs">
+      <DependentUpon>201512260800526_count.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Adapters\ConvertTradeStatus.cs" />
@@ -1493,6 +1497,7 @@
     <Content Include="Views\Trade\DectectionItem.cshtml" />
     <Content Include="Views\Trade\Sample.cshtml" />
     <Content Include="Views\AccountAdmin\AccountIndex.cshtml" />
+    <Content Include="Views\Product\ProductBatch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1548,6 +1553,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512070719161_del.resx">
       <DependentUpon>201512070719161_del.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512260800526_count.resx">
+      <DependentUpon>201512260800526_count.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

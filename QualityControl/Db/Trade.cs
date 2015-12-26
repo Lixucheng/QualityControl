@@ -14,6 +14,8 @@ namespace QualityControl.Db
 
         public virtual List<DetectionScheme> Schemes { get; set; }
 
+        public long Count { get; set; }
+
         public EnumSample SampleType { get; set; }
 
         public DateTime CeateTime { get; set; }

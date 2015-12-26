@@ -21,46 +21,46 @@
             <div class="content menu">
                 @if (user.Type == (int) EnumUserType.User)
                 {
-                    <a class="item" href="/Trade/ChooseProduct">新建管控合同</a>
+                <a class="item" href="/Trade/ChooseProduct">新建管控合同</a>
                 }
                 <a class="item" href="/User/TradeList">管控合同列表</a>
                 @if (user.Type == (int) EnumUserType.Controller)
                 {
-                    <a class="item" href="/Trade/Trades">待制作方案管控合同列表</a>
-                    <a class="item" href="/Trade/Tradesok">方案管控合同查看</a>
+                <a class="item" href="/Trade/Trades">待制作方案管控合同列表</a>
+                <a class="item" href="/Trade/Tradesok">方案管控合同查看</a>
                 }
-                
+
             </div>
         </div>
         @if (user.Type == (int) EnumUserType.TestingOrg)
         {
-            <div class="item active">
-                <a class="title" href="/SGS/Index">
-                    <i class="icon copyright"></i><b>机构信息</b>
-                </a>
+        <div class="item active">
+            <a class="title" href="/SGS/Index">
+                <i class="icon copyright"></i><b>机构信息</b>
+            </a>
 
-            </div>
-            <div class="item active">
-                <a class="title" href="/SGS/Items">
-                    <i class="icon list"></i><b>检测项目管理</b>
-                </a>
+        </div>
+        <div class="item active">
+            <a class="title" href="/SGS/Items">
+                <i class="icon list"></i><b>检测项目管理</b>
+            </a>
 
-            </div>
-            
+        </div>
+
         }
         @if (user.Type == (int) EnumUserType.Producer)
         {
+        <div class="item active">
+            <a class="active title" href="/Company/Index">
+                <i class="icon copyright"></i><b>企业信息</b>
+            </a>
+        </div>
+
             <div class="item active">
-                <a class="active title" href="/Company/Index">
-                    <i class="icon copyright"></i><b>企业信息</b>
+                <a class="active title" href="/Product/CompanyProductIndex">
+                    <i class="icon copyright"></i><b>产品信息</b>
                 </a>
             </div>
-
-@*            <div class="item active">*@
-@*                <a class="active title" href="/Product/CompanyProductIndex">*@
-@*                    <i class="icon copyright"></i><b>产品信息</b>*@
-@*                </a>*@
-@*            </div>*@
         }
         @if (user.Type == (int) EnumUserType.Controller)
         {
@@ -73,7 +73,7 @@
                     <a class="item" href="/Admin/Check/Company">生厂商审核</a>
                     <a class="item" href="/Admin/Check/SGS">检测机构审核</a>
                     <a class="item" href="/Product/FirstTypeIndex">产品种类管理</a>
-@*                    <a class="item" href="/Admin/Check/CompanyProduct">产品审核</a>*@
+                    @*                    <a class="item" href="/Admin/Check/CompanyProduct">产品审核</a>*@
                 </div>
             </div>
         }
@@ -86,7 +86,7 @@
                 </a>
                 <div class="content menu">
                     <a class="item" href="/AccountAdmin/accountindex">账户列表</a>
-                   
+
                 </div>
             </div>
         }
@@ -97,9 +97,9 @@
             <div class="content menu">
                 <a class="item" href="/Message/Index">未读信息</a>
                 <a class="item" href="/Message/Index?s=1">已读信息</a>
-              
+
             </div>
         </div>
-       
+
     </div>
 </div>

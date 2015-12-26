@@ -54,7 +54,7 @@ namespace QualityControl.Models.Adapters
                     }
                 case (int)EnumTradeStatus.ProductInfoConfirmed:
                     {
-                        return "控制中心审核完毕，等待用户选择批次";
+                        return "控制中心审核完毕，等待生产商添加批次信息";
                     }
                 case (int)EnumTradeStatus.SampleReceived:
                     {

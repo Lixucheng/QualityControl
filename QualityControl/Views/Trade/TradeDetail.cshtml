@@ -92,7 +92,7 @@
                 }
                 else if (Model.Status == (int)EnumTradeStatus.ProductInfoConfirmed)
                 {
-                    <span>产品信息已经确定，等待用户选择批次信息</span>
+                    <span>产品信息已经确定，等待生产商添加批次信息</span>
                 }
             </div>
         </div>
@@ -177,7 +177,7 @@
     }
 
 
-    @if (Model.Status == (int)EnumTradeStatus.ProductInfoConfirmed)
+    @*@if (Model.Status == (int)EnumTradeStatus.ProductInfoConfirmed)
     {
         <div class="ui segment">
             <p class="am-cf">
@@ -188,7 +188,21 @@
                 }
             </p>
         </div>
+    }*@
+    
+    @if (Model.Status == (int)EnumTradeStatus.ProductInfoConfirmed)
+    {
+        <div class="ui segment">
+            <p class="am-cf">
+                <span>产品信息已经确定，等待生产商添加批次信息</span>
+                @if (user.Id == Model.ManufacturerId)
+                {
+                    <a href="/Product/ProductBatch?pid=@Model.Id" class="am-fr primary ui button">添加批次信息</a>
+                }
+            </p>
+        </div>
     }
+
 
     @if (user.Type != (int)EnumUserType.Producer)
     {
