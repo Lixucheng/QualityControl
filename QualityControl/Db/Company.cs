@@ -162,6 +162,7 @@ namespace QualityControl.Db
         public string Standard { get; set; } //执行标准
 
         public EnumProductStatus CompanyProductStatus { get; set; }
+
     }
 
 

@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "DectectionItems";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model List<QualityControl.Db.ProductDectectionItem>
+<div class="am-margin am-padding">
+    <form class="ui form">
+        <div class="field">
+            <label>检测内容</label>
+            <input type="text" name="Name"/>
+        </div>
+        <div class="field">
+            <label>检测范围</label>
+            <input type="text" name="Range"/>
+        </div>
+        <div class="field">
+            <label>否决项</label>
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="Denney" value="true">
+                    <label>是</label>
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="Denney" checked="" value="false">
+                    <label>否</label>
+                </div>
+            </div>
+        </div>
+        <button class="ui button">添加检测项</button>
+    </form>
+
+    <table class="ui celled table item-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>检测项目</th>
+                <th>范围</th>
+                <th>否决项</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Range</td>
+                    <td>@(item.Denney ? "是" : "否")</td>
+                    <td>
+                        <button class="ui icon button">
+                            <i class="trash icon" data-id="@item.Id"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+    <button class="ui button submit-btn">确认提交</button>
+
+</div>
+
+@section scripts{
+    <script>
+        $(function() {
+            var $f = $('form').form({
+                fields: {
+                    Name: {
+                        identifier: 'Name',
+                        rules: [{
+                            type: 'empty',
+                            prompt: '请输入检测内容'
+                        }]
+                    },
+                    Range: {
+                        identifier: 'Range',
+                        rules: [{
+                            type: 'empty',
+                            prompt: '请输入检测范围'
+                        }]
+                    }
+                }
+            });
+
+            $f.submit(function(event) {
+                event.preventDefault();
+                if (!$f.form('is valid')) {
+                    $f.form('validate form');
+                    return;
+                }
+
+                var data = $f.form('get values');
+                data.ProductId = parseInt('@ViewBag.id');
+                $.ajax({
+                    url: '/Product/AddDetectionItem',
+                    data: data,
+                    error: function() {
+                        alert("操作失败，请刷新重试");
+                    },
+                    success: function(id) {
+                        var tr = '<tr>';
+                        tr += '<td>' + data.Name + '</td>';
+                        tr += '<td>' + data.Range + '</td>';
+                        tr += '<td>' + (data.Denney ? "是" : "否") + '</td>';
+                        tr += '<td><button class="ui icon button">' +
+                            '<i class="trash icon" data-id="' + id + '"></i>' +
+                            '</button></td>';
+                        tr += '</tr>';
+
+                        $(tr).appendTo('table tbody');
+                        $f.form('reset');
+                    }
+                }) ;
+
+            });
+
+            var $tbody = $('table tbody');
+            $tbody.click(function (event) {
+                var $t = $(event.target);
+                var id = $t.data('id');
+                $.ajax({
+                    url: '/Product/RemoveDetectionItem',
+                    data: {
+                        id: id
+                    },
+                    error: function() {
+                        alert("操作失败，请刷新重试");
+                    }
+                });
+                if ($t.is('.icon.trash')) {
+                    $t.parents('tr').remove();
+                }
+            });
+
+        });
+    </script>
+}

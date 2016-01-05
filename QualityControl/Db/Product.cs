@@ -109,6 +109,8 @@ namespace QualityControl.Db
         public DateTime LastChangeTime { get; set; }
 
         public string UpdateJson { get; set; }
+
+        public List<ProductDectectionItem> DectectionItems { get; set; } 
     }
 
     public enum EnumProductStatus

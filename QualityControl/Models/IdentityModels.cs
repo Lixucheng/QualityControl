@@ -57,6 +57,8 @@ namespace QualityControl.Models
 
         public DbSet<ProductBatch> ProductBatchs { get; set; }
 
+        public DbSet<ProductDectectionItem> ProductDectectionItems { get; set; }
+
 
         /// <summary>
         ///     协议内容

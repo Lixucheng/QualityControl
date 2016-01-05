@@ -794,5 +794,38 @@ namespace QualityControl.Controllers
             ViewBag.list = x;
             return View();
         }
+
+
+        #region 检测项目
+
+        public ActionResult DetectionItems(long id)
+        {
+            ViewBag.id = id;
+            return View(Db.ProductDectectionItems.Where(a => a.ProductId == id).ToList());
+        }
+
+        public long AddDetectionItem(ProductDectectionItem item)
+        {
+            if (!ModelState.IsValid)
+            {
+                return -1;
+            }
+            Db.ProductDectectionItems.Add(item);
+            Db.SaveChanges();
+            return item.Id;
+        }
+
+        public long RemoveDetectionItem(long id)
+        {
+            var item = Db.ProductDectectionItems.Find(id);
+            if (item == null)
+            {
+                return -1;
+            }
+            Db.ProductDectectionItems.Remove(item);
+            Db.SaveChanges();
+            return item.Id;
+        }
+        #endregion
     }
 }

@@ -213,6 +213,7 @@
     <Compile Include="Controllers\TradeController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Db\ProductDectectionItem.cs" />
     <Compile Include="Db\CheckLevel.cs" />
     <Compile Include="Db\Company.cs" />
     <Compile Include="Db\DectectionItem.cs" />
@@ -283,6 +284,14 @@
     <Compile Include="Migrations\201512260800526_count.cs" />
     <Compile Include="Migrations\201512260800526_count.Designer.cs">
       <DependentUpon>201512260800526_count.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601051445389_ProductDectectionItem.cs" />
+    <Compile Include="Migrations\201601051445389_ProductDectectionItem.Designer.cs">
+      <DependentUpon>201601051445389_ProductDectectionItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601051507147_ProductDectectionItemChamge.cs" />
+    <Compile Include="Migrations\201601051507147_ProductDectectionItemChamge.Designer.cs">
+      <DependentUpon>201601051507147_ProductDectectionItemChamge.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1498,6 +1507,7 @@
     <Content Include="Views\Trade\Sample.cshtml" />
     <Content Include="Views\AccountAdmin\AccountIndex.cshtml" />
     <Content Include="Views\Product\ProductBatch.cshtml" />
+    <Content Include="Views\Product\DetectionItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1556,6 +1566,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512260800526_count.resx">
       <DependentUpon>201512260800526_count.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601051445389_ProductDectectionItem.resx">
+      <DependentUpon>201601051445389_ProductDectectionItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601051507147_ProductDectectionItemChamge.resx">
+      <DependentUpon>201601051507147_ProductDectectionItemChamge.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
