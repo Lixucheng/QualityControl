@@ -97,6 +97,18 @@ namespace QualityControl.Controllers
             {
                 return Content("错误操作");
             }
+
+            var p=JsonConvert.DeserializeObject<ProductCopy>(trade.Product);
+            //添加检测项目
+            var dlist = Db.ProductDectectionItems.Where(e => e.ProductId == p.Id).Select(a=>new DectectionItemModel
+                {
+                    Name=a.Name,Range=a.Range,Denney=a.Denney
+                }
+            ).ToList();
+
+            WriteDetectionItem(id, dlist);
+
+
             trade.Status = (int)EnumTradeStatus.ProductInfoChecked;
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
@@ -227,7 +239,7 @@ namespace QualityControl.Controllers
         public ActionResult Trades()
         {
             return View(Db.Trades
-                .Where(a => a.Status == (int)EnumTradeStatus.EnsureContract).Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo
+                .Where(a => a.Status == (int)EnumTradeStatus.BatchSelected).Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo
             {
                 Trade = trade,
                 User = user
@@ -679,6 +691,33 @@ namespace QualityControl.Controllers
             return "ok";
         }
 
+
+        /// <summary>
+        /// 确定检测项目
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public bool WriteDetectionItem(long id, List<DectectionItemModel> items)
+        {
+            var trade = Db.Trades.Find(id);
+            if (trade == null)
+            {
+                return false;
+            }
+            var userId = User.Identity.GetUserId();
+            var user = UserManager.FindById(userId);
+            if (!(trade.Status == (int)EnumTradeStatus.Create && trade.ManufacturerId == userId)
+                && !(trade.Status == (int)EnumTradeStatus.ProductInfoChecked && user.Type == (int)EnumUserType.Controller))
+            {
+                return false;
+            }
+            trade.DetectionItems = JsonConvert.SerializeObject(items);
+            Db.Entry(trade).State = EntityState.Modified;
+            Db.SaveChanges();
+            return true;
+        }
+
         public int LevelCount(string level)
         {
             switch (level)
@@ -726,5 +765,7 @@ namespace QualityControl.Controllers
             ViewBag.list = list;
             return View();
         }
+
+
     }
 }

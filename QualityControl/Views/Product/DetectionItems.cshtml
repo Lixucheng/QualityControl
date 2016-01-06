@@ -59,7 +59,7 @@
         }
         </tbody>
     </table>
-    <button class="ui button submit-btn">确认提交</button>
+
 
 </div>
 
@@ -120,6 +120,9 @@
             var $tbody = $('table tbody');
             $tbody.click(function (event) {
                 var $t = $(event.target);
+                if (!$t.is('.trash.icon')) {
+                    return;
+                }
                 var id = $t.data('id');
                 $.ajax({
                     url: '/Product/RemoveDetectionItem',
