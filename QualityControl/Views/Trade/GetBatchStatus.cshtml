@@ -3,10 +3,9 @@
     <link href="~/Scripts/bower_components/semantic/dist/semantic.min.css" rel="stylesheet" />
 
     <style>
-        
-
         body {
             background-image: url("/Image/Android-L-Wallpapers.jpg") !important;
+            background-size: 100%;
         }
 
         .am-padding {
@@ -50,13 +49,19 @@
                 </div>
             </div>
         }*@
-   
+
     <div class="am-margin am-padding container ">
         <div class="ui raised segment">
             <div class="am-cf">
                 <a class="ui red ribbon label zh  fw-normal-force">产品信息</a>
-                <span>@ViewBag.p.Name</span>
 
+
+            </div>
+          
+
+            <div class="ui main text container">
+                <h1 class="ui header zh-cn" style="text-align:center">@ViewBag.p.Name</h1>
+               
             </div>
             <p class="ui divider"></p>
             <div class="ui divided selection list">
@@ -70,12 +75,9 @@
                 </a>
                 <a class="item">
                     <div class="ui horizontal grey label zh fw-normal-force">生产日期</div>
-                    @ViewBag.bdate.ToShortDateString();
+                    @ViewBag.bdate.ToShortDateString()
                 </a>
-                <a class="item">
-                    <div class="ui horizontal grey label zh fw-normal-force">生产日期</div>
-                    @ViewBag.bdate.ToShortDateString();
-                </a>
+
 
 
                 <a class="item">
