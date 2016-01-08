@@ -413,6 +413,10 @@ namespace QualityControl.Controllers
                 ViewBag.Text = "正在检测该产品";
                 ViewBag.s = 2;
             }
+            ViewBag.p = JsonConvert.DeserializeObject<ProductCopy>(b.Trade.Product);
+            ViewBag.m = Db.Companies.First(e => e.UserId == b.Trade.ManufacturerId);
+            ViewBag.bdate = b.ProductionDate;
+            ViewBag.bname = b.BatchName;
             return View();
         }
 

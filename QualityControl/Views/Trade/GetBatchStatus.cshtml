@@ -1,13 +1,20 @@
 ﻿
 @section head{
-<link href="~/Scripts/bower_components/semantic/dist/semantic.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/semantic/dist/semantic.min.css" rel="stylesheet" />
 
     <style>
-        .message{
-            margin-top:200px !important;
+        
+
+        body {
+            background-image: url("/Image/Android-L-Wallpapers.jpg") !important;
         }
-        body{
-            background-image:url("/Image/Android-L-Wallpapers.jpg") !important;
+
+        .am-padding {
+            /* padding: 1.6rem; */
+        }
+
+        .am-margin {
+            margin: 1.6rem;
         }
     </style>
 }
@@ -16,33 +23,112 @@
 
     @*<button class="ui labeled icon green button"><i class="checkmark icon"></i> @ViewBag.Text </button>*@
 
-    @if (ViewBag.s == 1)
-    {
-        <div class="ui icon success message" style="text-align:center;background-color: rgba(255, 255, 255 ,0.6);">
-            <i class="checkmark icon"></i>
-            <div class="content success">
-                <p>@ViewBag.Text</p>
+    @*@if (ViewBag.s == 1)
+        {
+            <div class="ui icon success message" style="text-align:center;background-color: rgba(255, 255, 255 ,0.6);">
+                <i class="checkmark icon"></i>
+                <div class="content success">
+                    <p>@ViewBag.Text</p>
+                </div>
+            </div>
+        }
+        else if (ViewBag.s == 0)
+        {
+            <div class="ui icon negative  message" style="text-align:center;background-color: rgba(255, 255, 255 ,0.6);">
+                <i class="remove icon"></i>
+                <div class="content negative">
+                    <p>@ViewBag.Text</p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ui icon yellow  message" style="text-align:center;background-color: rgba(255, 255, 255 ,0.6);">
+                <i class="notched circle loading icon"></i>
+                <div class="content yellow">
+                    <p>@ViewBag.Text</p>
+                </div>
+            </div>
+        }*@
+   
+    <div class="am-margin am-padding container ">
+        <div class="ui raised segment">
+            <div class="am-cf">
+                <a class="ui red ribbon label zh  fw-normal-force">产品信息</a>
+                <span>@ViewBag.p.Name</span>
+
+            </div>
+            <p class="ui divider"></p>
+            <div class="ui divided selection list">
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">生产商</div>
+                    @ViewBag.m.Name
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">生产批次</div>
+                    @ViewBag.bname
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">生产日期</div>
+                    @ViewBag.bdate.ToShortDateString();
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">生产日期</div>
+                    @ViewBag.bdate.ToShortDateString();
+                </a>
+
+
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">生产许可证编号</div>
+                    @ViewBag.p.ProductionCertificateNo
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">执行标准</div>
+                    @ViewBag.p.Standard
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">颁发日期</div>
+                    @ViewBag.p.GetDate
+                </a>
+
+
+            </div>
+            <div class="ui divider"></div>
+            <div class="am-cf">
+                @if (ViewBag.s == 1)
+                {
+                    <div class="ui icon success message" style="text-align:center;background-color: rgba(255, 255, 255 ,0.6);">
+                        <i class="checkmark icon"></i>
+                        <div class="content success">
+                            <p>@ViewBag.Text</p>
+                        </div>
+                    </div>
+                }
+                else if (ViewBag.s == 0)
+                {
+                    <div class="ui icon negative  message" style="text-align:center;background-color: rgba(255, 255, 255 ,0.6);">
+                        <i class="remove icon"></i>
+                        <div class="content negative">
+                            <p>@ViewBag.Text</p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="ui icon yellow  message" style="text-align:center;background-color: rgba(255, 255, 255 ,0.6);">
+                        <i class="notched circle loading icon"></i>
+                        <div class="content yellow">
+                            <p>@ViewBag.Text</p>
+                        </div>
+                    </div>
+                }
+
             </div>
         </div>
-    }
-    else if (ViewBag.s == 0)
-    {
-        <div class="ui icon negative  message" style="text-align:center;background-color: rgba(255, 255, 255 ,0.6);">
-            <i class="remove icon"></i>
-            <div class="content negative">
-                <p>@ViewBag.Text</p>
-            </div>
-        </div>
-    }
-    else
-    {
-        <div class="ui icon yellow  message" style="text-align:center;background-color: rgba(255, 255, 255 ,0.6);">
-            <i class="notched circle loading icon"></i>
-            <div class="content yellow">
-                <p>@ViewBag.Text</p>
-            </div>
-        </div>
-    }
+    </div>
+
+
+
 
     <script src="~/Scripts/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="~/Scripts/bower_components/semantic/dist/semantic.min.js"></script>
