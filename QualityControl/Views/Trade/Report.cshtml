@@ -10,6 +10,7 @@
 @model Trade
 @{
     var p = JsonConvert.DeserializeObject<ProductCopy>(Model.Product);
+    var files = JsonConvert.DeserializeObject<JArray>(Model.Result.Files);
 }
 <div class="am-margin am-padding container">
     <h1 class="am-text-center">检测报告</h1>
@@ -27,7 +28,7 @@
     <p>7、 报告仅对来样负责，受检样品务必在收到本实验室报告一个月内领取，逾期不领者本实验室将自行处理。</p>
     <div class="ui divider"></div>
     <h2 class="am-text-center">检测报告明细</h2>
-    
+
     @foreach (var b in Model.Batches)
     {
         <div class="ui  segments">
@@ -126,24 +127,24 @@
                 }
                 <table class="ui celled table">
                     <thead>
-                    <tr>
-                        <th>检测项目</th>
-                        <th>结果</th>
-                        @if (Model.Status == (int)EnumTradeStatus.Finish)
+                        <tr>
+                            <th>检测项目</th>
+                            <th>结果</th>
+                            @if (Model.Status == (int)EnumTradeStatus.Finish)
                         {
-                            <th>是否合格</th>
+                        <th>是否合格</th>
                         }
-                    </tr>
+                        </tr>
                     </thead>
                     <tbody>
-                    @foreach (var item in arr)
+                        @foreach (var item in arr)
                     {
                         <tr>
                             <td>@item.Key</td>
                             <td>@item.Value</td>
                             @if (Model.Status == (int)EnumTradeStatus.Finish)
                             {
-                                <td>@(b.Report.DectectionItemResults ? "是" : "否")</td>
+                            <td>@(b.Report.DectectionItemResults ? "是" : "否")</td>
                             }
                         </tr>
                     }
@@ -152,31 +153,48 @@
 
                 @if (ViewBag.User.Type == (int) EnumUserType.Controller && Model.Status != (int)EnumTradeStatus.Finish)
                 {
-                    <div class="ui form check-form">
-                        <div class="inline fields">
-                            <label style="color: #ff0000;">该批次是否通过审核</label>
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <input type="radio" name="CheckResult-@b.Id" data-id="@b.Id" value="true">
-                                    <label>合格</label>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <input type="radio" name="CheckResult" data-id="@b.Id"  value="false">
-                                    <label>不合格</label>
-                                </div>
+                <div class="ui form check-form">
+                    <div class="inline fields">
+                        <label style="color: #ff0000;">该批次是否通过审核</label>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="CheckResult-@b.Id" data-id="@b.Id" value="true">
+                                <label>合格</label>
                             </div>
                         </div>
-                    
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="CheckResult" data-id="@b.Id" value="false">
+                                <label>不合格</label>
+                            </div>
+                        </div>
                     </div>
+
+                </div>
                 }
-                
+
             </div>
         </div>
-    }
 
-    @if(ViewBag.User.Type == (int)EnumUserType.Controller && Model.Status != (int)EnumTradeStatus.Finish)
+
+
+        <table class="ui celled table file-table">
+            <thead>
+                <tr>
+                    <th>文件名</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var file in files)
+                {
+
+                <td><a href="@(file["url"])" download="">@(file["name"])</a></td>
+                }
+                </tbody>
+            </table>
+                    }
+
+    @if (ViewBag.User.Type == (int)EnumUserType.Controller && Model.Status != (int)EnumTradeStatus.Finish)
     {
         <button class="ui primary button submit-btn">提交审核</button>
     }
@@ -185,13 +203,13 @@
 
 @section scripts{
     <script>
-        $(function() {
+        $(function () {
             var $forms = $('.check-form');
 
-            $('.submit-btn').click(function() {
+            $('.submit-btn').click(function () {
                 var data = {};
                 var flag = true;
-                $forms.each(function() {
+                $forms.each(function () {
                     var $this = $(this);
                     var $i = $this.find('input[type=radio]:checked');
                     var val = $i.val();
@@ -212,10 +230,10 @@
                         id: '@Model.Id',
                         data: JSON.stringify(data)
                     },
-                    success: function() {
+                    success: function () {
                         window.location = "/Trade/tradeDetail/@Model.Id";
                     },
-                    error: function() {
+                    error: function () {
                         alert('操作失败，请刷新重试');
                     }
                 });

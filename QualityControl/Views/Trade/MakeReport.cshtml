@@ -504,9 +504,9 @@
                 $fileTable.append('<tr><td>' + file.name + '</td><td><i class="trash icon" data-id="' + file.id + '"></i></td></tr>');
             });
 
-            uploader.on('uploadAccept', function (file, ret) {
+            uploader.on('uploadSuccess', function (file, ret) {
                 for (var i in files) {
-                    if (files[i].id == file.id) {
+                    if (files[i].id == file.id) {  
                         files[i].url = ret.file_path;
                         break;
                     }
@@ -555,9 +555,9 @@
                         alert('请为每个批次制作报告信息，有缺漏，请补充!');
                         return;
                     }
-                    if (preventSubmit === 1) {
-                        return;
-                    }
+                    //if (preventSubmit === 1) {
+                    //    return;
+                    //}
                     preventSubmit = 1;
                     uploader.upload();
                 }

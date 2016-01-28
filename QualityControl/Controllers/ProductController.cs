@@ -734,7 +734,7 @@ namespace QualityControl.Controllers
             var p = Db.ProductBatchs.Find(id);
             Db.ProductBatchs.Remove(p);
             Db.SaveChanges();
-            return Redirect("./BaseProductBatch?pid=" + pid);
+            return Redirect("./ProductBatch?pid=" + pid);
         }
 
 

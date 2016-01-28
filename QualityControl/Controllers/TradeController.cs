@@ -32,7 +32,7 @@ namespace QualityControl.Controllers
         /// <returns></returns>
         public ActionResult ChooseProduct(string key = "", long ProductTypeId = 0)
         {
-            var x = new List<Product>();
+            List<Product> x = null;
             if (ProductTypeId != 0)
             {
                 var t = Db.ThirdProductTypes.Find(ProductTypeId);
@@ -40,13 +40,17 @@ namespace QualityControl.Controllers
                 {
                     throw new Exception("访问错误");
                 }
-                x = t.Products;
+                x = t.Products.Where(e => e.Status != EnumStatus.Del).ToList();
                 ViewBag.list = x;
-                return View();
             }
-            if (!string.IsNullOrEmpty(key))
-                x = Db.Products.Where(e => e.Name.Contains(key)).ToList();
-            x = Db.Products.Where(e=>e.Status!=EnumStatus.Del).ToList();
+            else if (!string.IsNullOrEmpty(key))
+            {
+                x = Db.Products.Where(e => e.Name.Contains(key) && e.Status != EnumStatus.Del).ToList();
+            }
+            else
+            {
+                x = Db.Products.Where(e => e.Status != EnumStatus.Del).ToList();
+            }
             ViewBag.list = x;
             return View();
         }

@@ -122,15 +122,15 @@
             <input name="pid" value="@ViewBag.tid" style="display: none">
             <div class="field">
                 <label>名称(只能输入数字,字母或下划线)</label>
-                <input type="text" onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" name="BatchName" placeholder="名称">
+                <input type="text" onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" name="BatchName" placeholder="名称" required>
             </div>
             <div class="field">
                 <label>数量</label>
-                <input type="number" name="Count" placeholder="数量">
+                <input type="number" name="Count" placeholder="数量" required>
             </div>
             <div class="field">
                 <label>生产日期</label>
-                <input type="date" name="ProductionDate" placeholder=""  value="">
+                <input type="date" name="ProductionDate" placeholder=""  value="" required>
             </div>
             <div class="ui error message"></div>
         </form>
@@ -229,6 +229,15 @@
                             {
                                 type: 'empty',
                                 prompt: '请输入数量！'
+                            }
+                        ]
+                    },
+                    ProductionDate: {
+                        identifier: 'ProductionDate',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入日期！'
                             }
                         ]
                     }
