@@ -1,27 +1,24 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Verification";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @model IEnumerable<QualityControl.Controllers.SGSController.v>
 
 @section head{
-<link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet"/>
     <style>
-    .main-container {
-        background-color: #FFFFFF;
-        box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
-        margin: 0em auto;
-        padding: 2em 2em 7em;
-        z-index: 1;
-    }
-    th{
-        text-align:center;
-    }
-    .mycontent {
-        margin-bottom: 30px;
-    }
-</style>}
+        .main-container {
+            background-color: #FFFFFF;
+            box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05);
+            margin: 0em auto;
+            padding: 2em 2em 7em;
+            z-index: 1;
+        }
+
+        th { text-align: center; }
+
+        .mycontent { margin-bottom: 30px; }
+    </style>}
 <div class="main-container">
 
     <h2 class="ui dividing header">
@@ -30,58 +27,56 @@
     </h2>
 
     <div align="center">
-        <div class="ui form" >
+        <div class="ui form">
 
-                <div class="  inline field">
-                    <label>输入验证码</label>
-                    <input style="width:50%" id="inp"  type="text" placeholder="验证码">
-                    <div class="ui button green" id="btn"> 确定</div>
-                </div>
-                
+            <div class="  inline field">
+                <label>输入验证码</label>
+                <input style="width: 50%" id="inp" type="text" placeholder="验证码">
+                <div class="ui button green" id="btn"> 确定</div>
+            </div>
 
-          
-          </div>
-    
+
+        </div>
+
 
     </div>
 
-    <table class="ui  celled  table" style="margin-top:30px">
+    <table class="ui  celled  table" style="margin-top: 30px">
         <thead class="">
-            <tr>
-                <th>序列码</th>
-                <th>验证码</th>
-                <th  width="200px" >验证结果</th>
-               
-            </tr>
+        <tr>
+            <th>序列码</th>
+            <th>验证码</th>
+            <th width="200px">验证结果</th>
+
+        </tr>
         </thead>
         <tbody>
 
-            @if (Model.Count() == 0)
+        @if (Model.Count() == 0)
+        {
+        }
+        else
+        {
+            foreach (var Tempx in Model)
             {
+                <tr>
+                    <td>@Tempx.Info.QrName</td>
+                    <td>@Tempx.Info.IdCode</td>
+                    <td>@Tempx.pass</td>
+                </tr>
             }
-            else
-            {
-                foreach (var Tempx in Model)
-                {
-                    
-                    <tr>
-                        <td>@Tempx.Info.QrName</td>
-                        <td>@Tempx.Info.IdCode</td>
-                        <td>@Tempx.pass</td>
-                    </tr>
-                }
-            }
+        }
 
         </tbody>
         <tfoot>
-            <tr></tr>
+        <tr></tr>
         </tfoot>
     </table>
 </div>
 @section scripts{
-<script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('table').DataTable({
                 "language": {
                     "sProcessing": "处理中...",
@@ -110,52 +105,45 @@
                 },
                 "bLengthChange": false,
                 searching: false,
-                
+
             });
-           
+
         });
 
-        $("#btn").click(function () {
+        $("#btn").click(function() {
 
             $(".dataTables_empty").remove();
 
             var v = $("#inp").val();
-            if(v=="")
-            {
+            if (v == "") {
                 alert("请输入验证码");
-            }
-            else {
+            } else {
                 $.ajax({
-
                     type: 'POST',
 
                     url: "/SGS/Check",
 
-                    data: {id:@ViewBag.tid,idcode:v},
+                    data: { id: @ViewBag.tid, idcode: v },
 
-                    success: function(res){
-                     
-                        if(res==3)
-                        {
+                    success: function(res) {
+
+                        if (res == 3) {
                             alert("此样品验证已通过!请在下面表格中查看!");
-                        }
-                        else{
-                            var s="";
-                            if(res==1)
-                            {
+                        } else {
+                            var s = "";
+                            if (res == 1) {
                                 location.reload();
                                 //s="<td>通过</td>"
                                 //var id="<td>"+res.num+"</td>";
                                 //var y="<td>"+v+"</td>";
                                 //var content="<tr>"+id+y+s+"</tr>";
                                 //$("tbody").append(content);
-                            }
-                            else{
+                            } else {
                                 alert("验证码错误!");
                             }
                         }
-                       
-                      
+
+
                     },
 
                     dataType: "text"
@@ -166,4 +154,4 @@
     </script>
 
 
-    }
+}

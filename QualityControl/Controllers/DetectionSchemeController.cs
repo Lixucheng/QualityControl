@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
@@ -9,8 +10,6 @@ using QualityControl.Db;
 using QualityControl.Enum;
 using QualityControl.Models;
 using QualityControl.Models.Adapters;
-using Newtonsoft.Json.Linq;
-using System.Text.RegularExpressions;
 
 namespace QualityControl.Controllers
 {
@@ -59,13 +58,13 @@ namespace QualityControl.Controllers
                 {
                     MaxQuote = 0,
                     MinQuote = 0,
-                    MaxTime =0,
-                    MinTime =0,
+                    MaxTime = 0,
+                    MinTime = 0,
                     Status = EnumDetectionSchemeStatus.未发送,
                     Trade = trade
                 };
                 Db.DetectionSchemes.Add(x);
-                
+
                 Db.SaveChanges();
 
 
@@ -77,18 +76,18 @@ namespace QualityControl.Controllers
 
                 ViewBag.model = x;
                 ViewBag.list = list;
-                if(trade.DetectionItems==null)
+                if (trade.DetectionItems == null)
                 {
                     trade.DetectionItems = "[]";
                 }
-                ViewBag.detectionlist= JsonConvert.DeserializeObject<List<DectectionItemModel>>(trade.DetectionItems);
+                ViewBag.detectionlist = JsonConvert.DeserializeObject<List<DectectionItemModel>>(trade.DetectionItems);
             }
             else if (x.Status == EnumDetectionSchemeStatus.未发送)
             {
                 var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
                 var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
                 ViewBag.productname = pro.Name;
-                ViewBag.company = company.Name; 
+                ViewBag.company = company.Name;
                 ViewBag.model = x;
                 ViewBag.list = trade.Batches;
                 ViewBag.detectionlist = JsonConvert.DeserializeObject<List<DectectionItemModel>>(trade.DetectionItems);
@@ -112,23 +111,23 @@ namespace QualityControl.Controllers
 
         public JsonResult GetSgsList(string l)
         {
-
             var llist = JsonConvert.DeserializeObject<List<string>>(l);
             var orderlist = llist.OrderBy(a => a).ToList();
             var sgslist = new List<sgsmodel>();
             var s = "";
-            orderlist.ForEach(e => {
+            orderlist.ForEach(e =>
+            {
                 s += ".*";
                 s += e;
             });
             s += ".*";
-            var r =new  Regex(s);
-            var list = Db.SGSs.Where(e=>e.Status!=EnumStatus.Del).ToList();
+            var r = new Regex(s);
+            var list = Db.SGSs.Where(e => e.Status != EnumStatus.Del).ToList();
             list.ForEach(e =>
             {
-                if(r.IsMatch(e.DectectionItemString))
+                if (r.IsMatch(e.DectectionItemString))
                 {
-                    sgslist.Add(new sgsmodel { id=e.Id,name=e.Name});
+                    sgslist.Add(new sgsmodel {id = e.Id, name = e.Name});
                 }
             });
 
@@ -136,7 +135,7 @@ namespace QualityControl.Controllers
         }
 
         /// <summary>
-        /// 获取能检测的项目信息
+        ///     获取能检测的项目信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -155,13 +154,13 @@ namespace QualityControl.Controllers
             ViewBag.sgs = sgsname;
             ViewBag.sgsid = Db.SGSs.FirstOrDefault(e => e.UserId == trade.SgsUserId).Id;
             var x =
-                   trade.Schemes.FirstOrDefault(
-                       e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存);
+                trade.Schemes.FirstOrDefault(
+                    e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存);
             var pro = JsonConvert.DeserializeObject<ProductCopy>(x.Trade.Product);
             var company = Db.Companies.FirstOrDefault(e => e.UserId == pro.UserId);
             ViewBag.productname = pro.Name;
             ViewBag.company = company.Name;
-            ViewBag.schemelist =JsonConvert.DeserializeObject<List<string>>(trade.RealDetectionTtems);
+            ViewBag.schemelist = JsonConvert.DeserializeObject<List<string>>(trade.RealDetectionTtems);
             var s = x.Level;
             var l = JsonConvert.DeserializeObject<Level>(s);
             ViewBag.l = l;
@@ -182,10 +181,8 @@ namespace QualityControl.Controllers
         {
             var r = Db.Trades.Find(id);
             var b = r.Batches;
-            var levelconvert = new ConvertLevel();    
-            b.ForEach(e => {
-                e.Level = levelconvert.GetLevel(e.Count, s2);
-            });
+            var levelconvert = new ConvertLevel();
+            b.ForEach(e => { e.Level = levelconvert.GetLevel(e.Count, s2); });
             Db.SaveChanges();
             return true;
         }
@@ -207,7 +204,7 @@ namespace QualityControl.Controllers
             {
                 return Redirect("SeeContract?tradeid=" + tradeid);
             }
-            
+
 
             var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已发送待双方确定);
             if (x == null)
@@ -217,7 +214,6 @@ namespace QualityControl.Controllers
             }
             else
             {
-
                 ///判断自己是否签过
                 var cc = x.Contracts.Count(e => e.Status == EnumContractStatus.已签定 && e.UserId == userid);
                 if (cc > 0)
@@ -242,7 +238,7 @@ namespace QualityControl.Controllers
                 {
                     throw new Exception("没有待确认合同！");
                 }
-               
+
 
                 var haveAllreadysend =
                     detectionscheme.Contracts.FirstOrDefault(
@@ -292,7 +288,9 @@ namespace QualityControl.Controllers
         {
             var userid = User.Identity.GetUserId();
             var trade = Db.Trades.Find(tradeid);
-            var x = trade.Schemes.FirstOrDefault(e => e.Status == EnumDetectionSchemeStatus.已确定|| e.Status == EnumDetectionSchemeStatus.已发送待双方确定);
+            var x =
+                trade.Schemes.FirstOrDefault(
+                    e => e.Status == EnumDetectionSchemeStatus.已确定 || e.Status == EnumDetectionSchemeStatus.已发送待双方确定);
 
             var usernow = UserManager.FindById(userid);
             ViewBag.u = usernow.Type == (int) EnumUserType.TestingOrg ? 1 : 0;
@@ -323,12 +321,11 @@ namespace QualityControl.Controllers
         /// <param name="sgsid"></param>
         /// <returns></returns>
         public JsonResult SendDetectionScheme(long tradeid, double quser, double qother, int time, int l1, int l2,
-             long sgsid, string sgsitems)
+            long sgsid, string sgsitems)
         {
-           
             var trade = Db.Trades.Find(tradeid);
             var sgsuserid = Db.SGSs.Find(sgsid).UserId;
-            trade.Status = (int)EnumTradeStatus.AlreadyApply;
+            trade.Status = (int) EnumTradeStatus.AlreadyApply;
             trade.SgsUserId = sgsuserid;
             trade.RealDetectionTtems = sgsitems;
             Db.SaveChanges();
@@ -341,7 +338,7 @@ namespace QualityControl.Controllers
             x.Status = EnumDetectionSchemeStatus.已发送待双方确定;
             Db.SaveChanges();
 
-            
+
             SetLevel(tradeid, l2);
             //发送站内信息
             SendMessage(trade.UserId, "合同已发送，请查看！");
@@ -350,7 +347,6 @@ namespace QualityControl.Controllers
             return Json(1);
         }
 
-     
 
         /// <summary>
         ///     签合同
@@ -454,9 +450,8 @@ namespace QualityControl.Controllers
                 {
                     var u = UserManager.FindById(e.UserId);
                     if (u.Type == (int) EnumUserType.TestingOrg)
-                        return new ModifyWithName { Modify = e.Modify, User = "检测中心（" + u.UserName + ")" };
+                        return new ModifyWithName {Modify = e.Modify, User = "检测中心（" + u.UserName + ")"};
                     return new ModifyWithName {Modify = e.Modify, User = "用户（" + u.UserName + ")"};
-                  
                 }).ToList();
 
                 ViewBag.mlist = modify;
@@ -593,7 +588,7 @@ namespace QualityControl.Controllers
             var sysid = trade.SgsUserId;
 
             var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user.Id==trade.UserId)
+            if (user.Id == trade.UserId)
             {
                 c.FirstParty = user.UserName;
                 c.SecondParty = Db.SGSs.FirstOrDefault(e => e.UserId == sysid).Name;
@@ -730,7 +725,5 @@ namespace QualityControl.Controllers
             public long id;
             public string name;
         }
-
-        
     }
 }

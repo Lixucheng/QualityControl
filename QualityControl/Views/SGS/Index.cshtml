@@ -3,12 +3,10 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 @using QualityControl.Db
 @using QualityControl.Enum
 @model QualityControl.Db.SGS
-@using Newtonsoft.Json.Linq;
-@using Newtonsoft.Json;
-@using System.Linq;
 
 <div class="am-margin am-padding container ">
 
@@ -111,15 +109,17 @@
 
     </div>
 
-    <br />
+    <br/>
     <div class=" six wide field">
         <div class="am-text-center ui segment">
-            <div  class="ui red statistic">
-                <div class="value"><i class="at icon"></i> @ViewBag.a</div>
+            <div class="ui red statistic">
+                <div class="value">
+                    <i class="at icon"></i> @ViewBag.a</div>
                 <div class="label">已完成管控</div>
             </div>
-            <div  class="ui orange statistic">
-                <div class="value"><i class="spinner icon"></i> @ViewBag.i</div>
+            <div class="ui orange statistic">
+                <div class="value">
+                    <i class="spinner icon"></i> @ViewBag.i</div>
                 <div class="label">正在进行中的合同</div>
             </div>
 
@@ -127,8 +127,7 @@
     </div>
 
 
-
-    <br />
+    <br/>
     <div class="ui container">
         <div class="row">
             <div class="column">
@@ -139,8 +138,8 @@
                             <div class="image">
                                 @{
                                     var list = ViewBag.list as List<Product>;
-                                    var jarray = (JArray)JsonConvert.DeserializeObject(list.ElementAt(0).Image);
-                                    string ja1a = jarray[0].ToString();
+                                    var jarray = (JArray) JsonConvert.DeserializeObject(list.ElementAt(0).Image);
+                                    var ja1a = jarray[0].ToString();
                                 }
                                 <img src="@ja1a">
                             </div>
@@ -151,8 +150,8 @@
                         <div class="card">
                             <div class="image">
                                 @{
-                                    var jarray1 = (JArray)JsonConvert.DeserializeObject(list.ElementAt(1).Image);
-                                    string ja1a1 = jarray1[0].ToString();
+                                    var jarray1 = (JArray) JsonConvert.DeserializeObject(list.ElementAt(1).Image);
+                                    var ja1a1 = jarray1[0].ToString();
                                 }
                                 <img src="@ja1a1">
                             </div>
@@ -163,8 +162,8 @@
                         <div class="card">
                             <div class="image">
                                 @{
-                                    var jarray2 = (JArray)JsonConvert.DeserializeObject(list.ElementAt(2).Image);
-                                    string ja1a2 = jarray2[0].ToString();
+                                    var jarray2 = (JArray) JsonConvert.DeserializeObject(list.ElementAt(2).Image);
+                                    var ja1a2 = jarray2[0].ToString();
                                 }
                                 <img src="@ja1a2">
                             </div>

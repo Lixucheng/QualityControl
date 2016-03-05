@@ -1,21 +1,16 @@
-﻿using System.Web.Mvc;
-using QualityControl.Db;
-using System;
-using Microsoft.AspNet.Identity;
-using QualityControl.Enum;
-using System.Data.Entity;
+﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
-using System.Linq;
-using QualityControl.Models;
+using QualityControl.Db;
+using QualityControl.Enum;
 
 namespace QualityControl.Controllers
 {
     public class ManufacturerController : BaseController
     {
-
-
-      
         public ManufacturerController()
         {
         }
@@ -44,17 +39,17 @@ namespace QualityControl.Controllers
         public ActionResult Uploader(long id)
         {
             var trade = Db.Trades.Find(id);
-            if(trade==null)
+            if (trade == null)
             {
                 throw new Exception("管控合同不存在！");
             }
-            if(trade.Status!=(int)EnumTradeStatus.FinishMakeQrCode)
+            if (trade.Status != (int) EnumTradeStatus.FinishMakeQrCode)
             {
                 throw new Exception("访问错误！");
             }
-            var uid=User.Identity.GetUserId();
+            var uid = User.Identity.GetUserId();
             var user = UserManager.FindById(uid);
-            if(user.Type!=(int)EnumUserType.Producer)
+            if (user.Type != (int) EnumUserType.Producer)
             {
                 throw new Exception("您无权查看！");
             }
@@ -73,9 +68,9 @@ namespace QualityControl.Controllers
 
             var files = JsonConvert.SerializeObject(list);
             trade.Files = files;
-            trade.Status = (int)EnumTradeStatus.SampleStart;
+            trade.Status = (int) EnumTradeStatus.SampleStart;
             Db.SaveChanges();
-            return Redirect("/Trade/TradeDetail/"+id);
+            return Redirect("/Trade/TradeDetail/" + id);
         }
 
         public bool Finish(long id)
@@ -87,9 +82,9 @@ namespace QualityControl.Controllers
             {
                 return false;
             }
-            if (user.Type == (int)EnumUserType.Controller)
+            if (user.Type == (int) EnumUserType.Controller)
             {
-                trade.Status = (int)EnumTradeStatus.SampleStart;
+                trade.Status = (int) EnumTradeStatus.SampleStart;
             }
             else
             {

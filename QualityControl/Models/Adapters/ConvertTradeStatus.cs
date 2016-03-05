@@ -32,41 +32,38 @@ namespace QualityControl.Models.Adapters
                 {
                     return "合同已签订";
                 }
-                case (int)EnumTradeStatus.SampleStart:
+                case (int) EnumTradeStatus.SampleStart:
                 {
                     return "等待抽样";
                 }
-                case (int)EnumTradeStatus.AlreadyApply:
+                case (int) EnumTradeStatus.AlreadyApply:
                 {
                     return "合同确认中";
                 }
-                case (int)EnumTradeStatus.FinishMakeQrCode:
-                    {
-                        return "等待生产商接收序列码";
-                    }
-                case (int)EnumTradeStatus.BatchSelected:
-                    {
-                        return "批次已选择，待制作检测方案";
-                    }
-                case (int)EnumTradeStatus.ProductInfoChecked:
-                    {
-                        return "生产商已完善信息，等待控制中心审核";
-                    }
-                case (int)EnumTradeStatus.ProductInfoConfirmed:
-                    {
-                        return "控制中心审核完毕，等待生产商添加批次信息";
-                    }
-                case (int)EnumTradeStatus.SampleReceived:
-                    {
-                        return "抽样已经完成";
-                    }
-                case (int)EnumTradeStatus.SgsReceivedSample:
-                    {
-                        return "等待检测中心接受样品";
-                    }
-
-
-
+                case (int) EnumTradeStatus.FinishMakeQrCode:
+                {
+                    return "等待生产商接收序列码";
+                }
+                case (int) EnumTradeStatus.BatchSelected:
+                {
+                    return "批次已选择，待制作检测方案";
+                }
+                case (int) EnumTradeStatus.ProductInfoChecked:
+                {
+                    return "生产商已完善信息，等待控制中心审核";
+                }
+                case (int) EnumTradeStatus.ProductInfoConfirmed:
+                {
+                    return "控制中心审核完毕，等待生产商添加批次信息";
+                }
+                case (int) EnumTradeStatus.SampleReceived:
+                {
+                    return "抽样已经完成";
+                }
+                case (int) EnumTradeStatus.SgsReceivedSample:
+                {
+                    return "等待检测中心接受样品";
+                }
             }
             return "";
         }

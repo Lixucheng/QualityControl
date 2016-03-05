@@ -62,7 +62,7 @@
 
                 <div class="two fields">
                     <div class="field">
-                        <label>传    真</label>
+                        <label>传 真</label>
                         <input placeholder="传    真" name="FAX" type="text" value="@(Model != null ? Model.FAX : "")">
                     </div>
                     <div class="field">
@@ -88,7 +88,7 @@
 
                     <div class="field">
                         <label>固定资产（万元）</label>
-                        <input placeholder="固定资产（万元）" name="FixedAsset" type="number" min="0" min="0" value='@(Model?.FixedAsset?? "")'>
+                        <input placeholder="固定资产（万元）" name="FixedAsset" type="number" min="0" min="0" value='@(Model?.FixedAsset ?? "")'>
                     </div>
 
                     <div class="field">
@@ -112,7 +112,7 @@
                 <div class="two fields">
                     <div class="field">
                         <label>年缴税金额</label>
-                        <input placeholder="年缴税金额" name="TaxPerYear" type="number" min="0" value='@(Model?.TaxPerYear?? "")'>
+                        <input placeholder="年缴税金额" name="TaxPerYear" type="number" min="0" value='@(Model?.TaxPerYear ?? "")'>
                     </div>
 
                     <div class="field">

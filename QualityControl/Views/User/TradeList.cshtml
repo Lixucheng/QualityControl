@@ -34,7 +34,7 @@
         <thead class="">
         <tr>
             <th>合同号</th>
-            @if (ViewBag.Type == (int)EnumUserType.Controller)
+            @if (ViewBag.Type == (int) EnumUserType.Controller)
             {
                 <th>用户信息</th>
                 <th>用户邮箱</th>
@@ -60,9 +60,9 @@
                 var s = ConvertTradeStatus.GetStatusName(tempx.Status);
                 <tr>
                     <td>@tempx.Id</td>
-                    @if (ViewBag.Type == (int)EnumUserType.Controller)
+                    @if (ViewBag.Type == (int) EnumUserType.Controller)
                     {
-                        var user = Singleton.Self.Db.Users.Find((tempx.UserId));
+                        var user = Singleton.Self.Db.Users.Find(tempx.UserId);
                         <td>@user.UserName</td>
                         <td>@user.Email</td>
                     }

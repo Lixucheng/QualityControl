@@ -2,12 +2,12 @@
     ViewBag.Title = "Trades";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-@model List<QualityControl.Models.Adapters.TradeInfo>
 @using QualityControl.Db
+@model List<QualityControl.Models.Adapters.TradeInfo>
 
 
 @section head{
-    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet"/>
 
     <style>
         .main-container {
@@ -18,13 +18,9 @@
             z-index: 1;
         }
 
-        .mycontent {
-            margin-bottom: 30px;
-        }
+        .mycontent { margin-bottom: 30px; }
 
-        table.dataTable.no-footer {
-            border-bottom: 1px solid rgba(34,36,38,.15) !important;
-        }
+        table.dataTable.no-footer { border-bottom: 1px solid rgba(34, 36, 38, .15) !important; }
     </style>
 }
 
@@ -33,44 +29,45 @@
 
     <table class="ui compact celled table">
         <thead>
-            <tr>
-                <th>合同号</th>
-                <th>用户名</th>
-                <th>用户邮箱</th>
-                <th>申请时间</th>
-                <th>操作</th>
-            </tr>
+        <tr>
+            <th>合同号</th>
+            <th>用户名</th>
+            <th>用户邮箱</th>
+            <th>申请时间</th>
+            <th>操作</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Trade.Id</td>
-                    <td>@item.User.UserName</td>
-                    <td>@item.User.Email</td>
-                    <td>@item.Trade.CeateTime.ToShortDateString()</td>
-                    <td>
-                        @{var s = item.Trade.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存&&e.Status!=EnumDetectionSchemeStatus.未发送);
-                            if (s == null)
-                            {
-                        <a target="_blank" href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button detail-btn">制作方案</a>
-                            }
-                            else if (s.Status == EnumDetectionSchemeStatus.修改中)
-                            {
-                        <a target="_blank" href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button red">审查修改</a>
-                            }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Trade.Id</td>
+                <td>@item.User.UserName</td>
+                <td>@item.User.Email</td>
+                <td>@item.Trade.CeateTime.ToShortDateString()</td>
+                <td>
+                    @{
+                        var s = item.Trade.Schemes.FirstOrDefault(e => e.Status != EnumDetectionSchemeStatus.修改完成留档保存 && e.Status != EnumDetectionSchemeStatus.未发送);
+                        if (s == null)
+                        {
+                            <a target="_blank" href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button detail-btn">制作方案</a>
+                        }
+                        else if (s.Status == EnumDetectionSchemeStatus.修改中)
+                        {
+                            <a target="_blank" href="/DetectionScheme/BuildDetectionScheme?tradeId=@item.Trade.Id" class="ui button red">审查修改</a>
+                        }
                         @*else if (s.Status == EnumDetectionSchemeStatus.已确定)
                             {
                                 <a href="/MakeQrCode/Index?tradeId=@item.Trade.Id" class="ui button green">制二维码</a>
                             }*@
-                            else
-                            {
-                        <a target="_blank" href="/DetectionScheme/SeeDetectionScheme?tradeId=@item.Trade.Id" class="ui button blue">查看方案</a>
-                            }
+                        else
+                        {
+                            <a target="_blank" href="/DetectionScheme/SeeDetectionScheme?tradeId=@item.Trade.Id" class="ui button blue">查看方案</a>
                         }
-                    </td>
-                </tr>
-                            }
+                    }
+                </td>
+            </tr>
+        }
         </tbody>
 
     </table>
@@ -82,7 +79,7 @@
     <script src="~/Scripts/bower_components/datatables/media/js/jquery.dataTables.js"></script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('table').DataTable({
                 "language": {
                     "sProcessing": "处理中...",

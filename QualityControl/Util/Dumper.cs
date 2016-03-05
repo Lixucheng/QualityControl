@@ -12,12 +12,12 @@ namespace QualityControl.Util
         {
             get
             {
-                return _basicTypes ?? (new List<string>
+                return _basicTypes ?? new List<string>
                 {
                     "Int64",
                     "String",
                     "Boolean"
-                });
+                };
             }
         }
 

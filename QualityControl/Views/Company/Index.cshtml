@@ -7,263 +7,263 @@
 @using QualityControl.Enum
 @model QualityControl.Db.Company
 <div class="am-margin am-padding container ">
-    <div class="verborder">
-        @if (Model != null)
-        {
-            <div class="ui raised segment">
-                <div class="am-cf">
-                    <a class="ui red ribbon label zh  fw-normal-force">企业信息</a>
-                    <span>@Model.Name</span>
-                    @if (Model.Status == EnumStatus.Unchecked)
-                    {
-                        <span class="ui type tag label teal am-fr">有更改在审核中</span>
-                    }
-                    else if (Model.Status == EnumStatus.FirstUncheked)
-                    {
-                        <span class="ui type tag label teal am-fr">企业信息尚未通过</span>
-                    }
-                </div>
-                <p class="ui divider"></p>
-                <div class="ui divided selection list">
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
-                        @Model.CorporationName
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">注册时间</div>
-                        @Model.EstablishedTime.ToShortDateString()
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
-                        @Model.Address
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
-                        @Model.License
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
-                        @Model.OrganizationCode
-                    </a>
-                  
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">生产地址</div>
-                        @Model.FactoryAddress
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">电话</div>
-                        @Model.Tel
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">传真</div>
-                        @Model.FAX
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">邮箱</div>
-                        @Model.Email
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">经济类型</div>
-                        @Model.EconomyType
-                    </a>
-
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">工商登记机构</div>
-                        @Model.BRI
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">经营期限</div>
-                        @Model.OperationTerm
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">注册资金</div>
-                        @Model.RegisteredCapital
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">年总产值</div>
-                        @Model.GDP
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">年销售额</div>
-                        @Model.AnnualSale
-                    </a>
-
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">年缴税金额</div>
-                        @Model.TaxPerYear
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">年利润</div>
-                        @Model.AnnualProfit
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">固定资产</div>
-                        @Model.FixedAsset
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">企业负责人</div>
-                        @Model.Superintendent
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">质量保证负责人</div>
-                        @Model.QA
-                    </a>
-
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">从业人员总数</div>
-                        @Model.MemberCount
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">专业技术人员数</div>
-                        @Model.TechnicianCount
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">联系人</div>
-                        @Model.ContactPerson
-                    </a>
-                    <a class="item">
-                        <div class="ui horizontal grey label zh fw-normal-force">备注</div>
-                        @Model.Note
-                    </a>
-                </div>
-                <div class="ui divider"></div>
-                <div class="am-cf">
-                    <span class="zh">修改将会覆盖未审核通过的修改内容</span>
-                    <a class="ui right floated button primary" href="/Company/Save">修改</a>
-                </div>
-            </div>
-
-            <div class="am-margin"></div>
-            if (Model.Status == EnumStatus.Unchecked)
+<div class="verborder">
+@if (Model != null)
+{
+    <div class="ui raised segment">
+        <div class="am-cf">
+            <a class="ui red ribbon label zh  fw-normal-force">企业信息</a>
+            <span>@Model.Name</span>
+            @if (Model.Status == EnumStatus.Unchecked)
             {
-                var jsonData = JsonConvert.DeserializeObject<Company>(Model.UpdateJson);
-
-                <div class="ui raised segment">
-                    <div class="am-cf">
-                        <a class="ui red ribbon label zh  fw-normal-force">企业信息修改副本</a>
-                        <span>@jsonData.Name</span>
-                        <span class="ui type tag label teal am-fr">未审核</span>
-                    </div>
-                    <p class="ui divider"></p>
-                    <div class="ui divided selection list">
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
-                            @jsonData.CorporationName
-                        </a>
-                       
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">注册时间</div>
-                            @jsonData.EstablishedTime.ToShortDateString()
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
-                            @jsonData.Address
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
-                            @jsonData.License
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
-                            @jsonData.OrganizationCode
-                        </a>
-                     
-
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">生产地址</div>
-                            @jsonData.FactoryAddress
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">电话</div>
-                            @jsonData.Tel
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">传真</div>
-                            @jsonData.FAX
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">邮箱</div>
-                            @jsonData.Email
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">经济类型</div>
-                            @jsonData.EconomyType
-                        </a>
-
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">工商登记机构</div>
-                            @jsonData.BRI
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">经营期限</div>
-                            @jsonData.OperationTerm
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">注册资金</div>
-                            @jsonData.RegisteredCapital
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">年总产值</div>
-                            @jsonData.GDP
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">年销售额</div>
-                            @jsonData.AnnualSale
-                        </a>
-
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">年缴税金额</div>
-                            @jsonData.TaxPerYear
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">年利润</div>
-                            @jsonData.AnnualProfit
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">固定资产</div>
-                            @jsonData.FixedAsset
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">企业负责人</div>
-                            @jsonData.Superintendent
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">质量保证负责人</div>
-                            @jsonData.QA
-                        </a>
-
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">从业人员总数</div>
-                            @jsonData.MemberCount
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">专业技术人员数</div>
-                            @jsonData.TechnicianCount
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">联系人</div>
-                            @jsonData.ContactPerson
-                        </a>
-                        <a class="item">
-                            <div class="ui horizontal grey label zh fw-normal-force">备注</div>
-                            @jsonData.Note
-                        </a>
-                    </div>
-                    <div class="ui divider"></div>
-                </div>
+                <span class="ui type tag label teal am-fr">有更改在审核中</span>
             }
-        }
-        else
-        {
-            <div class="am-text-center">
-                <a class="ui animated teal fade button" tabindex="0" href="/Company/Save">
-                    <div class="visible content zh fw-normal">完善企业信息</div>
-                    <div class="hidden content">
-                        <i class="right arrow icon"></i>
-                    </div>
+            else if (Model.Status == EnumStatus.FirstUncheked)
+            {
+                <span class="ui type tag label teal am-fr">企业信息尚未通过</span>
+            }
+        </div>
+        <p class="ui divider"></p>
+        <div class="ui divided selection list">
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
+                @Model.CorporationName
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">注册时间</div>
+                @Model.EstablishedTime.ToShortDateString()
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
+                @Model.Address
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
+                @Model.License
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
+                @Model.OrganizationCode
+            </a>
+
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">生产地址</div>
+                @Model.FactoryAddress
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">电话</div>
+                @Model.Tel
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">传真</div>
+                @Model.FAX
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">邮箱</div>
+                @Model.Email
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">经济类型</div>
+                @Model.EconomyType
+            </a>
+
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">工商登记机构</div>
+                @Model.BRI
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">经营期限</div>
+                @Model.OperationTerm
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">注册资金</div>
+                @Model.RegisteredCapital
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">年总产值</div>
+                @Model.GDP
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">年销售额</div>
+                @Model.AnnualSale
+            </a>
+
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">年缴税金额</div>
+                @Model.TaxPerYear
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">年利润</div>
+                @Model.AnnualProfit
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">固定资产</div>
+                @Model.FixedAsset
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">企业负责人</div>
+                @Model.Superintendent
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">质量保证负责人</div>
+                @Model.QA
+            </a>
+
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">从业人员总数</div>
+                @Model.MemberCount
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">专业技术人员数</div>
+                @Model.TechnicianCount
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">联系人</div>
+                @Model.ContactPerson
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">备注</div>
+                @Model.Note
+            </a>
+        </div>
+        <div class="ui divider"></div>
+        <div class="am-cf">
+            <span class="zh">修改将会覆盖未审核通过的修改内容</span>
+            <a class="ui right floated button primary" href="/Company/Save">修改</a>
+        </div>
+    </div>
+
+    <div class="am-margin"></div>
+    if (Model.Status == EnumStatus.Unchecked)
+    {
+        var jsonData = JsonConvert.DeserializeObject<Company>(Model.UpdateJson);
+
+        <div class="ui raised segment">
+            <div class="am-cf">
+                <a class="ui red ribbon label zh  fw-normal-force">企业信息修改副本</a>
+                <span>@jsonData.Name</span>
+                <span class="ui type tag label teal am-fr">未审核</span>
+            </div>
+            <p class="ui divider"></p>
+            <div class="ui divided selection list">
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
+                    @jsonData.CorporationName
+                </a>
+
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">注册时间</div>
+                    @jsonData.EstablishedTime.ToShortDateString()
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
+                    @jsonData.Address
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
+                    @jsonData.License
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
+                    @jsonData.OrganizationCode
+                </a>
+
+
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">生产地址</div>
+                    @jsonData.FactoryAddress
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">电话</div>
+                    @jsonData.Tel
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">传真</div>
+                    @jsonData.FAX
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">邮箱</div>
+                    @jsonData.Email
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">经济类型</div>
+                    @jsonData.EconomyType
+                </a>
+
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">工商登记机构</div>
+                    @jsonData.BRI
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">经营期限</div>
+                    @jsonData.OperationTerm
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">注册资金</div>
+                    @jsonData.RegisteredCapital
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">年总产值</div>
+                    @jsonData.GDP
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">年销售额</div>
+                    @jsonData.AnnualSale
+                </a>
+
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">年缴税金额</div>
+                    @jsonData.TaxPerYear
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">年利润</div>
+                    @jsonData.AnnualProfit
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">固定资产</div>
+                    @jsonData.FixedAsset
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">企业负责人</div>
+                    @jsonData.Superintendent
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">质量保证负责人</div>
+                    @jsonData.QA
+                </a>
+
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">从业人员总数</div>
+                    @jsonData.MemberCount
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">专业技术人员数</div>
+                    @jsonData.TechnicianCount
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">联系人</div>
+                    @jsonData.ContactPerson
+                </a>
+                <a class="item">
+                    <div class="ui horizontal grey label zh fw-normal-force">备注</div>
+                    @jsonData.Note
                 </a>
             </div>
-        }
-
+            <div class="ui divider"></div>
+        </div>
+    }
+}
+else
+{
+    <div class="am-text-center">
+        <a class="ui animated teal fade button" tabindex="0" href="/Company/Save">
+            <div class="visible content zh fw-normal">完善企业信息</div>
+            <div class="hidden content">
+                <i class="right arrow icon"></i>
+            </div>
+        </a>
     </div>
+}
+
+</div>
 </div>

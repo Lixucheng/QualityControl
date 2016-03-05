@@ -12,13 +12,13 @@ namespace QualityControl.Util
         {
             get
             {
-                return _basicTypes ?? (new List<string>
+                return _basicTypes ?? new List<string>
                 {
                     "Int64",
                     "String",
                     "Boolean",
                     "DateTime"
-                });
+                };
             }
         }
 
@@ -73,7 +73,7 @@ namespace QualityControl.Util
                             var bp = bps.First(i => i.Name == ap.Name);
                             var al = ap.GetValue(one);
                             var bl = bp.GetValue(another);
-                            if ((al != null && bl != null) && al.ToString() != bl.ToString())
+                            if (al != null && bl != null && al.ToString() != bl.ToString())
                             {
                                 return false;
                             }

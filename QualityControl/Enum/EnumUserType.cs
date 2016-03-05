@@ -22,7 +22,6 @@
         /// </summary>
         Controller,
 
-        SuperAdmin=100
-
+        SuperAdmin = 100
     }
 }

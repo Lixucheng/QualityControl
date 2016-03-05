@@ -21,40 +21,39 @@
             <div class="content menu">
                 @if (user.Type == (int) EnumUserType.User)
                 {
-                <a class="item" href="/Trade/ChooseProduct">新建管控合同</a>
+                    <a class="item" href="/Trade/ChooseProduct">新建管控合同</a>
                 }
                 <a class="item" href="/User/TradeList">管控合同列表</a>
                 @if (user.Type == (int) EnumUserType.Controller)
                 {
-                <a class="item" href="/Trade/Trades">待制作方案管控合同列表</a>
-                <a class="item" href="/Trade/Tradesok">方案管控合同查看</a>
+                    <a class="item" href="/Trade/Trades">待制作方案管控合同列表</a>
+                    <a class="item" href="/Trade/Tradesok">方案管控合同查看</a>
                 }
 
             </div>
         </div>
         @if (user.Type == (int) EnumUserType.TestingOrg)
         {
-        <div class="item active">
-            <a class="title" href="/SGS/Index">
-                <i class="icon copyright"></i><b>机构信息</b>
-            </a>
+            <div class="item active">
+                <a class="title" href="/SGS/Index">
+                    <i class="icon copyright"></i><b>机构信息</b>
+                </a>
 
-        </div>
-        <div class="item active">
-            <a class="title" href="/SGS/Items">
-                <i class="icon list"></i><b>检测项目管理</b>
-            </a>
+            </div>
+            <div class="item active">
+                <a class="title" href="/SGS/Items">
+                    <i class="icon list"></i><b>检测项目管理</b>
+                </a>
 
-        </div>
-
+            </div>
         }
         @if (user.Type == (int) EnumUserType.Producer)
         {
-        <div class="item active">
-            <a class="active title" href="/Company/Index">
-                <i class="icon copyright"></i><b>企业信息</b>
-            </a>
-        </div>
+            <div class="item active">
+                <a class="active title" href="/Company/Index">
+                    <i class="icon copyright"></i><b>企业信息</b>
+                </a>
+            </div>
 
             <div class="item active">
                 <a class="active title" href="/Product/CompanyProductIndex">
@@ -78,7 +77,7 @@
             </div>
         }
 
-        @if (user.Type == (int)EnumUserType.SuperAdmin)
+        @if (user.Type == (int) EnumUserType.SuperAdmin)
         {
             <div class="item">
                 <a class="title active">

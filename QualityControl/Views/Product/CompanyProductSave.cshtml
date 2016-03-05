@@ -1,265 +1,264 @@
 ﻿@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 @model QualityControl.Db.Product
-
-@using Newtonsoft.Json.Linq;
-@using Newtonsoft.Json;
 @section head{
     <title>企业产品信息</title>
-<link href="~/Scripts/bower_components/font-awesome/css/font-awesome.css" rel="stylesheet" />
-<link href="~/Scripts/bower_components/fex-webuploader/dist/webuploader.css" rel="stylesheet" />
-<link href="~/Content/UpCss.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+    <link href="~/Scripts/bower_components/fex-webuploader/dist/webuploader.css" rel="stylesheet"/>
+    <link href="~/Content/UpCss.css" rel="stylesheet"/>
     <style>
-    div.file-panel {
-    position: absolute;
-    height: 0;
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#80000000', endColorstr='#80000000')\0;
-    background: rgba( 0, 0, 0, 0.5 );
-    width: 100%;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-    z-index: 300;
-}
+        div.file-panel {
+            background: rgba(0, 0, 0, 0.5);
+            filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#80000000', endColorstr='#80000000') \0;
+            height: 0;
+            left: 0;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 300;
+        }
     </style>
 }
 
 <div class="am-margin-lg am-padding-lg ui center aligned container">
-    <div class="am-padding-horizontal-lg">
-        <div class="am-padding-horizontal-lg">
-            <form id="formr" class="ui form segment" method="post" action="/Product/CompanyProductSaveAction">
-                <input name="id" type="hidden" value="@(Model != null ? Model.Id.ToString() : "0")">
-                <h2>企业产品信息</h2>
-                <div class="two fields" >
-                    <div class="field">
-                        <label>产品名称</label>
-                        <input required placeholder="产品名称" name="Name" type="text" value="@(Model != null ? Model.Name : "")">
-                    </div>
-                    <div class="field">
-                        <label>品牌</label>
-                        <input required placeholder="品牌" name="Brand" type="text" value='@(Model != null ? Model.Brand : "")'>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label>授权企业</label>
-                    <input required placeholder="授权企业" name="EmpowerEnterprise" type="text" value="@(Model != null ? Model.EmpowerEnterprise : "")">
-                </div>
-                @{ Html.RenderAction("_ChooseType", "Product", new {  typeid = ViewBag.t3 }); }
-            
-
-                <div class="field">
-                    <label>生产许可证编号</label>
-                    <input required placeholder="生产许可证编号" name="ProductionCertificateNo" type="text" value="@(Model != null ? Model.ProductionCertificateNo : "")">
-                </div>
-                <div class="two fields">
-                    <div class="field">
-                        <label>许可类别</label>
-                        <input required placeholder="许可类别" name="PermissionType" type="text" value="@(Model != null ? Model.PermissionType : "")">
-                    </div>
-                    <div class="field">
-                        <label>生产许可到期日期</label>
-                        <input required placeholder="生产许可到期日期" name="GetDate" type="date" value="@(Model != null ? Model.GetDate : "")">
-                    </div>
-                </div>
-
-                <div class="two fields">
-                    <div class="field">
-                        <label>保质期</label>
-                        <input required placeholder="保质期" name="ShelfLife" type="text" value="@(Model != null ? Model.ShelfLife : "")">
-                    </div>
-                    <div class="field">
-                        <label>执行标准</label>
-                        <input required placeholder="执行标准" name="Standard" type="text" value="@(Model != null ? Model.Standard : "")">
-                    </div>
-                   
-                  
-                </div>
-
-                <div class="two fields">
-                    <div class="field">
-                        <label>净含量</label>
-                        <input required placeholder="净含量" name="Weight" type="text" value="@(Model != null ? Model.Weight : "")">
-                    </div>
-                    <div class="field">
-                        <label>产品等级</label>
-                        <input required placeholder="产品等级" name="Grade" type="text" value="@(Model != null ? Model.Grade : "")">
-                    </div>
-                </div>
-
-            
-                <div class="field">
-                    <label>贮存条件</label>
-                    <input  required placeholder="贮存条件" name="StorageCondition" type="text" value="@(Model != null ? Model.StorageCondition : "")">
-                </div>
-                <div class="field">
-                    <label>包装说明</label>
-                    <input required placeholder="包装说明" name="Packing" type="text" value="@(Model != null ? Model.Packing : "")">
-                </div>
-                <div class="field">
-                    <label>配料表</label>
-                    <textarea placeholder="配料表" name="Ingredients" type="text" value="">@(Model != null ? Model.Ingredients : "")</textarea>
-                </div>
-                <div class="field">
-                    <label>主要原材料</label>
-                    <table class="ui celled table" id="t1">
-                        <thead>
-                            <tr>
-                                <th>材料</th>
-                                <th>提供单位</th>
-                                <th>生产许可编号</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                           @{
-                               if (Model != null && Model.Material != null)
-                               {
-                                   int i = 0;
-                                   var jarray = (JArray)JsonConvert.DeserializeObject(Model.Material);
-                                   foreach (var t in jarray)
-                                   {
-                                       <tr class="tabledata1">
-                                           <td>@t["d1"]</td>
-                                           <td>@t["d2"]</td>
-                                           <td>@t["d3"]</td>
-                                           <td><span class="delete-btn ui button" data-id="' + i + '">删除</span></td>
-                                       </tr>
-                                       i++;
-                                   }
-                               }
-                            }
-                        </tbody>
-                       
-                    </table>
-                    <div class="ui button" onclick="Add(1)">添加</div>
-                 
-                </div>
-
-                <div class="field">
-                    <label>包装材料</label>
-                    <table class="ui celled table" id="t2">
-                        <thead>
-                            <tr>
-                                <th>材料</th>
-                                <th>提供单位</th>
-                                <th>生产许可编号</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                if (Model != null && Model.PackingMaterial != null)
-                                {
-                                    int i = 0;
-                                    var jarray = (JArray)JsonConvert.DeserializeObject(Model.PackingMaterial);
-                                    foreach (var t in jarray)
-                                    {
-                                        <tr class="tabledata2">
-                                            <td>@t["d1"]</td>
-                                            <td>@t["d2"]</td>
-                                            <td>@t["d3"]</td>
-                                            <td><span class="delete-btn ui button" data-id="' + i + '">删除</span></td>
-                                        </tr>
-                                        i++;
-                                    }
-                                }
-                            }
-                        </tbody>
-                    </table>
-                    <div class="ui button"  onclick="Add(2)">添加</div>
-                </div>
-
-                <div class="field">
-                    <label>其他材料上传</label>
-                    <div id="uploader" class="wu-example">
-                        <!--用来存放文件信息-->
-                        <div id="thelist" class="uploader-list">
-                          
-                            @{
-                                if (Model != null && Model.File != null)
-                                {
-                                    var jarray = (JArray)JsonConvert.DeserializeObject(Model.File);
-                                    foreach (var t in jarray)
-                                    {
-                                        <div id="' + @t["id"] + '" class="item myitem @t["id"]">
-                                            <h4 class="info">
-                                                <span style="float:left">@t["name"]</span>
-                                                <i style="float:right" class='fa fa-close right fa-2x' id='" + @t["id"] + "' onclick="DelA('@t["id"]')"></i>
-                                            </h4>
-
-                                           
-                                            <input type="hidden" class="v1" value="@t["id"]" />
-                                            <input type="hidden" class="v2" value="@t["name"]" />
-                                            <input type="hidden" class="v3" value="@t["name2"]" />
-                                            <script>
-                                                       function DelA(id)
-                                                       {
-
-                                                           var the = $("." + id);
-                                                           the.remove();
-                                                           var n = "";
-                                                           ///从数组中删除
-                                                           for (var i = 0; i < files.length; i++) {
-                                                               if (files[i].id == id) {
-                                                                   n = files[i].name2;
-                                                                   files.splice(i, 1);
-
-                                                                
-                                                                   break;
-                                                               }
-                                                           }
-                                                           ///从服务器删除
-                                                           delname.push(n);
-                                                       }
-                                            </script>
-                                        </div>
-                                    }
-                                }
-                            }
-                            <br />
-                        </div>
-
-                        <div class="btns">
-                            <div id="picker">选择文件</div>
-                            @*<button id="ctlBtn" type="button" class="btn btn-default">开始上传</button>*@
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="field" id="uploader">
-                    <label>产品图片上传（7张）</label>
-                    <div id="uploader-demo">
-                        <!--用来存放item-->
-                        <div id="fileList" class="uploader-list"></div>
-                        <div id="filePicker">选择图片</div>
-                    </div>
-                </div>
-
-
-                <div class="ui error message"></div>
-                <div class="ui red cancel button" onclick="javascript :history.back(-1);">取消</div>
-                <div  class="ui blue  button"   id="submit">保存</div>
-            </form>
-        </div>
+<div class="am-padding-horizontal-lg">
+<div class="am-padding-horizontal-lg">
+<form id="formr" class="ui form segment" method="post" action="/Product/CompanyProductSaveAction">
+<input name="id" type="hidden" value="@(Model != null ? Model.Id.ToString() : "0")">
+<h2>企业产品信息</h2>
+<div class="two fields">
+    <div class="field">
+        <label>产品名称</label>
+        <input required placeholder="产品名称" name="Name" type="text" value="@(Model != null ? Model.Name : "")">
     </div>
-    @{
-        if (Model != null && Model.Image != null)
-        {
-            int i = 0;
-            var jarray = (JArray)JsonConvert.DeserializeObject(Model.Image);
-            foreach (var t in jarray)
-            {
-                var s = "p" + i;
-                <input type="hidden" value="@t" class="images" />               
-                i++;
-            }
-        }
-    }
+    <div class="field">
+        <label>品牌</label>
+        <input required placeholder="品牌" name="Brand" type="text" value='@(Model != null ? Model.Brand : "")'>
+    </div>
 </div>
 
+<div class="field">
+    <label>授权企业</label>
+    <input required placeholder="授权企业" name="EmpowerEnterprise" type="text" value="@(Model != null ? Model.EmpowerEnterprise : "")">
+</div>
+@{ Html.RenderAction("_ChooseType", "Product", new {typeid = ViewBag.t3}); }
+
+
+<div class="field">
+    <label>生产许可证编号</label>
+    <input required placeholder="生产许可证编号" name="ProductionCertificateNo" type="text" value="@(Model != null ? Model.ProductionCertificateNo : "")">
+</div>
+<div class="two fields">
+    <div class="field">
+        <label>许可类别</label>
+        <input required placeholder="许可类别" name="PermissionType" type="text" value="@(Model != null ? Model.PermissionType : "")">
+    </div>
+    <div class="field">
+        <label>生产许可到期日期</label>
+        <input required placeholder="生产许可到期日期" name="GetDate" type="date" value="@(Model != null ? Model.GetDate : "")">
+    </div>
+</div>
+
+<div class="two fields">
+    <div class="field">
+        <label>保质期</label>
+        <input required placeholder="保质期" name="ShelfLife" type="text" value="@(Model != null ? Model.ShelfLife : "")">
+    </div>
+    <div class="field">
+        <label>执行标准</label>
+        <input required placeholder="执行标准" name="Standard" type="text" value="@(Model != null ? Model.Standard : "")">
+    </div>
+
+
+</div>
+
+<div class="two fields">
+    <div class="field">
+        <label>净含量</label>
+        <input required placeholder="净含量" name="Weight" type="text" value="@(Model != null ? Model.Weight : "")">
+    </div>
+    <div class="field">
+        <label>产品等级</label>
+        <input required placeholder="产品等级" name="Grade" type="text" value="@(Model != null ? Model.Grade : "")">
+    </div>
+</div>
+
+
+<div class="field">
+    <label>贮存条件</label>
+    <input required placeholder="贮存条件" name="StorageCondition" type="text" value="@(Model != null ? Model.StorageCondition : "")">
+</div>
+<div class="field">
+    <label>包装说明</label>
+    <input required placeholder="包装说明" name="Packing" type="text" value="@(Model != null ? Model.Packing : "")">
+</div>
+<div class="field">
+    <label>配料表</label>
+    <textarea placeholder="配料表" name="Ingredients" type="text" value="">@(Model != null ? Model.Ingredients : "")</textarea>
+</div>
+<div class="field">
+    <label>主要原材料</label>
+    <table class="ui celled table" id="t1">
+        <thead>
+        <tr>
+            <th>材料</th>
+            <th>提供单位</th>
+            <th>生产许可编号</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            if (Model != null && Model.Material != null)
+            {
+                var i = 0;
+                var jarray = (JArray) JsonConvert.DeserializeObject(Model.Material);
+                foreach (var t in jarray)
+                {
+                    <tr class="tabledata1">
+                        <td>@t["d1"]</td>
+                        <td>@t["d2"]</td>
+                        <td>@t["d3"]</td>
+                        <td>
+                            <span class="delete-btn ui button" data-id="' + i + '">删除</span></td>
+                    </tr>
+                    i++;
+                }
+            }
+        }
+        </tbody>
+
+    </table>
+    <div class="ui button" onclick="Add(1)">添加</div>
+
+</div>
+
+<div class="field">
+    <label>包装材料</label>
+    <table class="ui celled table" id="t2">
+        <thead>
+        <tr>
+            <th>材料</th>
+            <th>提供单位</th>
+            <th>生产许可编号</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            if (Model != null && Model.PackingMaterial != null)
+            {
+                var i = 0;
+                var jarray = (JArray) JsonConvert.DeserializeObject(Model.PackingMaterial);
+                foreach (var t in jarray)
+                {
+                    <tr class="tabledata2">
+                        <td>@t["d1"]</td>
+                        <td>@t["d2"]</td>
+                        <td>@t["d3"]</td>
+                        <td>
+                            <span class="delete-btn ui button" data-id="' + i + '">删除</span></td>
+                    </tr>
+                    i++;
+                }
+            }
+        }
+        </tbody>
+    </table>
+    <div class="ui button" onclick="Add(2)">添加</div>
+</div>
+
+<div class="field">
+    <label>其他材料上传</label>
+    <div id="uploader" class="wu-example">
+        <!--用来存放文件信息-->
+        <div id="thelist" class="uploader-list">
+
+            @{
+                if (Model != null && Model.File != null)
+                {
+                    var jarray = (JArray) JsonConvert.DeserializeObject(Model.File);
+                    foreach (var t in jarray)
+                    {
+                        <div id="' + @t["id"] + '" class="item myitem @t["id"]">
+                            <h4 class="info">
+                                <span style="float: left">@t["name"]</span>
+                                <i style="float: right" class='fa fa-close right fa-2x' id='" + @t["id"] + "' onclick="DelA('@t["id"]')"></i>
+                            </h4>
+
+
+                            <input type="hidden" class="v1" value="@t["id"]"/>
+                            <input type="hidden" class="v2" value="@t["name"]"/>
+                            <input type="hidden" class="v3" value="@t["name2"]"/>
+                            <script>
+                                function DelA(id) {
+
+                                    var the = $("." + id);
+                                    the.remove();
+                                    var n = "";
+                                    ///从数组中删除
+                                    for (var i = 0; i < files.length; i++) {
+                                        if (files[i].id == id) {
+                                            n = files[i].name2;
+                                            files.splice(i, 1);
+
+
+                                            break;
+                                        }
+                                    }
+                                    ///从服务器删除
+                                    delname.push(n);
+                                }
+                            </script>
+                        </div>
+                    }
+                }
+            }
+            <br/>
+        </div>
+
+        <div class="btns">
+            <div id="picker">选择文件</div>
+            @*<button id="ctlBtn" type="button" class="btn btn-default">开始上传</button>*@
+        </div>
+    </div>
+</div>
+
+
+<div class="field" id="uploader">
+    <label>产品图片上传（7张）</label>
+    <div id="uploader-demo">
+        <!--用来存放item-->
+        <div id="fileList" class="uploader-list"></div>
+        <div id="filePicker">选择图片</div>
+    </div>
+</div>
+
+
+<div class="ui error message"></div>
+<div class="ui red cancel button" onclick="javascript :history.back(-1);">取消</div>
+<div class="ui blue  button" id="submit">保存</div>
+</form>
+</div>
+</div>
+@{
+    if (Model != null && Model.Image != null)
+    {
+        var i = 0;
+        var jarray = (JArray) JsonConvert.DeserializeObject(Model.Image);
+        foreach (var t in jarray)
+        {
+            var s = "p" + i;
+            <input type="hidden" value="@t" class="images"/>
+            i++;
+        }
+    }
+}
+</div>
 
 
 <div class="ui modal">
@@ -283,38 +282,44 @@
             </div>
             <div class="actions">
                 <div class="ui negative button">否 </div>
-                <div class="ui green icon button" id="addbtn">添加 <i class="checkmark icon"></i> </div>
+                <div class="ui green icon button" id="addbtn">
+                    添加 <i class="checkmark icon"></i>
+                </div>
             </div>
         </form>
     </div>
-    
+
 </div>
 
 @{
     if (Model != null)
-    {<input name="isedit" value="1" id="isedit"/> }
+    {
+        <input name="isedit" value="1" id="isedit"/>
+    }
     else
-    {<input name="isedit" value="0" id="isedit" /> }
+    {
+        <input name="isedit" value="0" id="isedit"/>
+    }
 }
 
 
 
 @section Scripts{
-<script src="~/Scripts/bower_components/fex-webuploader/dist/webuploader.js"></script>
+    <script src="~/Scripts/bower_components/fex-webuploader/dist/webuploader.js"></script>
     <script>
 
-        if($("#isedit").val()=="1")
-        {
+        if ($("#isedit").val() == "1") {
             var v1 = $(".C.s").val();
 
         }
-     
+
         var t = 1;
-      
+
         function Add(id) {
             $('.ui.modal').modal('show');
-            t = id;          
+            t = id;
         }
+
         $(function() {
             $('.ui.form').form({
                 on: 'blur',
@@ -388,11 +393,10 @@
                     }
                 }
             });
-          
+
 
         });
 
-     
 
         var tableData1 = [];
         var $table1 = $('#t1');
@@ -403,10 +407,10 @@
         var files = [];
         var delname = [];
         var images = [];
-        
+
         function filenameWrite() {
             var list = $(".myitem");
-            list.each(function () {
+            list.each(function() {
                 var list2 = $(this).find("input");
                 var t1 = list2.eq(1).val();
                 var t0 = list2.eq(0).val();
@@ -416,16 +420,14 @@
                 f.name = t1;
                 f.name2 = t2;
                 files.push(f);
-            })
-
-
+            });
         }
+
         filenameWrite();
 
-        function tableWrite()
-        {
+        function tableWrite() {
             var list = $(".tabledata1");
-            list.each(function () {
+            list.each(function() {
                 var list2 = $(this).find("td");
                 var t1 = list2.eq(1).html();
                 var t0 = list2.eq(0).html();
@@ -437,7 +439,7 @@
                 tableData1.push(f);
             });
             var listn = $(".tabledata2");
-            listn.each(function () {
+            listn.each(function() {
                 var list2 = $(this).find("td");
                 var t1 = list2.eq(1).html();
                 var t0 = list2.eq(0).html();
@@ -449,11 +451,11 @@
                 tableData2.push(f);
             });
         }
+
         tableWrite();
 
-       
 
-        $("#formno").submit(function (event) {
+        $("#formno").submit(function(event) {
             event.preventDefault();
             event.stopPropagation();
             var $this = $(this);
@@ -464,30 +466,28 @@
             console.log(data);
             var index = 0;
 
-            if (t == 1)
-            {
+            if (t == 1) {
 
                 index = tableData1.length;
                 var tr = '' +
-               '<tr>' +
-               '<td>' + data.d1 + '</td>' +
-               '<td>' + data.d2 + '</td>' +
-               '<td>' + data.d3 + '</td>' +
-               '<td><span class="delete-btn ui button" data-id="' + index + '">删除</span></td>' +
-               '</tr>';
+                    '<tr>' +
+                    '<td>' + data.d1 + '</td>' +
+                    '<td>' + data.d2 + '</td>' +
+                    '<td>' + data.d3 + '</td>' +
+                    '<td><span class="delete-btn ui button" data-id="' + index + '">删除</span></td>' +
+                    '</tr>';
                 $table1.find('tbody').append(tr);
                 tableData1.push(data);
-            }
-            else {
+            } else {
 
                 index = tableData1.length;
                 var tr = '' +
-               '<tr>' +
-               '<td>' + data.d1 + '</td>' +
-               '<td>' + data.d2 + '</td>' +
-               '<td>' + data.d3 + '</td>' +
-               '<td><span class="delete-btn ui button" data-id="' + index + '">删除</span></td>' +
-               '</tr>';
+                    '<tr>' +
+                    '<td>' + data.d1 + '</td>' +
+                    '<td>' + data.d2 + '</td>' +
+                    '<td>' + data.d3 + '</td>' +
+                    '<td><span class="delete-btn ui button" data-id="' + index + '">删除</span></td>' +
+                    '</tr>';
                 $table2.find('tbody').append(tr);
                 tableData2.push(data);
             }
@@ -496,7 +496,7 @@
             $this.form('reset');
         });
 
-        $('table tbody').click(function (event) {
+        $('table tbody').click(function(event) {
             var $this = $(event.target);
             if (!$this.is('.delete-btn')) {
                 return;
@@ -505,16 +505,15 @@
             $this.parents('tr').remove();
         });
 
-        $("#formr").submit(function (event) {
+        $("#formr").submit(function(event) {
             var $this = $(this);
-            if (images.length < 7)
-            {
+            if (images.length < 7) {
                 alert("产品图片不足7张！");
                 event.preventDefault();
                 event.stopPropagation();
                 return;
             }
-            if (tableData1.length == 0||tableData2.length==0) {
+            if (tableData1.length == 0 || tableData2.length == 0) {
                 alert('请添加材料信息');
                 event.preventDefault();
                 event.stopPropagation();
@@ -527,13 +526,12 @@
 
         });
 
-        $("#addbtn").click(function () {
+        $("#addbtn").click(function() {
             $("#formno").submit();
         });
-        $("#submit").click(function () {
+        $("#submit").click(function() {
             for (var i = 0; i < delname.length; i++) {
                 $.ajax({
-
                     type: 'GET',
 
                     url: "/upload/del?name=" + delname[i],
@@ -545,21 +543,22 @@
             $("#formr").submit();
         });
     </script>
-<script src="~/Scripts/ProductUp.js"></script>
+    <script src="~/Scripts/ProductUp.js"></script>
     <script>
-        jQuery(function () {
+        jQuery(function() {
             function filenameWrite() {
                 var list = $(".images");
-            
-                list.each(function () {               
+
+                list.each(function() {
                     var t1 = $(this).val();
-                    window.AddImage(images.length,t1);                            
-                })
+                    window.AddImage(images.length, t1);
+                });
             }
+
             filenameWrite();
-    
-            $(".d").click(function () {
-                var id= $(this).parent().attr("id");               
+
+            $(".d").click(function() {
+                var id = $(this).parent().attr("id");
                 $(this).parent().remove();
                 images.splice(id, 1);
 

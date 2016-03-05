@@ -44,7 +44,7 @@ namespace QualityControl.Db
         public string EconomyType { get; set; }
 
         /// <summary>
-        /// 工商登记机构
+        ///     工商登记机构
         /// </summary>
         [Required]
         public string BRI { get; set; }
@@ -59,39 +59,39 @@ namespace QualityControl.Db
         public string CorporationName { get; set; }
 
         /// <summary>
-        /// 经营期限
+        ///     经营期限
         /// </summary>
         [Required]
         public string OperationTerm { get; set; }
 
         /// <summary>
-        /// 注册资金
+        ///     注册资金
         /// </summary>
         [Required]
         public string RegisteredCapital { get; set; }
 
         /// <summary>
-        /// 年总产值
+        ///     年总产值
         /// </summary>
         public string GDP { get; set; }
-        
+
         /// <summary>
-        /// 年销售额
+        ///     年销售额
         /// </summary>
         public string AnnualSale { get; set; }
 
         /// <summary>
-        /// 年缴税金额
+        ///     年缴税金额
         /// </summary>
         public string TaxPerYear { get; set; }
 
         /// <summary>
-        /// 年利润
+        ///     年利润
         /// </summary>
         public string AnnualProfit { get; set; }
 
         /// <summary>
-        /// 固定资产
+        ///     固定资产
         /// </summary>
         [Required]
         public string FixedAsset { get; set; }
@@ -100,31 +100,31 @@ namespace QualityControl.Db
         public string OrganizationCode { get; set; }
 
         /// <summary>
-        /// 企业负责人
+        ///     企业负责人
         /// </summary>
         [Required]
         public string Superintendent { get; set; }
 
         /// <summary>
-        /// 质量保证负责人
+        ///     质量保证负责人
         /// </summary>
         [Required]
         public string QA { get; set; }
 
         /// <summary>
-        /// 从业人员总数
+        ///     从业人员总数
         /// </summary>
         [Required]
         public int MemberCount { get; set; }
 
         /// <summary>
-        /// 专业技术人员数
+        ///     专业技术人员数
         /// </summary>
         [Required]
         public int TechnicianCount { get; set; }
 
         /// <summary>
-        /// 联系人
+        ///     联系人
         /// </summary>
         [Required]
         public string ContactPerson { get; set; }
@@ -162,7 +162,6 @@ namespace QualityControl.Db
         public string Standard { get; set; } //执行标准
 
         public EnumProductStatus CompanyProductStatus { get; set; }
-
     }
 
 

@@ -110,15 +110,17 @@
                 <div class="ui fluid large teal submit button">登录</div>
             </div>
 
-          
-                @if (Model != null)
-                {
-                    <div class="ui error message" style="display:block !important">
-                        <ul class="list"><li>@Model.Message</li></ul>
-                    </div>
-                }
 
-                
+            @if (Model != null)
+            {
+                <div class="ui error message" style="display: block !important">
+                    <ul class="list">
+                        <li>@Model.Message</li>
+                    </ul>
+                </div>
+            }
+
+
 
         </form>
 

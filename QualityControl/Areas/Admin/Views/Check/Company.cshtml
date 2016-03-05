@@ -42,256 +42,256 @@
 
 <!--modal-->
 <div class="ui large modal">
-    <i class="close icon"></i>
-    <div class="header">
-        <span way-data="data.User.UserName"></span>的企业修改信息
-    </div>
-    <div class="content">
-        <div class="description">
-            <div class="ui grid">
-                <div class="row">
-                    <div class="eight wide column">
-                        <div class="ui raised segment">
-                            <div class="am-cf">
-                                <a class="ui red ribbon label zh  fw-normal-force">原企业信息</a>
-                                <span way-data="data.Company.Name"></span>
-                            </div>
-                            <p class="ui divider"></p>
-                            <div class="ui divided selection list">
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
-                                    <span way-data="data.Company.CorporationName"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">成立时间</div>
-                                    <span way-data="data.Company.EstablishedTime"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
-                                    <span way-data="data.Company.Address"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">生产地址</div>
-                                    <span way-data="data.Company.FactoryAddress"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">邮政编码</div>
-                                    <span way-data="data.Company.Postcode"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">电 话</div>
-                                    <span way-data="data.Company.Tel"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
-                                    <span way-data="data.Company.OrganizationCode"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">经济类型</div>
-                                    <span way-data="data.Company.EconomyType"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">工商登记机构</div>
-                                    <span way-data="data.Company.BRI"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
-                                    <span way-data="data.Company.License"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">传 真</div>
-                                    <span way-data="data.Company.FAX"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">电子邮箱</div>
-                                    <span way-data="data.Company.Email"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">成立时间</div>
-                                    <span way-data="data.Company.EstablishedTime"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">经营期限</div>
-                                    <span way-data="data.Company.OperationTerm"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">固定资产（万元）</div>
-                                    <span way-data="data.Company.FixedAsset"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">注册资金（万元）</div>
-                                    <span way-data="data.Company.RegisteredCapital"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">年总产值</div>
-                                    <span way-data="data.Company.GDP"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">年缴税金额</div>
-                                    <span way-data="data.Company.TaxPerYear"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">年利润</div>
-                                    <span way-data="data.Company.AnnualProfit"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">企业负责人</div>
-                                    <span way-data="data.Company.Superintendent"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">质量保证负责人</div>
-                                    <span way-data="data.Company.QA"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">联系人</div>
-                                    <span way-data="data.Company.ContactPerson"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">从业人员总数</div>
-                                    <span way-data="data.Company.MemberCount"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">专业技术人员数</div>
-                                    <span way-data="data.Company.TechnicianCount"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">其他需要说明的情况</div>
-                                    <span way-data="data.Company.Note"></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="eight wide column">
-                        <div class="ui raised segment">
-                            <div class="am-cf">
-                                <a class="ui red ribbon label zh  fw-normal-force">修改后的企业信息</a>
-                                <span way-data="data.updateJson.Name"></span>
-                            </div>
-                            <p class="ui divider"></p>
-                            <div class="ui divided selection list">
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
-                                    <span way-data="data.updateJson.CorporationName"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">成立时间</div>
-                                    <span way-data="data.updateJson.EstablishedTime"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
-                                    <span way-data="data.updateJson.Address"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">生产地址</div>
-                                    <span way-data="data.updateJson.FactoryAddress"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">邮政编码</div>
-                                    <span way-data="data.updateJson.Postcode"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">电 话</div>
-                                    <span way-data="data.updateJson.Tel"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
-                                    <span way-data="data.updateJson.OrganizationCode"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">经济类型</div>
-                                    <span way-data="data.updateJson.EconomyType"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">工商登记机构</div>
-                                    <span way-data="data.updateJson.BRI"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
-                                    <span way-data="data.updateJson.License"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">传 真</div>
-                                    <span way-data="data.updateJson.FAX"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">电子邮箱</div>
-                                    <span way-data="data.updateJson.Email"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">成立时间</div>
-                                    <span way-data="data.updateJson.EstablishedTime"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">经营期限</div>
-                                    <span way-data="data.updateJson.OperationTerm"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">固定资产（万元）</div>
-                                    <span way-data="data.updateJson.FixedAsset"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">注册资金（万元）</div>
-                                    <span way-data="data.updateJson.RegisteredCapital"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">年总产值</div>
-                                    <span way-data="data.updateJson.GDP"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">年缴税金额</div>
-                                    <span way-data="data.updateJson.TaxPerYear"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">年利润</div>
-                                    <span way-data="data.updateJson.AnnualProfit"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">企业负责人</div>
-                                    <span way-data="data.updateJson.Superintendent"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">质量保证负责人</div>
-                                    <span way-data="data.updateJson.QA"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">联系人</div>
-                                    <span way-data="data.updateJson.ContactPerson"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">从业人员总数</div>
-                                    <span way-data="data.updateJson.MemberCount"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">专业技术人员数</div>
-                                    <span way-data="data.updateJson.Company.TechnicianCount"></span>
-                                </a>
-                                <a class="item">
-                                    <div class="ui horizontal grey label zh fw-normal-force">其他需要说明的情况</div>
-                                    <span way-data="data.updateJson.Note"></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
+<i class="close icon"></i>
+<div class="header">
+    <span way-data="data.User.UserName"></span>的企业修改信息
+</div>
+<div class="content">
+<div class="description">
+<div class="ui grid">
+<div class="row">
+<div class="eight wide column">
+    <div class="ui raised segment">
+        <div class="am-cf">
+            <a class="ui red ribbon label zh  fw-normal-force">原企业信息</a>
+            <span way-data="data.Company.Name"></span>
+        </div>
+        <p class="ui divider"></p>
+        <div class="ui divided selection list">
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
+                <span way-data="data.Company.CorporationName"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">成立时间</div>
+                <span way-data="data.Company.EstablishedTime"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
+                <span way-data="data.Company.Address"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">生产地址</div>
+                <span way-data="data.Company.FactoryAddress"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">邮政编码</div>
+                <span way-data="data.Company.Postcode"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">电 话</div>
+                <span way-data="data.Company.Tel"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
+                <span way-data="data.Company.OrganizationCode"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">经济类型</div>
+                <span way-data="data.Company.EconomyType"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">工商登记机构</div>
+                <span way-data="data.Company.BRI"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
+                <span way-data="data.Company.License"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">传 真</div>
+                <span way-data="data.Company.FAX"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">电子邮箱</div>
+                <span way-data="data.Company.Email"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">成立时间</div>
+                <span way-data="data.Company.EstablishedTime"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">经营期限</div>
+                <span way-data="data.Company.OperationTerm"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">固定资产（万元）</div>
+                <span way-data="data.Company.FixedAsset"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">注册资金（万元）</div>
+                <span way-data="data.Company.RegisteredCapital"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">年总产值</div>
+                <span way-data="data.Company.GDP"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">年缴税金额</div>
+                <span way-data="data.Company.TaxPerYear"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">年利润</div>
+                <span way-data="data.Company.AnnualProfit"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">企业负责人</div>
+                <span way-data="data.Company.Superintendent"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">质量保证负责人</div>
+                <span way-data="data.Company.QA"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">联系人</div>
+                <span way-data="data.Company.ContactPerson"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">从业人员总数</div>
+                <span way-data="data.Company.MemberCount"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">专业技术人员数</div>
+                <span way-data="data.Company.TechnicianCount"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">其他需要说明的情况</div>
+                <span way-data="data.Company.Note"></span>
+            </a>
         </div>
     </div>
-    <div class="actions">
-        <div class="ui black deny button">
-            取消
+</div>
+<div class="eight wide column">
+    <div class="ui raised segment">
+        <div class="am-cf">
+            <a class="ui red ribbon label zh  fw-normal-force">修改后的企业信息</a>
+            <span way-data="data.updateJson.Name"></span>
         </div>
-        <div class="ui orange labeled icon deny button reject-btn">
-            不通过
-            <i class="remove icon"></i>
-        </div>
-        <div class="ui positive right labeled icon button pass-btn">
-            通过
-            <i class="checkmark icon"></i>
-
+        <p class="ui divider"></p>
+        <div class="ui divided selection list">
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">法人姓名</div>
+                <span way-data="data.updateJson.CorporationName"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">成立时间</div>
+                <span way-data="data.updateJson.EstablishedTime"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">注册地址</div>
+                <span way-data="data.updateJson.Address"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">生产地址</div>
+                <span way-data="data.updateJson.FactoryAddress"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">邮政编码</div>
+                <span way-data="data.updateJson.Postcode"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">电 话</div>
+                <span way-data="data.updateJson.Tel"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">组织机构代码</div>
+                <span way-data="data.updateJson.OrganizationCode"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">经济类型</div>
+                <span way-data="data.updateJson.EconomyType"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">工商登记机构</div>
+                <span way-data="data.updateJson.BRI"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">营业执照号</div>
+                <span way-data="data.updateJson.License"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">传 真</div>
+                <span way-data="data.updateJson.FAX"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">电子邮箱</div>
+                <span way-data="data.updateJson.Email"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">成立时间</div>
+                <span way-data="data.updateJson.EstablishedTime"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">经营期限</div>
+                <span way-data="data.updateJson.OperationTerm"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">固定资产（万元）</div>
+                <span way-data="data.updateJson.FixedAsset"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">注册资金（万元）</div>
+                <span way-data="data.updateJson.RegisteredCapital"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">年总产值</div>
+                <span way-data="data.updateJson.GDP"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">年缴税金额</div>
+                <span way-data="data.updateJson.TaxPerYear"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">年利润</div>
+                <span way-data="data.updateJson.AnnualProfit"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">企业负责人</div>
+                <span way-data="data.updateJson.Superintendent"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">质量保证负责人</div>
+                <span way-data="data.updateJson.QA"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">联系人</div>
+                <span way-data="data.updateJson.ContactPerson"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">从业人员总数</div>
+                <span way-data="data.updateJson.MemberCount"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">专业技术人员数</div>
+                <span way-data="data.updateJson.Company.TechnicianCount"></span>
+            </a>
+            <a class="item">
+                <div class="ui horizontal grey label zh fw-normal-force">其他需要说明的情况</div>
+                <span way-data="data.updateJson.Note"></span>
+            </a>
         </div>
     </div>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+<div class="actions">
+    <div class="ui black deny button">
+        取消
+    </div>
+    <div class="ui orange labeled icon deny button reject-btn">
+        不通过
+        <i class="remove icon"></i>
+    </div>
+    <div class="ui positive right labeled icon button pass-btn">
+        通过
+        <i class="checkmark icon"></i>
+
+    </div>
+</div>
 </div>
 
 

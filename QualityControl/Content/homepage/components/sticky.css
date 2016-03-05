@@ -15,10 +15,10 @@
 *******************************/
 
 .ui.sticky {
-  position: static;
-  -webkit-transition: none;
-          transition: none;
-  z-index: 800;
+    -webkit-transition: none;
+    position: static;
+    transition: none;
+    z-index: 800;
 }
 
 
@@ -28,29 +28,33 @@
 
 
 /* Bound */
+
 .ui.sticky.bound {
-  position: absolute;
-  left: auto;
-  right: auto;
+    left: auto;
+    position: absolute;
+    right: auto;
 }
 
 /* Fixed */
+
 .ui.sticky.fixed {
-  position: fixed;
-  left: auto;
-  right: auto;
+    left: auto;
+    position: fixed;
+    right: auto;
 }
 
 /* Bound/Fixed Position */
+
 .ui.sticky.bound.top,
 .ui.sticky.fixed.top {
-  top: 0px;
-  bottom: auto;
+    bottom: auto;
+    top: 0px;
 }
+
 .ui.sticky.bound.bottom,
 .ui.sticky.fixed.bottom {
-  top: auto;
-  bottom: 0px;
+    bottom: 0px;
+    top: auto;
 }
 
 
@@ -59,11 +63,11 @@
 *******************************/
 
 .ui.native.sticky {
-  position: -webkit-sticky;
-  position: -moz-sticky;
-  position: -ms-sticky;
-  position: -o-sticky;
-  position: sticky;
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
+    position: sticky;
 }
 
 
@@ -76,4 +80,3 @@
 /*******************************
          Site Overrides
 *******************************/
-

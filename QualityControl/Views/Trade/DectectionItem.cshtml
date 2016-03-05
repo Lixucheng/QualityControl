@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "DectectionItem";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -34,27 +33,27 @@
 
     <table class="ui celled table item-table">
         <thead>
-            <tr>
-                <th></th>
-                <th>检测项目</th>
-                <th>范围</th>
-                <th>否决项</th>
-            </tr>
+        <tr>
+            <th></th>
+            <th>检测项目</th>
+            <th>范围</th>
+            <th>否决项</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Name</td>
-                    <td>@item.Range</td>
-                    <td>@(item.Denney ? "是" : "否")</td>
-                    <td>
-                        <button class="ui icon button">
-                            <i class="trash icon"></i>
-                        </button>
-                    </td>
-                </tr>
-            }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Range</td>
+                <td>@(item.Denney ? "是" : "否")</td>
+                <td>
+                    <button class="ui icon button">
+                        <i class="trash icon"></i>
+                    </button>
+                </td>
+            </tr>
+        }
         </tbody>
     </table>
     <button class="ui button submit-btn">确认提交</button>
@@ -68,17 +67,21 @@
                 fields: {
                     Name: {
                         identifier: 'Name',
-                        rules: [{
-                            type: 'empty',
-                            prompt: '请输入检测内容'
-                        }]
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入检测内容'
+                            }
+                        ]
                     },
                     Range: {
                         identifier: 'Range',
-                        rules: [{
-                            type: 'empty',
-                            prompt: '请输入检测范围'
-                        }]
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入检测范围'
+                            }
+                        ]
                     }
                 }
             });
@@ -105,7 +108,7 @@
             });
 
             var $tbody = $('table tbody');
-            $tbody.click(function (event) {
+            $tbody.click(function(event) {
                 var $t = $(event.target);
                 if ($t.is('.icon.trash')) {
                     $t.parents('tr').remove();

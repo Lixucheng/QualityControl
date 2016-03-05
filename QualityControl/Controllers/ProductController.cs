@@ -45,6 +45,28 @@ namespace QualityControl.Controllers
         }
 
 
+        public ActionResult ProductIndex(string key = "", long ProductTypeId = 0)
+        {
+            var x = new List<Product>();
+            if (ProductTypeId != 0)
+            {
+                var t = Db.ThirdProductTypes.Find(ProductTypeId);
+                if (t == null)
+                {
+                    throw new Exception("访问错误");
+                }
+                x = t.Products;
+                ViewBag.list = x;
+                return View();
+            }
+            if (!string.IsNullOrEmpty(key))
+                x = Db.Products.Where(e => e.Name.Contains(key)).ToList();
+            x = Db.Products.Take(20).ToList();
+            ViewBag.list = x;
+            return View();
+        }
+
+
         //public ActionResult CpEdit(Db.Product newone)
         //{
         //    if (!CheckCp(newone))
@@ -123,7 +145,7 @@ namespace QualityControl.Controllers
         public ActionResult FirstTypeIndex()
         {
             var uid = User.Identity.GetUserId();
-            if (UserManager.FindById(uid).Type!=(int)EnumUserType.Controller)
+            if (UserManager.FindById(uid).Type != (int) EnumUserType.Controller)
             {
                 throw new Exception("无权限");
             }
@@ -141,7 +163,7 @@ namespace QualityControl.Controllers
         public ActionResult FirstEdit(FirstProductType newone)
         {
             var uid = User.Identity.GetUserId();
-            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            if (UserManager.FindById(uid).Type != (int) EnumUserType.Controller)
             {
                 throw new Exception("无权限");
             }
@@ -166,7 +188,7 @@ namespace QualityControl.Controllers
         public ActionResult FirstAdd(FirstProductType newone)
         {
             var uid = User.Identity.GetUserId();
-            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            if (UserManager.FindById(uid).Type != (int) EnumUserType.Controller)
             {
                 throw new Exception("无权限");
             }
@@ -186,7 +208,7 @@ namespace QualityControl.Controllers
         public ActionResult SecondTypeIndex(long id)
         {
             var uid = User.Identity.GetUserId();
-            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            if (UserManager.FindById(uid).Type != (int) EnumUserType.Controller)
             {
                 throw new Exception("无权限");
             }
@@ -205,7 +227,7 @@ namespace QualityControl.Controllers
         public ActionResult SecondEdit(SecondProductType newone)
         {
             var uid = User.Identity.GetUserId();
-            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            if (UserManager.FindById(uid).Type != (int) EnumUserType.Controller)
             {
                 throw new Exception("无权限");
             }
@@ -231,7 +253,7 @@ namespace QualityControl.Controllers
         public ActionResult SecondAdd(SecondProductType newone, long fid)
         {
             var uid = User.Identity.GetUserId();
-            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            if (UserManager.FindById(uid).Type != (int) EnumUserType.Controller)
             {
                 throw new Exception("无权限");
             }
@@ -257,7 +279,7 @@ namespace QualityControl.Controllers
         public ActionResult TypeIndex(long id)
         {
             var uid = User.Identity.GetUserId();
-            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            if (UserManager.FindById(uid).Type != (int) EnumUserType.Controller)
             {
                 throw new Exception("无权限");
             }
@@ -276,7 +298,7 @@ namespace QualityControl.Controllers
         public ActionResult Edit(ThirdProductType newone)
         {
             var uid = User.Identity.GetUserId();
-            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            if (UserManager.FindById(uid).Type != (int) EnumUserType.Controller)
             {
                 throw new Exception("无权限");
             }
@@ -301,7 +323,7 @@ namespace QualityControl.Controllers
         public ActionResult Add(ThirdProductType newone, long fid)
         {
             var uid = User.Identity.GetUserId();
-            if (UserManager.FindById(uid).Type != (int)EnumUserType.Controller)
+            if (UserManager.FindById(uid).Type != (int) EnumUserType.Controller)
             {
                 throw new Exception("无权限");
             }
@@ -396,7 +418,7 @@ namespace QualityControl.Controllers
         }
 
 
-        public ActionResult _Options(int type, long fatherid = 0,long type1id=-1)
+        public ActionResult _Options(int type, long fatherid = 0, long type1id = -1)
         {
             ViewBag.tid = type1id;
             switch (type)
@@ -434,17 +456,16 @@ namespace QualityControl.Controllers
         {
             ViewBag.id = name;
             if (typeid != -1)
-            { 
-            var t3 = Db.ThirdProductTypes.Find(typeid);
-            var t2 = t3.SecondType;
-            var t1 = t2.FirstType;
-            ViewBag.t1 = t1.Id;
-            ViewBag.t2 = t2.Id;
-            ViewBag.t3 = t3.Id;
+            {
+                var t3 = Db.ThirdProductTypes.Find(typeid);
+                var t2 = t3.SecondType;
+                var t1 = t2.FirstType;
+                ViewBag.t1 = t1.Id;
+                ViewBag.t2 = t2.Id;
+                ViewBag.t3 = t3.Id;
             }
             else
             {
-               
                 ViewBag.t1 = 0;
                 ViewBag.t2 = 0;
                 ViewBag.t3 = 0;
@@ -455,7 +476,6 @@ namespace QualityControl.Controllers
 
         public JsonResult GetType(int type, long fatherid)
         {
-           
             switch (type)
             {
                 case 2:
@@ -546,12 +566,12 @@ namespace QualityControl.Controllers
             {
                 return Content("错误操作");
             }
-            if(id!=0)
+            if (id != 0)
             {
-                var t3 = product.Type;              
-                ViewBag.t3 = t3.Id;               
+                var t3 = product.Type;
+                ViewBag.t3 = t3.Id;
             }
-           
+
             return View(product);
         }
 
@@ -633,7 +653,6 @@ namespace QualityControl.Controllers
                     product.File = model.File;
                     product.EmpowerEnterprise = model.EmpowerEnterprise;
                     product.Brand = model.Brand;
-                    
                 }
                 Db.Entry(product).State = EntityState.Modified;
             }
@@ -738,8 +757,6 @@ namespace QualityControl.Controllers
         }
 
 
-
-
         /// <summary>
         ///     获取BaseProductBatch信息
         /// </summary>
@@ -756,7 +773,7 @@ namespace QualityControl.Controllers
         public JsonResult GetBPInfo(long id)
         {
             var e = Db.ProductBatchs.Find(id);
-            var json = new {BatchName=e.BatchName,Count=e.Count,Id=e.Id, ProductionDate=e.ProductionDate.ToString("yyyy-MM-dd") };
+            var json = new {e.BatchName, e.Count, e.Id, ProductionDate = e.ProductionDate.ToString("yyyy-MM-dd")};
 
             return Json(json, JsonRequestBehavior.AllowGet);
         }
@@ -771,30 +788,6 @@ namespace QualityControl.Controllers
         }
 
         #endregion
-
-
-
-        public ActionResult ProductIndex(string key = "", long ProductTypeId = 0)
-        {
-            var x = new List<Product>();
-            if (ProductTypeId != 0)
-            {
-                var t = Db.ThirdProductTypes.Find(ProductTypeId);
-                if (t == null)
-                {
-                    throw new Exception("访问错误");
-                }
-                x = t.Products;
-                ViewBag.list = x;
-                return View();
-            }
-            if (!string.IsNullOrEmpty(key))
-                x = Db.Products.Where(e => e.Name.Contains(key)).ToList();
-            x = Db.Products.Take(20).ToList();
-            ViewBag.list = x;
-            return View();
-        }
-
 
         #region 检测项目
 
@@ -826,6 +819,7 @@ namespace QualityControl.Controllers
             Db.SaveChanges();
             return item.Id;
         }
+
         #endregion
     }
 }

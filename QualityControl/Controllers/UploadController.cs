@@ -1,15 +1,6 @@
-﻿using Microsoft.AspNet.Identity;
-using Newtonsoft.Json;
-using QualityControl.Db;
-using QualityControl.Enum;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
+using Newtonsoft.Json;
 
 namespace QualityControl.Controllers
 {
@@ -19,17 +10,17 @@ namespace QualityControl.Controllers
         public string Index()
         {
             var filecollection = Request.Files;
-            string err = string.Empty;
-            string subFolder = string.Empty;
-            string filePath = string.Empty;
-            
-            HttpPostedFileBase postedfile = filecollection[0];
+            var err = string.Empty;
+            var subFolder = string.Empty;
+            var filePath = string.Empty;
+
+            var postedfile = filecollection[0];
             if (postedfile == null)
             {
                 return null;
             }
-            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(Path.GetFileName(postedfile.FileName));
-            string fullUrl = Path.Combine(Server.MapPath(@"~/upload"));
+            var fileName = Guid.NewGuid() + Path.GetExtension(Path.GetFileName(postedfile.FileName));
+            var fullUrl = Path.Combine(Server.MapPath(@"~/upload"));
             if (Directory.Exists(fullUrl) == false)
             {
                 Directory.CreateDirectory(fullUrl); //如果文件夹不存在，直接创建文件夹。
@@ -45,7 +36,7 @@ namespace QualityControl.Controllers
 
         public string Del(string name)
         {
-            string fullUrl = Path.Combine(Server.MapPath(@"~"));
+            var fullUrl = Path.Combine(Server.MapPath(@"~"));
             var n = fullUrl + name;
             if (System.IO.File.Exists(n))
             {
@@ -53,7 +44,5 @@ namespace QualityControl.Controllers
             }
             return "";
         }
-
-
     }
 }

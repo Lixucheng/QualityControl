@@ -8,7 +8,7 @@
     <div class="ui mobile reversed equal width grid">
         <div class=" column">
             <select name="" class="A @ViewBag.id">
-                @{ Html.RenderAction("_Options", "Product", new {type = 1, type1id =ViewBag.t1}); }
+                @{ Html.RenderAction("_Options", "Product", new {type = 1, type1id = ViewBag.t1}); }
             </select>
         </div>
         <div class="column">
@@ -30,7 +30,6 @@
 
 
     set2();
-
 
 
     $(".A.@ViewBag.id").change(function() {
@@ -136,20 +135,16 @@
             url: '/Product/GetType',
             data: { fatherid: v1, type: 2 },
 
-            success: function (data) {
+            success: function(data) {
                 var l = data.length;
                 var s = "";
                 for (var i = 0; i < l; i++) {
-                    if(@ViewBag.typeid==-1)
-                    {s += "<option value=" + data[i].id + ">" + data[i].name + "</option>";}
-                    else
-                    {
-                        if(@ViewBag.t2==data[i].id)
-                        {
+                    if (@ViewBag.typeid == -1) {
+                        s += "<option value=" + data[i].id + ">" + data[i].name + "</option>";
+                    } else {
+                        if (@ViewBag.t2 == data[i].id) {
                             s += "<option selected = 'selected' value=" + data[i].id + ">" + data[i].name + "</option>";
-                        }
-                        else
-                        {
+                        } else {
                             s += "<option value=" + data[i].id + ">" + data[i].name + "</option>";
                         }
                     }
@@ -163,20 +158,16 @@
                         type: 'Get',
                         url: '/Product/GetType',
                         data: { fatherid: v2, type: 3 },
-                        success: function (data) {
+                        success: function(data) {
                             var l = data.length;
                             var s = "";
                             for (var i = 0; i < l; i++) {
-                                if(@ViewBag.typeid==-1)
-                                {s += "<option value=" + data[i].id + ">" + data[i].name + "</option>";}
-                                else
-                                {
-                                    if(@ViewBag.t3==data[i].id)
-                                    {
+                                if (@ViewBag.typeid == -1) {
+                                    s += "<option value=" + data[i].id + ">" + data[i].name + "</option>";
+                                } else {
+                                    if (@ViewBag.t3 == data[i].id) {
                                         s += "<option selected = 'selected' value=" + data[i].id + ">" + data[i].name + "</option>";
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         s += "<option value=" + data[i].id + ">" + data[i].name + "</option>";
                                     }
                                 }

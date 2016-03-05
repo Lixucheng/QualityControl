@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "SelectSample";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -8,12 +7,12 @@
 <div class="am-margin am-padding container ">
 
     <form class="ui form" action="/Trade/Sample" method="POST">
-        <input type="hidden" value="@Model.Id" name="tradeId" />
+        <input type="hidden" value="@Model.Id" name="tradeId"/>
         @foreach (var b in Model.Batches)
         {
             <div class="field">
                 <label>@b.BatchName</label>
-                <input type="number" placeholder="" data-id="@b.Id" value="@b.SampleCount" required name="sampleCounts" max="@b.Count" min="0" />
+                <input type="number" placeholder="" data-id="@b.Id" value="@b.SampleCount" required name="sampleCounts" max="@b.Count" min="0"/>
             </div>
         }
         <div class="inline fields">
@@ -40,9 +39,9 @@
     <script>
         var $inputs = $('input[type=number]');
         $('.ui.radio.checkbox').checkbox();
-        $('.ui.form').submit(function (event) {
+        $('.ui.form').submit(function(event) {
             var data = [];
-            $inputs.each(function () {
+            $inputs.each(function() {
                 var $this = $(this);
                 var max = $this.attr('max');
                 var val = $this.val();
@@ -58,6 +57,6 @@
                 });
             });
             $('<input name="data" type="hidden"/>').val(JSON.stringify(data)).appendTo('.ui.form');
-        })
+        });
     </script>
 }

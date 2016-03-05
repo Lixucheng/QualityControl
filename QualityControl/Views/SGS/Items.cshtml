@@ -1,107 +1,108 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Items";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <div class="am-margin" ng-controller="AppCtrl">
-        <div simple-datatable ng-model="data" sdt-perpage-box-init="perPageBoxInit" sdt-row-id="Id" sdt-action-col="fullActionColFactory" sdt-on="sdtOn">
-            <div class="am-cf">
-                <div class="ui floating labeled icon button server-sdt-perpage">
-                    <i class="filter icon"></i>
-                    <span class="text zh">10</span>
-                    <div class="menu">
-                        <div class="header">
-                            <i class="tags icon zh"></i>
-                            每页显示
-                        </div>
-                        <div class="divider"></div>
-                        <div class="item active">
-                            10
-                        </div>
-                        <div class="item">
-                            25
-                        </div>
-                        <div class="item">
-                            50
-                        </div>
-                        <div class="item">
-                            100
-                        </div>
-                        <div class="item" data-value="all">
-                            全部
-                        </div>
+    <div simple-datatable ng-model="data" sdt-perpage-box-init="perPageBoxInit" sdt-row-id="Id" sdt-action-col="fullActionColFactory" sdt-on="sdtOn">
+        <div class="am-cf">
+            <div class="ui floating labeled icon button server-sdt-perpage">
+                <i class="filter icon"></i>
+                <span class="text zh">10</span>
+                <div class="menu">
+                    <div class="header">
+                        <i class="tags icon zh"></i>
+                        每页显示
+                    </div>
+                    <div class="divider"></div>
+                    <div class="item active">
+                        10
+                    </div>
+                    <div class="item">
+                        25
+                    </div>
+                    <div class="item">
+                        50
+                    </div>
+                    <div class="item">
+                        100
+                    </div>
+                    <div class="item" data-value="all">
+                        全部
                     </div>
                 </div>
-                <button class="large ui compact icon button" ng-click="add()">
-                    <i class="plus icon"></i>
+            </div>
+            <button class="large ui compact icon button" ng-click="add()">
+                <i class="plus icon"></i>
+            </button>
+            <div class="ui action input am-fr">
+                <input type="search" placeholder="搜索" sdt-search-input>
+                <button class="ui icon button" sdt-search-btn>
+                    <i class="search icon"></i>
                 </button>
-                <div class="ui action input am-fr">
-                    <input type="search" placeholder="搜索" sdt-search-input>
-                    <button class="ui icon button" sdt-search-btn>
-                        <i class="search icon"></i>
-                    </button>
-                </div>
-            </div>
-            <table class="ui selectable celled striped table">
-                <thead>
-                    <tr>
-                        <th class="zh" data-sdt-col="Id">序号</th>
-                        <th class="zh" data-sdt-col="Name" sdt-sort-type="number">检测项目</th>
-                        <th class="zh" data-sdt-col="Days" sdt-sort-type="number">检测天数</th>
-                        <th class="zh" data-sdt-col="Price" sdt-sort-type="number">检测报价</th>
-                        <th class="zh" style="width: 100px;"></th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <div class="am-cf am-text-center">
-                <div class="ui label am-fl">
-                    共<div class="detail" sdt-total-label></div>
-                </div>
-                <div class="ui mini action input">
-                    <input type="text" style="width: 98px;" sdt-page-input min="1">
-                    <button class="ui right labeled icon button" sdt-page-btn><i class="right arrow icon"></i> <span sdt-total-page></span></button>
-                </div>
-                <div class="am-fr">
-                    <button class="ui small left labeled icon button" sdt-prev-btn><i class="left arrow icon"></i>上一页</button>
-                    <button class="ui small right labeled icon button" sdt-next-btn><i class="right arrow icon"></i>下一页</button>
-                </div>
             </div>
         </div>
-
-        <div class="ui modal" id="server-modal" ng-controller="ServerModalCtrl">
-            <i class="close icon"></i>
-            <div class="header zh">
-                {{addMode ? "添加": "编辑"}}
+        <table class="ui selectable celled striped table">
+            <thead>
+            <tr>
+                <th class="zh" data-sdt-col="Id">序号</th>
+                <th class="zh" data-sdt-col="Name" sdt-sort-type="number">检测项目</th>
+                <th class="zh" data-sdt-col="Days" sdt-sort-type="number">检测天数</th>
+                <th class="zh" data-sdt-col="Price" sdt-sort-type="number">检测报价</th>
+                <th class="zh" style="width: 100px;"></th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="am-cf am-text-center">
+            <div class="ui label am-fl">
+                共
+                <div class="detail" sdt-total-label></div>
             </div>
-            <div class="content">
-                <form class="ui form">
-                    <div class="field">
-                        <label>检测项目</label>
-                        <input type="text" name="Name" ng-model="data.Name"/>
-                    </div>
-                    <div class="field">
-                        <label>检测天数</label>
-                        <input type="number" name="Days" ng-model="data.Days"/>
-                    </div>
-                    <div class="field">
-                        <label>检测报价</label>
-                        <input type="number" name="Price" ng-model="data.Price"/>
-                    </div>
-                </form>
+            <div class="ui mini action input">
+                <input type="text" style="width: 98px;" sdt-page-input min="1">
+                <button class="ui right labeled icon button" sdt-page-btn>
+                    <i class="right arrow icon"></i> <span sdt-total-page></span></button>
             </div>
-
-            <div class="actions">
-                <div class="ui black deny button" ng-click="reset()">
-                    取消
-                </div>
-                <div class="ui positive right labeled icon button" ng-click="save($event)">
-                    保存更改
-                    <i class="checkmark icon"></i>
-                </div>
+            <div class="am-fr">
+                <button class="ui small left labeled icon button" sdt-prev-btn><i class="left arrow icon"></i>上一页</button>
+                <button class="ui small right labeled icon button" sdt-next-btn><i class="right arrow icon"></i>下一页</button>
             </div>
         </div>
-   
+    </div>
+
+    <div class="ui modal" id="server-modal" ng-controller="ServerModalCtrl">
+        <i class="close icon"></i>
+        <div class="header zh">
+            {{addMode ? "添加": "编辑"}}
+        </div>
+        <div class="content">
+            <form class="ui form">
+                <div class="field">
+                    <label>检测项目</label>
+                    <input type="text" name="Name" ng-model="data.Name"/>
+                </div>
+                <div class="field">
+                    <label>检测天数</label>
+                    <input type="number" name="Days" ng-model="data.Days"/>
+                </div>
+                <div class="field">
+                    <label>检测报价</label>
+                    <input type="number" name="Price" ng-model="data.Price"/>
+                </div>
+            </form>
+        </div>
+
+        <div class="actions">
+            <div class="ui black deny button" ng-click="reset()">
+                取消
+            </div>
+            <div class="ui positive right labeled icon button" ng-click="save($event)">
+                保存更改
+                <i class="checkmark icon"></i>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
@@ -109,12 +110,12 @@
     <script src="~/Scripts/angular.min.js"></script>
     <script src="~/Scripts/angular.simple-datatables.js"></script>
     <script>
-        (function () {
-            $(function () {
+        (function() {
+            $(function() {
                 $('.menu .item').tab();
                 $('.dropdown').dropdown();
                 var $serverName = $('.modal-name');
-                $serverName.each(function (index, ele) {
+                $serverName.each(function(index, ele) {
                     var $this = $(ele);
                     $this.popup({
                         popup: $this.parent().find('.ui.popup'),
@@ -131,10 +132,10 @@
             });
         }());
 
-        (function () {
-            var app = angular.module('app', ['simpleDatatable'/*, 'ngRoute'*/]);
+        (function() {
+            var app = angular.module('app', ['simpleDatatable' /*, 'ngRoute'*/]);
 
-            var existsInArray = function (arr, ele, property) {
+            var existsInArray = function(arr, ele, property) {
                 for (var i in arr) {
                     var item = arr[i];
                     if (property) {
@@ -147,7 +148,7 @@
                 return false;
             };
 
-            var find = function (collection, filter) {
+            var find = function(collection, filter) {
                 for (var i in collection) {
                     var item = collection[i];
                     if (filter(item)) {
@@ -159,202 +160,206 @@
                 }
             };
 
-            var token = function () {
+            var token = function() {
                 return Date.now().toString() + parseInt(Math.random() * 1000000).toString();
             };
 
-            var BridgeCtrlFactory = function (scope, eventName, sdtPerPageSelector) {
+            var BridgeCtrlFactory = function(scope, eventName, sdtPerPageSelector) {
             };
 
-            app.controller('AppCtrl', ['$scope', '$http', function (scope, $http) {
+            app.controller('AppCtrl', [
+                '$scope', '$http', function(scope, $http) {
 
-                if ('.server-sdt-perpage') {
-                    scope.perPageBoxInit = function (setter) {
-                        $(function () {
-                            $('.server-sdt-perpage').addClass('dropdown').dropdown({
-                                onChange: function (value) {
-                                    setter(value);
-                                }
+                    if ('.server-sdt-perpage') {
+                        scope.perPageBoxInit = function(setter) {
+                            $(function() {
+                                $('.server-sdt-perpage').addClass('dropdown').dropdown({
+                                    onChange: function(value) {
+                                        setter(value);
+                                    }
+                                });
                             });
+                        };
+                    }
+
+                    scope.add = function() {
+                        scope.$broadcast('modal', {
+                            type: 'add'
                         });
                     };
-                }
 
-                scope.add = function () {
-                    scope.$broadcast('modal', {
-                        type: 'add'
-                    });
-                };
-
-                scope.sdtOn = function (event, item) {
-                    if (event === 'edit') {
-                        scope.$broadcast('modal', {
-                            type: 'edit',
-                            data: item
-                        });
-                    }
-                    if (event === 'remove') {
-                        $http
-                            .post('/SGS/RemoveItem/' + item.Id)
-                            .error(function () {
-                                alert('操作失败，请刷新重试');
+                    scope.sdtOn = function(event, item) {
+                        if (event === 'edit') {
+                            scope.$broadcast('modal', {
+                                type: 'edit',
+                                data: item
                             });
+                        }
+                        if (event === 'remove') {
+                            $http
+                                .post('/SGS/RemoveItem/' + item.Id)
+                                .error(function() {
+                                    alert('操作失败，请刷新重试');
+                                });
 
-                    }
-                };
+                        }
+                    };
 
-                scope.data = [];
+                    scope.data = [];
 
-                $http
-                    .get('/SGS/AllItems')
-                    .success(function (ret) {
-                        scope.data = ret;
-                        scope.$applyAsync();
-                    })
-                    .error(function () {
-                        alert('获取数据失败，请检查网络');
+                    $http
+                        .get('/SGS/AllItems')
+                        .success(function(ret) {
+                            scope.data = ret;
+                            scope.$applyAsync();
+                        })
+                        .error(function() {
+                            alert('获取数据失败，请检查网络');
+                        });
+
+                    scope.fullActionColFactory = "" +
+                        "<td class='' action-col>" +
+                        '<div class="ui icon buttons">' +
+                        '<button class="ui button" sdt-row-edit><i class="edit icon"></i></button>' +
+                        '<button class="ui button" sdt-row-remove><i class="trash icon"></i></button>' +
+                        '</div>' +
+                        "</td>";
+                }
+            ]);
+
+            app.controller('ServerModalCtrl', [
+                '$scope', '$http', function(scope, $http) {
+
+                    scope.$on('modal', function(event, data) {
+
+                        if (data.type === 'add') {
+                            scope.addMode = true;
+                            scope.reset();
+                            modalEle().modal('show');
+                        } else {
+                            scope.addMode = false;
+                            data = data.data;
+                            scope.data = data;
+                            modalEle().modal('show');
+                        }
+
                     });
 
-                scope.fullActionColFactory = "" +
-                    "<td class='' action-col>" +
-                        '<div class="ui icon buttons">' +
-                            '<button class="ui button" sdt-row-edit><i class="edit icon"></i></button>' +
-                            '<button class="ui button" sdt-row-remove><i class="trash icon"></i></button>' +
-                        '</div>' +
-                    "</td>";
-            }]);
-
-            app.controller('ServerModalCtrl', ['$scope', '$http', function (scope, $http) {
-
-                scope.$on('modal', function (event, data) {
-
-                    if (data.type === 'add') {
-                        scope.addMode = true;
-                        scope.reset();
-                        modalEle().modal('show');
-                    } else {
-                        scope.addMode = false;
-                        data = data.data;
-                        scope.data = data;
-                        modalEle().modal('show');
-                    }
-
-                });
-
-                scope.addMode = true;
-                scope.data = {
-                    Id: 0,
-                    Name: '',
-                    Price: 0,
-                    Days: 0
-                };
-
-                scope.reset = function () {
+                    scope.addMode = true;
                     scope.data = {
                         Id: 0,
                         Name: '',
                         Price: 0,
                         Days: 0
                     };
-                };
 
-                var _modelEle;
-                var modalEle = function () {
-                    if (!_modelEle) {
-                        _modelEle = angular.element('#server-modal');
-                        _modelEle.modal({
-                            closable: false
-                        })
-                    }
-                    return _modelEle;
-                };
+                    scope.reset = function() {
+                        scope.data = {
+                            Id: 0,
+                            Name: '',
+                            Price: 0,
+                            Days: 0
+                        };
+                    };
 
-                var _form = undefined;
-                var form = function () {
-                    if (!_form) {
-                        _form = modalEle().find('form');
-                        _form.form(
-                            {
-                                fields: {
-                                    Name: {
-                                        identifier: 'Name',
-                                        rules: [
-                                            {
-                                                type: 'empty',
-                                                prompt: '请输入检测项目'
-                                            }
-                                        ]
-                                    },
-                                    Days: {
-                                        identifier: 'Days',
-                                        rules: [
-                                            {
-                                                type: 'integer',
-                                                prompt: '请输入检测天数'
-                                            },
-                                            {
-                                                type: 'empty',
-                                                prompt: '请输入检测天数'
-                                            }
-                                        ]
-                                    },
-                                    Price: {
-                                        identifier: 'Price',
-                                        rules: [
-                                            {
-                                                type: 'integer',
-                                                prompt: '请输入检测报价'
-                                            },
-                                            {
-                                                type: 'empty',
-                                                prompt: '请输入检测报价'
-                                            }
-                                        ]
+                    var _modelEle;
+                    var modalEle = function() {
+                        if (!_modelEle) {
+                            _modelEle = angular.element('#server-modal');
+                            _modelEle.modal({
+                                closable: false
+                            });
+                        }
+                        return _modelEle;
+                    };
+
+                    var _form = undefined;
+                    var form = function() {
+                        if (!_form) {
+                            _form = modalEle().find('form');
+                            _form.form(
+                                {
+                                    fields: {
+                                        Name: {
+                                            identifier: 'Name',
+                                            rules: [
+                                                {
+                                                    type: 'empty',
+                                                    prompt: '请输入检测项目'
+                                                }
+                                            ]
+                                        },
+                                        Days: {
+                                            identifier: 'Days',
+                                            rules: [
+                                                {
+                                                    type: 'integer',
+                                                    prompt: '请输入检测天数'
+                                                },
+                                                {
+                                                    type: 'empty',
+                                                    prompt: '请输入检测天数'
+                                                }
+                                            ]
+                                        },
+                                        Price: {
+                                            identifier: 'Price',
+                                            rules: [
+                                                {
+                                                    type: 'integer',
+                                                    prompt: '请输入检测报价'
+                                                },
+                                                {
+                                                    type: 'empty',
+                                                    prompt: '请输入检测报价'
+                                                }
+                                            ]
+                                        }
                                     }
                                 }
-                            }
-                        );
-                        _form.submit(function (event) {
+                            );
+                            _form.submit(function(event) {
 
-                            event.stopPropagation();
-                        });
-                    }
-                    return _form;
-                };
-
-                scope.save = function ($event) {
-                    var status = form().form('is valid');
-                    if (!status) {
-                        $event.stopPropagation();
-                        form().form('validate form');
-                        return;
-                    }
-                    var parentScope = scope.$parent;
-                    $http
-                        .post('/SGS/SaveItem', scope.data)
-                        .success(function (ret) {
-                            if (ret == 0) {
-                                alert('操作失败，请刷新重试');
-                                return;
-                            }
-                            scope.data.Id = ret;
-                            scope.$applyAsync(function() {
-                                if (scope.addMode) {
-                                    parentScope.data.push(scope.data);
-                                } else {
-                                    var item = find(parentScope.data, function (item) {
-                                        return scope.data.Id === item['Id'];
-                                    });
-                                    parentScope.data[item.index] = scope.data;
-                                }
-                                scope.reset();
+                                event.stopPropagation();
                             });
-                        }).error(function() {
-                            alert('操作失败，请刷新重试');
-                        });
-                    
-                };
-            }]);
+                        }
+                        return _form;
+                    };
+
+                    scope.save = function($event) {
+                        var status = form().form('is valid');
+                        if (!status) {
+                            $event.stopPropagation();
+                            form().form('validate form');
+                            return;
+                        }
+                        var parentScope = scope.$parent;
+                        $http
+                            .post('/SGS/SaveItem', scope.data)
+                            .success(function(ret) {
+                                if (ret == 0) {
+                                    alert('操作失败，请刷新重试');
+                                    return;
+                                }
+                                scope.data.Id = ret;
+                                scope.$applyAsync(function() {
+                                    if (scope.addMode) {
+                                        parentScope.data.push(scope.data);
+                                    } else {
+                                        var item = find(parentScope.data, function(item) {
+                                            return scope.data.Id === item['Id'];
+                                        });
+                                        parentScope.data[item.index] = scope.data;
+                                    }
+                                    scope.reset();
+                                });
+                            }).error(function() {
+                                alert('操作失败，请刷新重试');
+                            });
+
+                    };
+                }
+            ]);
             angular.bootstrap(document.documentElement, ['app']);
 
         }());

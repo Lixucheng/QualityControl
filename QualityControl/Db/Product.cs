@@ -18,66 +18,65 @@ namespace QualityControl.Db
         public string Name { get; set; }
 
         /// <summary>
-        /// 保质期
+        ///     保质期
         /// </summary>
         public string ShelfLife { get; set; }
 
         public string Brand { get; set; }
 
         /// <summary>
-        /// 等级
+        ///     等级
         /// </summary>
         public string Grade { get; set; }
 
         /// <summary>
-        /// 净含量
+        ///     净含量
         /// </summary>
         public string Weight { get; set; }
 
         /// <summary>
-        /// 配料表
+        ///     配料表
         /// </summary>
         public string Ingredients { get; set; }
 
 
-
         /// <summary>
-        /// 储存条件
+        ///     储存条件
         /// </summary>
         public string StorageCondition { get; set; }
 
         /// <summary>
-        /// 包装说明
+        ///     包装说明
         /// </summary>
         public string Packing { get; set; }
 
         /// <summary>
-        /// 包装材料
+        ///     包装材料
         /// </summary>
         public string PackingMaterial { get; set; }
 
         /// <summary>
-        /// 许可类别
+        ///     许可类别
         /// </summary>
         public string PermissionType { get; set; }
 
         /// <summary>
-        /// 材料
+        ///     材料
         /// </summary>
         public string Material { get; set; }
 
         /// <summary>
-        /// 产品图片
+        ///     产品图片
         /// </summary>
         public string Image { get; set; }
 
         /// <summary>
-        /// 上传材料
+        ///     上传材料
         /// </summary>
         public string File { get; set; }
 
         /// <summary>
-        /// 授权企业
+        ///     授权企业
         /// </summary>
         public string EmpowerEnterprise { get; set; }
 
@@ -110,7 +109,7 @@ namespace QualityControl.Db
 
         public string UpdateJson { get; set; }
 
-        public List<ProductDectectionItem> DectectionItems { get; set; } 
+        public List<ProductDectectionItem> DectectionItems { get; set; }
     }
 
     public enum EnumProductStatus
@@ -209,110 +208,110 @@ namespace QualityControl.Db
         public long BatchId { get; set; }
 
         /// <summary>
-        /// 样品名称
+        ///     样品名称
         /// </summary>
         [Required]
         public string SampleName { get; set; }
 
         /// <summary>
-        /// 规格
+        ///     规格
         /// </summary>
         [Required]
         public string Specification { get; set; }
 
         /// <summary>
-        /// 委托单位
+        ///     委托单位
         /// </summary>
         [Required]
         public string Trustor { get; set; }
 
         /// <summary>
-        /// 商标
+        ///     商标
         /// </summary>
         [Required]
         public string Brand { get; set; }
 
         /// <summary>
-        /// 委托单位地址
+        ///     委托单位地址
         /// </summary>
         [Required]
         public string TrustorAddress { get; set; }
 
         /// <summary>
-        /// 检验类别
+        ///     检验类别
         /// </summary>
         [Required]
         public string TestType { get; set; }
 
         /// <summary>
-        /// 生产单位/地址
+        ///     生产单位/地址
         /// </summary>
         [Required]
         public string ProducingAddress { get; set; }
 
         /// <summary>
-        /// 样品状况/等级
+        ///     样品状况/等级
         /// </summary>
         [Required]
         public string SampleRank { get; set; }
 
 
         /// <summary>
-        /// 送样人
+        ///     送样人
         /// </summary>
         [Required]
         public string Deliverer { get; set; }
 
         /// <summary>
-        /// 送样日期
+        ///     送样日期
         /// </summary>
         [Required]
         public string DeliveryDate { get; set; }
 
         /// <summary>
-        /// 生产日期
+        ///     生产日期
         /// </summary>
         [Required]
         public string ProducingDate { get; set; }
 
         /// <summary>
-        /// 主检人
+        ///     主检人
         /// </summary>
         [Required]
         public string Manager { get; set; }
 
         /// <summary>
-        /// 检验日期
+        ///     检验日期
         /// </summary>
         [Required]
         public string CheckDate { get; set; }
 
 
         /// <summary>
-        /// 检验项目
+        ///     检验项目
         /// </summary>
         [Required]
         public string ProjectName { get; set; }
 
         /// <summary>
-        /// 检验依据/标准
+        ///     检验依据/标准
         /// </summary>
         [Required]
         public string Standard { get; set; }
 
         /// <summary>
-        /// 检验结论
+        ///     检验结论
         /// </summary>
         [Required]
         public string Conclusion { get; set; }
 
         /// <summary>
-        /// 使用仪器设备及编号
+        ///     使用仪器设备及编号
         /// </summary>
         public string Equipment { get; set; }
 
         /// <summary>
-        /// 备注
+        ///     备注
         /// </summary>
         [Required]
         public string Note { get; set; }

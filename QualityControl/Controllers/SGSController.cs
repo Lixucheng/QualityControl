@@ -5,10 +5,10 @@ using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using QualityControl.Db;
 using QualityControl.Enum;
-using QualityControl.Models;
-using Newtonsoft.Json.Linq;
+using QualityControl.Util;
 
 namespace QualityControl.Controllers
 {
@@ -22,8 +22,12 @@ namespace QualityControl.Controllers
             var sgs = Db.SGSs.FirstOrDefault(a => a.UserId == userId);
 
             var userid = User.Identity.GetUserId();
-            var already = Db.Trades.Count(e => (e.UserId == userid || e.SgsUserId == userid) && e.Status == (int)EnumTradeStatus.Finish);
-            var ing = Db.Trades.Count(e => (e.UserId == userid || e.SgsUserId == userid) && e.Status != (int)EnumTradeStatus.Finish);
+            var already =
+                Db.Trades.Count(
+                    e => (e.UserId == userid || e.SgsUserId == userid) && e.Status == (int) EnumTradeStatus.Finish);
+            var ing =
+                Db.Trades.Count(
+                    e => (e.UserId == userid || e.SgsUserId == userid) && e.Status != (int) EnumTradeStatus.Finish);
 
             ViewBag.a = already;
             ViewBag.i = ing;
@@ -156,39 +160,31 @@ namespace QualityControl.Controllers
         }
 
         /// <summary>
-        /// 验证样品
+        ///     验证样品
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public ActionResult Verification(long id)
-        {        
+        {
             var list = Db.Verifications.Where(e => e.TradeId == id).ToList();
             ViewBag.tid = id;
             var All = new List<v>();
             var trade = Db.Trades.Find(id);
-            list.ForEach(e=> {
-                All.Add(new v { Info = e.QrCodeInfo, pass = "通过" });
-            });
-            trade.Batches.ForEach(e=> {
+            list.ForEach(e => { All.Add(new v {Info = e.QrCodeInfo, pass = "通过"}); });
+            trade.Batches.ForEach(e =>
+            {
                 var no = JsonConvert.DeserializeObject<List<string>>(e.SamplaListJson);
-                no.ForEach(n=>
+                no.ForEach(n =>
                 {
                     var info = Db.QrCodeInfos.FirstOrDefault(a => a.QrName == n && a.TradeId == id);
                     var isin = All.Count(a => a.Info.Id == info.Id);
                     if (isin == 0)
                     {
-                        All.Add(new v { Info = info, pass = "未验证" });
+                        All.Add(new v {Info = info, pass = "未验证"});
                     }
                 });
-            
             });
             return View(All);
-        }
-
-        public class v
-        {
-            public QrCodeInfo Info;
-            public string pass;           
         }
 
 
@@ -197,29 +193,28 @@ namespace QualityControl.Controllers
             var l = new List<string>();
             var t = Db.Trades.Find(id);
             var bs = t.Batches;
-            bs.ForEach(e=> {
-                var codelist =(JArray)JsonConvert.DeserializeObject(e.SamplaListJson);
-                foreach(var temp in codelist)
+            bs.ForEach(e =>
+            {
+                var codelist = (JArray) JsonConvert.DeserializeObject(e.SamplaListJson);
+                foreach (var temp in codelist)
                 {
                     var name = temp.ToString().Split(':')[0];
-                   l.Add( Db.QrCodeInfos.FirstOrDefault(a => a.TradeId == id && a.QrName ==name ).IdCode);
+                    l.Add(Db.QrCodeInfos.FirstOrDefault(a => a.TradeId == id && a.QrName == name).IdCode);
                 }
-            });          
+            });
             return l;
         }
 
-        public JsonResult Check(long id,string idcode)
+        public JsonResult Check(long id, string idcode)
         {
-
-         
             var l = GetNum(id);
             var r = l.Any(e => e == idcode);
-          
-            if (r==true)
+
+            if (r)
             {
-                var info= Db.QrCodeInfos.FirstOrDefault(e => e.IdCode == idcode && e.TradeId == id);
+                var info = Db.QrCodeInfos.FirstOrDefault(e => e.IdCode == idcode && e.TradeId == id);
                 var a = Db.Verifications.FirstOrDefault(e => e.QrCodeInfo.Id == info.Id);
-                if(a!=null)
+                if (a != null)
                 {
                     return Json(3);
                 }
@@ -236,6 +231,12 @@ namespace QualityControl.Controllers
 
             //var ret1 = new { b = 0};
             return Json(0);
+        }
+
+        public class v
+        {
+            public QrCodeInfo Info;
+            public string pass;
         }
 
         #region 检测项目
@@ -285,7 +286,7 @@ namespace QualityControl.Controllers
                 {
                     return 0;
                 }
-                Util.Dumper.Dump(item, it);
+                Dumper.Dump(item, it);
                 Db.Entry(it).State = EntityState.Modified;
             }
             Db.SaveChanges();
@@ -293,7 +294,7 @@ namespace QualityControl.Controllers
             var items = sgs.DectectionItems.Select(a => a.Name).OrderBy(a => a).ToList();
             foreach (var i in items)
             {
-                sgs.DectectionItemString += "," +  i;
+                sgs.DectectionItemString += "," + i;
             }
             Db.Entry(sgs).State = EntityState.Modified;
             Db.SaveChanges();
@@ -314,13 +315,14 @@ namespace QualityControl.Controllers
             var items = sgs.DectectionItems.Select(a => a.Name).OrderBy(a => a).ToList();
             foreach (var i in items)
             {
-                sgs.DectectionItemString += "," +  i;
+                sgs.DectectionItemString += "," + i;
             }
             Db.Entry(sgs).State = EntityState.Modified;
             Db.SaveChanges();
             Db.SaveChanges();
             return 1;
         }
+
         #endregion
     }
 }

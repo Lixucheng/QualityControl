@@ -15,44 +15,45 @@
 *******************************/
 
 .ui.nag {
-  display: none;
-  opacity: 0.95;
-  position: relative;
-  top: 0em;
-  left: 0px;
-  z-index: 999;
-  min-height: 0em;
-  width: 100%;
-  margin: 0em;
-  padding: 0.75em 1em;
-  background: #555555;
-  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
-  font-size: 1rem;
-  text-align: center;
-  color: rgba(0, 0, 0, 0.87);
-  border-radius: 0em 0em 0.28571429rem 0.28571429rem;
-  -webkit-transition: 0.2s background ease;
-          transition: 0.2s background ease;
+    -webkit-transition: 0.2s background ease;
+    background: #555555;
+    border-radius: 0em 0em 0.28571429rem 0.28571429rem;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.87);
+    display: none;
+    font-size: 1rem;
+    left: 0px;
+    margin: 0em;
+    min-height: 0em;
+    opacity: 0.95;
+    padding: 0.75em 1em;
+    position: relative;
+    text-align: center;
+    top: 0em;
+    transition: 0.2s background ease;
+    width: 100%;
+    z-index: 999;
 }
-a.ui.nag {
-  cursor: pointer;
-}
+
+a.ui.nag { cursor: pointer; }
+
 .ui.nag > .title {
-  display: inline-block;
-  margin: 0em 0.5em;
-  color: #ffffff;
+    color: #ffffff;
+    display: inline-block;
+    margin: 0em 0.5em;
 }
+
 .ui.nag > .close.icon {
-  cursor: pointer;
-  opacity: 0.4;
-  position: absolute;
-  top: 50%;
-  right: 1em;
-  font-size: 1em;
-  margin: -0.5em 0em 0em;
-  color: #ffffff;
-  -webkit-transition: opacity 0.2s ease;
-          transition: opacity 0.2s ease;
+    -webkit-transition: opacity 0.2s ease;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 1em;
+    margin: -0.5em 0em 0em;
+    opacity: 0.4;
+    position: absolute;
+    right: 1em;
+    top: 50%;
+    transition: opacity 0.2s ease;
 }
 
 
@@ -62,13 +63,13 @@ a.ui.nag {
 
 
 /* Hover */
+
 .ui.nag:hover {
-  background: #555555;
-  opacity: 1;
+    background: #555555;
+    opacity: 1;
 }
-.ui.nag .close:hover {
-  opacity: 1;
-}
+
+.ui.nag .close:hover { opacity: 1; }
 
 
 /*******************************
@@ -81,17 +82,15 @@ a.ui.nag {
 ---------------*/
 
 .ui.overlay.nag {
-  position: absolute;
-  display: block;
+    display: block;
+    position: absolute;
 }
 
 /*--------------
      Fixed
 ---------------*/
 
-.ui.fixed.nag {
-  position: fixed;
-}
+.ui.fixed.nag { position: fixed; }
 
 /*--------------
      Bottom
@@ -99,9 +98,9 @@ a.ui.nag {
 
 .ui.bottom.nags,
 .ui.bottom.nag {
-  border-radius: 0.28571429rem 0.28571429rem 0em 0em;
-  top: auto;
-  bottom: 0em;
+    border-radius: 0.28571429rem 0.28571429rem 0em 0em;
+    bottom: 0em;
+    top: auto;
 }
 
 /*--------------
@@ -110,30 +109,25 @@ a.ui.nag {
 
 .ui.inverted.nags .nag,
 .ui.inverted.nag {
-  background-color: #f3f4f5;
-  color: rgba(0, 0, 0, 0.85);
+    background-color: #f3f4f5;
+    color: rgba(0, 0, 0, 0.85);
 }
+
 .ui.inverted.nags .nag .close,
 .ui.inverted.nags .nag .title,
 .ui.inverted.nag .close,
-.ui.inverted.nag .title {
-  color: rgba(0, 0, 0, 0.4);
-}
+.ui.inverted.nag .title { color: rgba(0, 0, 0, 0.4); }
 
 
 /*******************************
            Groups
 *******************************/
 
-.ui.nags .nag {
-  border-radius: 0em !important;
-}
-.ui.nags .nag:last-child {
-  border-radius: 0em 0em 0.28571429rem 0.28571429rem;
-}
-.ui.bottom.nags .nag:last-child {
-  border-radius: 0.28571429rem 0.28571429rem 0em 0em;
-}
+.ui.nags .nag { border-radius: 0em !important; }
+
+.ui.nags .nag:last-child { border-radius: 0em 0em 0.28571429rem 0.28571429rem; }
+
+.ui.bottom.nags .nag:last-child { border-radius: 0.28571429rem 0.28571429rem 0em 0em; }
 
 
 /*******************************
@@ -145,4 +139,3 @@ a.ui.nag {
 /*******************************
         User Overrides
 *******************************/
-

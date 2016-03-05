@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "SeeDetectionScheme";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -13,9 +12,7 @@
             margin-top: 50px;
         }
 
-        .title {
-            float: left;
-        }
+        .title { float: left; }
     </style>
 }
 <div class="bigestdiv">
@@ -74,33 +71,33 @@
                         <div class="ui segment">
                             <p>@ViewBag.l.L2</p>
                         </div>
-                      
+
                     </div>
                 </div>
 
 
                 <table class="ui segments celled table ">
                     <thead>
-                        <tr>
-                            <th>检测项目 </th>
-                            <th>时间</th>
-                            <th>价钱</th>
-                           
-                        </tr>
+                    <tr>
+                        <th>检测项目 </th>
+                        <th>时间</th>
+                        <th>价钱</th>
+
+                    </tr>
                     </thead>
                     <tbody id="tbody">
-                        @{ 
-                            foreach(var x in ViewBag.schemelist)
-                            {
-                                <tr>
-                                    <td>@x</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            }
+                    @{
+                        foreach (var x in ViewBag.schemelist)
+                        {
+                            <tr>
+                                <td>@x</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                         }
+                    }
                     </tbody>
-                   
+
                 </table>
 
                 <div class="ui segment form">
@@ -109,10 +106,8 @@
                             <label>检测机构：</label>
                             <p>@ViewBag.sgs</p>
                         </div>
-                       
+
                     </div>
-
-
 
 
                 </div>
@@ -122,12 +117,10 @@
 
                     <div class="inline field">
                         <label>确定检测时间：</label>
-                        <input id="time" type="text" placeholder="" disabled  value="@ViewBag.model.Time">
+                        <input id="time" type="text" placeholder="" disabled value="@ViewBag.model.Time">
 
                     </div>
                 </div>
-
-            
 
 
                 <div class="ui segment form">
@@ -144,17 +137,16 @@
                             <label>检测机构报价：</label>
                             <input id="q2" type="text" name="shipping[first-name]" disabled placeholder="" value="@ViewBag.model.OrganQuote">
                         </div>
-                        
+
                     </div>
 
                 </div>
 
 
-              
             </div>
-            <input id="checknum" style="display: none" value="@ViewBag.model.Trade.Id" />
-            <input id="tradeid" style="display: none" value="@ViewBag.tradeid" />
-                                    }
+            <input id="checknum" style="display: none" value="@ViewBag.model.Trade.Id"/>
+            <input id="tradeid" style="display: none" value="@ViewBag.tradeid"/>
+        }
     }
 
 </div>
@@ -167,17 +159,16 @@
             $.ajax({
                 type: 'Get',
                 url: '/DetectionScheme/GetSgsInfo/' + id,
-                success: function (data) {
+                success: function(data) {
                     if (data.length == 0) {
                         alert("检测中心信息错误,请更换检测中心或联系管理员!");
-                    }
-                    else {
+                    } else {
                         var trlist = $("#tbody").find("tr");
-                        trlist.each(function (i) {
+                        trlist.each(function(i) {
                             var td1 = $(this).find("td").eq(0).html();
                             var td2 = $(this).find("td").eq(1);
                             var td3 = $(this).find("td").eq(2);
-                            $.each(data, function (index, item) {
+                            $.each(data, function(index, item) {
                                 if (item.Name == td1) {
                                     td2.html(item.Days);
                                     td3.html(item.Price);
@@ -189,7 +180,7 @@
                 dataType: "json"
             });
         }
+
         GetSGSInfo();
     </script>
-    }
-
+}

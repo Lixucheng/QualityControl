@@ -1,14 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity.Owin;
-using QualityControl.Db;
-using QualityControl.Enum;
 using Microsoft.AspNet.Identity;
-using Newtonsoft.Json;
-using QualityControl.Models;
+using Microsoft.AspNet.Identity.Owin;
+using QualityControl.Enum;
 
 namespace QualityControl.Controllers
 {
@@ -26,6 +22,44 @@ namespace QualityControl.Controllers
             private set { _userManager = value; }
         }
 
+        public ActionResult AccountIndex()
+        {
+            var list = UserManager.Users.Where(e => e.Type != (int) EnumUserType.SuperAdmin && e.Del == 0).ToList();
+            return View(list);
+        }
+
+        public int Del(string id)
+        {
+            var list = Db.Trades.Where(e => e.SgsUserId == id || e.UserId == id || e.ManufacturerId == id).ToList();
+            if (list.Count > 0)
+            {
+                return 0;
+            }
+
+            var u = UserManager.FindById(id);
+            u.Del = 1;
+            UserManager.Update(u);
+            if (u.Type == (int) EnumUserType.Producer)
+            {
+                var c = Db.Companies.FirstOrDefault(e => e.UserId == id);
+                if (c != null)
+                {
+                    c.Status = EnumStatus.Del;
+                    c.Products.ForEach(e => e.Status = EnumStatus.Del);
+                }
+            }
+            else if (u.Type == (int) EnumUserType.TestingOrg)
+            {
+                var s = Db.SGSs.FirstOrDefault(e => e.UserId == id);
+                if (s != null)
+                {
+                    s.Status = EnumStatus.Del;
+                }
+            }
+            Db.SaveChanges();
+            return 1;
+        }
+
         // GET: AccountAdmin
 
         #region  普通账户审核部分
@@ -39,7 +73,7 @@ namespace QualityControl.Controllers
         {
             var list =
                 UserManager.Users.Where(
-                    e => e.Status == (int)EnumUserStatus.UnRecognized).ToList();
+                    e => e.Status == (int) EnumUserStatus.UnRecognized).ToList();
             ViewBag.list = list;
             ViewBag.count = list.Count;
             return View();
@@ -48,7 +82,7 @@ namespace QualityControl.Controllers
         public async Task<int> PassOne(string id)
         {
             var user = UserManager.Users.FirstOrDefault(e => e.Id == id);
-            user.Status = (int)EnumUserStatus.Normal;
+            user.Status = (int) EnumUserStatus.Normal;
             await UserManager.UpdateAsync(user);
             //todo status
 
@@ -69,9 +103,9 @@ namespace QualityControl.Controllers
         {
             await PassOne(id);
             var type = UserManager.Users.FirstOrDefault(e => e.Id == id).Type;
-            if (type == (int)EnumUserType.User)
+            if (type == (int) EnumUserType.User)
                 return Redirect("../ApplyList");
-            if (type == (int)EnumUserType.Producer)
+            if (type == (int) EnumUserType.Producer)
                 return Redirect("../CompanyApplyList");
             return Redirect("../ApplyList");
             //todo: 这块肯定要改
@@ -82,9 +116,9 @@ namespace QualityControl.Controllers
             var type = UserManager.Users.FirstOrDefault(e => e.Id == id).Type;
             await RefuseOne(id);
 
-            if (type == (int)EnumUserType.User)
+            if (type == (int) EnumUserType.User)
                 return Redirect("../ApplyList");
-            if (type == (int)EnumUserType.Producer)
+            if (type == (int) EnumUserType.Producer)
             {
                 var comp = Db.Companies.FirstOrDefault(e => e.UserId == id);
                 Db.Companies.Remove(comp);
@@ -122,7 +156,7 @@ namespace QualityControl.Controllers
         {
             var list =
                 UserManager.Users.Where(
-                    e => e.Status == (int)EnumUserStatus.UnRecognized && e.Type == (int)EnumUserType.Producer)
+                    e => e.Status == (int) EnumUserStatus.UnRecognized && e.Type == (int) EnumUserType.Producer)
                     .ToList();
             ViewBag.list = list;
             ViewBag.count = list.Count;
@@ -134,48 +168,9 @@ namespace QualityControl.Controllers
             var c = Db.Companies.FirstOrDefault(e => e.UserId == userid);
 
 
-            return Json(new { c, time = c.EstablishedTime.ToString() }, JsonRequestBehavior.AllowGet);
+            return Json(new {c, time = c.EstablishedTime.ToString()}, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
-
-        public ActionResult AccountIndex()
-        {
-            var list = UserManager.Users.Where(e => e.Type != (int)EnumUserType.SuperAdmin&&e.Del==0).ToList();
-            return View(list);
-        }
-
-        public int Del(string id)
-        {
-
-            var list = Db.Trades.Where(e => e.SgsUserId == id || e.UserId == id || e.ManufacturerId == id).ToList();
-            if (list.Count > 0)
-            {
-                return 0;
-            }
-
-            var u = UserManager.FindById(id);
-            u.Del = 1;
-            UserManager.Update(u);
-            if (u.Type == (int)EnumUserType.Producer)
-            {
-                var c = Db.Companies.FirstOrDefault(e => e.UserId == id);
-                if (c != null)
-                {
-                    c.Status = Enum.EnumStatus.Del;
-                    c.Products.ForEach(e => e.Status = EnumStatus.Del);
-                }
-            }
-            else if (u.Type == (int)EnumUserType.TestingOrg)
-            {
-                var s = Db.SGSs.FirstOrDefault(e => e.UserId == id);
-                if (s != null)
-                {
-                    s.Status = EnumStatus.Del;
-                }
-            }
-            Db.SaveChanges();
-            return 1;
-        }
     }
 }

@@ -5,51 +5,42 @@
 
 @section head{
     <style>
-        .sm-col {
-            width: 64px;
-        }
+        .sm-col { width: 64px; }
 
-        .op-col {
-            width: 128px;
-        }
+        .op-col { width: 128px; }
 
-        .table-parent {
-            overflow: auto;
-        }
+        .table-parent { overflow: auto; }
 
-            .table-parent table {
-                min-width: 800px !important;
-            }
+        .table-parent table { min-width: 800px !important; }
     </style>
 }
-@using System.Linq;
-@using Newtonsoft.Json.Linq;
-@using Newtonsoft.Json;
 
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 @model IEnumerable<QualityControl.Db.Product>
 
 <div class="am-margin am-padding">
 
 
-        <div class=" six wide field">
-            <div class="am-text-center ui segment">
-                <div  class="ui red statistic">
-                    <div class="value"><i class="at icon"></i> @ViewBag.a</div>
-                    <div class="label">已完成管控</div>
-                </div>
-                <div  class="ui orange statistic">
-                    <div class="value"><i class="spinner icon"></i> @ViewBag.i</div>
-                    <div class="label">正在进行中的合同</div>
-                </div>
-
+    <div class=" six wide field">
+        <div class="am-text-center ui segment">
+            <div class="ui red statistic">
+                <div class="value">
+                    <i class="at icon"></i> @ViewBag.a</div>
+                <div class="label">已完成管控</div>
             </div>
+            <div class="ui orange statistic">
+                <div class="value">
+                    <i class="spinner icon"></i> @ViewBag.i</div>
+                <div class="label">正在进行中的合同</div>
+            </div>
+
         </div>
+    </div>
 
-  
 
-   
-    <br />
-        <div class="ui container">
+    <br/>
+    <div class="ui container">
         <div class="row">
             <div class="column">
                 <div class="ui message">
@@ -62,7 +53,7 @@
         </div>
     </div>
 
-    <br />
+    <br/>
     <div class="ui container">
         <div class="row">
             <div class="column">
@@ -72,8 +63,8 @@
                         <div class="card">
                             <div class="image">
                                 @{
-                                    var jarray = (JArray)JsonConvert.DeserializeObject(Model.ElementAt(0).Image);
-                                    string ja1a = jarray[0].ToString();
+                                    var jarray = (JArray) JsonConvert.DeserializeObject(Model.ElementAt(0).Image);
+                                    var ja1a = jarray[0].ToString();
                                 }
                                 <img src="@ja1a">
                             </div>
@@ -84,8 +75,8 @@
                         <div class="card">
                             <div class="image">
                                 @{
-                                    var jarray1 = (JArray)JsonConvert.DeserializeObject(Model.ElementAt(1).Image);
-                                    string ja1a1 = jarray1[0].ToString();
+                                    var jarray1 = (JArray) JsonConvert.DeserializeObject(Model.ElementAt(1).Image);
+                                    var ja1a1 = jarray1[0].ToString();
                                 }
                                 <img src="@ja1a1">
                             </div>
@@ -96,8 +87,8 @@
                         <div class="card">
                             <div class="image">
                                 @{
-                                    var jarray2 = (JArray)JsonConvert.DeserializeObject(Model.ElementAt(2).Image);
-                                    string ja1a2 = jarray2[0].ToString();
+                                    var jarray2 = (JArray) JsonConvert.DeserializeObject(Model.ElementAt(2).Image);
+                                    var ja1a2 = jarray2[0].ToString();
                                 }
                                 <img src="@ja1a2">
                             </div>
@@ -111,8 +102,6 @@
             </div>
         </div>
     </div>
-   
-
 
 
 </div>

@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Newtonsoft.Json;
 using QualityControl.Db;
 using QualityControl.Enum;
-using QualityControl.Models;
-using QualityControl.Util;
-
-
 
 namespace QualityControl.Controllers
 {
@@ -19,8 +14,12 @@ namespace QualityControl.Controllers
         public ActionResult Index()
         {
             var userid = User.Identity.GetUserId();
-            var already = Db.Trades.Count(e => (e.UserId == userid || e.SgsUserId == userid)&&e.Status==(int)EnumTradeStatus.Finish);
-            var ing= Db.Trades.Count(e => (e.UserId == userid || e.SgsUserId == userid) && e.Status != (int)EnumTradeStatus.Finish);
+            var already =
+                Db.Trades.Count(
+                    e => (e.UserId == userid || e.SgsUserId == userid) && e.Status == (int) EnumTradeStatus.Finish);
+            var ing =
+                Db.Trades.Count(
+                    e => (e.UserId == userid || e.SgsUserId == userid) && e.Status != (int) EnumTradeStatus.Finish);
 
             ViewBag.a = already;
             ViewBag.i = ing;
@@ -39,7 +38,7 @@ namespace QualityControl.Controllers
         public ActionResult TradeList()
         {
             var userId = User.Identity.GetUserId();
-            var user = Db.Users.Find((userId));
+            var user = Db.Users.Find(userId);
             var type = user.Type;
             ViewBag.Type = type;
             List<Trade> list;
@@ -54,7 +53,7 @@ namespace QualityControl.Controllers
             else if (type == (int) EnumUserType.Producer)
             {
                 list = Db.Trades.Where(e => e.ManufacturerId == userId).ToList();
-                list.AddRange(Db.Trades.Where(e=>e.UserId==userId).ToList());
+                list.AddRange(Db.Trades.Where(e => e.UserId == userId).ToList());
             }
             else
             {
@@ -72,11 +71,11 @@ namespace QualityControl.Controllers
         {
             var userid = User.Identity.GetUserId();
             var user = UserManager.FindById(userid);
-            if (user.Type != (int) EnumUserType.User&& user.Type != (int)EnumUserType.Producer)
+            if (user.Type != (int) EnumUserType.User && user.Type != (int) EnumUserType.Producer)
             {
                 throw new Exception("您不是用户，无权限查看！");
             }
-            var trade = Db.Trades.FirstOrDefault(e => e.UserId == userid && e.Status == (int) (EnumTradeStatus.Create));
+            var trade = Db.Trades.FirstOrDefault(e => e.UserId == userid && e.Status == (int) EnumTradeStatus.Create);
             ViewBag.t = trade;
             return View();
         }

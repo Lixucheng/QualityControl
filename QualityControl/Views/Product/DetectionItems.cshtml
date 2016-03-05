@@ -33,12 +33,12 @@
 
     <table class="ui celled table item-table">
         <thead>
-            <tr>
-                <th></th>
-                <th>检测项目</th>
-                <th>范围</th>
-                <th>否决项</th>
-            </tr>
+        <tr>
+            <th></th>
+            <th>检测项目</th>
+            <th>范围</th>
+            <th>否决项</th>
+        </tr>
         </thead>
         <tbody>
         @if (Model != null)
@@ -70,17 +70,21 @@
                 fields: {
                     Name: {
                         identifier: 'Name',
-                        rules: [{
-                            type: 'empty',
-                            prompt: '请输入检测内容'
-                        }]
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入检测内容'
+                            }
+                        ]
                     },
                     Range: {
                         identifier: 'Range',
-                        rules: [{
-                            type: 'empty',
-                            prompt: '请输入检测范围'
-                        }]
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: '请输入检测范围'
+                            }
+                        ]
                     }
                 }
             });
@@ -113,12 +117,12 @@
                         $(tr).appendTo('table tbody');
                         $f.form('reset');
                     }
-                }) ;
+                });
 
             });
 
             var $tbody = $('table tbody');
-            $tbody.click(function (event) {
+            $tbody.click(function(event) {
                 var $t = $(event.target);
                 if (!$t.is('.trash.icon')) {
                     return;

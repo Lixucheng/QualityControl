@@ -40,7 +40,7 @@ namespace QualityControl.Models
 
                         var partUriDocument = PackUriHelper.CreatePartUri(new Uri(pathInPackage, UriKind.Relative));
                         var packagePartDocument = package.CreatePart(partUriDocument, "", CompressionOption.Maximum);
-                        using (var fileStream = new FileStream(fileName,FileMode.Open, FileAccess.Read))
+                        using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                         {
                             //var srSource = new StreamReader(fileStream, System.Text.Encoding.Unicode).ReadToEnd();                          
                             //var t = System.Text.Encoding.Unicode.GetBytes(srSource);

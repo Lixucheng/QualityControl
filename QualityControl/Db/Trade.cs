@@ -70,17 +70,17 @@ namespace QualityControl.Db
         Create,
 
         /// <summary>
-        /// 产品信息完善完成
+        ///     产品信息完善完成
         /// </summary>
         ProductInfoChecked,
-        
+
         /// <summary>
-        /// 产品信息审核完成
+        ///     产品信息审核完成
         /// </summary>
         ProductInfoConfirmed,
 
         /// <summary>
-        /// 批次选择完毕
+        ///     批次选择完毕
         /// </summary>
         BatchSelected,
 
@@ -105,12 +105,12 @@ namespace QualityControl.Db
         MakeQrCode,
 
         /// <summary>
-        ///   结束制码
+        ///     结束制码
         /// </summary>
         FinishMakeQrCode,
 
         /// <summary>
-        /// 贴码结束
+        ///     贴码结束
         /// </summary>
         Sticked,
 
@@ -123,10 +123,10 @@ namespace QualityControl.Db
 
 
         /// <summary>
-        /// 等待检测中心收到样品
+        ///     等待检测中心收到样品
         /// </summary>
-        /// 
         SgsReceivedSample,
+
         /// <summary>
         ///     检查中
         /// </summary>

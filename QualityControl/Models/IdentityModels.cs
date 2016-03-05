@@ -36,7 +36,6 @@ namespace QualityControl.Models
         {
         }
 
-
         public DbSet<ThirdProductType> ThirdProductTypes { get; set; }
         public DbSet<FirstProductType> FirstProductTypes { get; set; }
         public DbSet<SecondProductType> SecondProductTypes { get; set; }

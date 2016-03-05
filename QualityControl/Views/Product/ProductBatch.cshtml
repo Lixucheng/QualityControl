@@ -24,14 +24,14 @@
         产品批次管理：@ViewBag.p.Name (检测数量:@ViewBag.count)
         <a class="anchor" id="types"></a>
     </h2>
-  
+
 
     <div class="row">
         <div class="column">
             <button class="ui button blue icon" onclick="Add()"><i class="add circle icon"></i>添加批次</button>
             <a class="ui button green " href="/trade/BatchSelected/@ViewBag.tid">批次信息确定</a>
 
-           
+
         </div>
     </div>
 
@@ -91,7 +91,7 @@
             <input name="pid" value="@ViewBag.tid" style="display: none">
             <div class="field">
                 <label>名称(只能输入数字,字母或下划线)</label>
-                <input type="text" onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" name="BatchName" placeholder="名称" id="editname">
+                <input type="text" onkeyup="this.value = this.value.replace(/[^\w_]/g, '');" name="BatchName" placeholder="名称" id="editname">
             </div>
             <div class="field">
                 <label>数量</label>
@@ -122,7 +122,7 @@
             <input name="pid" value="@ViewBag.tid" style="display: none">
             <div class="field">
                 <label>名称(只能输入数字,字母或下划线)</label>
-                <input type="text" onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" name="BatchName" placeholder="名称" required>
+                <input type="text" onkeyup="this.value = this.value.replace(/[^\w_]/g, '');" name="BatchName" placeholder="名称" required>
             </div>
             <div class="field">
                 <label>数量</label>
@@ -130,7 +130,7 @@
             </div>
             <div class="field">
                 <label>生产日期</label>
-                <input type="date" name="ProductionDate" placeholder=""  value="" required>
+                <input type="date" name="ProductionDate" placeholder="" value="" required>
             </div>
             <div class="ui error message"></div>
         </form>

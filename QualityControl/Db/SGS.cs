@@ -42,7 +42,7 @@ namespace QualityControl.Db
 
         public virtual List<SgsProduct> Products { get; set; }
 
-        public virtual List<DectectionItem> DectectionItems { get; set; } 
+        public virtual List<DectectionItem> DectectionItems { get; set; }
 
         public string DectectionItemString { get; set; }
     }

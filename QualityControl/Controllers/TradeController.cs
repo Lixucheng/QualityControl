@@ -5,12 +5,11 @@ using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using QualityControl.Db;
 using QualityControl.Enum;
 using QualityControl.Models;
 using QualityControl.Models.Adapters;
-using Trade = QualityControl.Db.Trade;
-using Newtonsoft.Json.Linq;
 
 namespace QualityControl.Controllers
 {
@@ -56,11 +55,11 @@ namespace QualityControl.Controllers
         }
 
         /// <summary>
-        /// 选择完产品
+        ///     选择完产品
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult ProductChosen(long id,long count)
+        public ActionResult ProductChosen(long id, long count)
         {
             var userid = User.Identity.GetUserId();
             var p = Db.Products.Find(id);
@@ -68,13 +67,13 @@ namespace QualityControl.Controllers
             var trade = new Trade
             {
                 Product = JsonConvert.SerializeObject(pStr),
-                Count=count,
+                Count = count,
                 CeateTime = DateTime.Now,
                 FinishTime = DateTime.Now,
                 SamplingDate = DateTime.Now,
                 DetectingDate = DateTime.Now,
                 UserId = userid,
-                Status = (int)EnumTradeStatus.Create,
+                Status = (int) EnumTradeStatus.Create,
                 SGSPaied = false,
                 ManufacturerId = p.UserId
             };
@@ -85,7 +84,7 @@ namespace QualityControl.Controllers
 
 
         /// <summary>
-        /// 确认产品信息完善
+        ///     确认产品信息完善
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -102,25 +101,27 @@ namespace QualityControl.Controllers
                 return Content("错误操作");
             }
 
-            var p=JsonConvert.DeserializeObject<ProductCopy>(trade.Product);
+            var p = JsonConvert.DeserializeObject<ProductCopy>(trade.Product);
             //添加检测项目
-            var dlist = Db.ProductDectectionItems.Where(e => e.ProductId == p.Id).Select(a=>new DectectionItemModel
-                {
-                    Name=a.Name,Range=a.Range,Denney=a.Denney
-                }
-            ).ToList();
+            var dlist = Db.ProductDectectionItems.Where(e => e.ProductId == p.Id).Select(a => new DectectionItemModel
+            {
+                Name = a.Name,
+                Range = a.Range,
+                Denney = a.Denney
+            }
+                ).ToList();
 
             WriteDetectionItem(id, dlist);
 
 
-            trade.Status = (int)EnumTradeStatus.ProductInfoChecked;
+            trade.Status = (int) EnumTradeStatus.ProductInfoChecked;
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
-            return RedirectToAction("TradeDetail", new { id = trade.Id });
+            return RedirectToAction("TradeDetail", new {id = trade.Id});
         }
 
         /// <summary>
-        /// 审核产品信息
+        ///     审核产品信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -133,18 +134,18 @@ namespace QualityControl.Controllers
             }
             var userid = User.Identity.GetUserId();
             var user = UserManager.FindById(userid);
-            if (user.Type != (int)EnumUserType.Controller)
+            if (user.Type != (int) EnumUserType.Controller)
             {
                 return Content("错误操作");
             }
-            trade.Status = (int)EnumTradeStatus.ProductInfoConfirmed;
+            trade.Status = (int) EnumTradeStatus.ProductInfoConfirmed;
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
-            return RedirectToAction("TradeDetail", new { id = trade.Id });
+            return RedirectToAction("TradeDetail", new {id = trade.Id});
         }
 
         /// <summary>
-        /// 选择批次
+        ///     选择批次
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -169,7 +170,7 @@ namespace QualityControl.Controllers
 
 
         /// <summary>
-        /// 选择批次
+        ///     选择批次
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -177,8 +178,8 @@ namespace QualityControl.Controllers
         public ActionResult BatchSelect(long id, List<long> batchIds)
         {
             var trade = Db.Trades.Find(id);
-            var userid = User.Identity.GetUserId(); 
-            if (trade == null || trade.Status != (int)EnumTradeStatus.ProductInfoConfirmed || trade.UserId != userid)
+            var userid = User.Identity.GetUserId();
+            if (trade == null || trade.Status != (int) EnumTradeStatus.ProductInfoConfirmed || trade.UserId != userid)
             {
                 return Content("错误操作");
             }
@@ -200,8 +201,7 @@ namespace QualityControl.Controllers
                     BatchName = batch.BatchName,
                     Count = batch.Count,
                     ProductId = batch.ProductId,
-                    ProductionDate=batch.ProductionDate
-                    
+                    ProductionDate = batch.ProductionDate
                 };
 
                 batches.Add(pb);
@@ -212,11 +212,11 @@ namespace QualityControl.Controllers
             trade.Batches = batches;
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
-            return RedirectToAction("TradeDetail", new { id = trade.Id });
+            return RedirectToAction("TradeDetail", new {id = trade.Id});
         }
 
         /// <summary>
-        /// 生产商确定批次
+        ///     生产商确定批次
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -224,37 +224,40 @@ namespace QualityControl.Controllers
         {
             var trade = Db.Trades.Find(id);
             var userid = User.Identity.GetUserId();
-            if (trade == null || trade.Status != (int)EnumTradeStatus.ProductInfoConfirmed || trade.ManufacturerId != userid)
+            if (trade == null || trade.Status != (int) EnumTradeStatus.ProductInfoConfirmed ||
+                trade.ManufacturerId != userid)
             {
                 return Content("错误操作");
             }
-               
-            trade.Status = (int)EnumTradeStatus.BatchSelected;
+
+            trade.Status = (int) EnumTradeStatus.BatchSelected;
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
-            return RedirectToAction("TradeDetail", new { id = trade.Id });
+            return RedirectToAction("TradeDetail", new {id = trade.Id});
         }
 
 
         /// <summary>
-        /// 管控合同列表
+        ///     管控合同列表
         /// </summary>
         /// <returns></returns>
         public ActionResult Trades()
         {
             return View(Db.Trades
-                .Where(a => a.Status == (int)EnumTradeStatus.BatchSelected).Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo
-            {
-                Trade = trade,
-                User = user
-            }).ToList());
+                .Where(a => a.Status == (int) EnumTradeStatus.BatchSelected)
+                .Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo
+                {
+                    Trade = trade,
+                    User = user
+                }).ToList());
         }
 
 
         public ActionResult TradesOK()
         {
-            return View("Trades",Db.Trades
-                .Where(a => a.Status > (int)EnumTradeStatus.EnsureContract).Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo
+            return View("Trades", Db.Trades
+                .Where(a => a.Status > (int) EnumTradeStatus.EnsureContract)
+                .Join(Db.Users, a => a.UserId, a => a.Id, (trade, user) => new TradeInfo
                 {
                     Trade = trade,
                     User = user
@@ -276,9 +279,9 @@ namespace QualityControl.Controllers
             {
                 return Content("警告：错误操作!");
             }
-            if (trade.Status != (int)EnumTradeStatus.SampleStart)
+            if (trade.Status != (int) EnumTradeStatus.SampleStart)
             {
-                return RedirectToAction("TradeDetail", new { id = tradeId });
+                return RedirectToAction("TradeDetail", new {id = tradeId});
             }
             var batches = trade.Batches;
             foreach (var b in batches)
@@ -321,11 +324,11 @@ namespace QualityControl.Controllers
                         string code;
                         do
                         {
-                            code = trade.Id.ToString() + "_" +
-                                   b.ProductId.ToString() + "_" +
+                            code = trade.Id + "_" +
+                                   b.ProductId + "_" +
                                    b.BatchName + "_" +
                                    random.Next(1, b.Count);
-                           // code=code+":" + Db.QrCodeInfos.FirstOrDefault(e => e.QrName==code&&e.TradeId==trade.Id).IdCode; 
+                            // code=code+":" + Db.QrCodeInfos.FirstOrDefault(e => e.QrName==code&&e.TradeId==trade.Id).IdCode; 
                         } while (qrCodes.Contains(code));
                         qrCodes.Add(code);
                     }
@@ -342,10 +345,10 @@ namespace QualityControl.Controllers
                     var divider = b.Count/b.SampleCount;
                     var num = random.Next(1, divider);
                     for (var i = 0; i < b.SampleCount; i++)
-                    {                      
+                    {
                         string code;
-                        code = trade.Id.ToString() + "_" +
-                               b.ProductId.ToString() + "_" +
+                        code = trade.Id + "_" +
+                               b.ProductId + "_" +
                                b.BatchName + "_" +
                                num;
                         // code = code + ":" + Db.QrCodeInfos.FirstOrDefault(e => e.QrName == code && e.TradeId == trade.Id).IdCode;
@@ -518,12 +521,12 @@ namespace QualityControl.Controllers
             {
                 return null;
             }
-            if (user.Type != (int)EnumUserType.Controller)
+            if (user.Type != (int) EnumUserType.Controller)
             {
                 return null;
             }
             var items = JsonConvert.DeserializeObject<JObject>(data);
-            foreach(var i in items)
+            foreach (var i in items)
             {
                 var b = trade.Batches.FirstOrDefault(a => a.Id.ToString() == i.Key);
                 if (b == null)
@@ -569,11 +572,11 @@ namespace QualityControl.Controllers
                 return "error";
             }
             //trade.Result = report;
-            foreach(var b in trade.Batches)
+            foreach (var b in trade.Batches)
             {
                 b.Report = batchReports.FirstOrDefault(a => a.BatchId == b.Id);
             }
-            trade.Result = new DetectionReport()
+            trade.Result = new DetectionReport
             {
                 Files = files,
                 CreateTime = DateTime.Now
@@ -614,7 +617,7 @@ namespace QualityControl.Controllers
             }
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
-            return RedirectToAction("TradeDetail", new { id = id });
+            return RedirectToAction("TradeDetail", new {id});
         }
 
         public ActionResult SgsSampleReceive(long id)
@@ -629,9 +632,9 @@ namespace QualityControl.Controllers
             {
                 return Content("错误操作");
             }
-            trade.Status = (int)EnumTradeStatus.Testing;
+            trade.Status = (int) EnumTradeStatus.Testing;
             Db.SaveChanges();
-            return RedirectToAction("TradeDetail", new { id = id });
+            return RedirectToAction("TradeDetail", new {id});
         }
 
         public ActionResult GetQrCode(long id)
@@ -643,19 +646,18 @@ namespace QualityControl.Controllers
             }
             var userId = User.Identity.GetUserId();
             var user = UserManager.FindById(userId);
-            if (user.Type != (int)EnumUserType.Producer)
-            {
-
-                return Content("错误操作");
-            }
-            if(trade.Status!=(int)EnumTradeStatus.FinishMakeQrCode)
+            if (user.Type != (int) EnumUserType.Producer)
             {
                 return Content("错误操作");
             }
-            trade.Status = (int)EnumTradeStatus.SampleStart;
+            if (trade.Status != (int) EnumTradeStatus.FinishMakeQrCode)
+            {
+                return Content("错误操作");
+            }
+            trade.Status = (int) EnumTradeStatus.SampleStart;
             Db.Entry(trade).State = EntityState.Modified;
             Db.SaveChanges();
-            return RedirectToAction("TradeDetail", new { id = id });
+            return RedirectToAction("TradeDetail", new {id});
         }
 
         [HttpGet]
@@ -668,13 +670,16 @@ namespace QualityControl.Controllers
             }
             var userId = User.Identity.GetUserId();
             var user = UserManager.FindById(userId);
-            if (!(trade.Status == (int)EnumTradeStatus.Create && trade.ManufacturerId == userId)
-                && !(trade.Status == (int)EnumTradeStatus.ProductInfoChecked && user.Type == (int)EnumUserType.Controller))
+            if (!(trade.Status == (int) EnumTradeStatus.Create && trade.ManufacturerId == userId)
+                &&
+                !(trade.Status == (int) EnumTradeStatus.ProductInfoChecked && user.Type == (int) EnumUserType.Controller))
             {
                 return Content("错误操作");
             }
             ViewBag.Id = id;
-            var items = trade.DetectionItems != null ? JsonConvert.DeserializeObject<List<DectectionItemModel>>(trade.DetectionItems) : new List<DectectionItemModel>();
+            var items = trade.DetectionItems != null
+                ? JsonConvert.DeserializeObject<List<DectectionItemModel>>(trade.DetectionItems)
+                : new List<DectectionItemModel>();
             return View(items);
         }
 
@@ -688,8 +693,9 @@ namespace QualityControl.Controllers
             }
             var userId = User.Identity.GetUserId();
             var user = UserManager.FindById(userId);
-            if (!(trade.Status == (int)EnumTradeStatus.Create && trade.ManufacturerId == userId)
-                && !(trade.Status == (int)EnumTradeStatus.ProductInfoChecked && user.Type == (int)EnumUserType.Controller))
+            if (!(trade.Status == (int) EnumTradeStatus.Create && trade.ManufacturerId == userId)
+                &&
+                !(trade.Status == (int) EnumTradeStatus.ProductInfoChecked && user.Type == (int) EnumUserType.Controller))
             {
                 return null;
             }
@@ -701,7 +707,7 @@ namespace QualityControl.Controllers
 
 
         /// <summary>
-        /// 确定检测项目
+        ///     确定检测项目
         /// </summary>
         /// <param name="id"></param>
         /// <param name="items"></param>
@@ -715,8 +721,9 @@ namespace QualityControl.Controllers
             }
             var userId = User.Identity.GetUserId();
             var user = UserManager.FindById(userId);
-            if (!(trade.Status == (int)EnumTradeStatus.Create && trade.ManufacturerId == userId)
-                && !(trade.Status == (int)EnumTradeStatus.ProductInfoChecked && user.Type == (int)EnumUserType.Controller))
+            if (!(trade.Status == (int) EnumTradeStatus.Create && trade.ManufacturerId == userId)
+                &&
+                !(trade.Status == (int) EnumTradeStatus.ProductInfoChecked && user.Type == (int) EnumUserType.Controller))
             {
                 return false;
             }
@@ -769,11 +776,9 @@ namespace QualityControl.Controllers
 
         public ActionResult GetFiles(long id)
         {
-            var list = (JArray)JsonConvert.DeserializeObject(Db.Trades.Find(id).Files);
+            var list = (JArray) JsonConvert.DeserializeObject(Db.Trades.Find(id).Files);
             ViewBag.list = list;
             return View();
         }
-
-
     }
 }

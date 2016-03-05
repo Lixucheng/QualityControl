@@ -1,11 +1,10 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "ProductIndex";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 @section head{
-    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/Scripts/bower_components/datatables/media/css/jquery.dataTables.css" rel="stylesheet"/>
 
     <style>
         .main-container {
@@ -16,9 +15,7 @@
             z-index: 1;
         }
 
-        .mycontent {
-            margin-bottom: 30px;
-        }
+        .mycontent { margin-bottom: 30px; }
     </style>
 }
 
@@ -38,7 +35,7 @@
             </div>
         </div>
         <form class="ui form type" style="float: left; width: 40%;" id="form" action="" method="get">
-            @{ Html.RenderAction("_ChooseType", "Product", new { name = "Choose" }); }
+            @{ Html.RenderAction("_ChooseType", "Product", new {name = "Choose"}); }
 
         </form>
         <form id="name" class="ui form" style="display: none; float: left; width: 20%;" action="" method="get">
@@ -46,7 +43,7 @@
                 <label id="lable">按产品名称搜索</label>
                 <div class="ui mobile reversed equal width grid">
                     <div class="column">
-                        <input name="key" />
+                        <input name="key"/>
                     </div>
                 </div>
             </div>
@@ -71,49 +68,49 @@
 
     <table class="ui  celled  table">
         <thead class="">
-            <tr>
-                <th>名称</th>
-                <th>产品种类</th>
-                <th>生产厂家</th>
-                <th>许可证号</th>
-                <th>许可证到期时间</th>
-                <th>生产标准</th>
+        <tr>
+            <th>名称</th>
+            <th>产品种类</th>
+            <th>生产厂家</th>
+            <th>许可证号</th>
+            <th>许可证到期时间</th>
+            <th>生产标准</th>
 
-                <th>操作</th>
-            </tr>
+            <th>操作</th>
+        </tr>
         </thead>
         <tbody>
 
-            @if (ViewBag.count == 0)
+        @if (ViewBag.count == 0)
+        {
+        }
+        else
+        {
+            foreach (var Tempx in ViewBag.list)
             {
+                <tr>
+                    <td>@Tempx.Name</td>
+                    <td>@Tempx.Type.Title</td>
+                    <td>@Tempx.Company.Name</td>
+                    <td>@Tempx.ProductionCertificateNo</td>
+                    <td>@Tempx.GetDate</td>
+                    <td>@Tempx.Standard</td>
+
+
+                    <td>
+                        <div class="2  fluid ui">
+                            <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
+
+
+                        </div>
+                    </td>
+                </tr>
             }
-            else
-            {
-                foreach (var Tempx in ViewBag.list)
-                {
-                    <tr>
-                        <td>@Tempx.Name</td>
-                        <td>@Tempx.Type.Title</td>
-                        <td>@Tempx.Company.Name</td>
-                        <td>@Tempx.ProductionCertificateNo</td>
-                        <td>@Tempx.GetDate</td>
-                        <td>@Tempx.Standard</td>
-
-
-                        <td>
-                            <div class="2  fluid ui">
-                                <button class="ui  button" onclick="See(@Tempx.Id)">详细</button>
-
-                               
-                            </div>
-                        </td>
-                    </tr>
-                }
-            }
+        }
 
         </tbody>
         <tfoot>
-            <tr></tr>
+        <tr></tr>
         </tfoot>
     </table>
 </div>
@@ -241,4 +238,3 @@
         }
     </script>
 }
-
